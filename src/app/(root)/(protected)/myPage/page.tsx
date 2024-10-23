@@ -5,7 +5,7 @@ const page = () => {
   return <>
   {/* 프로필 영역 */}
   <section>
-      <Image src={"ex"} alt=""/>
+      {/* <Image src={150} alt=""/> */}
       <h3>닉네임</h3>
       <button>팔로잉 255명</button>
       <div>
