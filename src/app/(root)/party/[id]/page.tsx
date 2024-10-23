@@ -13,7 +13,6 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   // if(error){
   //   throw new Error(error.message)
   // }
-
   // 데이터 불러올 수 있게 되면 PartyHeader와 DetailInfo로 data 물려주기
   console.log(data, error);
   return (
