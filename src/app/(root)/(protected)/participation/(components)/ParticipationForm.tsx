@@ -1,6 +1,7 @@
 "use client";
 
 import browserClient from "@/utils/supabase/client";
+// import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import React from "react";
@@ -8,6 +9,7 @@ import React from "react";
 const ParticipationForm = (partyId: { partyId: string }) => {
   const [profile_image, setProfile_image] = useState("");
   const [nickname, setNickname] = useState("");
+  // const router = useRouter()
   const userId = "로그인한 유저정보 들어갈 곳";
 
   // 참가하기 함수
@@ -19,6 +21,9 @@ const ParticipationForm = (partyId: { partyId: string }) => {
     //   throw new Error(error.message)
     // }
     console.log(data, error);
+    // if(data){
+    //   router.replace(`/party/${partyId}`)
+    // }
   };
   return (
     <>
