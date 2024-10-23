@@ -1,15 +1,49 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import browserClient from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { getUserId } from '@/utils/getUserId'
+import Image from 'next/image'
+import { PostgrestError } from '@supabase/supabase-js'
 
 const EditProfilePage = () => {
   const router = useRouter()
+  const [imgFile, setImgFile] = useState("")
+  const [nickname, setNickname] = useState("")
+  const imgRef = useRef<HTMLInputElement>(null);
+
+  type UserData = {
+    nickname:string;
+    profile_img:string;
+  } | null
+
+  // 로그인한 사용자 정보를 불러옴 (기존 정보를 띄워주기 위해)
+  const fetchUserData = async () =>{
+    const userId = await getUserId();
+    const { data : userData, error }:{data : UserData, error : PostgrestError | null} = await browserClient
+    .from('user') 
+    .select('profile_img, nickname')
+    .eq('user_id', userId)
+    .single();
+
+    console.log("에러",error)
+    if(userData){
+      setImgFile(userData.profile_img)
+      setNickname(userData.nickname)
+    }
+    if(error){
+      console.error("사용자 정보를 불러오는데 실패했습니다. => ", error)
+    }
+  }
+
+  // 페이지가 렌더링될 때 fetchUserData를 실행
+  useEffect(() => {
+    fetchUserData();
+  });
 
   // zod
   const editProfile = z.object({
@@ -20,10 +54,26 @@ const EditProfilePage = () => {
   const {register, handleSubmit, formState, watch} = useForm({
     mode: 'onChange',
     defaultValues: {
-      nickname:''
+      nickname:nickname,
+
     },
     resolver: zodResolver(editProfile)
   })
+
+  //이미지 업로드 onChange
+  const uploadImage = () => {
+    const file = imgRef.current?.files?.[0] // 선택한 파일을 file에 저장
+    if (file) { // file이 있다면?
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onloadend = () => {
+        if(typeof reader.result === 'string'){
+          setImgFile(reader.result)
+        }
+      }
+      
+    }
+  }
 
   //폼 제출 함수
   const onSubmit = async () => {
@@ -31,7 +81,8 @@ const EditProfilePage = () => {
     const {data: userData, error:updateError} = await browserClient
       .from('user')
       .update({
-        nickname:watch('nickname')
+        nickname:watch('nickname'),
+        profile_img: imgFile
       })
       .eq('user_id',userId)
 
@@ -48,8 +99,8 @@ const EditProfilePage = () => {
     <section>
       <h1>프로필 수정</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <Image src={"150"} alt=''/> */}
-        <button>(파일선택 버튼)</button>
+        <Image src={imgFile || 'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'} alt="프로필 이미지" width={150} height={150}/>
+        <input id='selectImg' type='file' ref={imgRef} accept='image/*' onChange={uploadImage}/>
 
         <div>
           <label htmlFor='nickname'>닉네임</label>
