@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const PartyHeader = ({partyNumber}:{partyNumber:string}) => {
+const PartyHeader = async ({partyNumber}:{partyNumber:string}) => {
   return (
     <div className='flex flex-col gap-7 w-full h-96 justify-center items-center bg-slate-500'>
       <div className='flex flex-row gap-9'>
