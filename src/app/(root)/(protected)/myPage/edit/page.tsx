@@ -1,19 +1,23 @@
-import Image from 'next/image'
+"use client"
+
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-
 import { z } from 'zod'
+import browserClient from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
+import { getUserId } from '@/utils/getUserId'
 
-const page = () => {
+const EditProfilePage = () => {
+  const router = useRouter()
+
   // zod
   const editProfile = z.object({
     nickname: z.string().min(2,"닉네임은 필수입니다.")
   })
 
   // 리액트 훅 폼 (유효성 검사)
-  const {register, handleSubmit, formState, setValue, watch} = useForm({
+  const {register, handleSubmit, formState, watch} = useForm({
     mode: 'onChange',
     defaultValues: {
       nickname:''
@@ -21,10 +25,29 @@ const page = () => {
     resolver: zodResolver(editProfile)
   })
 
+  //폼 제출 함수
+  const onSubmit = async () => {
+    const userId = await getUserId();
+    const {data: userData, error:updateError} = await browserClient
+      .from('user')
+      .update({
+        nickname:watch('nickname')
+      })
+      .eq('user_id',userId)
+
+    if(updateError) {
+      console.log('프로필 수정에 실패했습니다 => ', updateError)
+    }else {
+      console.log('프로필 수정에 성공했습니다 => ', userData)
+    }
+
+    router.push('/mypage')
+  }
+
   return (
     <section>
       <h1>프로필 수정</h1>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* <Image src={"150"} alt=''/> */}
         <button>(파일선택 버튼)</button>
 
@@ -39,10 +62,10 @@ const page = () => {
         <div>
           <label>플랫폼</label>
         </div>
-        <button>수정하기</button>
+        <button type='submit'>수정하기</button>
       </form>
     </section>
   )
 }
 
-export default page
+export default EditProfilePage
