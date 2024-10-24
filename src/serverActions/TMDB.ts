@@ -14,7 +14,7 @@ export const fetchMoviesDetail = async (movie_id: number) => {
         const res = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?language=ko-KR`, options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        } // if 부분이 잡히는 애러는 굳이 필요 없지 않을까  (여기서 잡히는 에러가 없지않을까)
         const data = await res.json();
         console.log(data);
     } catch (err) {
