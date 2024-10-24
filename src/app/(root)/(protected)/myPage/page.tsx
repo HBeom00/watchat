@@ -1,12 +1,31 @@
-import React from 'react';
+'use client';
 
-const page = () => {
+import { useUserStore } from '@/store/userStore';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect } from 'react';
+
+const MyPage = () => {
+  const { userData, fetchUserData } = useUserStore();
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+
   return (
     <>
       {/* 프로필 영역 */}
       <section>
-        {/* <Image src={150} alt=""/> */}
-        <h3>닉네임</h3>
+        <Image
+          src={
+            userData?.profile_img ||
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+          }
+          alt="프로필 이미지"
+          width={150}
+          height={150}
+        />
+        <h3>{userData?.nickname}</h3>
         <button>팔로잉 255명</button>
         <div>
           <div>
@@ -19,7 +38,7 @@ const page = () => {
           </div>
         </div>
         <div>
-          <button>프로필 편집</button>
+          <Link href={'/mypage/edit'}>프로필 편집</Link>
           <button>파티 모집하기</button>
         </div>
       </section>
@@ -43,4 +62,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default MyPage;
