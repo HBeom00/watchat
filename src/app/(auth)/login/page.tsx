@@ -1,7 +1,7 @@
-import React from "react";
+import SocialLogin from '@/components/auth/SocialLogin';
 
-const page = () => {
-  return <div>ss</div>;
+const LoginPage = () => {
+  return <SocialLogin />;
 };
 
-export default page;
+export default LoginPage;

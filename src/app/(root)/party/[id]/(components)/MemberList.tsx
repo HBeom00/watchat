@@ -22,7 +22,10 @@ const MemberList = async ({ partyNumber }: { partyNumber: string }) => {
           );
         })
       ) : (
-        <p>멤버가 없습니다</p>
+        <>
+          <p>멤버가 없습니다</p>
+          <MemberProfileCard partyNumber={partyNumber} memberNumber={'멤버넘버'} isMember={isMember} />
+        </>
       )}
     </div>
   );

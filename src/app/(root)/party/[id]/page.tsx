@@ -1,15 +1,12 @@
-import { createClient } from "@/utils/supabase/server";
-import PartyHeader from "./(components)/PartyHeader";
-import DetailInfo from "./(components)/DetailInfo";
-import MemberList from "./(components)/MemberList";
+import { createClient } from '@/utils/supabase/server';
+import PartyHeader from './(components)/PartyHeader';
+import DetailInfo from './(components)/DetailInfo';
+import MemberList from './(components)/MemberList';
 
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
   // 현재 파티 페이지 정보 가져오기
-  const { data, error } = await supabase
-    .from("party_info")
-    .select("*")
-    .eq("party_id", params.id);
+  const { data, error } = await supabase.from('party_info').select('*').eq('party_id', params.id);
   // if(error){
   //   throw new Error(error.message)
   // }
