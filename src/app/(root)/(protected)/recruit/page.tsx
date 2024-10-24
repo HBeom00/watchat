@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import browserClient from '../../../../utils/supabase/client';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker'
-
+import { fetchMultiSearch } from "@/serverActions/TMDB";
+import { SearchResult } from '../../../../types/Search'
 // interface recruit {
 //   party_id : number;
 //   video_id : number;
@@ -22,6 +23,7 @@ import 'react-datepicker/dist/react-datepicker'
 //   // party_end_time : string;
 // }
 const RecruitPage = () => {
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
  const [partyName, setPartyName] = useState(''); // 파티이름
  const [videoName, setVideoName] = useState(''); // 영상이름
  const [partyDetail, setPartyDetail] = useState(''); //파티내용
@@ -31,7 +33,19 @@ const RecruitPage = () => {
  const [durationTime, setDurationTime] = useState(''); // 시청시간 (분)
  const [platform, setPlatform] = useState(''); // 제공 플랫폼
  const [media, setMedia] = useState(''); // 영상 미디어
+ const [search, setSearch] = useState<SearchResult[]>([]); // 검색 결과 리스트
 
+ useEffect(() => {
+  const searchVideo = async() => {
+    if (videoName.trim()) { //trim() 문자열 앞뒤 공백 제거
+      const data = await fetchMultiSearch(videoName);
+      setSearch(data.results);
+    } else {
+      setSearch([])
+    }
+  }
+ searchVideo()
+},[videoName])
 
  const submitHandle = async() => {
   const {data, error} = await browserClient
@@ -44,6 +58,8 @@ const RecruitPage = () => {
   limited_member : limitedMember,
   watch_date : watchDate,
   start_time : startTime,
+  // watch_date: watchDate ? watchDate.toISOString().split('T')[0] : null, // 날짜만 저장
+  // start_time: startTime ? startTime.toISOString() : null, // ISO 시간 저장
   duration_time : durationTime,
   media_type : media ,
   video_platform : platform 
@@ -79,6 +95,28 @@ const RecruitPage = () => {
   value={videoName}
   onChange={(e) => setVideoName(e.target.value)}  
   />
+          {/* 검색된 결과 */}
+          {search.length > 0 ? (
+  <ul className="bg-white border border-gray-300 rounded-lg shadow-md max-h-48 overflow-y-auto">
+    {search.map((result) => (
+      <li 
+        key={result.id}
+        className="p-2 hover:bg-gray-200 cursor-pointer"
+        onClick={() => {
+          const videoTitle = result.title || result.name;
+          if (videoTitle) {
+            setVideoName(videoTitle);
+          }
+        }}
+      >
+        {result.title || result.name}
+      </li>
+    ))}
+  </ul>
+) : videoName.trim() && (
+  <p className="text-gray-500 mt-2">검색된 결과가 없습니다.</p>
+)}
+
   <input 
   type="text"
    placeholder="영상 미디어를 입력해주세요" 
