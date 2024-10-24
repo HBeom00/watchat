@@ -1,13 +1,12 @@
 'use client';
 
 import { getUserId } from '@/utils/getUserId';
+import { partySituationChecker } from '@/utils/memberCheck';
 import browserClient from '@/utils/supabase/client';
 // import { useRouter } from "next/navigation";
 import { useState } from 'react';
 
-import React from 'react';
-
-const ParticipationForm = (partyId: { partyId: string }) => {
+const ParticipationForm = ({ partyId }: { partyId: string }) => {
   const [profile_image, setProfile_image] = useState('');
   const [nickname, setNickname] = useState('');
   // const router = useRouter()
@@ -16,12 +15,26 @@ const ParticipationForm = (partyId: { partyId: string }) => {
   const submitHandler = async () => {
     const userId = await getUserId();
 
+    // 파티 상태 확인하기
+    const endCheck = await partySituationChecker(partyId);
+    if (endCheck === '알수없음') {
+      alert('존재하지 않는 파티입니다');
+      return;
+    } else if (endCheck === '모집마감') {
+      alert('모집이 마감된 파티입니다');
+      return;
+    } else if (endCheck === '종료') {
+      alert('종료된 파티입니다');
+      return;
+    }
+
+    // 참가하기
     const { data, error } = await browserClient
       .from('team_user_profile')
       .insert({ nickname, profile_image, party_id: partyId, user_id: userId });
     console.log(data, error);
     // if(error){
-    //   throw new Error(error.message)
+    //   alert('파티에 참가할 수 없습니다')
     // }
     // if(data){
     //   router.replace(`/party/${partyId}`)
