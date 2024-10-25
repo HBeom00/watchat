@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
-import LogoutButton from '@/components/button/LogoutButton';
 import Providers from '@/store/queryProvider';
 
 import Header from '@/components/layout/Header';
