@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import browserClient from '../../../../utils/supabase/client';
 import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css';
 import { fetchMultiSearch } from "@/serverActions/TMDB";
 import { SearchResult } from '../../../../types/Search'
 // interface recruit {
@@ -23,7 +23,6 @@ import { SearchResult } from '../../../../types/Search'
 //   // party_end_time : string;
 // }
 const RecruitPage = () => {
-  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
  const [partyName, setPartyName] = useState(''); // 파티이름
  const [videoName, setVideoName] = useState(''); // 영상이름
  const [partyDetail, setPartyDetail] = useState(''); //파티내용
@@ -37,7 +36,7 @@ const RecruitPage = () => {
 
  useEffect(() => {
   const searchVideo = async() => {
-    if (videoName.trim()) { //trim() 문자열 앞뒤 공백 제거
+    if (videoName.trim()) {     //trim() 문자열 앞뒤 공백 제거
       const data = await fetchMultiSearch(videoName);
       setSearch(data.results);
     } else {
@@ -157,7 +156,7 @@ const RecruitPage = () => {
         onChange={timeChangeHandle} // 시간 선택 시 상태 업데이트
         showTimeSelect
         showTimeSelectOnly
-        timeIntervals={30} // 30분 간격
+        timeIntervals={15} // 30분 간격
         timeCaption="시간"
         dateFormat="h:mm aa" // AM/PM 형식
         className="p-2 border border-gray-300 rounded-lg shadow-sm"
