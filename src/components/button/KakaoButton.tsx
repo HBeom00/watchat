@@ -2,7 +2,7 @@
 
 import browserClient from '@/utils/supabase/client';
 
-const KakaoLogin = () => {
+const KakaoButton = () => {
   const signInWithKakao = async () => {
     await browserClient.auth.signInWithOAuth({
       provider: 'kakao',
@@ -22,4 +22,4 @@ const KakaoLogin = () => {
   );
 };
 
-export default KakaoLogin;
+export default KakaoButton;

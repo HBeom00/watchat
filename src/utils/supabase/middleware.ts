@@ -30,6 +30,12 @@ export const updateSession = async (request: NextRequest) => {
 
     const { data } = await supabase.auth.getUser();
 
+    // 로그인 상태 확인
+    const isLogin = !!data?.user;
+
+    const addHeaderIsLogin = NextResponse.next();
+    addHeaderIsLogin.headers.set('X-Login-Status', isLogin ? 'true' : 'false');
+
     // 로그인 한 상태라면 메인페이지로 리다이렉트
     if (
       data?.user &&
@@ -41,7 +47,10 @@ export const updateSession = async (request: NextRequest) => {
     // 로그인을 하지 않았는데 접근한다면 로그인 페이지로 리다이렉트
     if (
       !data?.user &&
-      (request.nextUrl.pathname.startsWith('/mypage') || request.nextUrl.pathname.startsWith('/update-password'))
+      (request.nextUrl.pathname.startsWith('/chat') ||
+        request.nextUrl.pathname.startsWith('/myPage') ||
+        request.nextUrl.pathname.startsWith('/participation') ||
+        request.nextUrl.pathname.startsWith('/recruit'))
     ) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
