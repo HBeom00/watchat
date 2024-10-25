@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server';
+import { createClient, getLoginUserIdOnServer } from '@/utils/supabase/server';
 import PartyHeader from './(components)/PartyHeader';
 import DetailInfo from './(components)/DetailInfo';
 import MemberList from './(components)/MemberList';
@@ -27,6 +27,7 @@ export type partyInfo = {
 
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
+  const userId = await getLoginUserIdOnServer();
 
   // 현재 파티 정보 불러오기
   const res: PostgrestSingleResponse<partyInfo[]> = await supabase
@@ -59,13 +60,14 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
         start_time: '',
         episode_number: 0
       };
+  const isOwner = partyData.owner_id === userId;
   return (
     <div className="flex flex-col w-full bg-black text-white">
       <PartyHeader partyNumber={params.id} partyData={partyData} />
       <div className="flex flex-row gap-10 w-full h-96 justify-center items-center bg-slate-400">
-        <DetailInfo videoNumber={partyData.video_id} />
-        <MemberList partyNumber={params.id} />
-        {partyData.owner_id ? <Owner /> : <></>}
+        <DetailInfo videoNumber={partyData.video_id} videoType={partyData.media_type} />
+        <MemberList partyNumber={params.id} userId={userId} isOwner={false} />
+        {isOwner ? <Owner partyNumber={params.id} userId={userId} isOwner={isOwner} /> : <></>}
       </div>
     </div>
   );
