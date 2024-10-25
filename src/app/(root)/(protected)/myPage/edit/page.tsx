@@ -1,34 +1,21 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import browserClient from '@/utils/supabase/client';
 import { getLoginUserId } from '@/utils/getUserId';
 import Image from 'next/image';
-import { useUserStore } from '@/store/userStore';
+import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
 
 const EditProfilePage = () => {
   const imgRef = useRef<HTMLInputElement>(null);
 
-  const { userData, fetchUserData } = useUserStore();
-  const [imgFile, setImgFile] = useState('');
-  const [nickname, setNickname] = useState('');
-
-  // 페이지가 렌더링될 때 fetchUserData를 실행
-  useEffect(() => {
-    fetchUserData();
-  }, [fetchUserData]);
-
-  //userData가 변경될 때 프로필 이미지와 닉네임 상태도 업데이트
-  useEffect(() => {
-    if (userData) {
-      setImgFile(userData.profile_img);
-      setNickname(userData.nickname);
-    }
-  }, [userData]);
+  const { data: userData, isPending, isError } = useFetchUserData();
+  //const { userData, fetchUserData } = useUserStore();
+  const [imgFile, setImgFile] = useState(userData?.profile_img);
 
   // zod
   const editProfile = z.object({
@@ -39,7 +26,7 @@ const EditProfilePage = () => {
   const { register, handleSubmit, formState, watch } = useForm({
     mode: 'onChange',
     defaultValues: {
-      nickname: nickname
+      nickname: userData?.nickname
     },
     resolver: zodResolver(editProfile)
   });
@@ -136,7 +123,7 @@ const EditProfilePage = () => {
       }
     }
     // supabase에 수정된 정보 넣어줌
-    const { data: userData, error: updateError } = await browserClient
+    const { data: updatedUserData, error: updateError } = await browserClient
       .from('user')
       .update({
         nickname: watch('nickname'),
@@ -147,17 +134,24 @@ const EditProfilePage = () => {
     if (updateError) {
       console.log('프로필 수정에 실패했습니다 => ', updateError);
     } else {
-      console.log('프로필 수정에 성공했습니다 => ', userData);
+      console.log('프로필 수정에 성공했습니다 => ', updatedUserData);
     }
 
-    fetchUserData();
+    // fetchUserData();
   };
+
+  if (isPending) {
+    return <div>사용자 정보를 불러오는 중 입니다...</div>;
+  }
+  if (isError) {
+    return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
+  }
+
   return (
     <section>
       <h1>프로필 수정</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Image
-          key={imgFile}
           src={imgFile || 'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'}
           alt="프로필 이미지"
           width={150}
@@ -167,7 +161,7 @@ const EditProfilePage = () => {
         <div>
           <label htmlFor="nickname">닉네임</label>
           <input {...register('nickname')} id="nickname" type="text" required />
-          {formState.errors.nickname && <span>{formState.errors.nickname.message}</span>}
+          {formState.errors.nickname?.message && <span>{String(formState.errors.nickname.message)}</span>}
         </div>
         <div>
           <label>장르</label>
