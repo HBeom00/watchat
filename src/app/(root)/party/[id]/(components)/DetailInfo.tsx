@@ -1,4 +1,5 @@
-const DetailInfo = async () => {
+const DetailInfo = async ({ videoNumber }: { videoNumber: string | null }) => {
+  // 영상 넘버로 영상정보 API 불러오기
   return (
     <div>
       <p>영상 상세정보</p>
