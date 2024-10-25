@@ -1,13 +1,13 @@
 'use client';
 
-import GoogleLogin from '../button/GoogleLogin';
-import KakaoLogin from '../button/KakaoLogin';
+import GoogleButton from '../button/GoogleButton';
+import KakaoButton from '../button/KakaoButton';
 
 const SocialLogin = () => {
   return (
     <div className="flex flex-col gap-2">
-      <KakaoLogin />
-      <GoogleLogin />
+      <GoogleButton />
+      <KakaoButton />
     </div>
   );
 };
