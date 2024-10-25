@@ -6,7 +6,14 @@ import Link from 'next/link';
 import browserClient from '@/utils/supabase/client';
 import { useFetchUserData } from '@/store/userStore';
 import { useQuery } from '@tanstack/react-query';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
 
 const MyPage = () => {
   const { data: userData, isPending, isError } = useFetchUserData();
@@ -18,7 +25,15 @@ const MyPage = () => {
     profile_img: string;
   };
 
+  // 팔로잉 중인 유저 데이터를 가져옴
   const getFollowerData = async () => {
+    console.log('userId => ', userId);
+
+    if (!userId) {
+      return { followerCount: 0, followerData: [] }; // userId가 없으면 빈 값 반환
+    }
+
+    // 팔로워 수를 가져옴
     const { data, error } = await browserClient.from('follow').select('follow_id').eq('user_id', userId);
 
     if (error) {
@@ -31,8 +46,8 @@ const MyPage = () => {
     // 팔로워수를 followerCount에 담아줌
     const followerCount = data?.length || 0;
 
-    if (followerCount === 0 || null) {
-      return <div>아직 팔로우한 사람이 없습니다.</div>;
+    if (followerCount === 0) {
+      return { followerCount, followerData: [] }; // 팔로워가 없으면 빈 배열 반환
     }
 
     // 위에서 가져온 follow_id를 가지고 사용자 정보를 가져오기
@@ -48,6 +63,7 @@ const MyPage = () => {
         }[]
       | null;
 
+    console.log('팔로우한 사람들 id => ', followIds);
     const { data: followingUserData, error: followingUserError } = await browserClient
       .from('user')
       .select('user_id,nickname,profile_img')
@@ -59,22 +75,20 @@ const MyPage = () => {
       console.error('팔로잉 목록 정보를 가져오는데 실패했습니다 => ', followingUserError);
     }
 
-    console.log({ followerCount, followerData: followingUsers });
+    console.log('팔로잉 목록정보=> ', followingUsers);
+    console.log('팔로우 카운트, 팔로잉 데이터 =>', { followerCount, followerData: followingUsers });
+
     // 팔로워 정보를 followerData에 담아줌
     return { followerCount, followerData: followingUsers };
   };
 
-  type FollowerDataResult = {
-    followerCount: number;
-    followerData: FollowingUser[] | null;
-  };
-
+  // 팔로잉 데이터를 비동기로 가져오기
   const {
     data: followerDataResult,
     isPending: pending,
     isError: error
   } = useQuery({
-    queryKey: ['followerCount', userId],
+    queryKey: ['followingUsers', userId],
     queryFn: getFollowerData
   });
 
@@ -85,10 +99,10 @@ const MyPage = () => {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
-  const { followerCount, followerData } = followerDataResult;
+  const { followerCount, followerData } = followerDataResult || { followerCount: 0, followerData: [] };
   console.log(followerDataResult);
   console.log(followerCount);
-  console.log(followerData);
+  console.log('팔로워 데이터 => ', followerData);
   return (
     <>
       {/* 프로필 영역 */}
@@ -103,24 +117,37 @@ const MyPage = () => {
           height={150}
         />
         <h3>닉네임: {userData?.nickname}</h3>
-        <ul>
-          {followerData.length > 0 ? (
-            followerData.map((follower: FollowingUser) => (
-              <li key={follower.user_id}>
-                <Image src={follower.profile_img} alt={follower.nickname} width={50} height={50} />
-                <span>{follower.nickname}</span>
-              </li>
-            ))
-          ) : (
-            <li>아직 팔로우한 사람이 없습니다.</li>
-          )}
-        </ul>
+
         <Dialog>
           <DialogTrigger>팔로잉 {followerCount}명</DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>팔로우한 사람</DialogTitle>
             </DialogHeader>
+            <ul>
+              {followerData && followerData.length > 0 ? (
+                followerData.map((follower: FollowingUser) => (
+                  <li key={follower.user_id}>
+                    <div>
+                      <Image
+                        src={
+                          follower.profile_img ||
+                          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                        }
+                        alt={`${follower.nickname} 님의 프로필 사진`}
+                        width={50}
+                        height={50}
+                      />
+                      <span>{follower.nickname}</span>
+                    </div>
+                    <button>언팔로우</button>
+                  </li>
+                ))
+              ) : (
+                <li>아직 팔로우한 사람이 없습니다.</li>
+              )}
+            </ul>
+            <DialogDescription></DialogDescription>
           </DialogContent>
         </Dialog>
         <div>
