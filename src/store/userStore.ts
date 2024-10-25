@@ -1,5 +1,4 @@
-import { getLoginUserId } from '@/utils/getUserId';
-import browserClient from '@/utils/supabase/client';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { PostgrestError, PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 
@@ -13,7 +12,7 @@ export const useFetchUserData = () => {
   return useQuery<UserData, PostgrestError>({
     queryKey: ['userData'],
     queryFn: async () => {
-      const userId = await getLoginUserId();
+      const userId = await getLoginUserIdOnClient();
       const { data: userData, error }: PostgrestSingleResponse<UserData> = await browserClient
         .from('user')
         .select('profile_img, nickname, user_id')

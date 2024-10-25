@@ -1,7 +1,7 @@
 'use client';
 import { type ReactNode, createContext, useRef, useContext } from 'react';
 import { useStore } from 'zustand';
-import { createUserStore, UserStore } from '@/store/user-store';
+import { createUserStore, UserStore } from '@/store/isUserLogin';
 
 export type UserStoreApi = ReturnType<typeof createUserStore>;
 export const UserStoreContext = createContext<UserStoreApi | undefined>(undefined);

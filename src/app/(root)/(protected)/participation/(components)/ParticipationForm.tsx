@@ -1,8 +1,7 @@
 'use client';
 
-import { getUserId } from '@/utils/getUserId';
 import { partySituationChecker } from '@/utils/memberCheck';
-import browserClient from '@/utils/supabase/client';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 // import { useRouter } from "next/navigation";
 import { useState } from 'react';
 
@@ -13,7 +12,7 @@ const ParticipationForm = ({ partyId }: { partyId: string }) => {
 
   // 참가하기 함수
   const submitHandler = async () => {
-    const userId = await getUserId();
+    const userId = await getLoginUserIdOnClient();
 
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(partyId);
