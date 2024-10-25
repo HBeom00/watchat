@@ -1,22 +1,22 @@
 'use client';
 
-import { getUserId } from '@/utils/getUserId';
-import { partySituationChecker } from '@/utils/memberCheck';
+import { getLoginUserId } from '@/utils/getUserId';
+import { isMemberExist, partySituationChecker } from '@/utils/memberCheck';
 import browserClient from '@/utils/supabase/client';
-// import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-const ParticipationForm = ({ partyId }: { partyId: string }) => {
+const ParticipationForm = ({ party_id }: { party_id: string }) => {
   const [profile_image, setProfile_image] = useState('');
   const [nickname, setNickname] = useState('');
-  // const router = useRouter()
+  const router = useRouter();
 
   // 참가하기 함수
   const submitHandler = async () => {
-    const userId = await getUserId();
+    const user_id = await getLoginUserId();
 
     // 파티 상태 확인하기
-    const endCheck = await partySituationChecker(partyId);
+    const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
       alert('존재하지 않는 파티입니다');
       return;
@@ -27,18 +27,26 @@ const ParticipationForm = ({ partyId }: { partyId: string }) => {
       alert('종료된 파티입니다');
       return;
     }
+    // console.log('모집중입니다');
+
+    const isMember = await isMemberExist(party_id, user_id);
+    if (isMember) {
+      alert('이미 참가한 파티입니다');
+      router.replace(`/party/${party_id}`);
+
+      return;
+    }
 
     // 참가하기
-    const { data, error } = await browserClient
+    const { error: participationError } = await browserClient
       .from('team_user_profile')
-      .insert({ nickname, profile_image, party_id: partyId, user_id: userId });
-    console.log(data, error);
-    // if(error){
-    //   alert('파티에 참가할 수 없습니다')
-    // }
-    // if(data){
-    //   router.replace(`/party/${partyId}`)
-    // }
+      .insert({ nickname, profile_image, party_id, user_id });
+    if (participationError) {
+      console.log('참가하기 에러', participationError.message);
+      alert('파티에 참가할 수 없습니다');
+    } else {
+      router.replace(`/party/${party_id}`);
+    }
   };
   return (
     <>
