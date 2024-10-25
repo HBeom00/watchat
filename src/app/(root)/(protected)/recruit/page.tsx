@@ -25,13 +25,14 @@ import { SearchResult } from '../../../../types/Search'
 const RecruitPage = () => {
  const [partyName, setPartyName] = useState(''); // 파티이름
  const [videoName, setVideoName] = useState(''); // 영상이름
- const [partyDetail, setPartyDetail] = useState(''); //파티내용
+ const [partyDetail, setPartyDetail] = useState(''); //파티내터
  const [limitedMember, setLimitedMember] = useState(''); // 모집인원 제한 10명
  const [watchDate, setWatchDate] = useState<Date|null>(null); // 시청날짜
  const [startTime, setStartTime] = useState<Date | null>(null); // 시작시간
  const [durationTime, setDurationTime] = useState(''); // 시청시간 (분)
  const [platform, setPlatform] = useState(''); // 제공 플랫폼
  const [media, setMedia] = useState(''); // 영상 미디어
+ const [poster, setPoster] = useState(''); // 영상 포스터
  const [search, setSearch] = useState<SearchResult[]>([]); // 검색 결과 리스트
 
  useEffect(() => {
@@ -61,7 +62,8 @@ const RecruitPage = () => {
   // start_time: startTime ? startTime.toISOString() : null, // ISO 시간 저장
   duration_time : durationTime,
   media_type : media ,
-  video_platform : platform 
+  video_platform : platform ,
+  video_image : poster
     }
   ]);
   if (error) {
@@ -103,8 +105,16 @@ const RecruitPage = () => {
         className="p-2 hover:bg-gray-200 cursor-pointer"
         onClick={() => {
           const videoTitle = result.title || result.name;
+          const posterPath = result.poster_path; // 포스터
+          const mediaType = result.media_type; // 미디어 
           if (videoTitle) {
             setVideoName(videoTitle);
+          }
+          if (posterPath) {
+            setPoster(`https://image.tmdb.org/t/p/w500${posterPath}`); // 포스터 경로
+          }
+          if (mediaType) {
+            setMedia(mediaType); // 미디어 타입
           }
         }}
       >
@@ -115,7 +125,14 @@ const RecruitPage = () => {
 ) : videoName.trim() && (
   <p className="text-gray-500 mt-2">검색된 결과가 없습니다.</p>
 )}
-
+{/* 포스터 */}
+{poster && (
+  <img 
+    src={poster} 
+    alt="선택된 영화 포스터" 
+    className="w-32 h-auto mt-2 rounded-lg shadow-md" 
+  />
+)}
   <input 
   type="text"
    placeholder="영상 미디어를 입력해주세요" 
