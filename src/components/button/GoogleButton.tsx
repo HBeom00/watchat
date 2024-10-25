@@ -3,7 +3,7 @@
 import browserClient from '@/utils/supabase/client';
 import { useEffect } from 'react';
 
-const GoogleLogin = () => {
+const GoogleButton = () => {
   useEffect(() => {
     browserClient.auth.getSession().then(console.log);
   }, []);
@@ -28,4 +28,4 @@ const GoogleLogin = () => {
   );
 };
 
-export default GoogleLogin;
+export default GoogleButton;
