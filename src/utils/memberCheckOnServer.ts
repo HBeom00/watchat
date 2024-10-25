@@ -47,5 +47,5 @@ export const isMemberExistOnServer = async (party_id: string, user_id: string | 
     .eq('party_id', party_id)
     .eq('user_id', user_id);
 
-  return !!response.data;
+  return response.data && response.data.length !== 0;
 };

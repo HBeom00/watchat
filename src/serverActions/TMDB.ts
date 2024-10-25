@@ -1,5 +1,12 @@
 import {SearchResponse} from '../types/Search'
 
+interface Provider {
+    provider_name: string;
+    logo_path: string;  
+    provider_id: number;
+    display_priority: number;
+}
+
 
 const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
@@ -57,29 +64,58 @@ export const fetchMultiSearch = async (query: string): Promise<SearchResponse> =
 };
 
 // 영화 제공 플랫폼
-export const fetchMovieWatchProvider = async (movie_id: number) => {
+export const fetchMovieWatchProvider = async (movie_id: number): Promise<{ name: string, logoUrl: string }[] | null> => {
     try {
         const res = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}/watch/providers`, options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
-        console.log(data);
+        console.log("Movie Provider Data:", data);
+
+        const countryCodes = Object.keys(data.results);
+        const targetCountry = data.results.KR || data.results[countryCodes[0]];
+
+        // 항상 배열 또는 null 반환
+        if (targetCountry && Array.isArray(targetCountry.flatrate)) {
+            return targetCountry.flatrate.map((provider: Provider) => ({
+                name: provider.provider_name,
+                logoUrl: `https://image.tmdb.org/t/p/w92${provider.logo_path}`
+            }));
+        } else {
+            console.warn("플랫폼 정보가 없습니다.");
+            return null;
+        }
     } catch (err) {
         console.error('영화 플랫폼 정보 가져오기중 오류:', err);
+        return null;
     }
 };
 
 // TV 제공 플랫폼
-export const fetchTvMovieWatchProvider = async (series_id: number, season_number: number) => {
+export const fetchTvWatchProvider = async (series_id: number, season_number: number): Promise<{ name: string, logoUrl: string }[] | null> => {
     try {
         const res = await fetch(`https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}/watch/providers?language=ko-KR`, options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
-        console.log(data);
+        console.log("TV Provider Data:", data);
+
+        const countryCodes = Object.keys(data.results);
+        const targetCountry = data.results.KR || data.results[countryCodes[0]];
+
+        if (targetCountry && Array.isArray(targetCountry.flatrate)) {
+            return targetCountry.flatrate.map((provider: Provider) => ({
+                name: provider.provider_name,
+                logoUrl: `https://image.tmdb.org/t/p/w92${provider.logo_path}`
+            }));
+        } else {
+            console.warn("플랫폼 정보가 없습니다.");
+            return null;
+        }
     } catch (err) {
         console.error('티비 플랫폼 정보 가져오기중 오류:', err);
+        return null;
     }
 };

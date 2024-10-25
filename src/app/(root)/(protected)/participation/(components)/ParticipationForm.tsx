@@ -4,6 +4,7 @@ import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { isMemberExist, partySituationChecker } from '@/utils/memberCheck';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from 'next/image';
 
 const ParticipationForm = ({ party_id }: { party_id: string }) => {
   const [profile_image, setProfile_image] = useState('');
@@ -50,6 +51,13 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
   return (
     <>
       <div className="flex flex-col gap-10 p-10 bg-red-300">
+        <Image
+          src={'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'}
+          alt="프로필 이미지"
+          width={150}
+          height={150}
+        />
+        <input id="party_profile" type="file" accept="image/*" />
         <input onChange={(e) => setProfile_image(e.target.value)} placeholder="이미지를 입력하세요" />
         <input onChange={(e) => setNickname(e.target.value)} placeholder="닉네임을 입력하세요" />
       </div>

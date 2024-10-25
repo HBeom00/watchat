@@ -1,4 +1,4 @@
-import { fetchMoviesDetail } from '@/serverActions/TMDB';
+import { fetchMoviesDetail, fetchTvDetail } from '@/serverActions/TMDB';
 
 const DetailInfo = async ({ videoNumber, videoType }: { videoNumber: string | null; videoType: string | null }) => {
   // 영상 넘버로 영상정보 API 불러오기
@@ -12,14 +12,10 @@ const DetailInfo = async ({ videoNumber, videoType }: { videoNumber: string | nu
 
 export default DetailInfo;
 
-// const getVideoDetailInfo = async(videoNumber:string,videoType:string)=>{
-//   if(videoType==='영화'){
-//     await fetchMoviesDetail(videoNumber)
-
-//   }else if(
-
-//     videoType==='드라마'
-//   ) {
-//     await fetchTvDetail(videoNumber)
+// const getVideoDetailInfo = async (videoNumber: string, videoType: string) => {
+//   if (videoType === 'movie') {
+//     await fetchMoviesDetail(videoNumber);
+//   } else if (videoType === 'TV') {
+//     await fetchTvDetail(videoNumber);
 //   }
-// }
+// };

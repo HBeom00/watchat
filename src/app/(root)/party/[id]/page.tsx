@@ -7,13 +7,13 @@ import Owner from './(components)/Owner';
 
 export type partyInfo = {
   party_id: string;
-  party_name: string | null;
+  party_name: string;
   party_detail: string | null;
-  video_name: string | null;
-  video_platform: string | null;
-  video_image: string | null;
-  limited_member: number | null;
-  duration_time: number | null;
+  video_name: string;
+  video_platform: string;
+  video_image: string;
+  limited_member: number;
+  duration_time: number;
   party_end_time: string | null;
   situation: string | null;
   owner_id: string | null;

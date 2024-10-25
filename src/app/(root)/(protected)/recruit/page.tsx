@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import browserClient from '../../../../utils/supabase/client';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { fetchMultiSearch } from "@/serverActions/TMDB";
+import { fetchMovieWatchProvider, fetchMultiSearch, fetchTvWatchProvider } from "@/serverActions/TMDB";
 import { SearchResult } from '../../../../types/Search'
 // interface recruit {
 //   party_id : number;
@@ -30,7 +30,8 @@ const RecruitPage = () => {
  const [watchDate, setWatchDate] = useState<Date|null>(null); // 시청날짜
  const [startTime, setStartTime] = useState<Date | null>(null); // 시작시간
  const [durationTime, setDurationTime] = useState(''); // 시청시간 (분)
- const [platform, setPlatform] = useState(''); // 제공 플랫폼
+//  const [platform, setPlatform] =  useState(''); // 제공 플랫폼
+ const [platforms, setPlatforms] = useState<{ name: string, logoUrl: string }[] | null>(null); // 플랫폼 로고
  const [media, setMedia] = useState(''); // 영상 미디어
  const [poster, setPoster] = useState(''); // 영상 포스터
  const [search, setSearch] = useState<SearchResult[]>([]); // 검색 결과 리스트
@@ -47,6 +48,30 @@ const RecruitPage = () => {
  searchVideo()
 },[videoName])
 
+
+// watch provider api 함수 movie , tv 합치기
+const fetchProviders = async (id: number, mediaType: string) => {
+  try {
+    let providers: { name: string, logoUrl: string }[] | null = null;
+
+    if (mediaType === 'movie') {
+      providers = await fetchMovieWatchProvider(id);
+    } else if (mediaType === 'tv') {
+      providers = await fetchTvWatchProvider(id, 1);
+    }
+
+    console.log("Fetched Providers:", providers); // 플랫폼 정보 확인
+
+    if (providers) {
+      setPlatforms(providers);
+      
+    }
+  } catch (error) {
+    console.error('플렛폼 가져오기 오류오류', error);
+  }
+};
+
+
  const submitHandle = async() => {
   const {data, error} = await browserClient
   .from('party_info')
@@ -62,8 +87,9 @@ const RecruitPage = () => {
   // start_time: startTime ? startTime.toISOString() : null, // ISO 시간 저장
   duration_time : durationTime,
   media_type : media ,
-  video_platform : platform ,
+  video_platform : platforms ,
   video_image : poster
+  
     }
   ]);
   if (error) {
@@ -115,6 +141,7 @@ const RecruitPage = () => {
           }
           if (mediaType) {
             setMedia(mediaType); // 미디어 타입
+            fetchProviders(result.id, mediaType); // 플렛폼 정보 가져오기
           }
         }}
       >
@@ -139,12 +166,16 @@ const RecruitPage = () => {
    value={media}
   onChange={(e) => setMedia(e.target.value)} 
   />
-  <input 
-  type="text"
-   placeholder="제공 플랫폼을 입력해주세요" 
-   value={platform}
-  onChange={(e) => setPlatform(e.target.value)} 
-  />
+  {platforms && (
+  <div className="flex space-x-4 mt-2">
+    {platforms.map((platform) => (
+      <div key={platform.name} className="text-center">
+        <img src={platform.logoUrl} alt={platform.name} className="w-12 h-auto mb-1" />
+        {/* <p className="text-sm">{platform.name}</p> */}
+      </div>
+    ))}
+  </div>
+)}
   <input 
   type="text" 
   placeholder="러닝 타임" 
