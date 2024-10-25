@@ -37,3 +37,13 @@ export const memberFullSwitch = async (party_id: string) => {
   const response = await browserClient.from('party_info').update({ situation: '모집마감' }).eq('party_id', party_id);
   console.log(response);
 };
+
+// 이미 참가한 멤버인지 확인
+export const isMemberExist = async (party_id: string, user_id: string | null) => {
+  const response = await browserClient
+    .from('team_user_profile')
+    .select('profile_id')
+    .eq('party_id', party_id)
+    .eq('user_id', user_id);
+  return !!response.data;
+};

@@ -12,11 +12,11 @@ const page = async ({ params }: { params: { id: string } }) => {
   console.log('데이터와 에러', data, error);
 
   return (
-    <div className="flex justify-center items-center w-full py-28">
-      <p>{params.id}에 참가하기</p>
+    <div className="flex flex-col justify-center items-center w-full py-28">
+      <p>{data && data[0].party_name}에 참가하기</p>
 
       <div className="flex flex-col gap-9 p-10 bg-slate-400 rounded-2xl">
-        <ParticipationForm partyId={params.id} />
+        <ParticipationForm party_id={params.id} />
       </div>
     </div>
   );
