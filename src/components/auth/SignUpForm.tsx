@@ -3,8 +3,11 @@
 import browserClient from '@/utils/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { IoEyeOffOutline } from 'react-icons/io5';
+import { IoEyeOutline } from 'react-icons/io5';
 
 const signInSchema = z
   .object({
@@ -20,6 +23,8 @@ const signInSchema = z
   });
 
 const SignUpForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
@@ -47,6 +52,9 @@ const SignUpForm = () => {
     return;
   };
 
+  const onPasswordVisibility = () => setShowPassword((prev) => !prev);
+  const onConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4 border-solid border-2 border-black">
@@ -54,15 +62,33 @@ const SignUpForm = () => {
         <input type="email" {...register('email')} placeholder="예) example@gmail.com" />
         {formState.errors.email && <span className="text-red-600">{formState.errors.email.message}</span>}
 
-        <label>비밀번호</label>
-        <input type="password" {...register('password')} placeholder="특수문자, 영문, 숫자 조합 8~16자" />
-        {formState.errors.password && <span className="text-red-600">{formState.errors.password.message}</span>}
+        <div>
+          <label>비밀번호</label>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            placeholder="특수문자, 영문, 숫자 조합 8~16자"
+          />
+          {formState.errors.password && <span className="text-red-600">{formState.errors.password.message}</span>}
+          <button type="button" onClick={onPasswordVisibility}>
+            {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+          </button>
+        </div>
 
-        <label>비밀번호 확인</label>
-        <input type="password" {...register('confirmPassword')} placeholder="비밀번호 재입력" />
-        {formState.errors.confirmPassword && (
-          <span className="text-red-600">{formState.errors.confirmPassword.message}</span>
-        )}
+        <div>
+          <label>비밀번호 확인</label>
+          <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            {...register('confirmPassword')}
+            placeholder="비밀번호 재입력"
+          />
+          {formState.errors.confirmPassword && (
+            <span className="text-red-600">{formState.errors.confirmPassword.message}</span>
+          )}
+          <button type="button" onClick={onConfirmPasswordVisibility}>
+            {showConfirmPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+          </button>
+        </div>
 
         <button>가입하기</button>
       </div>
