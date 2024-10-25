@@ -1,10 +1,9 @@
-import browserClient from '@/utils/supabase/client';
-import { getLoginUserId } from './getUserId';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { memberFullChecker, memberFullSwitch, partySituationChecker } from './memberCheck';
 
 //초대하기 로직
 export const inviteHandler = async (party_id: string, invitee: string) => {
-  const inviter = await getLoginUserId();
+  const inviter = await getLoginUserIdOnClient();
 
   // 초대하기 전에 모집이 마감되거나 종료된 파티인지 확인
   const endCheck = await partySituationChecker(party_id);

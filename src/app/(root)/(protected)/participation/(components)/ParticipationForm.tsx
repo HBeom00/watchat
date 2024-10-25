@@ -1,8 +1,7 @@
 'use client';
 
-import { getLoginUserId } from '@/utils/getUserId';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { isMemberExist, partySituationChecker } from '@/utils/memberCheck';
-import browserClient from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -13,7 +12,7 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
 
   // 참가하기 함수
   const submitHandler = async () => {
-    const user_id = await getLoginUserId();
+    const user_Id = await getLoginUserIdOnClient();
 
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(party_id);
@@ -29,7 +28,7 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
     }
     // console.log('모집중입니다');
 
-    const isMember = await isMemberExist(party_id, user_id);
+    const isMember = await isMemberExist(party_id, user_Id);
     if (isMember) {
       alert('이미 참가한 파티입니다');
       router.replace(`/party/${party_id}`);
@@ -40,7 +39,7 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
     // 참가하기
     const { error: participationError } = await browserClient
       .from('team_user_profile')
-      .insert({ nickname, profile_image, party_id, user_id });
+      .insert({ nickname, profile_image, party_id, user_Id });
     if (participationError) {
       console.log('참가하기 에러', participationError.message);
       alert('파티에 참가할 수 없습니다');

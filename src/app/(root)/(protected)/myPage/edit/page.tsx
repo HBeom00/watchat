@@ -4,8 +4,7 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import browserClient from '@/utils/supabase/client';
-import { getLoginUserId } from '@/utils/getUserId';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
@@ -48,7 +47,7 @@ const EditProfilePage = () => {
   };
   // supabase storage에 이미지 저장
   const uploadStorage = async (file: File) => {
-    const userId = await getLoginUserId();
+    const userId = await getLoginUserIdOnClient();
     if (!userId) {
       console.error('사용자 ID를 가져오는 데 실패했습니다.');
       return ''; // userId가 유효하지 않으면 빈 문자열 반환
@@ -111,7 +110,7 @@ const EditProfilePage = () => {
 
   //폼 제출 함수
   const onSubmit = async () => {
-    const userId = await getLoginUserId();
+    const userId = await getLoginUserIdOnClient();
     let profile_img = imgFile; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
 
     const selectImg = imgRef.current?.files?.[0]; // 선택된 이미지 selectImg에 선언
