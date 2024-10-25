@@ -1,4 +1,8 @@
+import {SearchResponse} from '../types/Search'
+
+
 const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+
 
 const options = {
     method: 'GET',
@@ -14,7 +18,7 @@ export const fetchMoviesDetail = async (movie_id: number) => {
         const res = await fetch(`https://api.themoviedb.org/3/movie/${movie_id}?language=ko-KR`, options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        } // if 부분이 잡히는 애러는 굳이 필요 없지 않을까  (여기서 잡히는 에러가 없지않을까)
         const data = await res.json();
         console.log(data);
     } catch (err) {
@@ -37,16 +41,18 @@ export const fetchTvDetail = async (series_id: number) => {
 };
 
 // 프로그램 검색
-export const fetchMultiSearch = async (query: string) => {
+export const fetchMultiSearch = async (query: string): Promise<SearchResponse> => {
     try {
         const res = await fetch(`https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(query)}&include_adult=false&language=ko-KR&page=1`, options);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
-        const data = await res.json();
+        const data: SearchResponse  = await res.json();
         console.log(data);
+        return data;
     } catch (err) {
         console.error('검색중 오류발생:', err);
+        throw err;
     }
 };
 
