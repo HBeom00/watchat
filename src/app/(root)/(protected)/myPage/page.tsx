@@ -40,6 +40,14 @@ const MyPage = () => {
     }
     const followIds = data?.map((f) => f.follow_id as string);
 
+    type followingUserData =
+      | {
+          user_id: string;
+          nickname: string;
+          profile_img: string;
+        }[]
+      | null;
+
     const { data: followingUserData, error: followingUserError } = await browserClient
       .from('user')
       .select('user_id,nickname,profile_img')
@@ -54,6 +62,11 @@ const MyPage = () => {
     console.log({ followerCount, followerData: followingUsers });
     // 팔로워 정보를 followerData에 담아줌
     return { followerCount, followerData: followingUsers };
+  };
+
+  type FollowerDataResult = {
+    followerCount: number;
+    followerData: FollowingUser[] | null;
   };
 
   const {
@@ -72,9 +85,10 @@ const MyPage = () => {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
-  const { followerCount, followerData } = followerDataResult || { followerCount: 0, followerData: [] };
-
-  console.log(userData);
+  const { followerCount, followerData } = followerDataResult;
+  console.log(followerDataResult);
+  console.log(followerCount);
+  console.log(followerData);
   return (
     <>
       {/* 프로필 영역 */}
@@ -88,24 +102,24 @@ const MyPage = () => {
           width={150}
           height={150}
         />
-        <h3>{userData?.nickname}</h3>
+        <h3>닉네임: {userData?.nickname}</h3>
+        <ul>
+          {followerData.length > 0 ? (
+            followerData.map((follower: FollowingUser) => (
+              <li key={follower.user_id}>
+                <Image src={follower.profile_img} alt={follower.nickname} width={50} height={50} />
+                <span>{follower.nickname}</span>
+              </li>
+            ))
+          ) : (
+            <li>아직 팔로우한 사람이 없습니다.</li>
+          )}
+        </ul>
         <Dialog>
           <DialogTrigger>팔로잉 {followerCount}명</DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>팔로우한 사람</DialogTitle>
-              <ul>
-                {followerData.length > 0 ? (
-                  followerData.map((follower) => (
-                    <li key={follower.user_id}>
-                      <Image src={follower.profile_img} alt={follower.nickname} width={50} height={50} />
-                      <span>{follower.nickname}</span>
-                    </li>
-                  ))
-                ) : (
-                  <li>아직 팔로우한 사람이 없습니다.</li>
-                )}
-              </ul>
             </DialogHeader>
           </DialogContent>
         </Dialog>
