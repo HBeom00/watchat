@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
-import Providers from '@/store/queryProvider';
+import Providers from '@/providers/queryProvider';
 
 import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
@@ -36,12 +36,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <UserStoreProvider isUser={!!user}>
+        <UserStoreProvider isUser={!!user}>
+          <Providers>
             <Header />
             {children}
-          </UserStoreProvider>
-        </Providers>
+          </Providers>
+        </UserStoreProvider>
       </body>
     </html>
   );
