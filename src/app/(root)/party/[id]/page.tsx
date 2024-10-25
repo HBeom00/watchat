@@ -2,7 +2,6 @@ import { createClient } from '@/utils/supabase/server';
 import PartyHeader from './(components)/PartyHeader';
 import DetailInfo from './(components)/DetailInfo';
 import MemberList from './(components)/MemberList';
-// import { useQuery } from '@tanstack/react-query';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import Owner from './(components)/Owner';
 
@@ -28,18 +27,8 @@ export type partyInfo = {
 
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
-  // 현재 파티 페이지 정보 가져오기
-  // const { data } = useQuery({
-  //   queryKey: [`party/${params.id}`],
-  //   queryFn: async () => {
-  //     const { data, error } = await supabase.from('party_info').select('*').eq('party_id', params.id);
-  //     if (error) {
-  //       console.error('사용자 정보를 불러오는데 실패했습니다. => ', error);
-  //     }
-  //     return data;
-  //   }
-  // });
 
+  // 현재 파티 정보 불러오기
   const res: PostgrestSingleResponse<partyInfo[]> = await supabase
     .from('party_info')
     .select('*')
@@ -49,8 +38,6 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   // }
 
   // 데이터 불러올 수 있게 되면 PartyHeader와 DetailInfo로 data 물려주기
-  // console.log('쿼리로불러오기', data);
-  // console.log('파티정보불러오기', res);
   const partyData = res.data
     ? res.data[0]
     : {
