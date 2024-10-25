@@ -13,6 +13,8 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { useFollowData } from '@/store/useFollowData';
+import { unfollow } from '@/store/unfollow';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const MyPage = () => {
   // 사용자 데이터 가져오기
@@ -27,6 +29,16 @@ const MyPage = () => {
 
   // 팔로잉 데이터 가져오기
   const { data: followerDataResult, isPending: pending, isError: error } = useFollowData(userId);
+
+  const queryClient = useQueryClient();
+
+  // 언팔로우 하기
+  const mutation = useMutation({
+    mutationFn: (followId: string) => unfollow(userId as string, followId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['followingUsers', userId] });
+    }
+  });
 
   if (isPending || pending) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
@@ -76,7 +88,7 @@ const MyPage = () => {
                       />
                       <span>{follower.nickname}</span>
                     </div>
-                    <button>언팔로우</button>
+                    <button onClick={() => mutation.mutate(follower.user_id)}>언팔로우</button>
                   </li>
                 ))
               ) : (
