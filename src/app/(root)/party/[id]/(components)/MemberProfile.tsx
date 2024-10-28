@@ -1,31 +1,26 @@
 'use client';
 
-import { inviteHandler } from '@/utils/invite';
+import { member } from '@/utils/memberCheck';
+import Image from 'next/image';
 
 const MemberProfileCard = ({
-  partyNumber,
-  memberNumber,
-  isMember
+  isMember,
+  memberInfo,
+  userId
 }: {
-  partyNumber: string;
-  memberNumber: string;
-  isMember: boolean;
+  isMember: boolean | null | undefined;
+  memberInfo: member;
+  userId: string | null;
 }) => {
+  // 내 정보에서는 팔로우 불필요함
+  const myInfo = memberInfo.user_id === userId;
+
   return (
     <div>
       <div>
-        <p>멤버 파티 닉네임</p>
-        <p>멤버 파티 프로필이미지</p>
-        {isMember ? (
-          <>
-            <button onClick={() => inviteHandler(partyNumber, memberNumber)} className="bg-blue-400 p-4">
-              초대하기
-            </button>
-            <button className="bg-blue-400 p-4">팔로우버튼</button>
-          </>
-        ) : (
-          <></>
-        )}
+        <p>닉네임:{memberInfo.nickname}</p>
+        <Image src={memberInfo.profile_image} width={100} height={100} alt="프로필이미지" />
+        {isMember && !myInfo ? <button className="bg-blue-400 p-4">팔로우버튼</button> : <></>}
       </div>
     </div>
   );

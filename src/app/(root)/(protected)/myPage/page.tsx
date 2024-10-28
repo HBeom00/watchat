@@ -16,6 +16,10 @@ import { useFollowData } from '@/store/useFollowData';
 import { unfollow } from '@/store/unfollow';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useInvitedParties } from '@/store/useInvitedParties';
+import { useRefuseMutation } from '@/store/useInviteMutation';
+import { DialogClose } from '@radix-ui/react-dialog';
+import { useParticipatingParty } from '@/store/useParticipatingParty';
+import { getViewStatus } from '@/utils/viewStatus';
 
 const MyPage = () => {
   // 사용자 데이터 가져오기
@@ -41,6 +45,15 @@ const MyPage = () => {
     }
   });
 
+  // 참여중인 파티 가져오기
+  const {
+    data: enjoyingParty,
+    isPending: pendingEnjoyingParty,
+    isError: errorEnjoyingParty
+  } = useParticipatingParty(userId as string);
+
+  console.log(enjoyingParty);
+
   // 초대받은 파티 가져오기
   const {
     data: invitedParties,
@@ -50,10 +63,13 @@ const MyPage = () => {
 
   console.log('초대된 파티 리스트 => ', invitedParties);
 
-  if (isPending || pending || pendingInvitedParties) {
+  // 초대 거절하기
+  const refuseInvite = useRefuseMutation(userId as string);
+
+  if (isPending || pending || pendingInvitedParties || pendingEnjoyingParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || error || errorInvitedParties) {
+  if (isError || error || errorInvitedParties || errorEnjoyingParty) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
@@ -125,6 +141,36 @@ const MyPage = () => {
       <section>
         <article>
           <h3>참여한 파티</h3>
+          <ul>
+            {enjoyingParty && enjoyingParty.length > 0 ? (
+              enjoyingParty.map((party) => {
+                const viewingStatus = getViewStatus(party); // 시청 상태 결정
+
+                return (
+                  <li key={party.party_id}>
+                    <div>
+                      {/* 이미지 또는 다른 UI 요소를 여기에 추가할 수 있습니다 */}
+                      <span>{viewingStatus}</span>
+                    </div>
+                    <div>{/* 재생바 */}</div>
+                    <div>
+                      {/* 정보 */}
+                      <p>
+                        {viewingStatus === '시청중' ? '시청중' : `${new Date(party.watch_date).toLocaleString()} 시작`}
+                      </p>
+                      <p>
+                        {party.video_name}
+                        {party.media_type === 'tv' && party.episode_number ? ` (Episode ${party.episode_number})` : ''}
+                      </p>
+                      <h3>{party.party_name}</h3>
+                    </div>
+                  </li>
+                );
+              })
+            ) : (
+              <li>참가중인 파티가 없습니다.</li>
+            )}
+          </ul>
         </article>
         <article>
           <h3>내가 오너인 파티</h3>
@@ -166,8 +212,23 @@ const MyPage = () => {
                         <p>{invite.inviter_user?.nickname}님이 초대하셨습니다.</p>
                       </div>
                       <div>
-                        <button>수락</button>
-                        <button>거절</button>
+                        <button>수락하기</button>
+                        <Dialog>
+                          <DialogTrigger>거절하기</DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                {invite.inviter_user?.nickname}님의 초대를 정말 거절하시겠습니까?
+                              </DialogTitle>
+                            </DialogHeader>
+                            <button onClick={() => refuseInvite.mutate(invite.invite_id)}>거절하기</button>
+                            <DialogClose asChild>
+                              <button type="button">취소하기</button>
+                            </DialogClose>
+
+                            <DialogDescription></DialogDescription>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                   </div>
