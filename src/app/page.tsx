@@ -1,5 +1,8 @@
 // import { createClient } from '@/utils/supabase/server';
 
+import Banner from '@/components/home/Banner';
+import RecruitList from '@/components/home/RecruitList';
+
 const Main = async () => {
   // const { data } = await createClient().auth.getUser();
   // const { data: isUser }: { data: null | string[] } = await createClient().from('user').select('user_id');
@@ -10,7 +13,12 @@ const Main = async () => {
   //   }
   // }
 
-  return <div>메인 페이지</div>;
+  return (
+    <div>
+      <Banner />
+      <RecruitList />
+    </div>
+  );
 };
 
 export default Main;

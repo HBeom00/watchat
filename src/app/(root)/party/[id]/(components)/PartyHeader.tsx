@@ -1,33 +1,29 @@
 import Link from 'next/link';
 import { partyInfo } from '../page';
-import { getLoginUserIdOnServer } from '@/utils/supabase/server';
 import { isMemberExistOnServer } from '@/utils/memberCheckOnServer';
 import Image from 'next/image';
+import ParticipationButton from '@/components/button/ParticipationButton';
+// import Owner from '@/components/form/Owner';
 
-const PartyHeader = async ({ partyNumber, partyData }: { partyNumber: string; partyData: partyInfo }) => {
-  const userId = await getLoginUserIdOnServer();
-  const isMember = await isMemberExistOnServer(partyNumber, userId);
+const PartyHeader = async ({ partyData, userId }: { partyData: partyInfo; userId: string | null }) => {
+  // 멤버일 경우
+  const isMember = await isMemberExistOnServer(partyData.party_id, userId);
+
   return (
     <div className="flex flex-col gap-7 w-full p-10 justify-center items-center bg-slate-500">
       <div className="flex flex-col gap-9">
-        <p className="text-4xl mb-8">{partyData.party_name}</p>
-        <p>{partyData.party_detail}</p>
         <p>{partyData.video_name}</p>
+        <p className="text-4xl mb-8">{partyData.party_name}</p>
         <Image src={partyData.video_image} width={100} height={100} alt={partyData.video_name} />
-        <div className="flex flex-row gap-5">
-          <p>플랫폼</p>
-          {JSON.parse(partyData.video_platform).map((platform: { name: string; logoUrl: string }) => (
-            <Image key={platform.name} src={platform.logoUrl} width={50} height={50} alt={platform.name} />
-          ))}
-        </div>
         {isMember ? (
-          <></>
+          <Link href={`/chat/${partyData.party_id}`}>채팅하기</Link>
         ) : (
-          <Link href={`/participation/${partyNumber}`} className="bg-blue-500 rounded-xl w-30 h-12 p-4">
-            참여하기
-          </Link>
+          <ParticipationButton party_id={partyData.party_id} />
         )}
       </div>
+      {/* 오너이면 렌더링되도록 */}
+      {/* partyData.owner_id===userId 일 경우 오너 */}
+      {/* <Owner partyNumber={partyData.party_id} /> */}
     </div>
   );
 };

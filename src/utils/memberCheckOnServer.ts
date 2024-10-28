@@ -41,6 +41,7 @@ export const memberFullSwitchOnServer = async (party_id: string) => {
 // 이미 참가한 멤버인지 확인
 export const isMemberExistOnServer = async (party_id: string, user_id: string | null) => {
   const supabase = createClient();
+  if (!user_id) return false;
   const response = await supabase
     .from('team_user_profile')
     .select('profile_id')

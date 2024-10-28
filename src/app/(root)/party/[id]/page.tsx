@@ -4,8 +4,6 @@ import PartyHeader from './(components)/PartyHeader';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import PartyBottom from './(components)/PartyBottom';
 import PlayBar from './(components)/PlayBar';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
 
 export type partyInfo = {
   party_id: string;
@@ -17,11 +15,10 @@ export type partyInfo = {
   limited_member: number;
   duration_time: number;
   situation: string | null;
-  owner_id: string | null;
-  video_id: number | null;
-  media_type: string | null;
-  watch_date: string | null;
-  end_time: string | null;
+  owner_id: string;
+  video_id: number;
+  media_type: string;
+  watch_date: string;
   start_time: string;
   episode_number: number | null;
 };
@@ -43,40 +40,32 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   // 종료된 파티이면 홈으로 리다이렉트
   const partyData: partyInfo = res.data[0];
   if (partyData.situation === '종료') {
-    redirect('/');
   }
 
-  // 오늘이 시청날짜일 때
-  const nowWatchingDate = () => {
-    const watchDate = partyData.watch_date?.split('-');
-    const nowDate = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Seoul' }).split('/');
-    const nowDateArr = [nowDate[2], nowDate[0], nowDate[1]];
-    let today = true;
-    for (let i = 0; i < 3; i++) {
-      if (watchDate && watchDate[i] !== nowDateArr[i]) {
-        today = false;
-        break;
-      }
-    }
-    return today;
-  };
-  nowWatchingDate();
-  const isOwner = partyData.owner_id === userId;
   return (
     <div className="flex flex-col w-full bg-black text-white">
-      <PartyHeader partyNumber={params.id} partyData={partyData} />
+      <PartyHeader partyData={partyData} userId={userId} />
+      {/* 이쪽 건 예시이고 실제 파티페이지에서는 안 쓰임 */}
       <PlayBar startTime={partyData.start_time} duration={partyData.duration_time} />
-      {nowWatchingDate() ? (
-        <>
-          <Link href={`chat/${params.id}`}>채팅하기</Link>
-          <PlayBar startTime={partyData.start_time} duration={partyData.duration_time} />
-        </>
-      ) : (
-        <></>
-      )}
-      <PartyBottom partyData={partyData} isOwner={isOwner} userId={userId} />
+
+      <PartyBottom partyData={partyData} userId={userId} />
     </div>
   );
 };
 
 export default partyPage;
+
+// 오늘이 시청날짜일 때
+export const nowWatchingDate = (partyData: partyInfo) => {
+  const watchDate = partyData.watch_date?.split('-');
+  const nowDate = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Seoul' }).split('/');
+  const nowDateArr = [nowDate[2], nowDate[0], nowDate[1]];
+  let today = true;
+  for (let i = 0; i < 3; i++) {
+    if (watchDate && watchDate[i] !== nowDateArr[i]) {
+      today = false;
+      break;
+    }
+  }
+  return today;
+};

@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
-import ParticipationForm from '../(components)/ParticipationForm';
+import ParticipationForm from '../../../../../components/form/ParticipationForm';
 
 const page = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
