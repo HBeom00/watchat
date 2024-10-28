@@ -116,7 +116,7 @@ const searchResultClickHandler = (result: SearchResult) => {
   limited_member : limitedMember,
   video_id: videoId,
   watch_date: watchDate ? watchDate.toISOString().split('T')[0] : null, // 날짜만 저장
-  start_time: startTime ? startTime.toISOString() : null, // 시간만 저장
+  start_time: startTime ? startTime.toISOString().split('T')[1] : null, // 시간만 저장
   duration_time : durationTime,
   media_type : media ,
   video_platform : platforms ,
@@ -129,6 +129,8 @@ const searchResultClickHandler = (result: SearchResult) => {
   if (error) {
     console.error("insert 에러에러",error)
   } else {
+    alert("모집이 업로드 되었습니다.")
+    // 모집 상세 페이지로 
     console.log("데이터 삽입 성공", data)
   }
  }
