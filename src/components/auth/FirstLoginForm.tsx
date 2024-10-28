@@ -2,11 +2,11 @@
 
 import { genreArr, platformArr } from '@/utils/prefer';
 import browserClient from '@/utils/supabase/client';
-import { onClickGenre, onClickPlatform } from '@/utils/userProfile';
+import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,10 +15,9 @@ const nicknameSchema = z.object({
 });
 
 const FirstLoginForm = () => {
+  const { imgFile, imgRef, uploadImage } = useImageUpload();
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
-  const [imgFile, setImgFile] = useState<string>('');
-  const imgRef = useRef<HTMLInputElement>(null);
   const route = useRouter();
 
   const { register, handleSubmit, formState } = useForm({
@@ -29,27 +28,7 @@ const FirstLoginForm = () => {
     resolver: zodResolver(nicknameSchema)
   });
 
-  // const onClickPlatform = (platform: string) => {
-  //   setPlatforms((prev) => (prev.includes(platform) ? prev.filter((el) => el !== platform) : [...prev, platform]));
-  // };
-
-  // const onClickGenre = (genre: string) => {
-  //   setGenres((prev) => (prev.includes(genre) ? prev.filter((el) => el !== genre) : [...prev, genre]));
-  // };
-
-  // 이미지 업로드 onChange
-  const uploadImage = () => {
-    const file = imgRef.current?.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          setImgFile(reader.result);
-        }
-      };
-    }
-  };
+  uploadImage();
 
   // 완료 버튼 클릭 시
   const onSuccessHandler = async ({ nickname }: FieldValues) => {
