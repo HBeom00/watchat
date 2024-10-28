@@ -8,14 +8,17 @@ import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const EditProfilePage = () => {
   const imgRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
   const { data: userData, isPending, isError } = useFetchUserData();
+  console.log(userData, 'userData 값 확인');
   //const { userData, fetchUserData } = useUserStore();
   const [imgFile, setImgFile] = useState(userData?.profile_img);
-
+  console.log(imgFile, 'img 확인');
   // zod
   const editProfile = z.object({
     nickname: z.string().min(2, '닉네임은 필수입니다.').max(6, '6글자까지 입력 가능합니다.')
@@ -108,8 +111,8 @@ const EditProfilePage = () => {
     }
   };
 
-  //폼 제출 함수
-  const onSubmit = async () => {
+  // 변경된 프로필로 업데이트해주는 함수
+  const updateUserData = async () => {
     const userId = await getLoginUserIdOnClient();
     let profile_img = imgFile; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
 
@@ -121,11 +124,11 @@ const EditProfilePage = () => {
         profile_img = newProfileImgURL;
       }
     }
-    // supabase에 수정된 정보 넣어줌
+    // supabase에 수정된 정보 넣어줌 = mutation
     const { data: updatedUserData, error: updateError } = await browserClient
       .from('user')
       .update({
-        nickname: watch('nickname'),
+        nickname: watch('nickname'), // 닉네임은 react-hook-form을 이용해 input에 변경이 있는 경우 수정해줌
         profile_img: profile_img
       })
       .eq('user_id', userId);
@@ -134,9 +137,20 @@ const EditProfilePage = () => {
       console.log('프로필 수정에 실패했습니다 => ', updateError);
     } else {
       console.log('프로필 수정에 성공했습니다 => ', updatedUserData);
+      return updateUserData;
     }
+  };
 
-    // fetchUserData();
+  const mutation = useMutation({
+    mutationFn: updateUserData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userData'] });
+    }
+  });
+
+  //폼 제출 함수
+  const onSubmit = async () => {
+    mutation.mutate();
   };
 
   if (isPending) {
