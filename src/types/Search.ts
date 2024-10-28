@@ -8,10 +8,7 @@
   }
   
  export interface SearchResponse {
-    page: number;
     results: SearchResult[];
-    total_results: number;
-    total_pages: number;
   }
 
 
