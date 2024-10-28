@@ -1,27 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import browserClient from '../../../../utils/supabase/client';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { fetchMovieWatchProvider, fetchMultiSearch, fetchTvWatchProvider } from "@/serverActions/TMDB";
-import { SearchResult } from '../../../../types/Search'
-// interface recruit {
-//   party_id : number;
-//   video_id : number;
-//   owner_id : number;
-//   party_detail : string;
-//   party_name : string;
-//   viedo_name : string;
-//   limited_member : number;
-//   start_time : string;
-//   duration_time : number;
-//   situation : string;
-//   media_type : string;
-//   // video_platform : string;
-//   // video_image : string;
-//   // party_end_time : string;
-// }
+import { SearchResult, SearchResponse } from '../../../../types/Search'
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+
 const RecruitPage = () => {
  const [partyName, setPartyName] = useState(''); // 파티이름
  const [videoName, setVideoName] = useState(''); // 영상이름
@@ -33,25 +20,19 @@ const RecruitPage = () => {
  const [platforms, setPlatforms] = useState<{ name: string, logoUrl: string }[] | null>(null); // 플랫폼 로고
  const [media, setMedia] = useState(''); // 영상 미디어
  const [poster, setPoster] = useState(''); // 영상 포스터
- const [search, setSearch] = useState<SearchResult[]>([]); // 검색 결과 리스트
  const [videoId, setVideoId] = useState<number | null> (null); // 영화 ID 
  const [episodeNumber, setEpisodeNumber] = useState<number | null>(null); // 에피소드 번호
- const [noResults, setNoResults] = useState(false) // 검색결과 없는 상태
+
+ const queryClient = useQueryClient();
 
 
- useEffect(() => {
-  const searchVideo = async() => {
-    if (videoName.trim()) {     //trim() 문자열 앞뒤 공백 제거
-      const data = await fetchMultiSearch(videoName);
-      setSearch(data.results);
-      setNoResults(data.results.length === 0) // 결과가 없으면 true
-    } else {
-      setSearch([])
-      setNoResults(false); // 검색어가 비어있으면 false
-    }
-  }
- searchVideo()
-},[videoName])
+const { data: searchResults} = useQuery<SearchResponse>({
+  queryKey: ['searchVideo', videoName],
+  queryFn: () => fetchMultiSearch(videoName),
+  enabled: !!videoName, // 검색어가 있을 때만 실행
+    // 디바운싱  몇초뒤에 결과 띄워주기
+    // 쓰로틀링  
+  });
 
 
 // watch provider api 함수 movie , tv 합치기
@@ -91,8 +72,8 @@ const searchResultClickHandler = (result: SearchResult) => {
       fetchProviders(result.id, mediaType);
   }
   setVideoId(result.id); // 선택된 영화 ID 설정
-  setSearch([])
-  setNoResults(false) // 결과없음 메시지 숨기기
+
+  queryClient.removeQueries({queryKey: ['searchVideo']})
 };
 
 
@@ -116,7 +97,7 @@ const searchResultClickHandler = (result: SearchResult) => {
   limited_member : limitedMember,
   video_id: videoId,
   watch_date: watchDate ? watchDate.toISOString().split('T')[0] : null, // 날짜만 저장
-  start_time: startTime ? startTime.toISOString() : null, // 시간만 저장
+  start_time: startTime ? startTime.toISOString().split('T')[1] : null, // 시간만 저장
   duration_time : durationTime,
   media_type : media ,
   video_platform : platforms ,
@@ -129,6 +110,8 @@ const searchResultClickHandler = (result: SearchResult) => {
   if (error) {
     console.error("insert 에러에러",error)
   } else {
+    alert("모집이 업로드 되었습니다.")
+    // 모집 상세 페이지로 
     console.log("데이터 삽입 성공", data)
   }
  }
@@ -164,23 +147,19 @@ const searchResultClickHandler = (result: SearchResult) => {
   onChange={(e) => setVideoName(e.target.value)}  
   />
           {/* 검색된 결과 */}
-          {search.length > 0 ? (
-  <ul className="bg-white border border-gray-300 rounded-lg shadow-md max-h-48 overflow-y-auto">
-    {search.map((result) => (
-     <li 
-     key={result.id}
-     className="p-2 hover:bg-gray-200 cursor-pointer"
-     onClick={() => searchResultClickHandler(result)}
- >
-     {result.title || result.name}
-      </li>
-    ))}
-  </ul>
-) : noResults && (
-  <ul className="bg-white border border-gray-300 rounded-lg shadow-md max-h-48 overflow-y-auto">
-    <li className="p-2 text-gray-500">검색된 결과가 없습니다.</li>
-  </ul>
-)}
+          {searchResults?.results && searchResults.results.length > 0 && (
+          <ul className="bg-white border border-gray-300 rounded-lg shadow-md max-h-48 overflow-y-auto">
+            {searchResults.results.map((result) => (
+              <li
+                key={result.id}
+                className="p-2 hover:bg-gray-200 cursor-pointer"
+                onClick={() => searchResultClickHandler(result)}
+              >
+                {result.title || result.name}
+              </li>
+            ))}
+          </ul>
+        )}
 {/* 포스터 */}
 {poster && (
   <img 
