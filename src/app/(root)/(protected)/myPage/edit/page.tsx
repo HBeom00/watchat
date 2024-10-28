@@ -32,7 +32,7 @@ const EditProfilePage = () => {
     resolver: zodResolver(editProfile)
   });
 
-  // 이미지 업로드 onChange
+  // 이미지 업로드 onChangesw
   const uploadImage = () => {
     const file = imgRef.current?.files?.[0]; // 선택한 파일을 file에 저장
     if (file) {
