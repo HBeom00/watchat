@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import PlayBar from './PlayBar';
 import { partyInfo } from '../page';
 import { getLoginUserIdOnServer } from '@/utils/supabase/server';
 import { isMemberExistOnServer } from '@/utils/memberCheckOnServer';
@@ -29,7 +28,6 @@ const PartyHeader = async ({ partyNumber, partyData }: { partyNumber: string; pa
           </Link>
         )}
       </div>
-      <PlayBar />
     </div>
   );
 };

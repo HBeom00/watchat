@@ -1,6 +1,6 @@
 import { fetchMoviesDetail, fetchTvDetail } from '@/serverActions/TMDB';
 
-const DetailInfo = async ({ videoNumber, videoType }: { videoNumber: string | null; videoType: string | null }) => {
+const DetailInfo = ({ videoNumber, videoType }: { videoNumber: number | null; videoType: string | null }) => {
   // 영상 넘버로 영상정보 API 불러오기
   return (
     <div>
