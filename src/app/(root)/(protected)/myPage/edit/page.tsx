@@ -15,9 +15,10 @@ const EditProfilePage = () => {
   const queryClient = useQueryClient();
 
   const { data: userData, isPending, isError } = useFetchUserData();
+  console.log(userData, 'userData 값 확인');
   //const { userData, fetchUserData } = useUserStore();
   const [imgFile, setImgFile] = useState(userData?.profile_img);
-
+  console.log(imgFile, 'img 확인');
   // zod
   const editProfile = z.object({
     nickname: z.string().min(2, '닉네임은 필수입니다.').max(6, '6글자까지 입력 가능합니다.')

@@ -28,8 +28,9 @@ const SignInForm = () => {
     resolver: zodResolver(signInSchema)
   });
 
+  // 로그인 버튼 클릭 시
   const onSubmit = async (userInfo: FieldValues) => {
-    const { error } = await browserClient.auth.signInWithPassword({
+    const { data: session, error } = await browserClient.auth.signInWithPassword({
       email: userInfo.email,
       password: userInfo.password
     });
@@ -38,8 +39,28 @@ const SignInForm = () => {
       alert('아이디와 비밀번호를 다시 입력해주세요.');
       return;
     }
-    userLogin();
-    route.push('/');
+
+    const userId = session?.user?.id;
+
+    if (userId) {
+      const { data: user, error: userFetchError } = await browserClient.from('user').select('*').eq('user_id', userId);
+
+      if (userFetchError) {
+        console.error('유저 확인 오류:', userFetchError.message);
+        alert('사용자 확인 중 오류가 발생했습니다.');
+        return;
+      }
+
+      userLogin();
+
+      if (user.length !== 1) {
+        route.push('/firstLogin');
+      } else {
+        route.push('/');
+      }
+    } else {
+      alert('로그인 세션이 유효하지 않습니다.');
+    }
   };
 
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
