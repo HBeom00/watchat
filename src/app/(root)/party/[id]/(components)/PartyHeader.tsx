@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { partyInfo } from '../page';
 import { isMemberExistOnServer } from '@/utils/memberCheckOnServer';
 import Image from 'next/image';
 import ParticipationButton from '@/components/button/ParticipationButton';
 import Owner from '@/components/form/Owner';
+import { partyInfo } from '@/types/partyInfo';
 
 const PartyHeader = async ({
   partyData,

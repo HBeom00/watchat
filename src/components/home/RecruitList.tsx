@@ -1,6 +1,6 @@
 'use client';
 
-import { partyInfo } from '@/app/(root)/party/[id]/page';
+import { partyInfo } from '@/types/partyInfo';
 import browserClient from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';

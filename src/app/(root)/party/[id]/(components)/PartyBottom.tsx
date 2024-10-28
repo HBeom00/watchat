@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { partyInfo } from '../page';
 import DetailInfo from './DetailInfo';
 import MemberList from './MemberList';
 import InvitedButton from './InvitedButton';
 import { isMemberExist } from '@/utils/memberCheck';
 import { useQuery } from '@tanstack/react-query';
+import { partyInfo } from '@/types/partyInfo';
 
 const PartyBottom = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
   const [tab, setTab] = useState<string>('파티소개');
