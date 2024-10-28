@@ -1,7 +1,7 @@
 import browserClient from './supabase/client';
 
 // 강퇴하기
-export const memberExpulsion = async (member_Id: string, party_id: string) => {
+export const memberExpulsion = async (party_id: string, member_Id: string) => {
   const { error } = await browserClient
     .from('team_user_profile')
     .delete()

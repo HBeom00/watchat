@@ -2,16 +2,18 @@
 import { getPartyMember } from '@/utils/memberCheck';
 import MemberProfileCard from './MemberProfile';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import browserClient from '@/utils/supabase/client';
+import { memberExpulsion } from '@/utils/ownerRights';
 
 const MemberList = ({
   partyNumber,
   userId,
-  isMember
+  isMember,
+  end
 }: {
   partyNumber: string;
   userId: string | null;
   isMember: boolean | null | undefined;
+  end: boolean;
 }) => {
   const queryClient = useQueryClient();
 
@@ -23,7 +25,7 @@ const MemberList = ({
 
   // 파티 탈퇴하기
   const mutation = useMutation({
-    mutationFn: (userId: string) => homecoming(partyNumber, userId),
+    mutationFn: (userId: string) => memberExpulsion(partyNumber, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['partyMember', partyNumber] });
     }
@@ -45,21 +47,9 @@ const MemberList = ({
           <p>멤버가 없습니다</p>
         </>
       )}
-      {userId && isMember ? <button onClick={() => mutation.mutate(userId)}>참가 취소하기</button> : <></>}
+      {userId && isMember && !end ? <button onClick={() => mutation.mutate(userId)}>참가 취소하기</button> : <></>}
     </div>
   );
 };
 
 export default MemberList;
-
-// 나가기
-export const homecoming = async (partyNumber: string, userId: string) => {
-  const { error } = await browserClient
-    .from('team_user_profile')
-    .delete()
-    .eq('party_id', partyNumber)
-    .eq('user_id', userId);
-  if (error) {
-    console.log(error.message);
-  }
-};

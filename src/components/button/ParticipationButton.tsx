@@ -3,14 +3,14 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import ParticipationForm from '../form/ParticipationForm';
 
-const ParticipationButton = ({ party_id }: { party_id: string }) => {
+const ParticipationButton = ({ name, party_id }: { name: string; party_id: string }) => {
   return (
     <>
       <Dialog>
-        <DialogTrigger>참가하기</DialogTrigger>
+        <DialogTrigger>{name}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>팔로우한 사람</DialogTitle>
+            <DialogTitle>참가하기</DialogTitle>
           </DialogHeader>
           <ParticipationForm party_id={party_id} />
           <DialogDescription></DialogDescription>

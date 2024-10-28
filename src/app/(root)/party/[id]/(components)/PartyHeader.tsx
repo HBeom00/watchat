@@ -3,9 +3,17 @@ import { partyInfo } from '../page';
 import { isMemberExistOnServer } from '@/utils/memberCheckOnServer';
 import Image from 'next/image';
 import ParticipationButton from '@/components/button/ParticipationButton';
-// import Owner from '@/components/form/Owner';
+import Owner from '@/components/form/Owner';
 
-const PartyHeader = async ({ partyData, userId }: { partyData: partyInfo; userId: string | null }) => {
+const PartyHeader = async ({
+  partyData,
+  userId,
+  end
+}: {
+  partyData: partyInfo;
+  userId: string | null;
+  end: boolean;
+}) => {
   // 멤버일 경우
   const isMember = await isMemberExistOnServer(partyData.party_id, userId);
 
@@ -15,15 +23,17 @@ const PartyHeader = async ({ partyData, userId }: { partyData: partyInfo; userId
         <p>{partyData.video_name}</p>
         <p className="text-4xl mb-8">{partyData.party_name}</p>
         <Image src={partyData.video_image} width={100} height={100} alt={partyData.video_name} />
-        {isMember ? (
+        {end ? (
+          <button>종료됨</button>
+        ) : isMember ? (
           <Link href={`/chat/${partyData.party_id}`}>채팅하기</Link>
         ) : (
-          <ParticipationButton party_id={partyData.party_id} />
+          <ParticipationButton name="참가하기" party_id={partyData.party_id} />
         )}
       </div>
       {/* 오너이면 렌더링되도록 */}
       {/* partyData.owner_id===userId 일 경우 오너 */}
-      {/* <Owner partyNumber={partyData.party_id} /> */}
+      <Owner partyNumber={partyData.party_id} partyOwner={partyData.owner_id} />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import InvitedButton from './InvitedButton';
 import { isMemberExist } from '@/utils/memberCheck';
 import { useQuery } from '@tanstack/react-query';
 
-const PartyBottom = ({ partyData, userId }: { partyData: partyInfo; userId: string | null }) => {
+const PartyBottom = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
   const [tab, setTab] = useState<string>('파티소개');
 
   //로그인한 사용자가 해당 파티에 가입했을 때
@@ -30,7 +30,11 @@ const PartyBottom = ({ partyData, userId }: { partyData: partyInfo; userId: stri
         <button onClick={() => setTab('파티소개')}>파티소개</button>
         <button onClick={() => setTab('프로그램 정보')}>프로그램 정보</button>
       </div>
-      {tab === '파티소개' ? <MemberList partyNumber={partyData.party_id} userId={userId} isMember={isMember} /> : <></>}
+      {tab === '파티소개' ? (
+        <MemberList partyNumber={partyData.party_id} userId={userId} isMember={isMember} end={end} />
+      ) : (
+        <></>
+      )}
       {tab === '프로그램 정보' ? (
         <DetailInfo
           videoNumber={partyData.video_id}
