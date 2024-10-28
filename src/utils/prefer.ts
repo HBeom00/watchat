@@ -1,6 +1,6 @@
-export const platform: string[] = ['넷플릭스', '티빙', '왓챠', '웨이브', '디즈니플러스', '쿠팡플레이'];
+export const platformArr: string[] = ['넷플릭스', '티빙', '왓챠', '웨이브', '디즈니플러스', '쿠팡플레이'];
 
-export const genre: string[] = [
+export const genreArr: string[] = [
   '드라마',
   '예능',
   '로맨스',
