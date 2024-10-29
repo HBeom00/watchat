@@ -57,7 +57,7 @@ const InvitedButton = ({ partyNumber, userId }: { partyNumber: string; userId: s
                     />
                     <span>{follower.nickname}</span>
                   </div>
-                  <button onClick={() => inviteHandler(partyNumber, userId)}>초대하기</button>
+                  <button onClick={() => inviteHandler(partyNumber, follower.user_id)}>초대하기</button>
                   <button onClick={() => mutation.mutate(follower.user_id)}>언팔로우</button>
                 </li>
               ))
