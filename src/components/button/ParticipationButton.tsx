@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import ParticipationForm from '../form/ParticipationForm';
 
 const ParticipationButton = ({ name, party_id }: { name: string; party_id: string }) => {
