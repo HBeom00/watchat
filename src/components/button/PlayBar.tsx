@@ -26,6 +26,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
       <p>영상 시청 진도 바</p>
       {/* 현재 진행 시간 */}
       <div className="flex flex-row gap-6">
+        <p>{startTime.split('.')[0]}</p>
         {playTime > 0 && duration * 60 > playTime ? <p>{nowTimeDisplay(playTime)}</p> : <p>00:00:00</p>}
 
         <input type="range" min={0} max={duration * 60} step={1} value={playTime} onChange={() => {}} />

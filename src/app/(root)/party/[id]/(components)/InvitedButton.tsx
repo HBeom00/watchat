@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { inviteHandler } from '@/utils/invite';
 import { useFollowData } from '@/store/useFollowData';
 import Image from 'next/image';
