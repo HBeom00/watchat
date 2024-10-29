@@ -15,9 +15,14 @@ export const memberExpulsion = async (party_id: string, member_Id: string) => {
 
 // 파티 종료하기
 export const partyEnd = async (party_id: string) => {
-  const { error } = await browserClient.from('party_info').update({ situaion: '종료' }).eq('party_id', party_id);
+  const { error } = await browserClient.from('party_info').update({ situation: '종료' }).eq('party_id', party_id);
   console.log(error?.message);
-  // 관련 파티 초대장 삭제하기
-  const { error: invitedError } = await browserClient.from('invite_id').delete().eq('party_id', party_id);
-  console.log(invitedError?.message);
+  if (!error) {
+    const { error: invitedError } = await browserClient.from('invited').delete().eq('party_id', party_id);
+    console.log(invitedError?.message);
+    if (!invitedError) {
+      alert('파티가 종료되었습니다.');
+      return true;
+    }
+  }
 };

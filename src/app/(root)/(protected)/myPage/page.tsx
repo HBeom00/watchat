@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { useFollowData } from '@/store/useFollowData';
 import { unfollow } from '@/store/unfollow';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

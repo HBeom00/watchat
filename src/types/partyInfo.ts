@@ -15,3 +15,4 @@ export type partyInfo = {
   start_time: string;
   episode_number: number | null;
 };
+export type platform = { logoUrl: string; name: string };

@@ -80,6 +80,7 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
           profile_img = newProfileImgURL;
         } else if (newProfileImgURL === '') {
           alert('이미지업로드에 실패했습니다');
+          profile_img = 'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png';
         }
       }
       // 멤버 프로필이미지 업데이트

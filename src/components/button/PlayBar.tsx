@@ -20,27 +20,15 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   if (duration * 60 > playTime) {
     setTimeout(() => setPlayTime(getPlayTime(startPlayTime)), 1000);
   }
-  // 현재 영상진도
-  const nowTimeDisplay = () => {
-    const hours =
-      Math.floor(playTime / 60 / 60) < 10
-        ? `0${Math.floor(playTime / 60 / 60)}`
-        : String(Math.floor(playTime / 60 / 60));
-    const minutes =
-      Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60 < 10
-        ? `0${Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60}`
-        : String(Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60);
-    const seconds = playTime % 60 < 10 ? `0${playTime % 60}` : String(playTime % 60);
-    return `${hours}:${minutes}:${seconds}`;
-  };
 
   return (
     <div>
       <p>영상 시청 진도 바</p>
       {/* 현재 진행 시간 */}
-      {playTime > 0 && duration * 60 > playTime ? <p>{nowTimeDisplay()}</p> : <></>}
       <div className="flex flex-row gap-6">
-        <p>00:00:00</p>
+        <p>{startTime.split('.')[0]}</p>
+        {playTime > 0 && duration * 60 > playTime ? <p>{nowTimeDisplay(playTime)}</p> : <p>00:00:00</p>}
+
         <input type="range" min={0} max={duration * 60} step={1} value={playTime} onChange={() => {}} />
         <p>{`${playEnd[0]}:${playEnd[1]}:00`}</p>
       </div>
@@ -64,4 +52,16 @@ const getPlayTime = (startPlayTime: number) => {
   console.log('시작시간과 현재시간', Math.floor(startPlayTime / 60 / 60), nowTimeArr[0]);
 
   return nowTime - startPlayTime + 1 * 60 * 60;
+};
+
+// 현재 영상진도
+const nowTimeDisplay = (playTime: number) => {
+  const hours =
+    Math.floor(playTime / 60 / 60) < 10 ? `0${Math.floor(playTime / 60 / 60)}` : String(Math.floor(playTime / 60 / 60));
+  const minutes =
+    Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60 < 10
+      ? `0${Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60}`
+      : String(Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60);
+  const seconds = playTime % 60 < 10 ? `0${playTime % 60}` : String(playTime % 60);
+  return `${hours}:${minutes}:${seconds}`;
 };

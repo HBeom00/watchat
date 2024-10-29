@@ -12,7 +12,7 @@ export type videoTV = {
 
 export type creditTV = {
   cast: {
-    id: 1703375;
+    id: number;
     known_for_department: string;
     name: string;
     order: number;
@@ -36,7 +36,7 @@ export type videoMOVIE = {
 };
 export type creditMOVIE = {
   cast: {
-    id: 1703375;
+    id: number;
     known_for_department: string;
     name: string;
     order: number;
