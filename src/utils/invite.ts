@@ -1,5 +1,5 @@
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
-import { memberFullChecker, memberFullSwitch, partySituationChecker } from './memberCheck';
+import { isMemberExist, memberFullChecker, memberFullSwitch, partySituationChecker } from './memberCheck';
 
 //초대하기 로직
 export const inviteHandler = async (party_id: string, invitee: string) => {
@@ -15,6 +15,13 @@ export const inviteHandler = async (party_id: string, invitee: string) => {
     return;
   } else if (endCheck === '종료') {
     alert('종료된 파티입니다');
+    return;
+  }
+
+  // 초대하기 전에 이미 참가한 멤버인지 확인
+  const isMember = await isMemberExist(party_id, invitee);
+  if (isMember) {
+    alert('이미 참가한 사용자입니다.');
     return;
   }
 
