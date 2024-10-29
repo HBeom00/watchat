@@ -2,6 +2,7 @@
 
 import Banner from '@/components/home/Banner';
 import RecruitList from '@/components/home/RecruitList';
+import { Suspense } from 'react';
 
 const Main = async () => {
   // const { data } = await createClient().auth.getUser();
@@ -16,7 +17,9 @@ const Main = async () => {
   return (
     <div>
       <Banner />
-      <RecruitList />
+      <Suspense>
+        <RecruitList />
+      </Suspense>
     </div>
   );
 };

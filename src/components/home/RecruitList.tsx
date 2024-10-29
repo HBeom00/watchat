@@ -21,12 +21,25 @@ const RecruitList = () => {
     }
   });
   if (isLoading) <div>Loading...</div>;
-  console.log(order);
 
-  const filterData =
+  let filterData = data?.sort((a, b) => {
+    return (
+      Number(a.watch_date.split('-')[0]) - Number(b.watch_date.split('-')[0]) ||
+      Number(a.watch_date.split('-')[1]) - Number(b.watch_date.split('-')[1]) ||
+      Number(a.watch_date.split('-')[2]) - Number(b.watch_date.split('-')[2])
+    );
+  });
+  filterData =
+    order === '인기순'
+      ? filterData?.sort((a, b) => {
+          return a.limited_member - b.limited_member;
+        })
+      : filterData;
+
+  filterData =
     filter === '전체'
-      ? data
-      : data?.filter((n) => {
+      ? filterData
+      : filterData?.filter((n) => {
           return n.video_platform.indexOf(filter) !== -1;
         });
 
@@ -55,24 +68,11 @@ const RecruitList = () => {
         {filterData
           // 최신순   :   시청 날짜가 현재 이전일 경우 뒤로 보내기
           ?.filter((n) => !(n.situation === '종료') && !getExpiration(n.watch_date))
-          .sort((a, b) => {
-            return (
-              Number(a.watch_date.split('-')[0]) - Number(b.watch_date.split('-')[0]) ||
-              Number(a.watch_date.split('-')[1]) - Number(b.watch_date.split('-')[1]) ||
-              Number(a.watch_date.split('-')[2]) - Number(b.watch_date.split('-')[2])
-            );
-          })
           .map((recruit) => {
             return <RecruitCard key={recruit.party_id} data={recruit} end={false} />;
           })}
         {filterData
           ?.filter((n) => n.situation === '종료' || getExpiration(n.watch_date))
-          .sort((a, b) => {
-            return (
-              Number(a.watch_date.split('-')[1]) - Number(b.watch_date.split('-')[1]) ||
-              Number(a.watch_date.split('-')[2]) - Number(b.watch_date.split('-')[2])
-            );
-          })
           .map((recruit) => {
             return <RecruitCard key={recruit.party_id} data={recruit} end={true} />;
           })}
