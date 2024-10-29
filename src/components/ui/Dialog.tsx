@@ -95,5 +95,3 @@ export {
   DialogTitle,
   DialogDescription
 };
-
-console.log('hi');
