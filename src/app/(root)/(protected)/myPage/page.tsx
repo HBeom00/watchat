@@ -144,27 +144,52 @@ const MyPage = () => {
           <ul>
             {enjoyingParty && enjoyingParty.length > 0 ? (
               enjoyingParty.map((party) => {
-                const viewingStatus = getViewStatus(party); // 시청 상태 결정
+                const viewingStatus = getViewStatus(party); // 시청 상태
 
                 return (
-                  <li key={party.party_id}>
-                    <div>
-                      {/* 이미지 또는 다른 UI 요소를 여기에 추가할 수 있습니다 */}
-                      <span>{viewingStatus}</span>
-                    </div>
-                    <div>{/* 재생바 */}</div>
-                    <div>
-                      {/* 정보 */}
-                      <p>
-                        {viewingStatus === '시청중' ? '시청중' : `${new Date(party.watch_date).toLocaleString()} 시작`}
-                      </p>
-                      <p>
-                        {party.video_name}
-                        {party.media_type === 'tv' && party.episode_number ? ` (Episode ${party.episode_number})` : ''}
-                      </p>
-                      <h3>{party.party_name}</h3>
-                    </div>
-                  </li>
+                  <Link href={`/party/${party.party_id}`} key={party.party_id}>
+                    <li>
+                      <div>
+                        {/* 영상 이미지 */}
+                        <span>{viewingStatus}</span>
+                      </div>
+                      <div>{/* 재생바 */}</div>
+                      <div>
+                        {/* 정보 */}
+                        <p>
+                          {viewingStatus === '시청중'
+                            ? '시청중'
+                            : party.watch_date
+                            ? `${new Date(party.watch_date).toLocaleString()} 시작`
+                            : '시청 예정'}
+                        </p>
+                        <p>
+                          {party.video_name}
+                          {party.media_type === 'tv' && party.episode_number
+                            ? ` (Episode ${party.episode_number})`
+                            : ''}
+                        </p>
+                        <h3>{party.party_name}</h3>
+                      </div>
+                      <div>
+                        <div>
+                          <Image
+                            src={
+                              party.ownerProfile.profile_img ||
+                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                            }
+                            alt={`${party.ownerProfile.nickname}의 프로필`}
+                            width={50}
+                            height={50}
+                          />
+                          <span>{party.ownerProfile.nickname}</span>
+                        </div>
+                        <span>
+                          ({party.currentPartyPeople} / {party.limited_member})
+                        </span>
+                      </div>
+                    </li>
+                  </Link>
                 );
               })
             ) : (

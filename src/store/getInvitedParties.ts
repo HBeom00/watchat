@@ -72,7 +72,8 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
       )
       `
     )
-    .eq('invitee', userId);
+    .eq('invitee', userId)
+    .returns<InvitedParty[]>();
 
   if (inviteListError) {
     console.error('초대목록을 불러오는데 실패했습니다. => ', inviteListError?.message);
