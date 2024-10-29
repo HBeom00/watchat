@@ -11,7 +11,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       <p>{data.party_name}</p>
       <p>{data.situation}</p>
       <p>{data.watch_date}</p>
-      <Image src={platform.logoUrl} width={50} height={50} alt={platform.name} />
+      {platform ? <Image src={platform.logoUrl} width={50} height={50} alt={platform.name} /> : <></>}
     </Link>
   );
 };
