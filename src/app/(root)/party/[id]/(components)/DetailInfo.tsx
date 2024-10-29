@@ -1,3 +1,4 @@
+'use client';
 import { fetchMoviesDetail, fetchTvDetail } from '@/serverActions/TMDB';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
