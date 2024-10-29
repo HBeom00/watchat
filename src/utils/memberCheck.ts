@@ -1,12 +1,18 @@
 import browserClient from '@/utils/supabase/client';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
+
+export type member = { profile_id: string; nickname: string; profile_image: string; user_id: string; party_id: string };
 
 // 파티 상태 확인
 export const partySituationChecker = async (party_id: string) => {
-  const { data, error } = await browserClient.from('party_info').select('situation').eq('party_id', party_id);
-  if (error) {
-    console.log(error);
+  const response: PostgrestSingleResponse<{ situation: string }[]> = await browserClient
+    .from('party_info')
+    .select('situation')
+    .eq('party_id', party_id);
+  if (response.error) {
+    console.log(response.error.message);
   }
-  const situation: string = data ? data[0].situation : '알수없음';
+  const situation: string = response.data ? response.data[0].situation : '알수없음';
   return situation;
 };
 
@@ -45,5 +51,15 @@ export const isMemberExist = async (party_id: string, user_id: string | null) =>
     .select('profile_id')
     .eq('party_id', party_id)
     .eq('user_id', user_id);
-  return !!response.data;
+  return response.data && response.data?.length > 0;
+};
+
+// 참가한 멤버 불러오기
+export const getPartyMember = async (party_id: string) => {
+  const response: PostgrestSingleResponse<member[]> = await browserClient
+    .from('team_user_profile')
+    .select('*')
+    .eq('party_id', party_id);
+
+  return response.data;
 };
