@@ -5,6 +5,8 @@
     media_type: 'movie' | 'tv' | 'person'; // 미디어 타입
     poster_path?: string; // 포스터 이미지 경로
     overview?: string; // 설명
+    backdrop_path?: string;
+    platform: {name: string; logoUrl: string}[];
   }
   
  export interface SearchResponse {
