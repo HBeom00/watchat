@@ -74,7 +74,8 @@ const RecruitPage1 = () => {
             media_type: result.media_type || '',
             video_id: result.id,
             video_platform: providerData || [],
-            popularity: result.popularity
+            popularity: result.popularity,
+            backdrop_image: result.backdrop_path
         });
         setShowResults(false);
         queryClient.invalidateQueries({ queryKey: ['searchVideo'] });

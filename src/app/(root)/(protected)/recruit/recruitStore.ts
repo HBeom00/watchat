@@ -12,6 +12,7 @@ interface RecruitState {
     video_platform: { name: string; logoUrl: string }[] | null;
     media_type: string;
     video_image: string;
+    backdrop_image: string;
     video_id: number | null;
     episode_number: number | null;
     situation: string;
@@ -32,6 +33,7 @@ export const useRecruitStore = create<RecruitState>((set) => ({
     video_platform: [],
     media_type: '',
     video_image: '',
+    backdrop_image:'',
     video_id: null,
     episode_number: null,
     situation: "모집중",
