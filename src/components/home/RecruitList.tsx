@@ -6,6 +6,7 @@ import browserClient from '@/utils/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import RecruitCard from './RecruitCard';
+import { getExpiration } from '@/app/(root)/party/[id]/dateChecker';
 
 const RecruitList = () => {
   const [order, setOrder] = useState<string>('watch_date');
@@ -165,18 +166,3 @@ const RecruitList = () => {
 };
 
 export default RecruitList;
-
-// 시청날짜가 지났을 때
-// true면 지난 것 false면 안 지난 것
-const getExpiration = (watchDate: string) => {
-  let nowDateArr = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Seoul' }).split('/');
-  nowDateArr = [nowDateArr[2], nowDateArr[0], nowDateArr[1]];
-  const watchDataArr = watchDate.split('-');
-  let expiration = false;
-  for (let i = 0; i < watchDataArr.length; i++) {
-    if (!(Number(watchDataArr[i]) - Number(nowDateArr[i]) >= 0)) {
-      expiration = true;
-    }
-  }
-  return expiration;
-};

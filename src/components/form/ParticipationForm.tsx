@@ -53,9 +53,6 @@ const ParticipationForm = ({
     if (!user_Id) {
       alert('먼저 로그인해주세요');
       router.push('/login');
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
       return;
     }
 
@@ -63,21 +60,12 @@ const ParticipationForm = ({
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
       alert('존재하지 않는 파티입니다');
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
       return;
     } else if (endCheck === '모집마감') {
       alert('모집이 마감된 파티입니다');
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
       return;
     } else if (endCheck === '종료') {
       alert('종료된 파티입니다');
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
       return;
     }
 
@@ -85,9 +73,6 @@ const ParticipationForm = ({
     if (isMember) {
       alert('이미 참가한 파티입니다');
       router.replace(`/party/${party_id}`);
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
 
       return;
     }
@@ -99,9 +84,6 @@ const ParticipationForm = ({
 
     if (participationError) {
       alert('파티에 참가할 수 없습니다');
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
       return;
     } else {
       let profile_img = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
@@ -125,9 +107,6 @@ const ParticipationForm = ({
         .eq('party_id', party_id);
       if (error) {
         alert('파티 참가에 실패하셨습니다');
-        if (path.includes('/party')) {
-          closeHandler(false);
-        }
         return;
       }
       // 멤버가 변동하면 바뀌어야 하는 값들

@@ -35,17 +35,19 @@ const MyParty = ({ userId }: { userId: string }) => {
     <div>
       <p>MY 파티</p>
       <div className="flex flex-row gap-10 p-10">
-        {data?.map((party) => {
-          if (party) {
-            return (
-              <RecruitCard
-                key={party.party_id}
-                data={party}
-                end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
-              />
-            );
-          }
-        })}
+        {data
+          ?.filter((n) => !(n?.situation === '종료'))
+          .map((party) => {
+            if (party) {
+              return (
+                <RecruitCard
+                  key={party.party_id}
+                  data={party}
+                  end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
+                />
+              );
+            }
+          })}
       </div>
     </div>
   );

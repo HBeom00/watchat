@@ -1,3 +1,4 @@
+import { nowWatchingDate } from '@/app/(root)/party/[id]/dateChecker';
 import { partyInfo, platform } from '@/types/partyInfo';
 import browserClient from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
@@ -26,6 +27,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   });
   if (isLoading) <div>Loading...</div>;
 
+  console.log(nowWatchingDate(data.watch_date, data.start_time, data.duration_time));
   return (
     <Link href={`/party/${data.party_id}`} className={blurred}>
       <p>{}</p>
@@ -33,6 +35,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       <p>{data.video_name}</p>
       <p>{data.situation}</p>
       <p>{data.watch_date}</p>
+      <p>{data.start_time.split('.')[0]}</p>
       <p>{`${memberCount ? memberCount : 0}/${data.limited_member}`}</p>
       {platform ? <Image src={platform.logoUrl} width={50} height={50} alt={platform.name} /> : <></>}
     </Link>
