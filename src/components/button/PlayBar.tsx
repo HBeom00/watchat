@@ -7,13 +7,11 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   // 시작 시간
   // 초
   const startPlayTime = (Number(startTime.split(':')[0]) * 60 + Number(startTime.split(':')[1])) * 60;
-  console.log(startPlayTime, ' 호가인 값');
 
   // duration을 가져와서
   // 끝나는 시간을 구함
   // 분
   const playEnd = [Math.floor(duration / 60), duration % 60 < 10 ? `0${duration % 60}` : duration % 60];
-  console.log(playEnd, ' 종료시각');
 
   // 플레이타임
   // 초
@@ -51,6 +49,7 @@ const getPlayTime = (startPlayTime: number) => {
   if (nowTime < 8 * 60 * 60 && !(startPlayTime < 8 * 60 * 60)) {
     nowTime += 24 * 60 * 60;
   }
+
   console.log('시작시간과 현재시간', Math.floor(Number(startPlayTime) / 60 / 60), nowTimeArr[0]);
 
   return nowTime - startPlayTime + 1 * 60 * 60;

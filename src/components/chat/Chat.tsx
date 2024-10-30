@@ -108,7 +108,7 @@ export default function Chat({ roomId }: { roomId: string }) {
                       alt={msg.profile_image}
                       width={30}
                       height={30}
-                      className="rounded-full mr-2"
+                      className="rounded-full mr-2 h-auto w-auto"
                     />
                   )}
                   {!isMyself && <div>{msg.nickname}</div>}
