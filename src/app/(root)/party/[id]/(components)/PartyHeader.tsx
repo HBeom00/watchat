@@ -1,21 +1,25 @@
+'use client';
 import Link from 'next/link';
-import { isMemberExistOnServer } from '@/utils/memberCheckOnServer';
 import Image from 'next/image';
 import ParticipationButton from '@/components/button/ParticipationButton';
 import Owner from '@/components/form/Owner';
 import { partyInfo } from '@/types/partyInfo';
+import { useQuery } from '@tanstack/react-query';
+import { isMemberExist } from '@/utils/memberCheck';
 
-const PartyHeader = async ({
-  partyData,
-  userId,
-  end
-}: {
-  partyData: partyInfo;
-  userId: string | null;
-  end: boolean;
-}) => {
+const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
+  const { data: isMember, isLoading } = useQuery({
+    queryKey: ['isMember', partyData.party_id, userId],
+    queryFn: async () => {
+      const isMember = await isMemberExist(partyData.party_id, userId);
+      return isMember;
+    }
+  });
+
   // 멤버일 경우
-  const isMember = await isMemberExistOnServer(partyData.party_id, userId);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-7 w-full p-10 justify-center items-center bg-slate-500">
@@ -28,7 +32,10 @@ const PartyHeader = async ({
         ) : isMember ? (
           <Link href={`/chat/${partyData.party_id}`}>채팅하기</Link>
         ) : (
-          <ParticipationButton name="참가하기" party_id={partyData.party_id} />
+          // <ParticipationButton name="참가하기" party_id={partyData.party_id} />
+          <ParticipationButton party_id={partyData.party_id} openControl={false}>
+            <button>참가하기</button>
+          </ParticipationButton>
         )}
       </div>
       {/* 오너이면 렌더링되도록 */}

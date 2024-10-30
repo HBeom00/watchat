@@ -8,12 +8,14 @@ const MemberList = ({
   partyNumber,
   userId,
   isMember,
-  end
+  end,
+  partyOwner
 }: {
   partyNumber: string;
   userId: string | null;
   isMember: boolean | null | undefined;
   end: boolean;
+  partyOwner: string;
 }) => {
   const queryClient = useQueryClient();
 
@@ -28,6 +30,9 @@ const MemberList = ({
     mutationFn: (userId: string) => memberExpulsion(partyNumber, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['partyMember', partyNumber] });
+      queryClient.invalidateQueries({ queryKey: ['isMember', partyNumber, userId] });
+
+      // 채팅하기 버튼이 안 바뀌는데.... 깜빡이게 할까
     }
   });
 
@@ -47,7 +52,11 @@ const MemberList = ({
           <p>멤버가 없습니다</p>
         </>
       )}
-      {userId && isMember && !end ? <button onClick={() => mutation.mutate(userId)}>참가 취소하기</button> : <></>}
+      {userId && isMember && !end && !(partyOwner === userId) ? (
+        <button onClick={() => mutation.mutate(userId)}>참가 취소하기</button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

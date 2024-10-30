@@ -1,19 +1,30 @@
 'use client';
 
 import { partyInfo } from '@/types/partyInfo';
-import browserClient from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { useQuery } from '@tanstack/react-query';
+import browserClient from '@/utils/supabase/client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import RecruitCard from './RecruitCard';
 
 const RecruitList = () => {
   const [order, setOrder] = useState<string>('최신순');
   const [filter, setFilter] = useState<string>('전체');
+  // const [pageNumber,setPageNumber] = useState<number>(1)
+  const queryClient = useQueryClient();
+
+  const bull = filter === '전체' ? 'name' : filter;
+  queryClient.invalidateQueries({ queryKey: ['recruitList'] });
   const { data, isLoading } = useQuery({
     queryKey: ['recruitList'],
     queryFn: async () => {
-      const response: PostgrestSingleResponse<partyInfo[]> = await browserClient.from('party_info').select('*');
+      const response: PostgrestSingleResponse<partyInfo[]> = await browserClient
+        .from('party_info')
+        .select('*')
+        .range(0, 15)
+        .order('watch_date', { ascending: false })
+        // .order(order, { ascending: false })
+        .textSearch('video_platform', bull);
       if (response.error) {
         console.log(response.error.message);
       }
@@ -21,39 +32,28 @@ const RecruitList = () => {
     }
   });
   if (isLoading) <div>Loading...</div>;
-
-  let filterData = data?.sort((a, b) => {
-    return (
-      Number(a.watch_date.split('-')[0]) - Number(b.watch_date.split('-')[0]) ||
-      Number(a.watch_date.split('-')[1]) - Number(b.watch_date.split('-')[1]) ||
-      Number(a.watch_date.split('-')[2]) - Number(b.watch_date.split('-')[2])
-    );
-  });
-  filterData =
-    order === '인기순'
-      ? filterData?.sort((a, b) => {
-          return a.limited_member - b.limited_member;
-        })
-      : filterData;
-
-  filterData =
-    filter === '전체'
-      ? filterData
-      : filterData?.filter((n) => {
-          return n.video_platform.indexOf(filter) !== -1;
-        });
-
+  console.log(data, order);
   return (
     <div>
       <div className="flex flex-row gap-5 p-10">
         <form>
-          <select name="순" onChange={(e) => setOrder(e.target.value)}>
-            <option value={'최신순'}>최신순</option>
-            <option value={'인기순'}>인기순</option>
+          <select
+            name="순서"
+            onChange={(e) => {
+              setOrder(e.target.value);
+            }}
+          >
+            <option value={'watch_date'}>최신순</option>
+            <option value={'popularity'}>인기순</option>
           </select>
         </form>
         <form>
-          <select name="채널" onChange={(e) => setFilter(e.target.value)}>
+          <select
+            name="채널"
+            onChange={(e) => {
+              setFilter(e.target.value);
+            }}
+          >
             <option value={'전체'}>전체</option>
             <option value={'Netflix'}>넷플릭스</option>
             <option value={'Tving'}>티빙</option>
@@ -65,17 +65,15 @@ const RecruitList = () => {
         </form>
       </div>
       <div className="grid grid-cols-4 gap-10 p-10">
-        {filterData
-          // 최신순   :   시청 날짜가 현재 이전일 경우 뒤로 보내기
-          ?.filter((n) => !(n.situation === '종료') && !getExpiration(n.watch_date))
-          .map((recruit) => {
-            return <RecruitCard key={recruit.party_id} data={recruit} end={false} />;
-          })}
-        {filterData
-          ?.filter((n) => n.situation === '종료' || getExpiration(n.watch_date))
-          .map((recruit) => {
-            return <RecruitCard key={recruit.party_id} data={recruit} end={true} />;
-          })}
+        {data?.map((recruit) => {
+          return (
+            <RecruitCard
+              key={recruit.party_id}
+              data={recruit}
+              end={recruit.situation === '종료' || getExpiration(recruit.watch_date)}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -91,11 +89,11 @@ const getExpiration = (watchDate: string) => {
   const watchDataArr = watchDate.split('-');
   let expiration = true;
   for (let i = 0; i < watchDataArr.length; i++) {
-    console.log(Number(watchDataArr[i]) - Number(nowDateArr[i]));
+    // console.log(Number(watchDataArr[i]) - Number(nowDateArr[i]));
     if (Number(watchDataArr[i]) - Number(nowDateArr[i]) > 0) {
       expiration = false;
     }
   }
-  console.log(expiration);
+  // console.log(watchDate, expiration);
   return expiration;
 };

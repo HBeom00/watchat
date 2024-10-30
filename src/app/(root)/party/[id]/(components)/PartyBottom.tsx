@@ -8,12 +8,22 @@ import { isMemberExist } from '@/utils/memberCheck';
 import { useQuery } from '@tanstack/react-query';
 import { partyInfo } from '@/types/partyInfo';
 
-const PartyBottom = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
+const PartyBottom = ({
+  partyData,
+  userId,
+  end,
+  partyOwner
+}: {
+  partyData: partyInfo;
+  userId: string | null;
+  end: boolean;
+  partyOwner: string;
+}) => {
   const [tab, setTab] = useState<string>('파티소개');
 
   //로그인한 사용자가 해당 파티에 가입했을 때
   const { data: isMember, isLoading } = useQuery({
-    queryKey: ['isMember', partyData.party_id],
+    queryKey: ['isMember', partyData.party_id, userId],
     queryFn: async () => await isMemberExist(partyData.party_id, userId)
   });
 
@@ -31,7 +41,13 @@ const PartyBottom = ({ partyData, userId, end }: { partyData: partyInfo; userId:
         <button onClick={() => setTab('프로그램 정보')}>프로그램 정보</button>
       </div>
       {tab === '파티소개' ? (
-        <MemberList partyNumber={partyData.party_id} userId={userId} isMember={isMember} end={end} />
+        <MemberList
+          partyNumber={partyData.party_id}
+          userId={userId}
+          isMember={isMember}
+          end={end}
+          partyOwner={partyOwner}
+        />
       ) : (
         <></>
       )}
