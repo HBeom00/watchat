@@ -47,9 +47,10 @@ const SignUpForm = () => {
       return;
     }
 
+    await browserClient.auth.signOut();
+
     alert('회원가입 되었습니다.');
     router.push('/login');
-    return;
   };
 
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
