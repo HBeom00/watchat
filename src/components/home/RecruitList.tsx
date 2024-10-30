@@ -4,26 +4,44 @@ import { partyInfo } from '@/types/partyInfo';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import browserClient from '@/utils/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RecruitCard from './RecruitCard';
 
 const RecruitList = () => {
-  const [order, setOrder] = useState<string>('최신순');
+  const [order, setOrder] = useState<string>('watch_date');
   const [filter, setFilter] = useState<string>('전체');
-  // const [pageNumber,setPageNumber] = useState<number>(1)
-  const queryClient = useQueryClient();
-
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const bull = filter === '전체' ? 'name' : filter;
-  queryClient.invalidateQueries({ queryKey: ['recruitList'] });
+  const start = (pageNumber - 1) * 16;
+  const end = pageNumber * 16 - 1;
+
+  // 페이지 수 불러오기
+  const { data: pageData, isLoading: isPageLoading } = useQuery({
+    queryKey: ['recruitListPages'],
+    queryFn: async () => {
+      const response: PostgrestSingleResponse<{ party_id: string }[]> = await browserClient
+        .from('party_info')
+        .select('party_id')
+        .order('watch_date', { ascending: false })
+        .order(order, { ascending: false })
+        .textSearch('video_platform', bull);
+      if (response.error) {
+        console.log(response.error.message);
+      }
+      return response.data && response.data.length > 0 ? Math.ceil(response.data?.length / 16) : 1;
+    }
+  });
+
+  // 데이터 불러오기
   const { data, isLoading } = useQuery({
     queryKey: ['recruitList'],
     queryFn: async () => {
       const response: PostgrestSingleResponse<partyInfo[]> = await browserClient
         .from('party_info')
         .select('*')
-        .range(0, 15)
+        .range(start, end)
         .order('watch_date', { ascending: false })
-        // .order(order, { ascending: false })
+        .order(order, { ascending: false })
         .textSearch('video_platform', bull);
       if (response.error) {
         console.log(response.error.message);
@@ -31,8 +49,14 @@ const RecruitList = () => {
       return response.data;
     }
   });
-  if (isLoading) <div>Loading...</div>;
-  console.log(data, order);
+
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['recruitList'] });
+    queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
+  }, [order, filter, pageNumber, queryClient]);
+
+  if (isLoading || isPageLoading) <div>Loading...</div>;
   return (
     <div>
       <div className="flex flex-row gap-5 p-10">
@@ -75,6 +99,20 @@ const RecruitList = () => {
           );
         })}
       </div>
+      <div className="flex flex-row gap-10 p-10 justify-center items-center text-xl font-bold">
+        {pageData &&
+          Array.from({ length: pageData })
+            .map((arr, i) => {
+              return i + 1;
+            })
+            .map((page) => {
+              return (
+                <button key={page} onClick={() => setPageNumber(page)}>
+                  {page}
+                </button>
+              );
+            })}
+      </div>
     </div>
   );
 };
@@ -87,13 +125,11 @@ const getExpiration = (watchDate: string) => {
   let nowDateArr = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Seoul' }).split('/');
   nowDateArr = [nowDateArr[2], nowDateArr[0], nowDateArr[1]];
   const watchDataArr = watchDate.split('-');
-  let expiration = true;
+  let expiration = false;
   for (let i = 0; i < watchDataArr.length; i++) {
-    // console.log(Number(watchDataArr[i]) - Number(nowDateArr[i]));
-    if (Number(watchDataArr[i]) - Number(nowDateArr[i]) > 0) {
-      expiration = false;
+    if (!(Number(watchDataArr[i]) - Number(nowDateArr[i]) >= 0)) {
+      expiration = true;
     }
   }
-  // console.log(watchDate, expiration);
   return expiration;
 };

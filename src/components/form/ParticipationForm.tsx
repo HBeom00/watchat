@@ -121,6 +121,7 @@ const ParticipationForm = ({
       }
       router.replace(`/party/${party_id}`);
     }
+    setDisabled(false);
   };
   return (
     <>
