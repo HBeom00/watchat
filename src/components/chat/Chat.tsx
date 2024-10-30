@@ -66,7 +66,7 @@ export default function Chat({ roomId }: { roomId: string }) {
     return () => {
       browserClient.removeChannel(messageSubscription); // 컴포넌트 언마운트 시 구독 해제
     };
-  }, []);
+  }, [roomId]);
 
   // 새 메시지를 화면에 표시하는 함수
   const displayNewMessage = (message: Chat) => {
