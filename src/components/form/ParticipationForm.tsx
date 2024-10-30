@@ -2,12 +2,19 @@
 
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { isMemberExist, partySituationChecker } from '@/utils/memberCheck';
-import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { useQueryClient } from '@tanstack/react-query';
 
-const ParticipationForm = ({ party_id }: { party_id: string }) => {
+const ParticipationForm = ({
+  party_id,
+  closeHandler
+}: {
+  party_id: string;
+  closeHandler: Dispatch<SetStateAction<boolean>>;
+}) => {
   // 스토리지 업로드 이미지 파일
   const imgRef = useRef<HTMLInputElement>(null);
 
@@ -17,7 +24,9 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
   );
   const [nickname, setNickname] = useState('익명');
   const [disabled, setDisabled] = useState(false);
+  const path = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // 이미지 업로드 onChange
   const uploadImage = () => {
@@ -90,9 +99,16 @@ const ParticipationForm = ({ party_id }: { party_id: string }) => {
         .eq('user_id', user_Id)
         .eq('party_id', party_id);
       if (error) {
-        console.log(error.message);
+        alert('파티 참가에 실패하셨습니다');
+        return;
       }
+      // 멤버가 변동하면 바뀌어야 하는 값들
+      queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
+      queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
       alert('파티에 참가하신 걸 환영합니다!');
+      if (path.includes('/party')) {
+        closeHandler(false);
+      }
       router.replace(`/party/${party_id}`);
     }
   };

@@ -28,7 +28,10 @@ const PartyHeader = async ({
         ) : isMember ? (
           <Link href={`/chat/${partyData.party_id}`}>채팅하기</Link>
         ) : (
-          <ParticipationButton name="참가하기" party_id={partyData.party_id} />
+          // <ParticipationButton name="참가하기" party_id={partyData.party_id} />
+          <ParticipationButton party_id={partyData.party_id}>
+            <button>참가하기</button>
+          </ParticipationButton>
         )}
       </div>
       {/* 오너이면 렌더링되도록 */}
