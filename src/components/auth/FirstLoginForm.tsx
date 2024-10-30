@@ -82,7 +82,7 @@ const FirstLoginForm = () => {
 
     const profileImgUrl = browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl;
 
-    // 회원가입페이지일 경우와 마이페이지일 경우 분리
+    // (10.29 5:10) 회원가입페이지일 경우와 마이페이지일 경우 분리
     if (file && pathname === '/mypage/edit' && !!user) {
       // 마이페이지인 경우
       await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제

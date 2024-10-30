@@ -13,7 +13,7 @@ import {
   DialogTrigger
 } from '@/components/ui/Dialog';
 import { useFollowData } from '@/store/useFollowData';
-import { unfollow } from '@/store/unfollow';
+import { follow, unfollow } from '@/store/followUnfollow';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useInvitedParties } from '@/store/useInvitedParties';
 import { useRefuseMutation } from '@/store/useInviteMutation';
@@ -21,6 +21,7 @@ import { DialogClose } from '@radix-ui/react-dialog';
 import { useParticipatingParty } from '@/store/useParticipatingParty';
 import { getViewStatus } from '@/utils/viewStatus';
 import { useOwnerParty } from '@/store/useOwnerParties';
+import { useRecommendedUsers } from '@/store/useRecommendedUser';
 
 const MyPage = () => {
   // 사용자 데이터 가져오기
@@ -39,8 +40,16 @@ const MyPage = () => {
   const queryClient = useQueryClient();
 
   // 언팔로우 하기
-  const mutation = useMutation({
+  const unfollowMutation = useMutation({
     mutationFn: (followId: string) => unfollow(userId as string, followId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['followingUsers', userId] });
+    }
+  });
+
+  // 팔로우 하기
+  const followMutation = useMutation({
+    mutationFn: (followId: string) => follow(userId as string, followId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['followingUsers', userId] });
     }
@@ -52,8 +61,6 @@ const MyPage = () => {
     isPending: pendingEnjoyingParty,
     isError: errorEnjoyingParty
   } = useParticipatingParty(userId as string);
-
-  console.log(enjoyingParty);
 
   // 주최중인 파티 가져오기
   const { data: ownerParty, isPending: pandingOwnerParty, isError: errorOwnerParty } = useOwnerParty(userId as string);
@@ -70,10 +77,26 @@ const MyPage = () => {
   // 초대 거절하기
   const refuseInvite = useRefuseMutation(userId as string);
 
-  if (isPending || pending || pendingInvitedParties || pendingEnjoyingParty || pandingOwnerParty) {
+  // 팔로우 추천 목록 가져오기
+  const {
+    data: recommendedUsers,
+    isPending: pendingRecommendedUsers,
+    isError: errorRecommenedUsers
+  } = useRecommendedUsers();
+
+  console.log('추천 사용자 데이터 =>', recommendedUsers);
+
+  if (
+    isPending ||
+    pending ||
+    pendingInvitedParties ||
+    pendingEnjoyingParty ||
+    pandingOwnerParty ||
+    pendingRecommendedUsers
+  ) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || error || errorInvitedParties || errorEnjoyingParty || errorOwnerParty) {
+  if (isError || error || errorInvitedParties || errorEnjoyingParty || errorOwnerParty || errorRecommenedUsers) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
@@ -115,7 +138,7 @@ const MyPage = () => {
                       />
                       <span>{follower.nickname}</span>
                     </div>
-                    <button onClick={() => mutation.mutate(follower.user_id)}>언팔로우</button>
+                    <button onClick={() => unfollowMutation.mutate(follower.user_id)}>언팔로우</button>
                   </li>
                 ))
               ) : (
@@ -329,6 +352,37 @@ const MyPage = () => {
         </article>
         <article>
           <h3>최근 함께했던 파티원</h3>
+          <ul>
+            {recommendedUsers && recommendedUsers.length > 0 ? (
+              recommendedUsers.map((recommendedUser) => {
+                return (
+                  <li key={recommendedUser.party_id}>
+                    {recommendedUser.team_user_profile.map((member) => (
+                      <div key={`${recommendedUser.party_id}-${member.user.nickname}`}>
+                        <Image
+                          src={member.user.profile_img || 'default_image_url.jpg'}
+                          alt={`${member.user.nickname}의 프로필`}
+                          width={80}
+                          height={80}
+                        />
+                        <h3>{member.user.nickname}</h3>
+                        <p>
+                          {recommendedUser.video_name}
+                          {recommendedUser.media_type === 'tv' && recommendedUser.episode_number
+                            ? ` ${recommendedUser.episode_number} 화`
+                            : ''}
+                        </p>
+                        <p>를(을) 함께 시청했습니다.</p>
+                        <button onClick={() => followMutation.mutate(member.user.user_id)}>팔로우</button>
+                      </div>
+                    ))}
+                  </li>
+                );
+              })
+            ) : (
+              <div>최근 함께한 파티원이 없습니다.</div>
+            )}
+          </ul>
         </article>
       </section>
     </>
