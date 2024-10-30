@@ -10,7 +10,7 @@ const Header = () => {
   return( 
 <div className='flex space-x-[50%] ml-[10%] items-center h-[80px]'>
     <div className='flex space-x-[25px]'>
-     <h1>Watchat</h1>
+     <Link href={'/'}>Watchat</Link>
      <button>전체</button>
      <button>시청중</button>
      <button>모집중</button>

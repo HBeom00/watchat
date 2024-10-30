@@ -7,6 +7,7 @@ import Providers from '@/providers/queryProvider';
 import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
 import { UserStoreProvider } from '@/providers/userStoreProvider';
+import Footer from '@/components/layout/Footer';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -40,6 +41,7 @@ export default async function RootLayout({
           <Providers>
             <Header />
             {children}
+            <Footer />
           </Providers>
         </UserStoreProvider>
       </body>
