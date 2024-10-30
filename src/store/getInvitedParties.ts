@@ -1,3 +1,5 @@
+// 초대받은 파티 목록 가져오기
+
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
 interface InvitedParty {

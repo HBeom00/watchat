@@ -11,7 +11,7 @@ import { inviteHandler } from '@/utils/invite';
 import { useFollowData } from '@/store/useFollowData';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { unfollow } from '@/store/unfollow';
+import { unfollow } from '@/store/followUnfollow';
 
 const InvitedButton = ({ partyNumber, userId }: { partyNumber: string; userId: string }) => {
   const { data: followerDataResult, isPending: pending, isError: error } = useFollowData(userId);
