@@ -7,6 +7,7 @@
     overview?: string; // 설명
     backdrop_path?: string;
     platform: {name: string; logoUrl: string}[];
+    popularity: number
   }
   
  export interface SearchResponse {
