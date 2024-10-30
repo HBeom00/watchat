@@ -74,54 +74,58 @@ const MyProfile = () => {
         width={150}
         height={150}
       />
-      <h3>닉네임: {userData?.nickname}</h3>
-
-      <Dialog>
-        <DialogTrigger>팔로잉 {followerCount}명</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>팔로우한 사람</DialogTitle>
-          </DialogHeader>
-          <ul>
-            {followerData && followerData.length > 0 ? (
-              followerData.map((follower: FollowingUser) => (
-                <li key={follower.user_id}>
-                  <div>
-                    <Image
-                      src={
-                        follower.profile_img ||
-                        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                      }
-                      alt={`${follower.nickname} 님의 프로필 사진`}
-                      width={50}
-                      height={50}
-                    />
-                    <span>{follower.nickname}</span>
-                  </div>
-                  <button onClick={() => unfollowMutation.mutate(follower.user_id)}>언팔로우</button>
-                </li>
-              ))
-            ) : (
-              <li>아직 팔로우한 사람이 없습니다.</li>
-            )}
-          </ul>
-          <DialogDescription></DialogDescription>
-        </DialogContent>
-      </Dialog>
-      <div>
+      <article>
         <div>
-          <span>내 구독 채널</span>
-          <span></span>
+          <h3>닉네임: {userData?.nickname}</h3>
+          <Link href={'/mypage/edit'}>프로필 편집</Link>
         </div>
         <div>
-          <span>내 취향</span>
-          <span></span>
+          <Dialog>
+            <DialogTrigger>팔로잉 {followerCount}명</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>팔로우한 사람</DialogTitle>
+              </DialogHeader>
+              <ul>
+                {followerData && followerData.length > 0 ? (
+                  followerData.map((follower: FollowingUser) => (
+                    <li key={follower.user_id}>
+                      <div>
+                        <Image
+                          src={
+                            follower.profile_img ||
+                            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                          }
+                          alt={`${follower.nickname} 님의 프로필 사진`}
+                          width={50}
+                          height={50}
+                        />
+                        <span>{follower.nickname}</span>
+                      </div>
+                      <button onClick={() => unfollowMutation.mutate(follower.user_id)}>언팔로우</button>
+                    </li>
+                  ))
+                ) : (
+                  <li>아직 팔로우한 사람이 없습니다.</li>
+                )}
+              </ul>
+              <DialogDescription></DialogDescription>
+            </DialogContent>
+          </Dialog>
+          <div>
+            <span>플랫폼</span>
+            <span>{userData?.platform}</span>
+          </div>
+          <div>
+            <span>장르</span>
+            <ul>
+              {userData?.genre.map((genre, index) => (
+                <li key={index}>{genre}</li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-      <div>
-        <Link href={'/mypage/edit'}>프로필 편집</Link>
-        <button>파티 모집하기</button>
-      </div>
+      </article>
     </section>
   );
 };

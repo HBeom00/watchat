@@ -24,10 +24,7 @@ const MyOwnerParty = () => {
 
   return (
     <article>
-      <div>
-        <h3>내가 오너인 파티</h3>
-        <Link href={'/mypage/hosted-party'}>더보기</Link>
-      </div>
+      <h3>내가 오너인 파티</h3>
       <ul>
         {ownerParty && ownerParty.length > 0 ? (
           ownerParty.map((party) => {

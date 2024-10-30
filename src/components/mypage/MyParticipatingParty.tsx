@@ -27,7 +27,10 @@ const MyParticipatingParty = () => {
 
   return (
     <article>
-      <h3>참여한 파티</h3>
+      <div>
+        <h3>참여한 파티</h3>
+        <Link href={'/mypage/participating-party'}>더보기</Link>
+      </div>
       <ul>
         {enjoyingParty && enjoyingParty.length > 0 ? (
           enjoyingParty.map((party) => {
