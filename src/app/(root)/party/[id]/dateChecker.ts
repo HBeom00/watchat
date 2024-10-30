@@ -17,3 +17,5 @@ export const nowWatchingDate = (watch_date: string): boolean => {
   console.log(watch_date, today);
   return today;
 };
+
+// 시청 전 / 시청 중 / 시청 후

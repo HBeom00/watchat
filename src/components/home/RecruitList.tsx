@@ -11,24 +11,45 @@ const RecruitList = () => {
   const [order, setOrder] = useState<string>('watch_date');
   const [filter, setFilter] = useState<string>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
+
+  const [partySituation, setPartySituation] = useState('');
+  const [searchWord, setSearchWord] = useState<string>('');
+
+  const pageSlice = 16;
   const bull = filter === '전체' ? 'name' : filter;
-  const start = (pageNumber - 1) * 16;
-  const end = pageNumber * 16 - 1;
+  const start = (pageNumber - 1) * pageSlice;
+  const end = pageNumber * pageSlice - 1;
+
+  const wordConversion = searchWord
+    .split(' ')
+    .map((n) => {
+      return `${n}+`;
+    })
+    .join('');
 
   // 페이지 수 불러오기
   const { data: pageData, isLoading: isPageLoading } = useQuery({
     queryKey: ['recruitListPages'],
     queryFn: async () => {
-      const response: PostgrestSingleResponse<{ party_id: string }[]> = await browserClient
-        .from('party_info')
-        .select('party_id')
-        .order('watch_date', { ascending: false })
-        .order(order, { ascending: false })
-        .textSearch('video_platform', bull);
+      const response: PostgrestSingleResponse<{ party_id: string }[]> =
+        wordConversion === '+'
+          ? await browserClient
+              .from('party_info')
+              .select('party_id')
+              .order('watch_date', { ascending: false })
+              .order(order, { ascending: false })
+              .textSearch('video_platform', bull)
+          : await browserClient
+              .from('party_info')
+              .select('party_id')
+              .order('watch_date', { ascending: false })
+              .order(order, { ascending: false })
+              .textSearch('video_platform', bull)
+              .textSearch('video_name', wordConversion);
       if (response.error) {
         console.log(response.error.message);
       }
-      return response.data && response.data.length > 0 ? Math.ceil(response.data?.length / 16) : 1;
+      return response.data && response.data.length > 0 ? Math.ceil(response.data?.length / pageSlice) : 1;
     }
   });
 
@@ -36,13 +57,23 @@ const RecruitList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['recruitList'],
     queryFn: async () => {
-      const response: PostgrestSingleResponse<partyInfo[]> = await browserClient
-        .from('party_info')
-        .select('*')
-        .range(start, end)
-        .order('watch_date', { ascending: false })
-        .order(order, { ascending: false })
-        .textSearch('video_platform', bull);
+      const response: PostgrestSingleResponse<partyInfo[]> =
+        wordConversion === '+'
+          ? await browserClient
+              .from('party_info')
+              .select('*')
+              .range(start, end)
+              .order('watch_date', { ascending: false })
+              .order(order, { ascending: false })
+              .textSearch('video_platform', bull)
+          : await browserClient
+              .from('party_info')
+              .select('*')
+              .range(start, end)
+              .order('watch_date', { ascending: false })
+              .order(order, { ascending: false })
+              .textSearch('video_name', wordConversion);
+
       if (response.error) {
         console.log(response.error.message);
       }
@@ -54,11 +85,23 @@ const RecruitList = () => {
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['recruitList'] });
     queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
-  }, [order, filter, pageNumber, queryClient]);
+  }, [order, filter, pageNumber, searchWord, queryClient]);
 
   if (isLoading || isPageLoading) <div>Loading...</div>;
+  let df;
+  if (partySituation === '') df = data;
+  if (partySituation === '시청중') df = data;
+  if (partySituation === '모집중') df = data?.filter((n) => n.situation === '모집중');
+
+  console.log(df);
   return (
     <div>
+      <div>
+        <p onClick={() => setPartySituation('')}>전체</p>
+        <p onClick={() => setPartySituation('시청중')}>시청중</p>
+        <p onClick={() => setPartySituation('모집중')}>모집중</p>
+      </div>
+      <input type="text" className="bg-slate-300" onChange={(e) => setSearchWord(e.target.value)} />
       <div className="flex flex-row gap-5 p-10">
         <form>
           <select
@@ -89,15 +132,19 @@ const RecruitList = () => {
         </form>
       </div>
       <div className="grid grid-cols-4 gap-10 p-10">
-        {data?.map((recruit) => {
-          return (
-            <RecruitCard
-              key={recruit.party_id}
-              data={recruit}
-              end={recruit.situation === '종료' || getExpiration(recruit.watch_date)}
-            />
-          );
-        })}
+        {data && data.length > 0 ? (
+          data.map((recruit) => {
+            return (
+              <RecruitCard
+                key={recruit.party_id}
+                data={recruit}
+                end={recruit.situation === '종료' || getExpiration(recruit.watch_date)}
+              />
+            );
+          })
+        ) : (
+          <p>데이터가 없습니다</p>
+        )}
       </div>
       <div className="flex flex-row gap-10 p-10 justify-center items-center text-xl font-bold">
         {pageData &&
