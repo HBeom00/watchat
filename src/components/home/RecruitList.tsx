@@ -14,7 +14,6 @@ const RecruitList = () => {
   const queryClient = useQueryClient();
 
   const bull = filter === '전체' ? 'name' : filter;
-  console.log(bull);
   queryClient.invalidateQueries({ queryKey: ['recruitList'] });
   const { data, isLoading } = useQuery({
     queryKey: ['recruitList'],
@@ -24,6 +23,7 @@ const RecruitList = () => {
         .select('*')
         .range(0, 15)
         .order('watch_date', { ascending: false })
+        // .order(order, { ascending: false })
         .textSearch('video_platform', bull);
       if (response.error) {
         console.log(response.error.message);
@@ -32,16 +32,7 @@ const RecruitList = () => {
     }
   });
   if (isLoading) <div>Loading...</div>;
-  console.log(data);
-  // 인기순
-  //      안 됐어요!!!!!!!!
-  const filterData =
-    order === '인기순'
-      ? data?.sort((a, b) => {
-          return a.limited_member - b.limited_member;
-        })
-      : data;
-
+  console.log(data, order);
   return (
     <div>
       <div className="flex flex-row gap-5 p-10">
@@ -52,8 +43,8 @@ const RecruitList = () => {
               setOrder(e.target.value);
             }}
           >
-            <option value={'최신순'}>최신순</option>
-            <option value={'인기순'}>인기순</option>
+            <option value={'watch_date'}>최신순</option>
+            <option value={'popularity'}>인기순</option>
           </select>
         </form>
         <form>
@@ -74,7 +65,7 @@ const RecruitList = () => {
         </form>
       </div>
       <div className="grid grid-cols-4 gap-10 p-10">
-        {filterData?.map((recruit) => {
+        {data?.map((recruit) => {
           return (
             <RecruitCard
               key={recruit.party_id}

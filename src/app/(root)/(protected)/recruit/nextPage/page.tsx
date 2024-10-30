@@ -9,8 +9,11 @@ import { useRouter } from 'next/navigation';
 import ParticipationButton from '@/components/button/ParticipationButton';
 import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
+import { useState } from 'react';
 
 const RecruitPage2 = () => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [partyNumber, setPartyNumber] = useState<string>('');
   const router = useRouter();
 
   const { limited_member, setRecruitDetails } = useRecruitStore();
@@ -34,8 +37,14 @@ const RecruitPage2 = () => {
         watch_date,
         video_id,
         start_time,
-        video_platform = []
+        popularity,
+        video_platform
       } = useRecruitStore.getState();
+
+      // 빈값의 플렛폼
+      const platformData =
+        video_platform && video_platform.length > 0 ? video_platform : [{ name: '알수없음', logoUrl: '알수없음' }];
+
       const { data: insertPartyData, error }: { data: partyInfo[] | null; error: PostgrestError | null } =
         await browserClient
           .from('party_info')
@@ -50,11 +59,12 @@ const RecruitPage2 = () => {
               video_image,
               episode_number,
               limited_member,
-              video_platform,
+              video_platform: platformData,
               situation: '모집중',
               watch_date: watch_date ? watch_date.toISOString().split('T')[0] : null,
               start_time: start_time ? start_time.toISOString().split('T')[1] : null,
-              owner_id: userId
+              owner_id: userId,
+              popularity
             }
           ])
           .select();
@@ -62,8 +72,7 @@ const RecruitPage2 = () => {
       alert('모집이 업로드 되었습니다.');
       if (insertPartyData) {
         console.log('파티아이디', insertPartyData[0].party_id);
-        // 여기서 파티 아이디 올려보내고 open으로 바꿀 수 있으면...
-        // setPartyNumber(insertPartyData[0].party_id);
+        setPartyNumber(insertPartyData[0].party_id);
       }
     },
     onSuccess: async () => {
@@ -110,11 +119,12 @@ const RecruitPage2 = () => {
         className="p-2 border border-gray-300 rounded-lg shadow-sm"
         placeholderText="시간을 선택해주세요"
       />
-      <ParticipationButton party_id={''}>
+      <ParticipationButton openControl={open} party_id={partyNumber}>
         <button
           onClick={(e) => {
             e.preventDefault();
             submitRecruit();
+            setOpen(true);
           }}
         >
           모집하기

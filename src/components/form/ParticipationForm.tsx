@@ -50,6 +50,12 @@ const ParticipationForm = ({
     setDisabled(true);
     const user_Id = await getLoginUserIdOnClient();
 
+    if (!user_Id) {
+      alert('먼저 로그인해주세요');
+      router.push('/login');
+      return;
+    }
+
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
@@ -78,6 +84,10 @@ const ParticipationForm = ({
 
     if (participationError) {
       alert('파티에 참가할 수 없습니다');
+      if (path.includes('/party')) {
+        closeHandler(false);
+      }
+      return;
     } else {
       let profile_img = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
 
