@@ -1,5 +1,6 @@
 'use client';
 import { fetchMoviesDetail, fetchTvDetail } from '@/serverActions/TMDB';
+import { platform } from '@/types/partyInfo';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 
@@ -18,13 +19,16 @@ const DetailInfo = ({
   });
 
   if (isLoading) <div>Loading...</div>;
+
+  const platformArr: platform[] = JSON.parse(videoPlatform).filter((n: platform) => !(n.name === '알수없음'));
+
   return (
     <div>
       <p>프로그램 정보</p>
       <p>{data?.detail.overview}</p>
       <p>영상 플랫폼</p>
       <div className="flex flex-row gap-10">
-        {JSON.parse(videoPlatform).map((platform: { name: string; logoUrl: string }) => (
+        {platformArr.map((platform) => (
           <Image key={platform.name} src={platform.logoUrl} width={50} height={50} alt={platform.name} />
         ))}
       </div>

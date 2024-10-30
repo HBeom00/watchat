@@ -5,7 +5,7 @@ export const memberExpulsion = async (party_id: string, member_Id: string) => {
   const { error } = await browserClient
     .from('team_user_profile')
     .delete()
-    .eq('profile_id', member_Id)
+    .eq('user_id', member_Id)
     .eq('party_id', party_id);
 
   if (error) {

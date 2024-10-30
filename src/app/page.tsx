@@ -17,7 +17,7 @@ const Main = async () => {
   return (
     <div>
       <Banner />
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <RecruitList />
       </Suspense>
     </div>

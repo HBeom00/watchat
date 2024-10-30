@@ -38,7 +38,7 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
         <></>
       )}
 
-      <PartyBottom partyData={partyData} userId={userId} end={end} />
+      <PartyBottom partyData={partyData} userId={userId} end={end} partyOwner={partyData.owner_id} />
     </div>
   );
 };

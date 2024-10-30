@@ -4,13 +4,18 @@ import Link from 'next/link';
 import React from 'react';
 
 const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
-  const platform: platform = JSON.parse(data.video_platform).slice(0, 1)[0];
   const blurred = end ? 'p-10 bg-gray-200 brightness-50' : 'p-10 bg-gray-200';
+  const platformArr: platform[] = JSON.parse(data.video_platform);
+  const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
+
   return (
     <Link href={`/party/${data.party_id}`} className={blurred}>
       <p>{data.party_name}</p>
+      <p>{data.video_name}</p>
+      <p>{data.popularity}</p>
       <p>{data.situation}</p>
       <p>{data.watch_date}</p>
+      <p>{`0/${data.limited_member}`}</p>
       {platform ? <Image src={platform.logoUrl} width={50} height={50} alt={platform.name} /> : <></>}
     </Link>
   );
