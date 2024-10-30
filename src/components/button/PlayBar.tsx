@@ -20,7 +20,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   if (duration * 60 > playTime) {
     setTimeout(() => setPlayTime(getPlayTime(startPlayTime)), 1000);
   }
-
+  console.log(playTime, '확인값');
   return (
     <div>
       <p>영상 시청 진도 바</p>
@@ -49,7 +49,8 @@ const getPlayTime = (startPlayTime: number) => {
   if (nowTime < 8 * 60 * 60 && !(startPlayTime < 8 * 60 * 60)) {
     nowTime += 24 * 60 * 60;
   }
-  console.log('시작시간과 현재시간', Math.floor(startPlayTime / 60 / 60), nowTimeArr[0]);
+
+  console.log('시작시간과 현재시간', Math.floor(Number(startPlayTime) / 60 / 60), nowTimeArr[0]);
 
   return nowTime - startPlayTime + 1 * 60 * 60;
 };
