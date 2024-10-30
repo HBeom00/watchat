@@ -15,6 +15,7 @@ interface RecruitState {
     video_id: number | null;
     episode_number: number | null;
     situation: string;
+    popularity: number | null;
 
     setPartyInfo: (info: Partial<Omit<RecruitState, "setPartyInfo" | "setRecruitDetails">>) => void;
     setRecruitDetails: (details: Partial<Omit<RecruitState, "setPartyInfo" | "setRecruitDetails">>) => void;
@@ -34,6 +35,7 @@ export const useRecruitStore = create<RecruitState>((set) => ({
     video_id: null,
     episode_number: null,
     situation: "모집중",
+    popularity: null,
 
     // 아래 애들이 요청에 들어감
     setPartyInfo: (info) => set((state) => ({ ...state, ...info })),

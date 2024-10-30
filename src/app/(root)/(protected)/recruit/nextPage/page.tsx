@@ -34,9 +34,14 @@ const RecruitPage2 = () => {
                 watch_date, 
                 video_id,
                 start_time,
-                video_platform = []
+                popularity,
+                video_platform
                 
                 } = useRecruitStore.getState();
+           
+            // 빈값의 플렛폼    
+            const platformData = video_platform && video_platform.length > 0 ? video_platform : [{"name": "알수없음", "logoUrl": "알수없음"}];
+            
             const { error } = await browserClient.from('party_info').insert([{
                 party_name, 
                 video_id,
@@ -47,11 +52,12 @@ const RecruitPage2 = () => {
                 video_image, 
                 episode_number, 
                 limited_member, 
-                video_platform,
+                video_platform: platformData,
                 situation: "모집중",
                 watch_date: watch_date ? watch_date.toISOString().split('T')[0] : null,
                 start_time: start_time ? start_time.toISOString().split('T')[1] : null,
                 owner_id: userId,
+                popularity
             }]);
             if (error) throw new Error("데이터 삽입 실패");
             alert("모집이 업로드 되었습니다.");

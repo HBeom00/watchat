@@ -74,6 +74,7 @@ const RecruitPage1 = () => {
             media_type: result.media_type || '',
             video_id: result.id,
             video_platform: providerData || [],
+            popularity: result.popularity
         });
         setShowResults(false);
         queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
@@ -131,10 +132,12 @@ const RecruitPage1 = () => {
       )}
       <h2>총시청 시간</h2>
              <input type="number" placeholder="러닝 타임" value={duration_time} onChange={(e) => setPartyInfo({ duration_time: Number(e.target.value) })} />
-      <h2>에피소드 번호</h2>
+      
             {media_type === 'tv' && (
+                <div>
+                <h2>에피소드 번호</h2>
                 <input type="number" placeholder="에피소드 번호" value={episode_number ?? ''} onChange={(e) => setPartyInfo({ episode_number: Number(e.target.value) })} />
-            )}
+            </div>)}
             <button onClick={nextPageHandle}>다음</button>
         </div>
     );
