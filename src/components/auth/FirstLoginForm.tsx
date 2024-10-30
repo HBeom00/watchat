@@ -1,3 +1,5 @@
+'use client';
+
 import { genreArr, platformArr } from '@/utils/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
