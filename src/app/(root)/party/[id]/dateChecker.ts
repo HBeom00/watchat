@@ -30,7 +30,7 @@ export const nowWatchingDate = (watch_date: string, start_time: string, duration
       break;
     }
   }
-  console.log(watch_date, today);
+  console.log(watch_date, today, duration);
   return today;
 };
 
