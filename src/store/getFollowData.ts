@@ -1,3 +1,5 @@
+// 팔로잉 목록 가져오기
+
 import browserClient from '@/utils/supabase/client';
 
 // 팔로잉 중인 유저 데이터를 가져옴

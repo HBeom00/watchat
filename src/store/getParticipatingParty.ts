@@ -1,3 +1,5 @@
+// 내가 참여한 파티 목록 가져오기
+
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
 // 파티 정보 타입
