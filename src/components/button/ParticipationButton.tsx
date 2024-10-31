@@ -16,7 +16,7 @@ const ParticipationButton = ({
   console.log('파티아이디', party_id);
   return (
     <>
-      <Dialog open={open || openControl} onOpenChange={() => setOpen(true)}>
+      <Dialog open={open || openControl} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>

@@ -6,8 +6,11 @@ import Owner from '@/components/form/Owner';
 import { partyInfo } from '@/types/partyInfo';
 import { useQuery } from '@tanstack/react-query';
 import { isMemberExist } from '@/utils/memberCheck';
+import { useRouter } from 'next/navigation';
 
 const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
+  const router = useRouter();
+
   const { data: isMember, isLoading } = useQuery({
     queryKey: ['isMember', partyData.party_id, userId],
     queryFn: async () => {
@@ -31,11 +34,19 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
           <button>종료됨</button>
         ) : isMember ? (
           <Link href={`/chat/${partyData.party_id}`}>채팅하기</Link>
-        ) : (
-          // <ParticipationButton name="참가하기" party_id={partyData.party_id} />
+        ) : userId ? (
           <ParticipationButton party_id={partyData.party_id} openControl={false}>
             <button>참가하기</button>
           </ParticipationButton>
+        ) : (
+          <button
+            onClick={() => {
+              alert('먼저 로그인해주세요');
+              router.push('/login');
+            }}
+          >
+            참가하기
+          </button>
         )}
       </div>
       {/* 오너이면 렌더링되도록 */}
