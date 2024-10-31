@@ -27,10 +27,10 @@ const Banner = () => {
 
   return (
   <div 
-  className='embla w-[1060px], h-[360px]'
+  className='embla w-[1060px], h-[360px] relative' 
   ref={emblaRef}
   >
-    <div className='embla_container flex'>
+    <div className='embla_container flex w-[100%]'>
       <div className='embla_slide flex justify-center items-center bg-gray-300 '>
         <Image src="" 
         alt='Slide1' width={1060} height={360}/>

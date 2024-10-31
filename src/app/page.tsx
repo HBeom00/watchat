@@ -1,6 +1,7 @@
 // import { createClient } from '@/utils/supabase/server';
 
 // import Banner from '@/components/home/Banner';
+import Banner from '@/components/home/Banner';
 import MyParty from '@/components/home/MyParty';
 import RecruitList from '@/components/home/RecruitList';
 import { getLoginUserIdOnServer } from '@/utils/supabase/server';
@@ -18,7 +19,7 @@ const Main = async () => {
 
   return (
     <div>
-      {/* <Banner /> */}
+      <Banner />
       {userId ? <MyParty userId={userId} /> : <></>}
       <RecruitList />
     </div>
