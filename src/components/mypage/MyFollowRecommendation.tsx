@@ -1,17 +1,16 @@
 'use client';
 
+import { banUser } from '@/store/banUser';
 import { follow } from '@/store/followUnfollow';
 import { useInvitedParties } from '@/store/useInvitedParties';
 import { useRecommendedUsers } from '@/store/useRecommendedUser';
 import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
 
 const MyFollowRecommendation = () => {
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
-  const [recommendedBox, setRecommendedBox] = useState<RecentParticipantsData[]>([]);
   const userId = userData?.user_id;
 
   // 멤버 타입 정의
@@ -55,7 +54,7 @@ const MyFollowRecommendation = () => {
   const followMutation = useMutation({
     mutationFn: (followId: string) => follow(userId as string, followId),
     onSuccess: (data, followId) => {
-      // 추천 사용자 목록에서 팔로우한 유저 제거
+      // 추천 사용자 목록에서 이미 팔로우한 유저 제거
       queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
         if (!oldData) return [];
 
@@ -72,53 +71,23 @@ const MyFollowRecommendation = () => {
 
   console.log('추천 사용자 데이터 =>', recommendedUsers);
 
-  // 로컬 스토리지에서 추천 사용자 목록 가져오기
-  useEffect(() => {
-    const storedUsers = localStorage.getItem('recommendedUsers'); // 직접 문자열을 가져옵니다.
-    const parsedUsers = storedUsers ? JSON.parse(storedUsers) : []; // null이 아닐 때만 JSON 파싱
-    setRecommendedBox(parsedUsers);
-    console.log('Initial recommended box:', parsedUsers); // 초기 값 로그 출력
-  }, []);
-
-  // 닫기 버튼 클릭 핸들러
-  const handleClose = (partyId: string, userId: string) => {
-    console.log(`Close button clicked for partyId: ${partyId}, userId: ${userId}`); // 이벤트 확인
-
-    // 추천 목록 업데이트
-    const updatedBox: RecentParticipantsData[] = recommendedBox
-      .map((party) => {
-        if (party.party_id === partyId) {
-          return {
-            ...party,
-            team_user_profile: party.team_user_profile.filter((member) => member.user.user_id !== userId)
-          };
-        }
-        return party;
-      })
-      .filter((party) => party.team_user_profile.length > 0); // 필터링된 프로필이 있는 파티만 유지
-
-    console.log('Updated Box before saving:', updatedBox); // 업데이트된 목록 확인
-
-    // 상태 업데이트
-    setRecommendedBox(updatedBox);
-
-    // 로컬 스토리지에 저장
-    saveToLocalStorage(updatedBox);
-  };
-
-  // 로컬 스토리지 저장 함수
-  const saveToLocalStorage = (data: RecentParticipantsData[]) => {
-    try {
-      localStorage.setItem('recommendedUsers', JSON.stringify(data));
-      console.log('Recommended users saved to localStorage:', data); // 성공 로그
-
-      // 저장 후 확인
-      const savedUsers = localStorage.getItem('recommendedUsers');
-      console.log('Loaded from localStorage after save:', JSON.parse(savedUsers || '[]')); // 저장된 값 로그
-    } catch (error) {
-      console.error('Error saving recommended users to localStorage:', error); // 에러 로그
+  //  X 버튼을 누르면 해당 유저를 추천 목록에서 밴시킴
+  const banMutation = useMutation({
+    mutationFn: (bannedUserId: string) => banUser(userId as string, bannedUserId),
+    onSuccess: (_, bannedUserId) => {
+      // 차단 후 추천 목록 업데이트
+      queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
+        if (!oldData) return [];
+        return oldData.map((party) => ({
+          ...party,
+          team_user_profile: party.team_user_profile.filter((profile) => profile.user.user_id !== bannedUserId)
+        }));
+      });
+    },
+    onError: (error) => {
+      console.error('차단에 실패했습니다:', error);
     }
-  };
+  });
 
   if (isPending || pendingInvitedParties || pendingRecommendedUsers) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
@@ -129,7 +98,9 @@ const MyFollowRecommendation = () => {
 
   return (
     <article>
-      <h3>최근 함께했던 파티원</h3>
+      <div>
+        <h3>최근 함께했던 파티원</h3>
+      </div>
       <ul>
         {recommendedUsers && recommendedUsers.length > 0 ? (
           recommendedUsers.map((recommendedUser) => {
@@ -137,9 +108,12 @@ const MyFollowRecommendation = () => {
               <li key={`${recommendedUser.party_id}-${crypto.randomUUID()}`}>
                 {recommendedUser.team_user_profile.map((member) => (
                   <div key={`${recommendedUser.party_id}-${member.user.user_id}`}>
-                    <button onClick={() => handleClose(recommendedUser.party_id, member.user.user_id)}>X</button>
+                    <button onClick={() => banMutation.mutate(member.user.user_id)}>X</button>
                     <Image
-                      src={member.user.profile_img || 'default_image_url.jpg'}
+                      src={
+                        member.user.profile_img ||
+                        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                      }
                       alt={`${member.user.nickname}의 프로필`}
                       width={80}
                       height={80}
@@ -152,7 +126,6 @@ const MyFollowRecommendation = () => {
                         : ''}
                     </p>
                     <p>를(을) 함께 시청했습니다.</p>
-                    <button onClick={() => handleClose(recommendedUser.party_id, member.user.user_id)}>X</button>
                     <button onClick={() => followMutation.mutate(member.user.user_id)}>팔로우</button>
                   </div>
                 ))}

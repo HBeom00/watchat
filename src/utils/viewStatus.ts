@@ -20,8 +20,7 @@ export const getViewStatus = (party: Party) => {
     return '모집중';
   } else if (currentDate >= startTime && currentDate < endTime) {
     return '시청중';
-  } else if (currentDate >= endTime) {
+  } else {
     return '시청완료';
   }
-  return '';
 };
