@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { getViewStatus } from '@/utils/viewStatus';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import browserClient from '@/utils/supabase/client';
+import { useMemberCount } from '@/utils/useMemberCount';
 
 const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
   const router = useRouter();
@@ -22,6 +23,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
     }
   });
 
+  const { data: memberCount, isLoading: isMemberCounting } = useMemberCount(partyData.party_id);
   const { data: ownerInfo, isLoading } = useQuery({
     queryKey: ['partyOwnerInfo', partyData.party_id],
     queryFn: async () => {
@@ -34,7 +36,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
   });
 
   // 멤버일 경우
-  if (isLoading || isMemberLoading) {
+  if (isLoading || isMemberLoading || isMemberCounting) {
     return <div>Loading...</div>;
   }
   // 버튼 비활성화
@@ -63,7 +65,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
             <></>
           )}
           <p> | </p>
-          <p>참여자 {}명</p>
+          <p>참여자 {memberCount || 0}명</p>
         </div>
         {end ? (
           <button>종료됨</button>

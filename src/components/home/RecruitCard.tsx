@@ -1,6 +1,7 @@
 import { partyInfo, platform } from '@/types/partyInfo';
 import { member } from '@/utils/memberCheck';
 import browserClient from '@/utils/supabase/client';
+import { useMemberCount } from '@/utils/useMemberCount';
 import { getViewStatus } from '@/utils/viewStatus';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
@@ -13,19 +14,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   const platformArr: platform[] = JSON.parse(data.video_platform);
   const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
 
-  const { data: memberCount, isLoading: isCountLoading } = useQuery({
-    queryKey: ['memberCount', data.party_id],
-    queryFn: async () => {
-      const response: PostgrestSingleResponse<{ profile_id: string }[]> = await browserClient
-        .from('team_user_profile')
-        .select('profile_id')
-        .eq('party_id', data.party_id);
-      if (response.data) {
-        return response.data.length;
-      }
-      return 0;
-    }
-  });
+  const { data: memberCount, isLoading: isCountLoading } = useMemberCount(data.party_id);
 
   const { data: ownerInfo, isLoading } = useQuery({
     queryKey: ['partyOwnerInfo', data.party_id],

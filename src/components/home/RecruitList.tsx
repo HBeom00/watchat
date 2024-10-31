@@ -16,7 +16,7 @@ const RecruitList = () => {
   const [partySituation, setPartySituation] = useState('');
   const [searchWord, setSearchWord] = useState<string>('');
 
-  const pageSlice = 2;
+  const pageSlice = 16;
   const start = (pageNumber - 1) * pageSlice;
   const end = pageNumber * pageSlice - 1;
 
@@ -262,7 +262,9 @@ const RecruitList = () => {
           <p>데이터가 없습니다</p>
         )}
       </div>
-      <div className="flex flex-row gap-10 p-10 justify-center items-center text-xl font-bold">
+      <div className="flex flex-row gap-10 p-10 justify-center items-center text-xl">
+        <button onClick={() => setPageNumber(1)}>가장 처음으로</button>
+        <button onClick={() => setPageNumber((now) => (now !== 1 ? now - 1 : now))}>&#12296;</button>
         {pageData &&
           Array.from({ length: pageData })
             .map((arr, i) => {
@@ -270,11 +272,17 @@ const RecruitList = () => {
             })
             .map((page) => {
               return (
-                <button key={page} onClick={() => setPageNumber(page)}>
+                <button
+                  className={page === pageNumber ? 'w-8 bg-purple-700 rounded-full text-white' : ''}
+                  key={page}
+                  onClick={() => setPageNumber(page)}
+                >
                   {page}
                 </button>
               );
             })}
+        <button onClick={() => setPageNumber((now) => (now !== pageData ? now + 1 : now))}>&#12297;</button>
+        <button onClick={() => setPageNumber(pageData ? pageData : 1)}>가장 마지막으로</button>
       </div>
     </div>
   );
