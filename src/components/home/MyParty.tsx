@@ -26,7 +26,11 @@ const MyParty = ({ userId }: { userId: string }) => {
           }
         });
         const result = await Promise.all(myPartyPromises);
-        return result;
+        return result?.filter((n) => {
+          if (n) {
+            return getViewStatus(n) !== '시청완료';
+          }
+        });
       }
     }
   });
