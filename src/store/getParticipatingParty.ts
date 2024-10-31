@@ -28,7 +28,7 @@ interface OwnerProfile {
 }
 
 // partyWithDetails (통틀어서 반환되는 값) 타입
-interface ParticipatingParty extends PartyInfo {
+export interface ParticipatingParty extends PartyInfo {
   ownerProfile: OwnerProfile; // 파티 오너정보
   currentPartyPeople: number | undefined; // 참여 인원수
 }

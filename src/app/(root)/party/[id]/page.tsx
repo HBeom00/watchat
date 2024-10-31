@@ -3,9 +3,7 @@ import PartyHeader from './(components)/PartyHeader';
 
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import PartyBottom from './(components)/PartyBottom';
-import PlayBar from '../../../../components/button/PlayBar';
 import { partyInfo } from '@/types/partyInfo';
-import { nowWatchingDate } from './dateChecker';
 
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
@@ -31,12 +29,6 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="flex flex-col w-full bg-black text-white">
       <PartyHeader partyData={partyData} userId={userId} end={end} />
-      {/* 이쪽 건 예시이고 실제 파티페이지에서는 안 쓰임 */}
-      {nowWatchingDate(partyData.watch_date) ? (
-        <PlayBar startTime={partyData.start_time} duration={partyData.duration_time} />
-      ) : (
-        <></>
-      )}
 
       <PartyBottom partyData={partyData} userId={userId} end={end} partyOwner={partyData.owner_id} />
     </div>
