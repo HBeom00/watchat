@@ -3,12 +3,22 @@
 import { banUser } from '@/store/banUser';
 import { follow } from '@/store/followUnfollow';
 import { useInvitedParties } from '@/store/useInvitedParties';
+import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { useRecommendedUsers } from '@/store/useRecommendedUser';
 import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 
 const MyFollowRecommendation = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
+
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
+    emblaApi,
+    visibleSlides
+  );
+
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
   const userId = userData?.user_id;
@@ -101,41 +111,53 @@ const MyFollowRecommendation = () => {
       <div>
         <h3>최근 함께했던 파티원</h3>
       </div>
-      <ul>
-        {recommendedUsers && recommendedUsers.length > 0 ? (
-          recommendedUsers.map((recommendedUser) => {
-            return (
-              <li key={`${recommendedUser.party_id}-${crypto.randomUUID()}`}>
-                {recommendedUser.team_user_profile.map((member) => (
-                  <div key={`${recommendedUser.party_id}-${member.user.user_id}`}>
-                    <button onClick={() => banMutation.mutate(member.user.user_id)}>X</button>
-                    <Image
-                      src={
-                        member.user.profile_img ||
-                        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                      }
-                      alt={`${member.user.nickname}의 프로필`}
-                      width={80}
-                      height={80}
-                    />
-                    <h3>{member.user.nickname}</h3>
-                    <p>
-                      {recommendedUser.video_name}
-                      {recommendedUser.media_type === 'tv' && recommendedUser.episode_number
-                        ? ` ${recommendedUser.episode_number} 화`
-                        : ''}
-                    </p>
-                    <p>를(을) 함께 시청했습니다.</p>
-                    <button onClick={() => followMutation.mutate(member.user.user_id)}>팔로우</button>
-                  </div>
-                ))}
-              </li>
-            );
-          })
-        ) : (
-          <div>최근 함께한 파티원이 없습니다.</div>
-        )}
-      </ul>
+
+      {/* 캐러셀 컨테이너 */}
+      <div className="flex flex-row justify-between">
+        <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
+          이전
+        </PrevButton>
+        <div ref={emblaRef} className="overflow-hidden w-full">
+          <ul>
+            {recommendedUsers && recommendedUsers.length > 0 ? (
+              recommendedUsers.map((recommendedUser) => {
+                return (
+                  <li key={`${recommendedUser.party_id}-${crypto.randomUUID()}`}>
+                    {recommendedUser.team_user_profile.map((member) => (
+                      <div key={`${recommendedUser.party_id}-${member.user.user_id}`}>
+                        <button onClick={() => banMutation.mutate(member.user.user_id)}>X</button>
+                        <Image
+                          src={
+                            member.user.profile_img ||
+                            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                          }
+                          alt={`${member.user.nickname}의 프로필`}
+                          width={80}
+                          height={80}
+                        />
+                        <h3>{member.user.nickname}</h3>
+                        <p>
+                          {recommendedUser.video_name}
+                          {recommendedUser.media_type === 'tv' && recommendedUser.episode_number
+                            ? ` ${recommendedUser.episode_number} 화`
+                            : ''}
+                        </p>
+                        <p>를(을) 함께 시청했습니다.</p>
+                        <button onClick={() => followMutation.mutate(member.user.user_id)}>팔로우</button>
+                      </div>
+                    ))}
+                  </li>
+                );
+              })
+            ) : (
+              <div>최근 함께한 파티원이 없습니다.</div>
+            )}
+          </ul>
+        </div>
+        <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled}>
+          다음
+        </NextButton>
+      </div>
     </article>
   );
 };

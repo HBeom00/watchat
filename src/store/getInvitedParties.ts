@@ -32,6 +32,7 @@ interface InvitedParty {
     nickname: string;
     profile_img: string;
   };
+  currentPartyPeople: number;
 }
 
 // supabase에서 초대정보 불러오기
@@ -81,5 +82,31 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
     console.error('초대목록을 불러오는데 실패했습니다. => ', inviteListError?.message);
   }
 
-  return InvitedParty;
+  if (!InvitedParty) {
+    return null; // 초대 목록이 없는 경우 null 반환
+  }
+
+  const partyNumberOfPeople = await Promise.all(
+    InvitedParty.map(async (party) => {
+      const { data: partyNumberOfPeople, error: errorPartyNumberOfPeople } = await browserClient
+        .from('team_user_profile')
+        .select('*')
+        .eq('party_id', party.party_id);
+
+      if (errorPartyNumberOfPeople) {
+        console.error(
+          `파티 ${party.party_id}의 참여 인원을 가져오는데 실패했습니다 => `,
+          errorPartyNumberOfPeople.message
+        );
+      }
+
+      const currentPartyPeople = partyNumberOfPeople?.length || 0;
+
+      return {
+        ...party,
+        currentPartyPeople
+      };
+    })
+  );
+  return partyNumberOfPeople;
 };
