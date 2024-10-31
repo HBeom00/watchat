@@ -84,9 +84,6 @@ const ParticipationForm = ({
 
     if (participationError) {
       alert('파티에 참가할 수 없습니다');
-      if (path.includes('/party')) {
-        closeHandler(false);
-      }
       return;
     } else {
       let profile_img = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언

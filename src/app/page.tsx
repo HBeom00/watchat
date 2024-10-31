@@ -1,10 +1,12 @@
 // import { createClient } from '@/utils/supabase/server';
 
 // import Banner from '@/components/home/Banner';
+import MyParty from '@/components/home/MyParty';
 import RecruitList from '@/components/home/RecruitList';
-import { Suspense } from 'react';
+import { getLoginUserIdOnServer } from '@/utils/supabase/server';
 
 const Main = async () => {
+  const userId = await getLoginUserIdOnServer();
   // const { data } = await createClient().auth.getUser();
   // const { data: isUser }: { data: null | string[] } = await createClient().from('user').select('user_id');
 
@@ -17,9 +19,8 @@ const Main = async () => {
   return (
     <div>
       {/* <Banner /> */}
-      <Suspense fallback={<div>Loading...</div>}>
-        <RecruitList />
-      </Suspense>
+      {userId ? <MyParty userId={userId} /> : <></>}
+      <RecruitList />
     </div>
   );
 };

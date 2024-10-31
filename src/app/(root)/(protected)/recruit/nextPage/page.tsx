@@ -73,11 +73,14 @@ const RecruitPage2 = () => {
       if (insertPartyData) {
         console.log('파티아이디', insertPartyData[0].party_id);
         setPartyNumber(insertPartyData[0].party_id);
+
+        setOpen(true);
       }
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['party_info'] });
       queryClient.invalidateQueries({ queryKey: ['recruitList'] });
+      queryClient.invalidateQueries({ queryKey: ['myParty'] });
     }
   });
 
@@ -124,7 +127,6 @@ const RecruitPage2 = () => {
           onClick={(e) => {
             e.preventDefault();
             submitRecruit();
-            setOpen(true);
           }}
         >
           모집하기
