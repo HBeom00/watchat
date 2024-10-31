@@ -40,7 +40,7 @@ export default async function RootLayout({
         <UserStoreProvider isUser={!!user}>
           <Providers>
             <Header />
-            {children}
+            <main className="flex-grow">{children}</main>
             <Footer />
           </Providers>
         </UserStoreProvider>

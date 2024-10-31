@@ -1,6 +1,7 @@
 // import { createClient } from '@/utils/supabase/server';
 
 // import Banner from '@/components/home/Banner';
+import Banner from '@/components/home/Banner';
 import RecruitList from '@/components/home/RecruitList';
 import { Suspense } from 'react';
 
@@ -16,7 +17,7 @@ const Main = async () => {
 
   return (
     <div>
-      {/* <Banner /> */}
+      <Banner />
       <Suspense fallback={<div>Loading...</div>}>
         <RecruitList />
       </Suspense>
