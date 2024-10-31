@@ -4,14 +4,13 @@ import { useRecruitStore } from '../recruitStore';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchMultiSearch } from "@/serverActions/TMDB";
 import { SearchResult, SearchResponse } from '../../../../../types/Search';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import {fetchMovieWatchProvider, fetchTvWatchProvider} from "@/serverActions/TMDB"
 
 const RecruitPage1 = () => {
   const router = useRouter();
   const nextPageHandle = () =>{router.push('/recruit/nextPage')}
-
     const {
         party_name,
         video_name,
@@ -28,6 +27,25 @@ const RecruitPage1 = () => {
     const [debouncedVideoName, setDebouncedVideoName] = useState(video_name)
     const queryClient = useQueryClient();
     const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        //상태 초기화
+        setPartyInfo({
+    party_name: '',
+    video_name: '',
+    party_detail: '',
+    limited_member: 0,
+    watch_date: null,
+    start_time: null,
+    duration_time: 0,
+    video_platform: [],
+    video_image: '',
+    episode_number: null,
+        });
+
+    // 캐시 초기화 재렌더링
+    queryClient.refetchQueries({ queryKey: ['searchVideo'] as const })
+    }, [queryClient, setPartyInfo] )
 
     const InputChangehandle = (value: string) => {
         setPartyInfo({ video_name: value });
