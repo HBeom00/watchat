@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import DetailInfo from './DetailInfo';
 import MemberList from './MemberList';
-import InvitedButton from './InvitedButton';
 import { isMemberExist } from '@/utils/memberCheck';
 import { useQuery } from '@tanstack/react-query';
 import { partyInfo } from '@/types/partyInfo';
@@ -19,7 +18,7 @@ const PartyBottom = ({
   end: boolean;
   partyOwner: string;
 }) => {
-  const [tab, setTab] = useState<string>('파티소개');
+  const [tab, setTab] = useState<string>('파티 정보');
 
   //로그인한 사용자가 해당 파티에 가입했을 때
   const { data: isMember, isLoading } = useQuery({
@@ -33,21 +32,12 @@ const PartyBottom = ({
 
   return (
     <div className="flex flex-col gap-10 w-full justify-center items-center bg-slate-400">
-      {/* 누르면 내가 팔로우한 유저들이 표시되고 그 중에서 초대할 수 있음 */}
-      {userId && isMember ? <InvitedButton partyNumber={partyData.party_id} userId={userId} /> : <></>}
-
       <div className="flex flex-row gap-10">
-        <button onClick={() => setTab('파티소개')}>파티소개</button>
+        <button onClick={() => setTab('파티 정보')}>파티 정보</button>
         <button onClick={() => setTab('프로그램 정보')}>프로그램 정보</button>
       </div>
-      {tab === '파티소개' ? (
-        <MemberList
-          partyNumber={partyData.party_id}
-          userId={userId}
-          isMember={isMember}
-          end={end}
-          partyOwner={partyOwner}
-        />
+      {tab === '파티 정보' ? (
+        <MemberList partyData={partyData} userId={userId} isMember={isMember} end={end} partyOwner={partyOwner} />
       ) : (
         <></>
       )}

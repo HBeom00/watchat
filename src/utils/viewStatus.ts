@@ -8,20 +8,22 @@ type Party = {
   start_time: string;
   duration_time: number;
 };
-
+// start_time이슈
 export const getViewStatus = (party: Party) => {
   const currentDate = new Date();
-  const watchDate = new Date(party.watch_date);
-  const startTime = new Date(party.start_time);
-  const durationTime = party.duration_time;
-  const endTime = new Date(startTime.getTime() + durationTime * 60 * 1000);
+  const watchDate = new Date(party.watch_date + 'T' + party.start_time.split('.')[0]);
+  const endDate = new Date(party.watch_date + 'T' + party.start_time.split('.')[0]);
+  endDate.setMinutes(endDate.getMinutes() + party.duration_time);
 
-  if (currentDate < watchDate || currentDate < startTime) {
+  if (currentDate < watchDate) {
     return '모집중';
-  } else if (currentDate >= startTime && currentDate < endTime) {
+  } else if (currentDate > watchDate && currentDate < endDate) {
     return '시청중';
-  } else if (currentDate >= endTime) {
+  } else if (currentDate > endDate) {
     return '시청완료';
   }
-  return '';
 };
+
+// const startTime = new Date(party.start_time.split('.')[0]);
+// const durationTime = party.duration_time;
+// const endTime = new Date(startTime.getTime() + durationTime * 60 * 1000);
