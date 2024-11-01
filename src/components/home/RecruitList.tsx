@@ -8,15 +8,16 @@ import { useEffect, useState } from 'react';
 import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
 import { useSearchStore } from '@/providers/searchStoreProvider';
+import { useWatchFilter } from '@/store/watchFilterStore';
 
 const RecruitList = () => {
   const queryClient = useQueryClient();
   const [order, setOrder] = useState<string>('start_date_time');
   const [filter, setFilter] = useState<string>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
-
-  const [partySituation, setPartySituation] = useState('');
   const searchWord = useSearchStore((state) => state.searchText);
+
+  const partySituation = useWatchFilter((state) => state.partySituation);
 
   const pageSlice = 16;
   const start = (pageNumber - 1) * pageSlice;
@@ -172,20 +173,7 @@ const RecruitList = () => {
       if (response.error) {
         console.log(response.error.message);
       }
-      // // 시청중, 모집중
-      // if (response.data && response.data.length > 0 && partySituation === '시청중') {
-      //   // 시청중인 경우
-      //   const nowWatchingParties = response.data.filter((n) => {
-      //     return getViewStatus(n) === '시청중';
-      //   });
-      //   return nowWatchingParties;
-      // } else if (response.data && response.data.length > 0 && partySituation === '모집중') {
-      //   // 모집 중인 경우
-      //   const nowWatchingParties = response.data.filter((n) => {
-      //     return getViewStatus(n) === '모집중' && n.situation === '모집중';
-      //   });
-      //   return nowWatchingParties;
-      // }
+
       return response.data;
     }
   });
@@ -205,13 +193,8 @@ const RecruitList = () => {
 
   return (
     <div>
-      <div className="flex flex-row gap-10 p-10 text-2xl">
-        <p onClick={() => setPartySituation('')}>전체</p>
-        <p onClick={() => setPartySituation('시청중')}>시청중</p>
-        <p onClick={() => setPartySituation('모집중')}>모집중</p>
-      </div>
-      <div className="flex flex-row gap-5 p-10">
-        <form>
+      <div className="inline-flex items-center gap-2 p-10">
+        <form className="flex h-8 p-3 items-center gap-1">
           <select
             name="순서"
             onChange={(e) => {

@@ -7,10 +7,11 @@ import { partyInfo } from '@/types/partyInfo';
 import { useQuery } from '@tanstack/react-query';
 import { isMemberExist, member } from '@/utils/memberCheck';
 import { useRouter } from 'next/navigation';
-import { getViewStatus } from '@/utils/viewStatus';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import browserClient from '@/utils/supabase/client';
 import { useMemberCount } from '@/utils/useMemberCount';
+import { chatOpenClose } from '@/utils/chatOpenClose';
+import { startTimeString } from '@/utils/startTimeString';
 
 const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
   const router = useRouter();
@@ -35,21 +36,18 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
     }
   });
 
-  // 멤버일 경우
   if (isLoading || isMemberLoading || isMemberCounting) {
     return <div>Loading...</div>;
   }
-  // 버튼 비활성화
-  const disabled = getViewStatus(partyData) === '시청중' ? `/chat/${partyData.party_id}` : '';
 
-  const disabledButtonClassname = getViewStatus(partyData) === '시청중' ? 'bg-purple-600 p-2' : 'bg-slate-400 p-2';
+  // 버튼 비활성화
+  const disabled = chatOpenClose(partyData) === '시청중' ? `/chat/${partyData.party_id}` : '';
+
+  const disabledButtonClassname = chatOpenClose(partyData) === '시청중' ? 'bg-purple-600 p-2' : 'bg-slate-400 p-2';
   return (
     <div className="flex flex-col gap-7 w-full p-10 justify-center items-center bg-slate-500">
       <div className="flex flex-col gap-9">
-        <p>
-          {partyData.watch_date.split('-')[1]}월 {partyData.watch_date.split('-')[2]}일{' '}
-          {partyData.start_time.split('.')[0].split(':').slice(0, 2).join(':')} 시작
-        </p>
+        <p>{startTimeString(partyData.start_date_time)}</p>
         <p className="text-4xl mb-8">{partyData.party_name}</p>
         <p>{partyData.video_name}</p>
         {partyData.episode_number ? <p>{partyData.episode_number}</p> : <></>}
