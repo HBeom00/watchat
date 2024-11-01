@@ -6,6 +6,8 @@ type UserData = {
   nickname: string;
   profile_img: string;
   user_id: string;
+  genre: string[];
+  platform: string[];
 } | null;
 
 export const useFetchUserData = () => {
@@ -15,7 +17,7 @@ export const useFetchUserData = () => {
       const userId = await getLoginUserIdOnClient();
       const { data: userData, error }: PostgrestSingleResponse<UserData> = await browserClient
         .from('user')
-        .select('profile_img, nickname, user_id')
+        .select('profile_img, nickname, user_id, genre, platform')
         .eq('user_id', userId)
         .single();
 
