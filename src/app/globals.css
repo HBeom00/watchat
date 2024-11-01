@@ -3,14 +3,6 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
 }
 
 @layer utilities {
@@ -82,4 +74,8 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+* {
+  font-family: 'Pretendard';
 }
