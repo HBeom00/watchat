@@ -101,20 +101,25 @@ const RecruitPage1 = () => {
 
     return (
         <div className='grid'>
-            <h1>파티 정보 입력</h1>
+            <h1 className='text-[28px] '>파티 모집하기</h1>
             <input 
             type="text" 
             placeholder="파티 이름" 
             value={party_name} 
             onChange={(e) => setPartyInfo({ party_name: e.target.value })} 
+            className='bg-gray-100 w-[520px] h-[48px] rounded-lg'
             />
             <input 
             type="text" 
             placeholder="파티에 대해서 소개해주세요." 
             value={party_detail} 
             onChange={(e) => setPartyInfo({ party_detail: e.target.value })} 
+            className='bg-gray-100 w-[520px] h-[112px] rounded-lg'
             />
-            <h2>시청할 영상을 선택해 주세요.*</h2>
+            <div className='flex'>
+            <h2>시청할 영상을 선택해 주세요.</h2>
+            <h2 className='text-purple-600'>*</h2>
+            </div>
             <input 
             type="text" 
             placeholder="선택하세요." 
