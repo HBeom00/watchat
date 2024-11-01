@@ -21,13 +21,41 @@ const config: Config = {
           foreground: 'hsl(var(--popover-foreground))'
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
+          50: '#F5F1FE',
+          100: '#E4D9FD',
+          200: '#C2A8FA',
+          300: '#A078F7',
+          400: '#7F4AF4',
+          500: '#5C18F1',
+          600: '#470CCA',
+          700: '#36099A',
+          800: '#25066A',
+          900: '#14043A',
+          1000: '#03010A'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))'
         },
+        warning: {
+          50: '#FB6362',
+          100: '#18C1FE',
+          200: '#63D793'
+        },
+        Grey: {
+          50: '#F5F5F5',
+          100: '#E8E8E8',
+          200: '#DCDCDC',
+          300: '#C2C2C2',
+          400: '#A8A8A8',
+          500: '#A8A8A8',
+          600: '#8F8F8F',
+          700: '#757575',
+          800: '#2A2A2A',
+          900: '#2A2A2A',
+          1000: '#0F0F0F'
+        },
+        static: { black: '#000', white: '#FFF' },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))'
@@ -55,12 +83,8 @@ const config: Config = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
-      },
-      fontFamily: {
-        pretendard: ['Pretendard', 'sans-serif'] // Pretendard 폰트 추가
       }
     }
-  },
-  plugins: [require('tailwindcss-animate')]
+  }
 };
 export default config;
