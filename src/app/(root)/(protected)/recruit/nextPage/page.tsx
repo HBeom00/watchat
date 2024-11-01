@@ -125,9 +125,15 @@ const RecruitPage2 = () => {
         className="p-2 border border-gray-300 rounded-lg shadow-sm"
         showPopperArrow={false}
         minDate={new Date()}
-        // minDate={new Date(Date.now() + 9 * 60 * 60 * 1000)}
       />
       <h2>시청 시작시간</h2>
+      {/* <input 
+      type="text"
+      placeholder='00:00' 
+      pattern='[0-2][0-9]:[0-5][0-9]'
+      title='시간을 입력해주세요'
+      
+      /> */}
       <DatePicker
         selected={useRecruitStore.getState().start_time}
         onChange={(time) => setRecruitDetails({ start_time: time })}
@@ -138,6 +144,11 @@ const RecruitPage2 = () => {
         className="p-2 border border-gray-300 rounded-lg shadow-sm"
         placeholderText="시간을 선택해주세요"
       />
+      {/* <input 
+      type="text"
+      maxLength={5}
+      onChange={}
+      /> */}
       <ParticipationButton openControl={open} party_id={partyNumber}>
         <button
           onClick={(e) => {

@@ -102,24 +102,22 @@ const RecruitPage1 = () => {
     return (
         <div className='grid'>
             <h1>파티 정보 입력</h1>
-            <h2>파티 이름</h2>
             <input 
             type="text" 
             placeholder="파티 이름" 
             value={party_name} 
             onChange={(e) => setPartyInfo({ party_name: e.target.value })} 
             />
-            <h2>파티 상세 내용</h2>
             <input 
             type="text" 
-            placeholder="파티 상세" 
+            placeholder="파티에 대해서 소개해주세요." 
             value={party_detail} 
             onChange={(e) => setPartyInfo({ party_detail: e.target.value })} 
             />
-            <h2>영상 이름</h2>
+            <h2>시청할 영상을 선택해 주세요.*</h2>
             <input 
             type="text" 
-            placeholder="영상 이름" 
+            placeholder="선택하세요." 
             value={video_name} 
             onChange={(e) => InputChangehandle(e.target.value)} 
             />
@@ -136,7 +134,7 @@ const RecruitPage1 = () => {
             {video_image && <img src={video_image} alt="선택된 포스터" />}
               
       {/* 플랫폼 */}
-      <h2>제공 플랫폼</h2>
+      <h2>영상 플랫폼</h2>
       {video_platform && (
         <div className="flex space-x-4 mt-2">
           {video_platform.map((platform) => (
