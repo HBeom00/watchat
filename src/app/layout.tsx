@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-
 import Providers from '@/providers/queryProvider';
-
 import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
 import { UserStoreProvider } from '@/providers/userStoreProvider';
