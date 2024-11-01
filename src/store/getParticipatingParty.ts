@@ -1,5 +1,6 @@
 // 내가 참여한 파티 목록 가져오기
 
+import { startTimeString } from '@/utils/startTimeString';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
 // 파티 정보 타입
@@ -31,6 +32,7 @@ interface OwnerProfile {
 export interface ParticipatingParty extends PartyInfo {
   ownerProfile: OwnerProfile; // 파티 오너정보
   currentPartyPeople: number | undefined; // 참여 인원수
+  startString: string;
 }
 
 // 참여한 파티 불러오기
@@ -96,10 +98,14 @@ export const getParticipatingParty = async (): Promise<ParticipatingParty[]> => 
 
       const currentPartyPeople = partyNumberOfPeople?.length;
 
+      // 날짜&시간 변환
+      const startString = startTimeString(party.start_date_time);
+
       return {
         ...party,
         ownerProfile: ownerData || { profile_img: '', nickname: '알 수 없음' },
-        currentPartyPeople
+        currentPartyPeople,
+        startString
       };
     })
   );

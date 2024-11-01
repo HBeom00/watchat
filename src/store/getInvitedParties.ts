@@ -1,5 +1,6 @@
 // 초대받은 파티 목록 가져오기
 
+import { startTimeString } from '@/utils/startTimeString';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
 interface InvitedParty {
@@ -12,6 +13,7 @@ interface InvitedParty {
     video_name: string;
     video_platform: string;
     video_image: string;
+    backdrop_image: string;
     limited_member: number;
     duration_time: number;
     situation: string;
@@ -21,6 +23,7 @@ interface InvitedParty {
     start_time: string;
     episode_number: number | null;
     video_id: string;
+    start_date_time: string;
   };
   inviter_user: {
     user_id: string;
@@ -33,6 +36,7 @@ interface InvitedParty {
     profile_img: string;
   };
   currentPartyPeople: number;
+  startString: string;
 }
 
 // supabase에서 초대정보 불러오기
@@ -53,6 +57,7 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
         video_name, 
         video_platform, 
         video_image,
+        backdrop_image,
         limited_member, 
         duration_time, 
         situation, 
@@ -61,7 +66,8 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
         watch_date, 
         start_time, 
         episode_number, 
-        video_id
+        video_id,
+        start_date_time
       ),
       inviter_user:inviter (
         user_id, 
@@ -102,9 +108,13 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
 
       const currentPartyPeople = partyNumberOfPeople?.length || 0;
 
+      // 날짜&시간 변환
+      const startString = startTimeString(party.party_info.start_date_time);
+
       return {
         ...party,
-        currentPartyPeople
+        currentPartyPeople,
+        startString
       };
     })
   );

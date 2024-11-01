@@ -37,19 +37,20 @@ const MyOwnerParty = () => {
               <Link href={`/party/${party.party_id}`} key={party.party_id}>
                 <li>
                   <div>
-                    {/* 영상 이미지 */}
-                    <span>{viewingStatus === '시청중' ? '시청중' : party.watch_date ? `모집중` : '시청 예정'}</span>
+                    <Image
+                      src={
+                        party?.video_image ||
+                        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/noImage.jpg'
+                      }
+                      alt={`${party?.video_name} 영상 이미지`}
+                      width={50}
+                      height={50}
+                    />
+                    <p>{viewingStatus === '모집중' ? party.situation : viewingStatus}</p>
+                    <span>{party.startString}</span>
                   </div>
-                  <div>{/* 재생바 */}</div>
                   <div>
                     {/* 정보 */}
-                    <p>
-                      {viewingStatus === '시청중'
-                        ? '시청중'
-                        : party.watch_date
-                        ? `${new Date(party.watch_date).toLocaleString()} 시작`
-                        : '시청 예정'}
-                    </p>
                     <p>
                       {party.video_name}
                       {party.media_type === 'tv' && party.episode_number ? `  ${party.episode_number} 화` : ''}
