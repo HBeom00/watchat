@@ -23,7 +23,7 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
           </div>
           <SidebarToggle roomId={roomId} />
         </div>
-        <PlayBar startTime={data?.[0].start_time} duration={data?.[0].duration_time} />
+        <PlayBar startTime={data?.[0].start_date_time} duration={data?.[0].duration_time} />
         <Chat roomId={roomId} />
       </div>
     </div>
