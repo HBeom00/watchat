@@ -5,8 +5,7 @@ import { useState } from 'react';
 const PlayBar = ({ startTime, duration }: { startTime: string; duration: number }) => {
   // supabase에서 가져와야한다
   // 시작 시간
-  // 초
-  const startPlayTime = (Number(startTime.split(':')[0]) * 60 + Number(startTime.split(':')[1])) * 60;
+  const startPlayTime = startTime;
 
   // duration을 가져와서
   // 끝나는 시간을 구함
@@ -26,7 +25,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
       <p>영상 시청 진도 바</p>
       {/* 현재 진행 시간 */}
       <div className="flex flex-row gap-6">
-        <p>{startTime.split('.')[0]}</p>
+        <p>{startTime.split('.')[0].split('T')[1]}</p>
         {playTime > 0 && duration * 60 > playTime ? <p>{nowTimeDisplay(playTime)}</p> : <p>00:00:00</p>}
 
         <input type="range" min={0} max={duration * 60} step={1} value={playTime} onChange={() => {}} />
@@ -38,11 +37,18 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
 
 export default PlayBar;
 
-const getPlayTime = (startPlayTime: number) => {
+const getPlayTime = (startTime: string) => {
+  // 시작 시각
+  const startTimeArr = startTime.split('.')[0].split('T')[1].split(':').map(Number);
+  const startPlayTime = startTimeArr[0] * 60 * 60 + startTimeArr[1] * 60 + startTimeArr[2];
+
   // 현재 시각
-  const localNowTime = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Seoul' }).split(':');
-  const nowTimeArr = [Number(localNowTime[0]), Number(localNowTime[1]), Number(localNowTime[2].split(' ')[0])];
-  let nowTime = nowTimeArr[0] * 60 * 60 + nowTimeArr[1] * 60 + nowTimeArr[2];
+  const myTime = new Date();
+  myTime.setHours(myTime.getHours() + 9);
+  const localTime = myTime.toISOString();
+  const localTimeArr = localTime.split('.')[0].split('T')[1].split(':').map(Number);
+
+  let nowTime = localTimeArr[0] * 60 * 60 + localTimeArr[1] * 60 + localTimeArr[2];
 
   // 영상을 보다가 자정00:00이 넘는 경우를 생각함
   // 8시 이전 로직
@@ -50,9 +56,7 @@ const getPlayTime = (startPlayTime: number) => {
     nowTime += 24 * 60 * 60;
   }
 
-  console.log('시작시간과 현재시간', Math.floor(Number(startPlayTime) / 60 / 60), nowTimeArr[0]);
-
-  return nowTime - startPlayTime + 1 * 60 * 60;
+  return nowTime - startPlayTime;
 };
 
 // 현재 영상진도

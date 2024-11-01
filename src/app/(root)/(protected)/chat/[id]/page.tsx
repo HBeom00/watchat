@@ -16,7 +16,7 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
     <div className="flex relative">
       <div style={{ width: '80%', margin: '0 auto', padding: '20px' }}>
         <div className="flex justify-between items-center px-2">
-          <PlayBar startTime={data?.[0].start_time} duration={data?.[0].duration_time} />
+          <PlayBar startTime={data?.[0].start_date_time} duration={data?.[0].duration_time} />
           <SidebarToggle />
         </div>
         <Chat roomId={roomId} />

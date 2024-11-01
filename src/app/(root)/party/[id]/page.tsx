@@ -4,7 +4,7 @@ import PartyHeader from './(components)/PartyHeader';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import PartyBottom from './(components)/PartyBottom';
 import { partyInfo } from '@/types/partyInfo';
-import { getViewStatus } from '@/utils/viewStatus';
+import { chatOpenClose } from '@/utils/chatOpenClose';
 
 export const generateMetadata = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
@@ -34,7 +34,7 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
 
   // 종료된 파티이면 버튼 비활성화
   const partyData: partyInfo = res.data[0];
-  const end = getViewStatus(partyData) === '시청완료';
+  const end = chatOpenClose(partyData) === '시청완료';
 
   return (
     <div className="flex flex-col w-full bg-black text-white">
