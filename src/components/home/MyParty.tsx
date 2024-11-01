@@ -6,8 +6,11 @@ import { getViewStatus } from '@/utils/viewStatus';
 import browserClient from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
+import { useSearchStore } from '@/providers/searchStoreProvider';
 
 const MyParty = ({ userId }: { userId: string }) => {
+  const searchText = useSearchStore((state) => state.searchText);
+
   const { data, isLoading } = useQuery({
     queryKey: ['myParty', userId],
     queryFn: async () => {
@@ -26,30 +29,40 @@ const MyParty = ({ userId }: { userId: string }) => {
           }
         });
         const result = await Promise.all(myPartyPromises);
-        return result;
+        return result?.filter((n) => {
+          if (n) {
+            return getViewStatus(n) !== '시청완료';
+          }
+        });
       }
     }
   });
   if (isLoading) <div>Loading...</div>;
   return (
-    <div>
-      <p>MY 파티</p>
-      <div className="flex flex-row gap-10 p-10">
-        {data
-          ?.filter((n) => !(n?.situation === '종료'))
-          .map((party) => {
-            if (party) {
-              return (
-                <RecruitCard
-                  key={party.party_id}
-                  data={party}
-                  end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
-                />
-              );
-            }
-          })}
-      </div>
-    </div>
+    <>
+      {searchText === '' ? (
+        <div>
+          <p>MY 파티</p>
+          <div className="flex flex-row gap-10 p-10">
+            {data
+              ?.filter((n) => !(n?.situation === '종료'))
+              .map((party) => {
+                if (party) {
+                  return (
+                    <RecruitCard
+                      key={party.party_id}
+                      data={party}
+                      end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
+                    />
+                  );
+                }
+              })}
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

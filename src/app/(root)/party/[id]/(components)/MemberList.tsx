@@ -3,15 +3,17 @@ import { getPartyMember } from '@/utils/memberCheck';
 import MemberProfileCard from './MemberProfile';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { memberExpulsion } from '@/utils/ownerRights';
+import InvitedButton from './InvitedButton';
+import { partyInfo } from '@/types/partyInfo';
 
 const MemberList = ({
-  partyNumber,
+  partyData,
   userId,
   isMember,
   end,
   partyOwner
 }: {
-  partyNumber: string;
+  partyData: partyInfo;
   userId: string | null;
   isMember: boolean | null | undefined;
   end: boolean;
@@ -21,18 +23,17 @@ const MemberList = ({
 
   // 파티 멤버 정보들을 불러오기
   const { data, isLoading } = useQuery({
-    queryKey: ['partyMember', partyNumber],
-    queryFn: async () => await getPartyMember(partyNumber)
+    queryKey: ['partyMember', partyData.party_id],
+    queryFn: async () => await getPartyMember(partyData.party_id)
   });
 
   // 파티 탈퇴하기
   const mutation = useMutation({
-    mutationFn: (userId: string) => memberExpulsion(partyNumber, userId),
+    mutationFn: (userId: string) => memberExpulsion(partyData.party_id, userId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['partyMember', partyNumber] });
-      queryClient.invalidateQueries({ queryKey: ['isMember', partyNumber, userId] });
-
-      // 채팅하기 버튼이 안 바뀌는데.... 깜빡이게 할까
+      queryClient.invalidateQueries({ queryKey: ['partyMember', partyData.party_id] });
+      queryClient.invalidateQueries({ queryKey: ['isMember', partyData.party_id, userId] });
+      queryClient.invalidateQueries({ queryKey: ['myParty', userId] });
     }
   });
 
@@ -42,10 +43,23 @@ const MemberList = ({
 
   return (
     <div>
-      <p>팀원 정보</p>
+      <p>파티 소개</p>
+      <p>{partyData.party_detail}</p>
+      <p>참여 멤버</p>
+      {/* 누르면 내가 팔로우한 유저들이 표시되고 그 중에서 초대할 수 있음 */}
+      {userId && isMember ? <InvitedButton partyNumber={partyData.party_id} userId={userId} /> : <></>}
+      <p>참여자 {data ? data.length : 0}명</p>
       {data && data.length > 0 ? (
         data.map((mem) => {
-          return <MemberProfileCard key={mem.profile_id} isMember={isMember} memberInfo={mem} userId={userId} />;
+          return (
+            <MemberProfileCard
+              key={mem.profile_id}
+              isMember={isMember}
+              memberInfo={mem}
+              userId={userId}
+              ownerId={partyData.owner_id}
+            />
+          );
         })
       ) : (
         <>

@@ -6,20 +6,23 @@ import browserClient from '@/utils/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import RecruitCard from './RecruitCard';
-import { getExpiration } from '@/app/(root)/party/[id]/dateChecker';
+import { getViewStatus } from '@/utils/viewStatus';
+import { useSearchStore } from '@/providers/searchStoreProvider';
 
 const RecruitList = () => {
-  const [order, setOrder] = useState<string>('watch_date');
+  const queryClient = useQueryClient();
+  const [order, setOrder] = useState<string>('start_date_time');
   const [filter, setFilter] = useState<string>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   const [partySituation, setPartySituation] = useState('');
-  const [searchWord, setSearchWord] = useState<string>('');
+  const searchWord = useSearchStore((state) => state.searchText);
 
   const pageSlice = 16;
-  const bull = filter === '전체' ? 'name' : filter;
   const start = (pageNumber - 1) * pageSlice;
   const end = pageNumber * pageSlice - 1;
+
+  const bull = filter === '전체' ? 'name' : filter;
 
   const wordConversion = searchWord
     .split(' ')
@@ -28,28 +31,75 @@ const RecruitList = () => {
     })
     .join('');
 
+  // 현재시간
+  const d = new Date();
+  d.setHours(d.getHours() + 9);
+  const now = d.toISOString();
+
+  // 시청 중, 모집 중을 완벽하게 구현하려면 startTime과 endTime이 supabase에 들어가야한다
+
   // 페이지 수 불러오기
+  // 유효하지 않은 데이터 때문에 페이지네이션 오류
   const { data: pageData, isLoading: isPageLoading } = useQuery({
     queryKey: ['recruitListPages'],
     queryFn: async () => {
       const response: PostgrestSingleResponse<{ party_id: string }[]> =
         wordConversion === '+'
+          ? // 검색을 안하는 경우
+            partySituation === '모집중'
+            ? await browserClient
+                .from('party_info')
+                .select('party_id')
+                .order('start_date_time', { ascending: false })
+                .order(order, { ascending: false })
+                .gte('start_date_time', now)
+                .textSearch('video_platform', bull)
+            : partySituation === '시청중'
+            ? await browserClient
+                .from('party_info')
+                .select('party_id')
+                .order('start_date_time', { ascending: false })
+                .order(order, { ascending: false })
+                .lte('start_date_time', now)
+                .gte('end_time', now)
+                .textSearch('video_platform', bull)
+            : await browserClient
+                .from('party_info')
+                .select('party_id')
+                .order('start_date_time', { ascending: false })
+                .order(order, { ascending: false })
+                .textSearch('video_platform', bull)
+          : // 검색을 하는 경우
+          partySituation === '모집중'
           ? await browserClient
               .from('party_info')
               .select('party_id')
-              .order('watch_date', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
+              .gte('start_date_time', now)
+              .textSearch('video_name', wordConversion)
+          : partySituation === '시청중'
+          ? await browserClient
+              .from('party_info')
+              .select('party_id')
+              .order('start_date_time', { ascending: false })
+              .order(order, { ascending: false })
+              .lte('start_date_time', now)
+              .gte('end_time', now)
+              .textSearch('video_platform', bull)
+              .textSearch('video_name', wordConversion)
           : await browserClient
               .from('party_info')
               .select('party_id')
-              .order('watch_date', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
               .textSearch('video_name', wordConversion);
       if (response.error) {
         console.log(response.error.message);
       }
+
       return response.data && response.data.length > 0 ? Math.ceil(response.data?.length / pageSlice) : 1;
     }
   });
@@ -59,50 +109,107 @@ const RecruitList = () => {
     queryKey: ['recruitList'],
     queryFn: async () => {
       const response: PostgrestSingleResponse<partyInfo[]> =
+        // 검색을 안하는 경우
         wordConversion === '+'
+          ? // 모집중을 택할 때 watch_date가 오늘 이상인 데이터 불러오기
+            partySituation === '모집중'
+            ? await browserClient
+                .from('party_info')
+                .select('*')
+                .range(start, end)
+                .order('start_date_time', { ascending: false })
+                .order(order, { ascending: false })
+                .gte('start_date_time', now)
+                .textSearch('video_platform', bull)
+            : partySituation === '시청중'
+            ? await browserClient
+                .from('party_info')
+                .select('*')
+                .range(start, end)
+                .order('start_date_time', { ascending: false })
+                .order(order, { ascending: false })
+                .lte('start_date_time', now)
+                .gte('end_time', now)
+                .textSearch('video_platform', bull)
+            : await browserClient
+                .from('party_info')
+                .select('*')
+                .range(start, end)
+                .order('start_date_time', { ascending: false })
+                .order(order, { ascending: false })
+                .textSearch('video_platform', bull)
+          : //검색을 하는 경우
+          partySituation === '모집중'
           ? await browserClient
               .from('party_info')
               .select('*')
               .range(start, end)
-              .order('watch_date', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
+              .gte('start_date_time', now)
+              .textSearch('video_name', wordConversion)
+          : partySituation === '시청중'
+          ? await browserClient
+              .from('party_info')
+              .select('*')
+              .range(start, end)
+              .order('start_date_time', { ascending: false })
+              .order(order, { ascending: false })
+              .lte('start_date_time', now)
+              .gte('end_time', now)
+              .textSearch('video_platform', bull)
+              .textSearch('video_name', wordConversion)
           : await browserClient
               .from('party_info')
               .select('*')
               .range(start, end)
-              .order('watch_date', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
+              .textSearch('video_platform', bull)
               .textSearch('video_name', wordConversion);
 
       if (response.error) {
         console.log(response.error.message);
       }
+      // // 시청중, 모집중
+      // if (response.data && response.data.length > 0 && partySituation === '시청중') {
+      //   // 시청중인 경우
+      //   const nowWatchingParties = response.data.filter((n) => {
+      //     return getViewStatus(n) === '시청중';
+      //   });
+      //   return nowWatchingParties;
+      // } else if (response.data && response.data.length > 0 && partySituation === '모집중') {
+      //   // 모집 중인 경우
+      //   const nowWatchingParties = response.data.filter((n) => {
+      //     return getViewStatus(n) === '모집중' && n.situation === '모집중';
+      //   });
+      //   return nowWatchingParties;
+      // }
       return response.data;
     }
   });
 
-  const queryClient = useQueryClient();
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['recruitList'] });
     queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
-  }, [order, filter, pageNumber, searchWord, queryClient]);
+  }, [order, filter, pageNumber, searchWord, partySituation, queryClient]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['recruitList'] });
+    queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
+    setPageNumber(1);
+  }, [order, filter, searchWord, partySituation, queryClient]);
 
   if (isLoading || isPageLoading) <div>Loading...</div>;
-  let df;
-  if (partySituation === '') df = data;
-  if (partySituation === '시청중') df = data;
-  if (partySituation === '모집중') df = data?.filter((n) => n.situation === '모집중');
 
-  console.log(df);
   return (
     <div>
-      <div>
+      <div className="flex flex-row gap-10 p-10 text-2xl">
         <p onClick={() => setPartySituation('')}>전체</p>
         <p onClick={() => setPartySituation('시청중')}>시청중</p>
         <p onClick={() => setPartySituation('모집중')}>모집중</p>
       </div>
-      <input type="text" className="bg-slate-300" onChange={(e) => setSearchWord(e.target.value)} />
       <div className="flex flex-row gap-5 p-10">
         <form>
           <select
@@ -111,7 +218,7 @@ const RecruitList = () => {
               setOrder(e.target.value);
             }}
           >
-            <option value={'watch_date'}>최신순</option>
+            <option value={'start_date_time'}>최신순</option>
             <option value={'popularity'}>인기순</option>
           </select>
         </form>
@@ -139,7 +246,7 @@ const RecruitList = () => {
               <RecruitCard
                 key={recruit.party_id}
                 data={recruit}
-                end={recruit.situation === '종료' || getExpiration(recruit.watch_date)}
+                end={recruit.situation === '종료' || getViewStatus(recruit) === '시청완료'}
               />
             );
           })
@@ -147,7 +254,9 @@ const RecruitList = () => {
           <p>데이터가 없습니다</p>
         )}
       </div>
-      <div className="flex flex-row gap-10 p-10 justify-center items-center text-xl font-bold">
+      <div className="flex flex-row gap-10 p-10 justify-center items-center text-xl">
+        <button onClick={() => setPageNumber(1)}>가장 처음으로</button>
+        <button onClick={() => setPageNumber((now) => (now !== 1 ? now - 1 : now))}>&#12296;</button>
         {pageData &&
           Array.from({ length: pageData })
             .map((arr, i) => {
@@ -155,11 +264,17 @@ const RecruitList = () => {
             })
             .map((page) => {
               return (
-                <button key={page} onClick={() => setPageNumber(page)}>
+                <button
+                  className={page === pageNumber ? 'w-8 bg-purple-700 rounded-full text-white' : ''}
+                  key={page}
+                  onClick={() => setPageNumber(page)}
+                >
                   {page}
                 </button>
               );
             })}
+        <button onClick={() => setPageNumber((now) => (now !== pageData ? now + 1 : now))}>&#12297;</button>
+        <button onClick={() => setPageNumber(pageData ? pageData : 1)}>가장 마지막으로</button>
       </div>
     </div>
   );
