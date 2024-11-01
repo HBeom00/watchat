@@ -16,22 +16,34 @@ export const partySituationChecker = async (party_id: string) => {
   return situation;
 };
 
+// 파티 인원 확인
+export const partyMemberCounter = async (party_id: string) => {
+  const response: PostgrestSingleResponse<{ profile_id: string }[]> = await browserClient
+    .from('team_user_profile')
+    .select('profile_id')
+    .eq('party_id', party_id);
+  if (response.data) {
+    return response.data.length;
+  }
+  return 0;
+};
+
 // 멤버가 가득 찼는지 확인
 export const memberFullChecker = async (party_id: string) => {
   // 참가하고자 하는 파티의 인원제한 확인
-  const { data: limitMemberData } = await browserClient
+  const { data: limitMemberData, error } = await browserClient
     .from('party_info')
     .select('limited_member')
     .eq('party_id', party_id);
   const limitMember: number = limitMemberData ? limitMemberData[0].limited_member : 0;
 
   // 참가하고자 하는 파티의 인원 확인
-  const { data, error } = await browserClient.from('team_user_profile').select('profile_id').eq('party_id', party_id);
+  const data = await partyMemberCounter(party_id);
 
   // 파티 인원제한과 파티인원을 대조하여 파티가 가득 찼는지 아닌지 확인
   if (error || data === null) {
     return false;
-  } else if (data && data.length >= limitMember) {
+  } else if (data && data >= limitMember) {
     return false;
   } else {
     return true;

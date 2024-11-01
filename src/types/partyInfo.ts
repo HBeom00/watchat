@@ -16,8 +16,8 @@ export type partyInfo = {
   episode_number: number | null;
   popularity: number;
   backdrop_image: string | null;
-  end_time: string | null;
-  start_date_time: string | null;
+  start_date_time: string;
+  end_time: string;
 };
 export type platform = { logoUrl: string; name: string };
 

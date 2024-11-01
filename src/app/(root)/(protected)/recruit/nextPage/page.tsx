@@ -11,6 +11,8 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 import { useState } from 'react';
 
+
+
 const RecruitPage2 = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
@@ -32,6 +34,7 @@ const RecruitPage2 = () => {
         duration_time,
         media_type,
         video_image,
+        backdrop_image,
         episode_number,
         limited_member,
         watch_date,
@@ -41,9 +44,16 @@ const RecruitPage2 = () => {
         video_platform
       } = useRecruitStore.getState();
 
+      const start_date_time = new Date(
+        `${watch_date?.toISOString().split('T')[0]}T${start_time?.toISOString().split('T')[1]}`
+      );
+      // `duration_time`을 더해 `end_time` 생성
+      const end_time = new Date(start_date_time.getTime() + duration_time * 60 * 1000).toISOString();
+
       // 빈값의 플렛폼
       const platformData =
         video_platform && video_platform.length > 0 ? video_platform : [{ name: '알수없음', logoUrl: '알수없음' }];
+   
 
       const { data: insertPartyData, error }: { data: partyInfo[] | null; error: PostgrestError | null } =
         await browserClient
@@ -57,12 +67,15 @@ const RecruitPage2 = () => {
               duration_time,
               media_type,
               video_image,
+              backdrop_image,
               episode_number,
               limited_member,
               video_platform: platformData,
               situation: '모집중',
-              watch_date: watch_date ? watch_date.toISOString().split('T')[0] : null,
-              start_time: start_time ? start_time.toISOString().split('T')[1] : null,
+              watch_date: watch_date ? watch_date .toISOString().split('T')[0] : null,
+              start_time: start_time ? start_time .toISOString().split('T')[1] : null,
+              start_date_time: start_date_time.toISOString(),
+              end_time,
               owner_id: userId,
               popularity
             }
@@ -73,11 +86,14 @@ const RecruitPage2 = () => {
       if (insertPartyData) {
         console.log('파티아이디', insertPartyData[0].party_id);
         setPartyNumber(insertPartyData[0].party_id);
+
+        setOpen(true);
       }
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['party_info'] });
       queryClient.invalidateQueries({ queryKey: ['recruitList'] });
+      queryClient.invalidateQueries({ queryKey: ['myParty'] });
     }
   });
 
@@ -124,7 +140,6 @@ const RecruitPage2 = () => {
           onClick={(e) => {
             e.preventDefault();
             submitRecruit();
-            setOpen(true);
           }}
         >
           모집하기

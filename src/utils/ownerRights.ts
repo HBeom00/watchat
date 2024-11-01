@@ -11,6 +11,16 @@ export const memberExpulsion = async (party_id: string, member_Id: string) => {
   if (error) {
     console.log(error.message);
   }
+  const situationResponse = await browserClient.from('party_info').select('situation').eq('party_id', party_id);
+  if (situationResponse.data && situationResponse.data[0].situation === '모집완료') {
+    const { error: updateError } = await browserClient
+      .from('party_info')
+      .update({ situation: '모집중' })
+      .eq('party_id', party_id);
+    if (updateError) {
+      console.log(updateError.message);
+    }
+  }
 };
 
 // 파티 종료하기
