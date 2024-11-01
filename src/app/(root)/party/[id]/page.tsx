@@ -6,6 +6,18 @@ import PartyBottom from './(components)/PartyBottom';
 import { partyInfo } from '@/types/partyInfo';
 import { getViewStatus } from '@/utils/viewStatus';
 
+export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+  const supabase = createClient();
+
+  // 현재 파티 정보 불러오기
+  const res: PostgrestSingleResponse<partyInfo[]> = await supabase
+    .from('party_info')
+    .select('*')
+    .eq('party_id', params.id);
+
+  return { title: `${res.data ? res.data[0].party_name : ''} 페이지` };
+};
+
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
   const userId = await getLoginUserIdOnServer();

@@ -15,10 +15,6 @@ export const getViewStatus = (party: Party) => {
   const endDate = new Date(party.watch_date + 'T' + party.start_time.split('.')[0]);
   endDate.setMinutes(endDate.getMinutes() + party.duration_time);
 
-  // const startTime = new Date(party.start_time.split('.')[0]);
-  // const durationTime = party.duration_time;
-  // const endTime = new Date(startTime.getTime() + durationTime * 60 * 1000);
-
   if (currentDate < watchDate) {
     return '모집중';
   } else if (currentDate > watchDate && currentDate < endDate) {
@@ -27,3 +23,7 @@ export const getViewStatus = (party: Party) => {
     return '시청완료';
   }
 };
+
+// const startTime = new Date(party.start_time.split('.')[0]);
+// const durationTime = party.duration_time;
+// const endTime = new Date(startTime.getTime() + durationTime * 60 * 1000);

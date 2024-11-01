@@ -7,14 +7,16 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
+import { useSearchStore } from '@/providers/searchStoreProvider';
 
 const RecruitList = () => {
-  const [order, setOrder] = useState<string>('watch_date');
+  const queryClient = useQueryClient();
+  const [order, setOrder] = useState<string>('start_date_time');
   const [filter, setFilter] = useState<string>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   const [partySituation, setPartySituation] = useState('');
-  const [searchWord, setSearchWord] = useState<string>('');
+  const searchWord = useSearchStore((state) => state.searchText);
 
   const pageSlice = 16;
   const start = (pageNumber - 1) * pageSlice;
@@ -29,18 +31,10 @@ const RecruitList = () => {
     })
     .join('');
 
-  const nowDateArr = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Seoul' }).split('/');
-  const nowDate = [nowDateArr[2], nowDateArr[0], nowDateArr[1]].join('-');
-
-  // const nowTimeArr = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Seoul' }).split(' ');
-  // const plus = nowTimeArr[1] === 'PM' && nowTimeArr[0].split(':')[0] !== '12' ? 12 : 0;
-  // const NowTime = nowTimeArr[0]
-  //   .split(':')
-  //   .map(Number)
-  //   .map((n, i) => (i === 0 ? n + plus : n))
-  //   .map(String)
-  //   .map((m) => (m.length === 1 ? `0${m}` : m))
-  //   .join(':');
+  // 현재시간
+  const d = new Date();
+  d.setHours(d.getHours() + 9);
+  const now = d.toISOString();
 
   // 시청 중, 모집 중을 완벽하게 구현하려면 startTime과 endTime이 supabase에 들어가야한다
 
@@ -56,23 +50,23 @@ const RecruitList = () => {
             ? await browserClient
                 .from('party_info')
                 .select('party_id')
-                .order('watch_date', { ascending: false })
-                .order('start_time', { ascending: false })
+                .order('start_date_time', { ascending: false })
                 .order(order, { ascending: false })
-                .gte('watch_date', nowDate)
+                .gte('start_date_time', now)
                 .textSearch('video_platform', bull)
             : partySituation === '시청중'
             ? await browserClient
                 .from('party_info')
                 .select('party_id')
-                .order('watch_date', { ascending: false })
+                .order('start_date_time', { ascending: false })
                 .order(order, { ascending: false })
-                .eq('watch_date', nowDate)
+                .lte('start_date_time', now)
+                .gte('end_time', now)
                 .textSearch('video_platform', bull)
             : await browserClient
                 .from('party_info')
                 .select('party_id')
-                .order('watch_date', { ascending: false })
+                .order('start_date_time', { ascending: false })
                 .order(order, { ascending: false })
                 .textSearch('video_platform', bull)
           : // 검색을 하는 경우
@@ -80,27 +74,25 @@ const RecruitList = () => {
           ? await browserClient
               .from('party_info')
               .select('party_id')
-              .order('watch_date', { ascending: false })
-              .order('start_time', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
-              .gte('watch_date', nowDate)
+              .gte('start_date_time', now)
               .textSearch('video_name', wordConversion)
           : partySituation === '시청중'
           ? await browserClient
               .from('party_info')
               .select('party_id')
-              .order('watch_date', { ascending: false })
-              .order('start_time', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
-              .eq('watch_date', nowDate)
+              .lte('start_date_time', now)
+              .gte('end_time', now)
               .textSearch('video_platform', bull)
               .textSearch('video_name', wordConversion)
           : await browserClient
               .from('party_info')
               .select('party_id')
-              .order('watch_date', { ascending: false })
-              .order('start_time', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
               .textSearch('video_name', wordConversion);
@@ -125,27 +117,25 @@ const RecruitList = () => {
                 .from('party_info')
                 .select('*')
                 .range(start, end)
-                .order('watch_date', { ascending: false })
-                .order('start_time', { ascending: false })
+                .order('start_date_time', { ascending: false })
                 .order(order, { ascending: false })
-                .gte('watch_date', nowDate)
+                .gte('start_date_time', now)
                 .textSearch('video_platform', bull)
             : partySituation === '시청중'
             ? await browserClient
                 .from('party_info')
                 .select('*')
                 .range(start, end)
-                .order('watch_date', { ascending: false })
-                .order('start_time', { ascending: false })
+                .order('start_date_time', { ascending: false })
                 .order(order, { ascending: false })
-                .eq('watch_date', nowDate)
+                .lte('start_date_time', now)
+                .gte('end_time', now)
                 .textSearch('video_platform', bull)
             : await browserClient
                 .from('party_info')
                 .select('*')
                 .range(start, end)
-                .order('watch_date', { ascending: false })
-                .order('start_time', { ascending: false })
+                .order('start_date_time', { ascending: false })
                 .order(order, { ascending: false })
                 .textSearch('video_platform', bull)
           : //검색을 하는 경우
@@ -154,29 +144,27 @@ const RecruitList = () => {
               .from('party_info')
               .select('*')
               .range(start, end)
-              .order('watch_date', { ascending: false })
-              .order('start_time', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
-              .gte('watch_date', nowDate)
+              .gte('start_date_time', now)
               .textSearch('video_name', wordConversion)
           : partySituation === '시청중'
           ? await browserClient
               .from('party_info')
               .select('*')
               .range(start, end)
-              .order('watch_date', { ascending: false })
-              .order('start_time', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
-              .eq('watch_date', nowDate)
+              .lte('start_date_time', now)
+              .gte('end_time', now)
               .textSearch('video_platform', bull)
               .textSearch('video_name', wordConversion)
           : await browserClient
               .from('party_info')
               .select('*')
               .range(start, end)
-              .order('watch_date', { ascending: false })
-              .order('start_time', { ascending: false })
+              .order('start_date_time', { ascending: false })
               .order(order, { ascending: false })
               .textSearch('video_platform', bull)
               .textSearch('video_name', wordConversion);
@@ -184,29 +172,34 @@ const RecruitList = () => {
       if (response.error) {
         console.log(response.error.message);
       }
-      // 시청중, 모집중
-      if (response.data && response.data.length > 0 && partySituation === '시청중') {
-        // 시청중인 경우
-        const nowWatchingParties = response.data.filter((n) => {
-          return getViewStatus(n) === '시청중';
-        });
-        return nowWatchingParties;
-      } else if (response.data && response.data.length > 0 && partySituation === '모집중') {
-        // 모집 중인 경우
-        const nowWatchingParties = response.data.filter((n) => {
-          return getViewStatus(n) === '모집중' && n.situation === '모집중';
-        });
-        return nowWatchingParties;
-      }
+      // // 시청중, 모집중
+      // if (response.data && response.data.length > 0 && partySituation === '시청중') {
+      //   // 시청중인 경우
+      //   const nowWatchingParties = response.data.filter((n) => {
+      //     return getViewStatus(n) === '시청중';
+      //   });
+      //   return nowWatchingParties;
+      // } else if (response.data && response.data.length > 0 && partySituation === '모집중') {
+      //   // 모집 중인 경우
+      //   const nowWatchingParties = response.data.filter((n) => {
+      //     return getViewStatus(n) === '모집중' && n.situation === '모집중';
+      //   });
+      //   return nowWatchingParties;
+      // }
       return response.data;
     }
   });
 
-  const queryClient = useQueryClient();
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['recruitList'] });
     queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
   }, [order, filter, pageNumber, searchWord, partySituation, queryClient]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['recruitList'] });
+    queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
+    setPageNumber(1);
+  }, [order, filter, searchWord, partySituation, queryClient]);
 
   if (isLoading || isPageLoading) <div>Loading...</div>;
 
@@ -217,7 +210,6 @@ const RecruitList = () => {
         <p onClick={() => setPartySituation('시청중')}>시청중</p>
         <p onClick={() => setPartySituation('모집중')}>모집중</p>
       </div>
-      <input type="text" className="bg-slate-300" onChange={(e) => setSearchWord(e.target.value)} />
       <div className="flex flex-row gap-5 p-10">
         <form>
           <select
@@ -226,7 +218,7 @@ const RecruitList = () => {
               setOrder(e.target.value);
             }}
           >
-            <option value={'watch_date'}>최신순</option>
+            <option value={'start_date_time'}>최신순</option>
             <option value={'popularity'}>인기순</option>
           </select>
         </form>

@@ -1,5 +1,6 @@
 import { partyInfo, platform } from '@/types/partyInfo';
 import { member } from '@/utils/memberCheck';
+import { startTimeString } from '@/utils/startTimeString';
 import browserClient from '@/utils/supabase/client';
 import { useMemberCount } from '@/utils/useMemberCount';
 import { getViewStatus } from '@/utils/viewStatus';
@@ -32,10 +33,10 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
     <Link href={`/party/${data.party_id}`} className={blurred}>
       <p>{getViewStatus(data) === '모집중' ? data.situation : getViewStatus(data)}</p>
       <div className="flex flex-row gap-5">
-        <p>{data.watch_date}</p>
-        <p>{data.start_time.split('.')[0]}</p>
+        <p>{startTimeString(data.start_date_time)}</p>
       </div>
       <p>{data.video_name}</p>
+      {data.episode_number ? <p>{data.episode_number}화</p> : <></>}
       <p>{data.party_name}</p>
       {ownerInfo ? (
         <div className="flex flex-row">
@@ -45,8 +46,8 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       ) : (
         <></>
       )}
-
-      <p>{`${memberCount ? memberCount : 0}/${data.limited_member}`}</p>
+      <p>{memberCount ? memberCount : 0}명 참여</p>
+      <p>{`${memberCount ? memberCount : 0}/${data.limited_member}명`}</p>
       {platform ? <Image src={platform.logoUrl} width={50} height={50} alt={platform.name} /> : <></>}
     </Link>
   );

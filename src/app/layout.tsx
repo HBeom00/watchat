@@ -7,6 +7,7 @@ import Providers from '@/providers/queryProvider';
 import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
 import { UserStoreProvider } from '@/providers/userStoreProvider';
+import Footer from '@/components/layout/Footer';
 import { SearchProvider } from '@/providers/searchStoreProvider';
 
 const geistSans = localFont({
@@ -41,7 +42,8 @@ export default async function RootLayout({
           <SearchProvider>
             <Providers>
               <Header />
-              {children}
+              <main className="flex-grow pt-[80px]">{children}</main>
+              <Footer />
             </Providers>
           </SearchProvider>
         </UserStoreProvider>

@@ -17,7 +17,7 @@ export const SearchProvider = ({ children }: searchProviderProps) => {
   return <SearchContext.Provider value={storeRef.current}> {children} </SearchContext.Provider>;
 };
 
-export const useSearchContext = <T,>(selector: (store: searchStore) => T): T => {
+export const useSearchStore = <T,>(selector: (store: searchStore) => T): T => {
   const storeContext = useContext(SearchContext);
   if (!storeContext) throw new Error('Missing CartContext.Provider in the tree');
   return useStore(storeContext, selector);
