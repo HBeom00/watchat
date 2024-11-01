@@ -1,10 +1,12 @@
 'use client';
 
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SendMessageForm({ roomId }: { roomId: string }) {
   const [content, setContent] = useState('');
+  const route = useRouter();
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,6 +22,12 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
       .select()
       .eq('party_id', roomId)
       .eq('user_id', userId);
+
+    if (data?.length === 0) {
+      alert('추방 당하였습니다.');
+      route.push(`/party/${roomId}`);
+      return;
+    }
 
     const { error } = await browserClient.from('chat').insert([
       {
@@ -44,7 +52,15 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
         placeholder="메시지를 입력하세요"
         style={{ flex: 1 }}
       />
-      <button type="submit">전송</button>
+      <button
+        type="submit"
+        disabled={content === ''}
+        className={`px-4 py-2 rounded ${
+          content === '' ? 'text-gray-400 cursor-not-allowed' : 'text-black cursor-pointer'
+        }`}
+      >
+        전송
+      </button>
     </form>
   );
 }

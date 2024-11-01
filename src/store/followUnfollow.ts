@@ -12,6 +12,7 @@ export const unfollow = async (userId: string, followId: string) => {
   }
 };
 
+// 팔로우 함수
 export const follow = async (userId: string, followId: string) => {
   const { data: addFollow, error: errorAddFollow } = await browserClient
     .from('follow')
