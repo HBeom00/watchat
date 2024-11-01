@@ -42,7 +42,7 @@ export default async function RootLayout({
           <SearchProvider>
             <Providers>
               <Header />
-              <main className="flex-grow pt-[80px]">{children}</main>
+              <main className="flex-grow pt-[80px] px-[190px]">{children}</main>
               <Footer />
             </Providers>
           </SearchProvider>
