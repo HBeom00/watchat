@@ -1,7 +1,7 @@
 'use client';
 
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
-import { isMemberExist, partySituationChecker } from '@/utils/memberCheck';
+import { isMemberExist, memberFullChecker, memberFullSwitch, partySituationChecker } from '@/utils/memberCheck';
 import { usePathname, useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
@@ -108,6 +108,13 @@ const ParticipationForm = ({
       if (error) {
         alert('파티 참가에 실패하셨습니다');
         return;
+      }
+      // 이 초대하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
+      // 인원이 가득찼는지 확인
+      const fullCheck = await memberFullChecker(party_id);
+      if (fullCheck) {
+        // 모집 마감 상태로 전환
+        await memberFullSwitch(party_id);
       }
       // 멤버가 변동하면 바뀌어야 하는 값들
       queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });

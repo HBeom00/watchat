@@ -5,6 +5,15 @@
 body {
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('fonts/PretendardVariable.woff2');
+}
+
+* {
+  font-family: 'Pretendard';
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -74,8 +83,4 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-}
-
-* {
-  font-family: 'Pretendard';
 }

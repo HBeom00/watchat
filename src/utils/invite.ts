@@ -1,5 +1,5 @@
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
-import { isMemberExist, memberFullChecker, memberFullSwitch, partySituationChecker } from './memberCheck';
+import { isMemberExist, partySituationChecker } from './memberCheck';
 
 //초대하기 로직
 export const inviteHandler = async (party_id: string, invitee: string) => {
@@ -38,13 +38,6 @@ export const inviteHandler = async (party_id: string, invitee: string) => {
   if (error) {
     alert('초대장 보내기를 실패했습니다.');
   } else {
-    // 이 초대하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
-    // 인원이 가득찼는지 확인
-    const fullCheck = await memberFullChecker(party_id);
-    if (fullCheck) {
-      // 모집 마감 상태로 전환
-      await memberFullSwitch(party_id);
-    }
     alert('초대장을 보냈습니다');
   }
 };
