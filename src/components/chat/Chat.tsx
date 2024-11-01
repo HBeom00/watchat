@@ -1,9 +1,10 @@
 'use client';
 
-import browserClient from '@/utils/supabase/client';
 import React, { useEffect, useState, useRef } from 'react';
 import SendMessageForm from './SendMessageForm';
 import Image from 'next/image';
+import { GiQueenCrown } from 'react-icons/gi';
+import browserClient from '@/utils/supabase/client';
 
 type Chat = {
   id: string;
@@ -18,8 +19,8 @@ type Chat = {
 export default function Chat({ roomId }: { roomId: string }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Chat[]>([]);
+  const [ownerId, setOwnerId] = useState<string>('');
   const messageListRef = useRef<HTMLDivElement | null>(null);
-  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // 로그인한 사용자 유저 아이디 가져오기
@@ -37,8 +38,21 @@ export default function Chat({ roomId }: { roomId: string }) {
 
     fetchUserId();
 
+    // 오너 유저 아이디 가져오기
+    const getOwnerId = async () => {
+      const { data, error } = await browserClient.from('party_info').select('owner_id').eq('party_id', roomId);
+
+      setOwnerId(data?.[0].owner_id);
+
+      if (error) {
+        console.error('Error fetching messages:', error);
+        return;
+      }
+    };
+    getOwnerId();
+
     // 메시지 초기 불러오기
-    const fetchMessages = async () => {
+    const getMessages = async () => {
       const { data, error } = await browserClient
         .from('chat')
         .select('*')
@@ -51,28 +65,46 @@ export default function Chat({ roomId }: { roomId: string }) {
       }
 
       setMessages(data);
+
+      // 초기 로딩 시 스크롤 맨 아래로 이동
+      setTimeout(() => {
+        messageListRef.current?.scrollTo({
+          top: messageListRef.current.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 100);
     };
 
-    fetchMessages();
+    getMessages();
 
     // 실시간 메시지 구독
     const messageSubscription = browserClient
-      .channel('realtime:chat')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat' }, (payload) => {
-        displayNewMessage(payload.new as Chat);
-      })
+      .channel(`chat-${roomId}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'chat', filter: `room_id=eq.${roomId}` },
+        (payload) => {
+          console.log('New message received for room:', roomId, 'Message:', payload.new);
+          displayNewMessage(payload.new as Chat);
+        }
+      )
       .subscribe();
 
     return () => {
-      browserClient.removeChannel(messageSubscription); // 컴포넌트 언마운트 시 구독 해제
+      messageSubscription.unsubscribe();
     };
   }, [roomId]);
 
-  // 새 메시지를 화면에 표시하는 함수
+  // 새 메시지를 화면에 추가하고 자동으로 스크롤 이동
   const displayNewMessage = (message: Chat) => {
     setMessages((prev) => [...prev, message]);
-
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // 새 메시지가 추가될 때 스크롤 맨 아래로 이동
+    setTimeout(() => {
+      messageListRef.current?.scrollTo({
+        top: messageListRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }, 100);
   };
 
   return (
@@ -111,7 +143,18 @@ export default function Chat({ roomId }: { roomId: string }) {
                       className="rounded-full mr-2 h-auto w-auto"
                     />
                   )}
-                  {!isMyself && <div>{msg.nickname}</div>}
+                  {!isMyself ? (
+                    ownerId === msg.sender_id ? (
+                      <div className="flex justify-center items-center gap-1">
+                        {msg.nickname}
+                        <GiQueenCrown className="text-yellow-400" />
+                      </div>
+                    ) : (
+                      <div>{msg.nickname}</div>
+                    )
+                  ) : (
+                    ''
+                  )}
                 </div>
               )}
               <div
