@@ -7,7 +7,7 @@ const Main = async () => {
   const userId = await getLoginUserIdOnServer();
 
   return (
-    <div>
+    <div className="font-pretendard">
       <Banner />
       {userId ? <MyParty userId={userId} /> : <></>}
       <RecruitList />

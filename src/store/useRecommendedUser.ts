@@ -3,9 +3,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { getRecommendedMembers } from './getRecommendedUser';
 
-export const useRecommendedUsers = () => {
+export const useRecommendedUsers = (userId: string) => {
   return useQuery({
-    queryKey: ['recommendedUser'],
-    queryFn: () => getRecommendedMembers()
+    queryKey: ['recommendedUser', userId],
+    queryFn: () => getRecommendedMembers(userId),
+    enabled: !!userId
   });
 };

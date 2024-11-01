@@ -1,13 +1,15 @@
 'use client';
 
+import { useFetchUserData } from '@/store/userStore';
 import { genreArr, platformArr } from '@/utils/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const nicknameSchema = z.object({
@@ -18,16 +20,95 @@ const FirstLoginForm = () => {
   const { imgFile, imgRef, uploadImage } = useImageUpload();
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
+  const [nickname, setNickname] = useState<string>('');
   const route = useRouter();
   const pathname = usePathname();
+
+  const { data: userData, isPending, isError } = useFetchUserData();
 
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
     defaultValues: {
-      nickname: ''
+      nickname: userData?.nickname || ''
     },
     resolver: zodResolver(nicknameSchema)
   });
+  // 서버에 사용자 정보를 저장하는 mutation 함수
+  const mutation = useMutation<void, Error, MutatedUser>({
+    mutationFn: async (userData: FieldValues) => {
+      const file = imgRef.current?.files?.[0];
+      const {
+        data: { user }
+      } = await browserClient.auth.getUser();
+
+      if (!user) {
+        throw new Error('사용자 ID를 가져오는 데 실패했습니다.');
+      }
+
+      const profile_image_name = `${user?.id}/${new Date().getTime()}`;
+
+      if (file) {
+        await browserClient.storage.from('profile_image').upload(profile_image_name, file, {
+          cacheControl: 'no-store',
+          upsert: true
+        });
+      }
+
+      const profileImgUrl = browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl;
+
+      // 회원가입 또는 수정 로직
+      if (pathname === '/mypage/edit' && !!user) {
+        await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제
+        await browserClient
+          .from('user')
+          .update({
+            nickname: userData.nickname,
+            profile_img: profileImgUrl,
+            platform: platforms,
+            genre: genres
+          })
+          .eq('user_id', user.id);
+
+        alert('수정이 완료되었습니다.');
+        route.push('/mypage');
+      } else if (!!user) {
+        await browserClient.from('user').insert({
+          user_id: user.id,
+          user_email: user.email,
+          nickname,
+          profile_img: profileImgUrl,
+          platform: platforms,
+          genre: genres
+        });
+
+        alert('등록되었습니다.');
+        route.push('/');
+      }
+    },
+    onSuccess: () => {
+      alert(pathname === '/mypage/edit' ? '수정이 완료되었습니다.' : '등록되었습니다.');
+      route.push(pathname === '/mypage/edit' ? '/mypage' : '/');
+    },
+    onError: (error) => {
+      console.error('Mutation error:', error);
+    }
+  });
+
+  type User = {
+    id: string;
+    email?: string;
+  };
+
+  type MutatedUser = {
+    user: User | null;
+    file: File | null;
+    profile_image_name: string;
+    nickname: string;
+    pathname: string;
+    platforms: string[];
+    genres: string[];
+    deleteOldImages: (userId: string, currentImageName: string) => Promise<void>;
+  };
 
   uploadImage();
 
@@ -63,64 +144,36 @@ const FirstLoginForm = () => {
   };
 
   // 완료 버튼 클릭 시
-  const onSuccessHandler = async ({ nickname }: FieldValues) => {
-    const file = imgRef.current?.files?.[0];
-    const {
-      data: { user }
-    } = await browserClient.auth.getUser();
+  const onSuccessHandler: SubmitHandler<{ nickname: string }> = async ({ nickname }) => {
+    const { data: authData } = await browserClient.auth.getUser();
+    const user = authData?.user;
 
     if (!user) {
-      console.error('사용자 ID를 가져오는 데 실패했습니다.');
-      return '';
+      console.error('사용자 정보를 가져오지 못했습니다.');
+      return;
     }
 
-    const profile_image_name = `${user?.id}/${new Date().getTime()}`;
-
-    if (file)
-      await browserClient.storage.from('profile_image').upload(profile_image_name, file, {
-        cacheControl: 'no-store',
-        upsert: true
-      });
-
-    const profileImgUrl = browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl;
-
-    // (10.29 5:10) 회원가입페이지일 경우와 마이페이지일 경우 분리
-    if (file && pathname === '/mypage/edit' && !!user) {
-      // 마이페이지인 경우
-      await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제
-      await browserClient
-        .from('user')
-        .update({
-          nickname,
-          profile_img: profileImgUrl,
-          platform: platforms,
-          genre: genres
-        })
-        .eq('user_id', user.id);
-
-      alert('수정이 완료되었습니다.');
-      route.push('/mypage');
-    } else if (!!user) {
-      // 회원가입인 경우
-      await browserClient
-        .from('user')
-        .insert({
-          user_id: user?.id,
-          user_email: user?.email,
-          nickname: nickname,
-          profile_img: profileImgUrl,
-          platform: platforms,
-          genre: genres
-        })
-        .eq('user_id', user?.id);
-
-      alert('등록되었습니다.');
-      route.push('/');
-    }
+    mutation.mutate({
+      user,
+      file: imgRef.current?.files?.[0] || null,
+      profile_image_name: `${user.id}/${new Date().getTime()}`,
+      nickname: nickname,
+      pathname,
+      platforms,
+      genres,
+      deleteOldImages
+    });
   };
 
   const editCancelHandler = () => {
     route.push('/mypage');
+
+    if (isPending) {
+      return <div>사용자 정보를 불러오는 중 입니다...</div>;
+    }
+    if (isError) {
+      return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
+    }
   };
 
   return (
@@ -139,7 +192,13 @@ const FirstLoginForm = () => {
         <p className="font-bold text-[20px]">
           닉네임<span>*</span>
         </p>
-        <input type="text" {...register('nickname')} placeholder="닉네임을 입력하세요" className="border-2" />
+        <input
+          type="text"
+          {...register('nickname')}
+          placeholder="닉네임을 입력하세요"
+          onChange={(e) => setNickname(e.target.value)}
+          className="border-2"
+        />
         {formState.errors.nickname && <span className="text-red-600">{formState.errors.nickname.message}</span>}
       </div>
 
