@@ -44,8 +44,11 @@ const RecruitPage2 = () => {
         video_platform
       } = useRecruitStore.getState();
 
+      const plusWatchDate = watch_date ? new Date(watch_date.getTime() + 9 * 60 * 60 * 1000) : null;
+      const plusStartTime = start_time ? new Date(start_time.getTime() + 9 * 60 * 60 * 1000) : null;
+
       const start_date_time = new Date(
-        `${watch_date?.toISOString().split('T')[0]}T${start_time?.toISOString().split('T')[1]}`
+        `${plusWatchDate?.toISOString().split('T')[0]}T${plusStartTime?.toISOString().split('T')[1]}`
       );
       // `duration_time`을 더해 `end_time` 생성
       const end_time = new Date(start_date_time.getTime() + duration_time * 60 * 1000).toISOString();
@@ -72,8 +75,8 @@ const RecruitPage2 = () => {
               limited_member,
               video_platform: platformData,
               situation: '모집중',
-              watch_date: watch_date ? watch_date .toISOString().split('T')[0] : null,
-              start_time: start_time ? start_time .toISOString().split('T')[1] : null,
+              watch_date: plusWatchDate ? plusWatchDate .toISOString().split('T')[0] : null,
+              start_time: plusStartTime ? plusStartTime .toISOString().split('T')[1] : null,
               start_date_time: start_date_time.toISOString(),
               end_time,
               owner_id: userId,
@@ -109,10 +112,10 @@ const RecruitPage2 = () => {
         onChange={(e) => setRecruitDetails({ limited_member: Number(e.target.value) })}
       />
 
-      {/* <select value={limitedMember} onChange={(e) => setRecruitDetails({ limitedMember: e.target.value })}>
+      { <select value={limited_member} onChange={(e) => setRecruitDetails({ limited_member: Number(e.target.value) })}>
                 <option value="">인원 선택</option>
                 {Array.from({ length: 10 }, (_, i) => <option key={i} value={i + 1}>{i + 1}명</option>)}
-            </select> */}
+            </select> }
       <h2>시청 날짜</h2>
       <DatePicker
         selected={useRecruitStore.getState().watch_date}

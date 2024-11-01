@@ -144,7 +144,7 @@ const RecruitPage1 = () => {
               <img src={platform.logoUrl} alt={platform.name} 
               className="w-12 h-auto mb-1" 
               />
-              <p className="text-sm">{platform.name}</p>
+              {/* <p className="text-sm">{platform.name}</p> */}
             </div>
           ))}
         </div>
