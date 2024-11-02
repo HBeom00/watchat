@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-}
-
 @font-face {
   font-family: 'Pretendard';
   src: url('fonts/PretendardVariable.woff2');
@@ -83,4 +80,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+select {
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cmask id='mask0_796_20608' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_796_20608)'%3E%3Cpath d='M7.77503 10.1846L4.00586 6.41539L4.70836 5.71289L7.77503 8.77956L10.8417 5.71289L11.5442 6.41539L7.77503 10.1846Z' fill='%238F8F8F'/%3E%3C/g%3E%3C/svg%3E")
+    no-repeat 97% 50%/16px auto;
 }

@@ -9,6 +9,7 @@ import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
 import { useSearchStore } from '@/providers/searchStoreProvider';
 import { useWatchFilter } from '@/store/watchFilterStore';
+import { selectClass } from '@/customCSS/platform';
 
 const RecruitList = () => {
   const queryClient = useQueryClient();
@@ -192,37 +193,38 @@ const RecruitList = () => {
   if (isLoading || isPageLoading) <div>Loading...</div>;
 
   return (
-    <div>
-      <div className="inline-flex items-center gap-2 p-10">
-        <form className="flex h-8 p-3 items-center gap-1">
-          <select
-            name="순서"
-            onChange={(e) => {
-              setOrder(e.target.value);
-            }}
-          >
-            <option value={'start_date_time'}>최신순</option>
-            <option value={'popularity'}>인기순</option>
-          </select>
-        </form>
-        <form>
-          <select
-            name="채널"
-            onChange={(e) => {
-              setFilter(e.target.value);
-            }}
-          >
-            <option value={'전체'}>전체</option>
-            <option value={'Netflix'}>넷플릭스</option>
-            <option value={'Tving'}>티빙</option>
-            <option value={'wavve'}>웨이브</option>
-            <option value={'Disney'}>디즈니플러스</option>
-            <option value={'Coupang'}>쿠팡플레이</option>
-            <option value={'Watcha'}>왓챠</option>
-          </select>
-        </form>
+    <div className="mt-8">
+      <div className="inline-flex items-center gap-2">
+        <select
+          className={selectClass}
+          name="순서"
+          onChange={(e) => {
+            setOrder(e.target.value);
+          }}
+        >
+          <option value={'start_date_time'}>최신순</option>
+          <option value={'popularity'}>인기순</option>
+        </select>
+        <select
+          className={selectClass}
+          name="채널"
+          onChange={(e) => {
+            setFilter(e.target.value);
+          }}
+        >
+          <option value={'전체'} hidden>
+            구독 채널
+          </option>
+          <option value={'전체'}>전체</option>
+          <option value={'Netflix'}>넷플릭스</option>
+          <option value={'Tving'}>티빙</option>
+          <option value={'wavve'}>웨이브</option>
+          <option value={'Disney'}>디즈니플러스</option>
+          <option value={'Coupang'}>쿠팡플레이</option>
+          <option value={'Watcha'}>왓챠</option>
+        </select>
       </div>
-      <div className="grid grid-cols-4 gap-10 p-10">
+      <div className="grid grid-cols-5 gap-x-5 gap-y-8 mt-8">
         {data && data.length > 0 ? (
           data.map((recruit) => {
             return (

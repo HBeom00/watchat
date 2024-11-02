@@ -41,9 +41,9 @@ const MyParty = ({ userId }: { userId: string }) => {
   return (
     <>
       {searchText === '' ? (
-        <div>
+        <div className="flex flex-col py-8">
           <p>MY 파티</p>
-          <div className="flex flex-row gap-10 p-10">
+          <div className="flex flex-row gap-5 py-[18px] text-Grey-900">
             {data
               ?.filter((n) => !(n?.situation === '종료'))
               .map((party) => {
