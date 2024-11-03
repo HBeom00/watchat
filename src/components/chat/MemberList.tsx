@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { UserInfo } from '@/types/teamUserProfile';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
@@ -20,46 +21,46 @@ const MemberList = ({
   ownerId: string;
   userId: string;
   roomId: string;
-  exitParty: (id: string) => Promise<void>;
+  exitParty: (id: string) => void;
 }) => {
   const [followStatus, setFollowStatus] = useState<{ [key: string]: boolean }>({});
 
-  useEffect(() => {
-    // 각 멤버의 팔로우 상태를 초기화
-    const fetchFollowStatus = async () => {
+  // 팔로우 상태 가져오기
+  useQuery({
+    queryKey: ['followStatus', userId],
+    queryFn: async () => {
       const { data, error } = await browserClient.from('follow').select('follow_id').eq('user_id', userId);
       if (error) {
         console.error('팔로우 상태 가져오기 에러:', error);
-        return;
+        return {};
       }
 
       const followMap = data?.reduce((acc, follow) => {
         acc[follow.follow_id] = true;
         return acc;
       }, {} as { [key: string]: boolean });
-      setFollowStatus(followMap || {});
-    };
 
-    fetchFollowStatus();
-  }, [userId, members]);
+      setFollowStatus(followMap || {}); // 상태 업데이트
+      return followMap || {}; // 데이터가 없어도 빈 객체 반환
+    }
+  });
 
+  // 팔로우 및 언팔로우 상태 변경
   const toggleFollow = async (id: string) => {
     const isFollowing = followStatus[id];
 
     if (isFollowing) {
-      // 언팔로우
-      // const { error } = await browserClient.from('follow').delete().eq('user_id', userId).eq('follow_id', id);
-      await unfollow(userId, id);
-
-      // if (error) {
-      //   console.error('언팔로우 에러:', error);
-      //   return;
-      // }
-      setFollowStatus((prev) => ({ ...prev, [id]: false }));
+      await unfollow(userId, id); // 언팔로우 수행
+      setFollowStatus((prev) => ({
+        ...prev,
+        [id]: false
+      }));
     } else {
-      follow(userId, id);
-
-      setFollowStatus((prev) => ({ ...prev, [id]: true }));
+      await follow(userId, id); // 팔로우 수행
+      setFollowStatus((prev) => ({
+        ...prev,
+        [id]: true
+      }));
     }
   };
 
