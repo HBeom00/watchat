@@ -114,6 +114,9 @@ const RecruitPage2 = () => {
         e.target.value = ""; // 잘못된 입력값을 지움
     }
 };
+
+const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
+
   return (
     <div className="grid place-items-center">
       {/* <button onClick={() => router.back()}>뒤로 가기</button> */}
@@ -173,11 +176,14 @@ const RecruitPage2 = () => {
 </div>
       <ParticipationButton openControl={open} party_id={partyNumber}>
         <button
-        className='mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] bg-Grey-100  rounded-md text-Grey-400 font-semibold  text-[15px]'
+        className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
           onClick={(e) => {
             e.preventDefault();
-            submitRecruit();
+            if (!isRecruitButtonDisabled) {
+              submitRecruit();
+          }
           }}
+          disabled={isRecruitButtonDisabled}
         >
           모집하기
         </button>
@@ -185,5 +191,6 @@ const RecruitPage2 = () => {
     </div>
   );
 };
+
 
 export default RecruitPage2;
