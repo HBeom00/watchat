@@ -208,54 +208,54 @@ export default RecruitPage1;
 
 // 버튼 컴포넌트 만들기 ***** 컬러. 크기 . 등등 프롭스로 받아서 변경이 쉽게
 
-export const BtnXl = `
-   px-[24px] py-[16px] w-[252px] h-[56px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[15px]
-`
-export const BtnL = `
-    px-[20px] py-[12px] w-[136px] h-[48px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[15px]
-`
-export const BtnM = `
-    px-[16px] py-[8px] w-[124px] h-[40px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[14px]
-`
-export const BtnS = `
-    px-[12px] py-[6px] w-[113px] h-[32px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[13px]
-`
-// ---------------------------------------------------------------------------------------------------------
-export const outlineBtnXl = `
-    px-[24px] py-[16px] w-[252px] h-[56px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[15px]
-`
-export const outlineBtnL = `
-    px-[20px] py-[12px] w-[136px] h-[48px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[15px]
-`
-export const outlineBtnM = `
-    px-[16px] py-[8px] w-[124px] h-[40px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[14px]
-`
-export const outlineBtnS = `
-    px-[12px] py-[6px] w-[113px] h-[32px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[13px]
-`
-// ---------------------------------------------------------------------------------------------------------
-export const disabledBtnXl = `
-   px-[24px] py-[16px] w-[252px] h-[56px] bg-Grey-100  rounded-md text-Grey-400 font-semibold  text-[15px]
-`
-export const disabledBtnL = `
-    px-[20px] py-[12px] w-[136px] h-[48px] bg-Grey-100 rounded-md text-Grey-400 font-semibold  text-[15px]
-`
-export const disabledBtnM = `
-    px-[16px] py-[8px] w-[124px] h-[40px]  bg-Grey-100 rounded-md text-Grey-400 font-semibold  text-[14px]
-`
-export const disabledBtnS = `
-    px-[12px] py-[6px] w-[113px] h-[32px]  bg-Grey-100 rounded-md text-Grey-400 font-semibold  text-[13px]
-`
-// ---------------------------------------------------------------------------------------------------------
-export const outLineDisabledBtnXl = `
-   px-[24px] py-[16px] w-[252px] h-[56px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[15px]
-`
-export const outLineDisabledBtnL = `
-   px-[20px] py-[12px] w-[136px] h-[48px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[15px]
-`
-export const outLineDisabledBtnM = `
-   px-[16px] py-[8px] w-[124px] h-[40px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[14px]
-`
-export const outLineDisabledBtnS = `
-   px-[12px] py-[6px] w-[113px] h-[32px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[13px]
-`
+// export const BtnXl = `
+//    px-[24px] py-[16px] w-[252px] h-[56px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[15px]
+// `
+// export const BtnL = `
+//     px-[20px] py-[12px] w-[136px] h-[48px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[15px]
+// `
+// export const BtnM = `
+//     px-[16px] py-[8px] w-[124px] h-[40px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[14px]
+// `
+// export const BtnS = `
+//     px-[12px] py-[6px] w-[113px] h-[32px] bg-primary-400 hover:bg-primary-500 rounded-md text-white font-semibold  text-[13px]
+// `
+// // ---------------------------------------------------------------------------------------------------------
+// export const outlineBtnXl = `
+//     px-[24px] py-[16px] w-[252px] h-[56px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[15px]
+// `
+// export const outlineBtnL = `
+//     px-[20px] py-[12px] w-[136px] h-[48px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[15px]
+// `
+// export const outlineBtnM = `
+//     px-[16px] py-[8px] w-[124px] h-[40px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[14px]
+// `
+// export const outlineBtnS = `
+//     px-[12px] py-[6px] w-[113px] h-[32px] rounded-md border-[1px]  border-md border-primary-400 text-primary-400 hover:bg-primary-50 font-semibold text-[13px]
+// `
+// // ---------------------------------------------------------------------------------------------------------
+// export const disabledBtnXl = `
+//    px-[24px] py-[16px] w-[252px] h-[56px] bg-Grey-100  rounded-md text-Grey-400 font-semibold  text-[15px]
+// `
+// export const disabledBtnL = `
+//     px-[20px] py-[12px] w-[136px] h-[48px] bg-Grey-100 rounded-md text-Grey-400 font-semibold  text-[15px]
+// `
+// export const disabledBtnM = `
+//     px-[16px] py-[8px] w-[124px] h-[40px]  bg-Grey-100 rounded-md text-Grey-400 font-semibold  text-[14px]
+// `
+// export const disabledBtnS = `
+//     px-[12px] py-[6px] w-[113px] h-[32px]  bg-Grey-100 rounded-md text-Grey-400 font-semibold  text-[13px]
+// `
+// // ---------------------------------------------------------------------------------------------------------
+// export const outLineDisabledBtnXl = `
+//    px-[24px] py-[16px] w-[252px] h-[56px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[15px]
+// `
+// export const outLineDisabledBtnL = `
+//    px-[20px] py-[12px] w-[136px] h-[48px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[15px]
+// `
+// export const outLineDisabledBtnM = `
+//    px-[16px] py-[8px] w-[124px] h-[40px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[14px]
+// `
+// export const outLineDisabledBtnS = `
+//    px-[12px] py-[6px] w-[113px] h-[32px] rounded-md border-[1px]  border-md border-Grey-300 text-Grey-400  font-semibold text-[13px]
+// `
