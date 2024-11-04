@@ -265,7 +265,6 @@ body {
 
 .btn-xl {
   padding: 16px 24px;
-  width: 252px;
   height: 56px;
   background-color: var(--primary-400);
   border-radius: 8px;
@@ -280,7 +279,6 @@ body {
 /* Large Button */
 .btn-l {
   padding: 12px 20px;
-  width: 136px;
   height: 48px;
   background-color: var(--primary-400);
   border-radius: 8px;
@@ -295,7 +293,6 @@ body {
 /* Medium Button */
 .btn-m {
   padding: 8px 16px;
-  width: 124px;
   height: 40px;
   background-color: var(--primary-400);
   border-radius: 8px;
@@ -310,7 +307,6 @@ body {
 /* Small Button */
 .btn-s {
   padding: 6px 12px;
-  width: 113px;
   height: 32px;
   background-color: var(--primary-400);
   border-radius: 8px;
@@ -319,7 +315,6 @@ body {
 /* Extra Large Outline Button */
 .outline-btn-xl {
   padding: 16px 24px;
-  width: 252px;
   height: 56px;
   border: 1px solid var(--primary-400);
   border-radius: 8px;
@@ -334,7 +329,6 @@ body {
 /* Large Outline Button */
 .outline-btn-l {
   padding: 12px 20px;
-  width: 136px;
   height: 48px;
   border: 1px solid var(--primary-400);
   border-radius: 8px;
@@ -349,7 +343,6 @@ body {
 /* Medium Outline Button */
 .outline-btn-m {
   padding: 8px 16px;
-  width: 124px;
   height: 40px;
   border: 1px solid var(--primary-400);
   border-radius: 8px;
@@ -364,7 +357,6 @@ body {
 /* Small Outline Button */
 .outline-btn-s {
   padding: 6px 12px;
-  width: 113px;
   height: 32px;
   border: 1px solid var(--primary-400);
   border-radius: 8px;
@@ -379,7 +371,6 @@ body {
 /* Extra Large Disabled Button */
 .disabled-btn-xl {
   padding: 16px 24px;
-  width: 252px;
   height: 56px;
   background-color: var(--grey-100);
   border-radius: 8px;
@@ -391,7 +382,6 @@ body {
 /* Large Disabled Button */
 .disabled-btn-l {
   padding: 12px 20px;
-  width: 136px;
   height: 48px;
   background-color: var(--grey-100);
   border-radius: 8px;
@@ -403,7 +393,6 @@ body {
 /* Medium Disabled Button */
 .disabled-btn-m {
   padding: 8px 16px;
-  width: 124px;
   height: 40px;
   background-color: var(--grey-100);
   border-radius: 8px;
@@ -415,7 +404,6 @@ body {
 /* Small Disabled Button */
 .disabled-btn-s {
   padding: 6px 12px;
-  width: 113px;
   height: 32px;
   background-color: var(--grey-100);
   border-radius: 8px;
@@ -427,7 +415,6 @@ body {
 /* Extra Large Outline Disabled Button */
 .outline-disabled-btn-xl {
   padding: 16px 24px;
-  width: 252px;
   height: 56px;
   border: 1px solid var(--grey-300);
   border-radius: 8px;
@@ -439,7 +426,6 @@ body {
 /* Large Outline Disabled Button */
 .outline-disabled-btn-l {
   padding: 12px 20px;
-  width: 136px;
   height: 48px;
   border: 1px solid var(--grey-300);
   border-radius: 8px;
@@ -451,7 +437,6 @@ body {
 /* Medium Outline Disabled Button */
 .outline-disabled-btn-m {
   padding: 8px 16px;
-  width: 124px;
   height: 40px;
   border: 1px solid var(--grey-300);
   border-radius: 8px;
@@ -463,7 +448,6 @@ body {
 /* Small Outline Disabled Button */
 .outline-disabled-btn-s {
   padding: 6px 12px;
-  width: 113px;
   height: 32px;
   border: 1px solid var(--grey-300);
   border-radius: 8px;
