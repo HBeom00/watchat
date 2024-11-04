@@ -9,6 +9,8 @@ import { useFollowData } from '@/store/useFollowData';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { unfollow } from '@/store/followUnfollow';
 import browserClient from '@/utils/supabase/client';
+import '@/customCSS/label.css';
+import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyProfile = () => {
   // 사용자 데이터 가져오기
@@ -64,68 +66,83 @@ const MyProfile = () => {
   }
 
   return (
-    <section>
-      <Image
-        src={
-          userData?.profile_img ||
-          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-        }
-        alt="프로필 이미지"
-        width={150}
-        height={150}
-      />
-      <article>
-        <div>
-          <h3>닉네임: {userData?.nickname}</h3>
-          <Link href={'/mypage/edit'}>프로필 편집</Link>
-        </div>
-        <div>
-          <Dialog>
-            <DialogTrigger>팔로잉 {followerCount}명</DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>팔로우한 사람</DialogTitle>
-              </DialogHeader>
-              <ul>
-                {followerData && followerData.length > 0 ? (
-                  followerData.map((follower: FollowingUser) => (
-                    <li key={follower.user_id}>
-                      <div>
-                        <Image
-                          src={
-                            follower.profile_img ||
-                            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                          }
-                          alt={`${follower.nickname} 님의 프로필 사진`}
-                          width={50}
-                          height={50}
-                        />
-                        <span>{follower.nickname}</span>
-                      </div>
-                      <button onClick={() => unfollowMutation.mutate(follower.user_id)}>언팔로우</button>
-                    </li>
-                  ))
-                ) : (
-                  <li>아직 팔로우한 사람이 없습니다.</li>
-                )}
+    <section className="bg-[#f5f5f5] py-8">
+      <div className="max-w-[1060px] m-auto flex gap-4 items-center">
+        <Image
+          src={userData?.profile_img || defaultAvatar}
+          alt="프로필 이미지"
+          width={100}
+          height={100}
+          style={{
+            objectFit: 'cover',
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%'
+          }}
+        />
+        <article>
+          <div className="flex gap-2">
+            <h3 className="body-l-bold">{userData?.nickname}</h3>
+            <Link href={'/mypage/edit'}>프로필 편집</Link>
+          </div>
+          <div className="flex flex-row gap-8">
+            <Dialog>
+              <DialogTrigger>
+                <p className="flex flex-row items-center gap-2 body-xs">
+                  팔로잉 <span>{followerCount}</span>
+                </p>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>팔로우한 사람</DialogTitle>
+                </DialogHeader>
+                <ul>
+                  {followerData && followerData.length > 0 ? (
+                    followerData.map((follower: FollowingUser) => (
+                      <li key={follower.user_id}>
+                        <div>
+                          <Image
+                            src={
+                              follower.profile_img ||
+                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                            }
+                            alt={`${follower.nickname} 님의 프로필 사진`}
+                            width={50}
+                            height={50}
+                          />
+                          <span>{follower.nickname}</span>
+                        </div>
+                        <button onClick={() => unfollowMutation.mutate(follower.user_id)}>언팔로우</button>
+                      </li>
+                    ))
+                  ) : (
+                    <li>아직 팔로우한 사람이 없습니다.</li>
+                  )}
+                </ul>
+                <DialogDescription></DialogDescription>
+              </DialogContent>
+            </Dialog>
+            <div className="flex flex-row items-center gap-2  body-xs">
+              <span>플랫폼</span>
+              <ul className="flex flex-row items-center gap-1">
+                {userData?.platform.map((platform, index) => (
+                  <li key={index}>{platform}</li>
+                ))}
               </ul>
-              <DialogDescription></DialogDescription>
-            </DialogContent>
-          </Dialog>
-          <div>
-            <span>플랫폼</span>
-            <span>{userData?.platform}</span>
+            </div>
+            <div className="flex flex-row items-center gap-2  body-xs">
+              <span>장르</span>
+              <ul className="flex flex-row items-center gap-2">
+                {userData?.genre.map((genre, index) => (
+                  <li key={index} className="label-outline">
+                    {genre}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div>
-            <span>장르</span>
-            <ul>
-              {userData?.genre.map((genre, index) => (
-                <li key={index}>{genre}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </article>
+        </article>
+      </div>
     </section>
   );
 };
