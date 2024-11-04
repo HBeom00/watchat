@@ -151,7 +151,12 @@ const MyInvitedParty = () => {
                   >
                     {isSelectionMode ? (
                       <div>
-                        <div onClick={(e) => e.stopPropagation()}>
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            partySelectionHandler(invite.invite_id);
+                          }}
+                        >
                           <div className="relative rounded-[4px] overflow-hidden h-[148px]">
                             {isSelectionMode && (
                               <input
@@ -324,92 +329,6 @@ const MyInvitedParty = () => {
                         </div>
                       </Link>
                     )}
-                    <Link href={`/party/${invite.party_id}`}>
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <div className="relative rounded-[4px] overflow-hidden h-[148px]">
-                          {isSelectionMode && (
-                            <input
-                              type="checkbox"
-                              checked={selectedParties.includes(invite.invite_id)}
-                              onChange={() => partySelectionHandler(invite.invite_id)}
-                              className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer"
-                            />
-                          )}
-                          <Image
-                            src={
-                              `https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}` ||
-                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/noImage.jpg'
-                            }
-                            alt={`${invite.party_info?.video_name} 영상 이미지`}
-                            layout="fill"
-                            objectFit="cover"
-                          />
-                          <div
-                            className="absolute inset-0 bg-gradient-to-t from-[rgba(143,143,143,0.25)] to-[rgba(143,143,143,0.00)]"
-                            style={{
-                              background:
-                                viewingStatus === '시청완료'
-                                  ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
-                                  : 'none'
-                            }}
-                          ></div>
-
-                          <p className="absolute top-3 left-3 text-white text-sm">
-                            {viewingStatus === '모집중' ? invite.party_info.situation : viewingStatus}
-                          </p>
-                          <p>{invite.startString}</p>
-                        </div>
-                        <div>
-                          <div className="my-2 border-b">
-                            {invite.party_info?.media_type === 'tv' && (
-                              <p className="label-l text-[#757575]">
-                                {invite.party_info.video_name} {invite.party_info.episode_number} 화
-                              </p>
-                            )}
-                            {invite.party_info?.media_type === 'movie' && (
-                              <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
-                            )}
-                            <p className="body-l-bold">{invite.party_info.party_name}</p>
-                          </div>
-                          <div className="flex">
-                            <Image
-                              src={invite.inviter_user?.profile_img || defaultAvatar}
-                              alt={`${invite.inviter_user?.nickname}의 프로필 이미지`}
-                              width={50}
-                              height={50}
-                              style={{
-                                objectFit: 'cover',
-                                width: '16px',
-                                height: '16px',
-                                borderRadius: '50%'
-                              }}
-                            />
-                            <p className="label-m ml-[6px] after:content-['│'] after:text-[#c2c2c2]">
-                              {invite.inviter_user?.nickname}
-                            </p>
-                            <p className="label-m">
-                              <span className="text-primary-400">{invite.currentPartyPeople}</span>명 참여 (
-                              {invite.currentPartyPeople}/{invite.party_info.limited_member}명)
-                            </p>
-                          </div>
-                          <button>수락하기</button>
-                          <Dialog>
-                            <DialogTrigger>거절하기</DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>
-                                  {invite.inviter_user?.nickname}님의 초대를 정말 거절하시겠습니까?
-                                </DialogTitle>
-                              </DialogHeader>
-                              <button onClick={() => refuseInvite.mutate(invite.invite_id)}>거절하기</button>
-                              <DialogClose asChild>
-                                <button type="button">취소하기</button>
-                              </DialogClose>
-                            </DialogContent>
-                          </Dialog>
-                        </div>
-                      </div>
-                    </Link>
                   </li>
                 );
               })

@@ -227,11 +227,7 @@
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-<<<<<<< HEAD
-  line-height: 20px; /* 153.846% */
-=======
   line-height: 18px; /* 153.846% */
->>>>>>> e53e830729700615a0fcad43f62720bbbd845eca
 }
 .label-m-bold {
   /* Label/M-600 */
