@@ -10,7 +10,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import '@/customCSS/label.css';
-import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
+import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
