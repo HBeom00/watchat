@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+}
+
 @font-face {
   font-family: 'Pretendard';
   src: url('fonts/PretendardVariable.woff2');
@@ -83,8 +86,14 @@
   }
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2');
+}
+
 /** HEADING **/
 .heading-l {
+  color: var(--static-black, #000);
   /* Heading/L */
   font-family: Pretendard;
   font-size: 32px;
@@ -94,6 +103,7 @@
   letter-spacing: -0.64px;
 }
 .heading-m {
+  color: var(--static-black, #000);
   /* Heading/M */
   font-family: Pretendard;
   font-size: 28px;
@@ -103,6 +113,7 @@
   letter-spacing: -0.56px;
 }
 .heading-s {
+  color: var(--static-black, #000);
   /* Heading/S */
   font-family: Pretendard;
   font-size: 24px;
@@ -114,6 +125,7 @@
 
 /** TITLE **/
 .title-l {
+  color: var(--static-black, #000);
   /* Title/L */
   font-family: Pretendard;
   font-size: 22px;
@@ -123,6 +135,7 @@
   letter-spacing: -0.44px;
 }
 .title-m {
+  color: var(--static-black, #000);
   /* Title/M */
   font-family: Pretendard;
   font-size: 20px;
@@ -132,6 +145,7 @@
   letter-spacing: -0.4px;
 }
 .title-s {
+  color: var(--static-black, #000);
   /* Title/S */
   font-family: Pretendard;
   font-size: 18px;
@@ -143,6 +157,7 @@
 
 /** BODY **/
 .body-l {
+  color: var(--static-black, #000);
   /* Body/L-400 */
   font-family: Pretendard;
   font-size: 16px;
@@ -151,6 +166,7 @@
   line-height: 26px; /* 162.5% */
 }
 .body-l-bold {
+  color: var(--static-black, #000);
   /* Body/L-600 */
   font-family: Pretendard;
   font-size: 16px;
@@ -159,6 +175,7 @@
   line-height: 26px; /* 162.5% */
 }
 .body-m {
+  color: var(--static-black, #000);
   /* Body/M-400 */
   font-family: Pretendard;
   font-size: 15px;
@@ -167,6 +184,7 @@
   line-height: 24px; /* 160% */
 }
 .body-m-bold {
+  color: var(--static-black, #000);
   /* Body/M-600 */
   font-family: Pretendard;
   font-size: 15px;
@@ -175,6 +193,7 @@
   line-height: 24px; /* 160% */
 }
 .body-s {
+  color: var(--static-black, #000);
   /* Body/S-400 */
   font-family: Pretendard;
   font-size: 14px;
@@ -183,6 +202,7 @@
   line-height: 22px; /* 157.143% */
 }
 .body-s-bold {
+  color: var(--static-black, #000);
   /* Body/S-600 */
   font-family: Pretendard;
   font-size: 14px;
@@ -191,6 +211,7 @@
   line-height: 22px; /* 157.143% */
 }
 .body-xs {
+  color: var(--static-black, #000);
   /* Body/XS-400 */
   font-family: Pretendard;
   font-size: 13px;
@@ -199,6 +220,7 @@
   line-height: 20px; /* 153.846% */
 }
 .body-xs-bold {
+  color: var(--static-black, #000);
   /* Body/XS-600 */
   font-family: Pretendard;
   font-size: 13px;
@@ -207,6 +229,7 @@
   line-height: 20px; /* 153.846% */
 }
 .label-l {
+  color: var(--static-black, #000);
   /* Label/L-400 */
   font-family: Pretendard;
   font-size: 13px;
@@ -215,6 +238,7 @@
   line-height: 20px; /* 153.846% */
 }
 .label-l-bold {
+  color: var(--static-black, #000);
   /* Label/L-600 */
   font-family: Pretendard;
   font-size: 13px;
@@ -223,14 +247,16 @@
   line-height: 20px; /* 153.846% */
 }
 .label-m {
-  /* Label/M-400 */
+  color: var(--static-black, #000);
+  /* Label/L-600 */
   font-family: Pretendard;
-  font-size: 12px;
+  font-size: 13px;
   font-style: normal;
-  font-weight: 400;
-  line-height: 18px; /* 153.846% */
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
 }
 .label-m-bold {
+  color: var(--static-black, #000);
   /* Label/M-600 */
   font-family: Pretendard;
   font-size: 12px;
@@ -239,6 +265,7 @@
   line-height: 18px; /* 150% */
 }
 .caption-l {
+  color: var(--static-black, #000);
   /* Caption/L */
   font-family: Pretendard;
   font-size: 12px;
@@ -247,6 +274,7 @@
   line-height: 18px; /* 150% */
 }
 .caption-m {
+  color: var(--static-black, #000);
   /* Caption/M */
   font-family: Pretendard;
   font-size: 11px;
@@ -255,25 +283,213 @@
   line-height: 16px; /* 145.455% */
 }
 
-select {
-  appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cmask id='mask0_796_20608' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_796_20608)'%3E%3Cpath d='M7.77503 10.1846L4.00586 6.41539L4.70836 5.71289L7.77503 8.77956L10.8417 5.71289L11.5442 6.41539L7.77503 10.1846Z' fill='%238F8F8F'/%3E%3C/g%3E%3C/svg%3E")
-    no-repeat 97% 50%/16px auto;
-  padding-right: 16px;
+.btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+}
+.btn-xl:hover {
+  background-color: var(--primary-500);
 }
 
-.card-down {
-  display: flex;
-  width: 100%;
-  height: 28px;
-  padding: 4px 12px;
-  gap: 4px;
-  align-items: center;
-  position: absolute;
-  bottom: 0;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+/* Large Button */
+.btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+}
+.btn-l:hover {
+  background-color: var(--primary-500);
+}
+
+/* Medium Button */
+.btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+.btn-m:hover {
+  background-color: var(--primary-500);
+}
+
+/* Small Button */
+.btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+}
+
+/* Extra Large Outline Button */
+.outline-btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+.outline-btn-xl:hover {
+  background-color: var(--primary-50);
+}
+
+/* Large Outline Button */
+.outline-btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+.outline-btn-l:hover {
+  background-color: var(--primary-50);
+}
+
+/* Medium Outline Button */
+.outline-btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 14px;
+}
+.outline-btn-m:hover {
+  background-color: var(--primary-50);
+}
+
+/* Small Outline Button */
+.outline-btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 13px;
+}
+.outline-btn-s:hover {
+  background-color: var(--primary-50);
+}
+
+/* Extra Large Disabled Button */
+.disabled-btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Large Disabled Button */
+.disabled-btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Medium Disabled Button */
+.disabled-btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Small Disabled Button */
+.disabled-btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Extra Large Outline Disabled Button */
+.outline-disabled-btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Large Outline Disabled Button */
+.outline-disabled-btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Medium Outline Disabled Button */
+.outline-disabled-btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Small Outline Disabled Button */
+.outline-disabled-btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 13px;
 }
 
 .commonLabel {
