@@ -79,6 +79,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Pretendard', sans-serif;
   }
 }
 
@@ -273,4 +274,20 @@ select {
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
+}
+
+.commonLabel {
+  @apply body-m-bold self-stretch;
+}
+
+.commonEssential {
+  @apply text-[#7F4AF4];
+}
+
+.commonInput {
+  @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white body-m text-[#A8A8A8];
+}
+
+.commonHelpText {
+  @apply label-l self-stretch text-[#FB6362];
 }
