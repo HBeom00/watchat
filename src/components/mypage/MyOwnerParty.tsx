@@ -6,6 +6,8 @@ import { getViewStatus } from '@/utils/viewStatus';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import '@/customCSS/label.css';
+import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyOwnerParty = () => {
   // 사용자 데이터 가져오기
@@ -23,10 +25,12 @@ const MyOwnerParty = () => {
   }
 
   return (
-    <article>
-      <div>
-        <h3>내가 오너인 파티</h3>
-        <Link href={'/mypage/hosted-party'}>더보기</Link>
+    <article className="max-w-[1060px] m-auto mb-8">
+      <div className="flex justify-between mb-4">
+        <h3 className="title-m">내가 오너인 파티</h3>
+        <Link href={'/mypage/hosted-party'} className="body-s text-[#c2c2c2]">
+          더보기
+        </Link>
       </div>
       <ul>
         {ownerParty && ownerParty.length > 0 ? (
@@ -60,10 +64,7 @@ const MyOwnerParty = () => {
                   <div>
                     <div>
                       <Image
-                        src={
-                          party.ownerProfile.profile_img ||
-                          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                        }
+                        src={party.ownerProfile.profile_img || defaultAvatar}
                         alt={`${party.ownerProfile.nickname}의 프로필`}
                         width={50}
                         height={50}

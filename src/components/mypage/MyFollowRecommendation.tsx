@@ -9,6 +9,8 @@ import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
+import '@/customCSS/label.css';
+import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
@@ -107,9 +109,9 @@ const MyFollowRecommendation = () => {
   }
 
   return (
-    <article>
-      <div>
-        <h3>최근 함께했던 파티원</h3>
+    <article className="max-w-[1140px] m-auto mb-[85px]">
+      <div className="flex justify-between max-w-[1060px] m-auto mb-4">
+        <h3 className="title-m">최근 함께했던 파티원</h3>
       </div>
 
       {/* 캐러셀 컨테이너 */}
@@ -117,33 +119,47 @@ const MyFollowRecommendation = () => {
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
           이전
         </PrevButton>
-        <div ref={emblaRef} className="overflow-hidden w-full">
-          <ul>
+        <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px]">
+          <ul className="carousel-container flex items-center gap-5">
             {recommendedUsers && recommendedUsers.length > 0 ? (
               recommendedUsers.map((recommendedUser) => {
                 return (
-                  <li key={`${recommendedUser.party_id}-${crypto.randomUUID()}`}>
+                  <li key={`${recommendedUser.party_id}-${crypto.randomUUID()}`} className="carousel-item min-w-[16%]">
                     {recommendedUser.team_user_profile.map((member) => (
-                      <div key={`${recommendedUser.party_id}-${member.user.user_id}`}>
-                        <button onClick={() => banMutation.mutate(member.user.user_id)}>X</button>
+                      <div
+                        key={`${recommendedUser.party_id}-${member.user.user_id}`}
+                        className="flex flex-col items-center text-center relative pt-10 pb-4 rounded-[8px] border"
+                      >
+                        <button
+                          onClick={() => banMutation.mutate(member.user.user_id)}
+                          className="absolute top-4 right-4"
+                        >
+                          X
+                        </button>
                         <Image
-                          src={
-                            member.user.profile_img ||
-                            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                          }
+                          src={member.user.profile_img || defaultAvatar}
                           alt={`${member.user.nickname}의 프로필`}
                           width={80}
                           height={80}
+                          style={{
+                            objectFit: 'cover',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            marginBottom: '8px'
+                          }}
                         />
-                        <h3>{member.user.nickname}</h3>
-                        <p>
+                        <h3 className="body-m-bold">{member.user.nickname}</h3>
+                        <p className="body-s">
                           {recommendedUser.video_name}
                           {recommendedUser.media_type === 'tv' && recommendedUser.episode_number
                             ? ` ${recommendedUser.episode_number} 화`
                             : ''}
                         </p>
-                        <p>를(을) 함께 시청했습니다.</p>
-                        <button onClick={() => followMutation.mutate(member.user.user_id)}>팔로우</button>
+                        <p className="body-s text-Grey-600">함께 시청했습니다.</p>
+                        <button onClick={() => followMutation.mutate(member.user.user_id)} className="mt-2">
+                          팔로우
+                        </button>
                       </div>
                     ))}
                   </li>

@@ -11,6 +11,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import photoCameraIcon from '@/public/photo_camera.svg';
+import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
 
 const nicknameSchema = z.object({
   nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' })
@@ -178,14 +180,15 @@ const FirstLoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSuccessHandler)} className="flex flex-col gap-5">
-      <div>
-        <Image
-          src={imgFile || 'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'}
-          alt="프로필 이미지"
-          width={100}
-          height={100}
-        />
-        <input id="selectImg" type="file" ref={imgRef} accept="image/*" onChange={uploadImage} />
+      <div className="w-[100px] h-[100px] relative">
+        <Image src={imgFile || defaultAvatar} alt="프로필 이미지" width={100} height={100} className="rounded-full" />
+        <label
+          htmlFor="selectImg"
+          className="absolute bottom-0 right-0 w-6 h-6 bg-[#c2c2c2] flex items-center justify-center rounded-[18px] cursor-pointer"
+        >
+          <Image src={photoCameraIcon} width={16} height={16} alt="프로필 이미지 선택" style={{ width: '16px' }} />
+        </label>
+        <input id="selectImg" type="file" ref={imgRef} accept="image/*" onChange={uploadImage} className="hidden" />
       </div>
 
       <div>
