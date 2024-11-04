@@ -205,7 +205,8 @@ const isNextButtonDisabled = !party_name || !video_name || !party_detail || (med
       </div>
             </div>
             <button 
-            className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isNextButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
+            className='btn-xl'
+            // className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isNextButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
             onClick={nextPageHandle}
             disabled={isNextButtonDisabled}
             >다음</button>
