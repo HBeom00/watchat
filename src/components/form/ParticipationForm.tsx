@@ -127,16 +127,42 @@ const ParticipationForm = ({
     }
     setDisabled(false);
   };
+
+  const buttonClickHandler = () => {
+    if (!imgRef.current) return;
+    imgRef.current.click();
+  };
   return (
     <>
-      <div className="flex flex-col gap-10 p-10 bg-red-300">
-        <Image src={profile_image} alt="프로필 이미지" width={150} height={150} />
-        <input id="party_profile" type="file" ref={imgRef} accept="image/*" onChange={uploadImage} />
-        <input value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="닉네임을 입력하세요" />
+      <div className="flex flex-col">
+        <div className="flex flex-col py-4 items-center gap-4 self-stretch">
+          <button type="button" onClick={buttonClickHandler}>
+            <Image className="rounded-full" src={profile_image} alt="프로필 이미지" width={80} height={80} />
+            <input
+              className="hidden"
+              id="party_profile"
+              type="file"
+              ref={imgRef}
+              accept="image/*"
+              onChange={uploadImage}
+            />
+          </button>
+          <p className="self-stretch text-static-black text-center body-m">파티의 프로필을 설정할 수 있어요</p>
+        </div>
+        <div className="flex flex-col items-start px-4 self-stretch">
+          <input
+            className="flex py-3 px-4 w-full text-center items-center self-stretch"
+            onChange={(e) => setNickname(e.target.value)}
+            placeholder="닉네임을 입력해주세요."
+          />
+        </div>
       </div>
-      <button onClick={submitHandler} className="bg-blue-300 rounded-2xl" disabled={disabled}>
-        참가하기!!
-      </button>
+      <div className="flex flex-col p-4 items-start">
+        <button onClick={submitHandler} className="bg-blue-300 rounded-2xl" disabled={disabled}>
+          저장
+        </button>
+        <button onClick={submitHandler}>넘어가기</button>
+      </div>
     </>
   );
 };

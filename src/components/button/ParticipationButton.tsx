@@ -13,14 +13,13 @@ const ParticipationButton = ({
   party_id: string;
 }) => {
   const [open, setOpen] = useState(false);
-  console.log('파티아이디', party_id);
   return (
     <>
       <Dialog open={open || openControl} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>참가하기</DialogTitle>
+            <DialogTitle>파티 프로필</DialogTitle>
           </DialogHeader>
           <ParticipationForm party_id={party_id} closeHandler={setOpen} />
           <DialogDescription></DialogDescription>
