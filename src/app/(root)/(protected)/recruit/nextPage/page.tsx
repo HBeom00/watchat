@@ -10,7 +10,9 @@ import ParticipationButton from '@/components/button/ParticipationButton';
 import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 import { useState } from 'react';
-import {ko} from 'date-fns/esm/eoLocale';
+import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
+import Calendar from '@/components/Calendar/calendar';
+
 
 
 
@@ -20,7 +22,6 @@ const RecruitPage2 = () => {
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   // const router = useRouter();
-
   const { limited_member, setRecruitDetails } = useRecruitStore();
   const queryClient = useQueryClient();
 
@@ -143,27 +144,16 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
       </div>
       <div>
       <label htmlFor="watchDate" className="block text-[15px] font-SemiBold text-Grey-800">시청 날짜</label>
-      <DatePicker
-        id="watchDate"
-        locale={ko}
-        selected={useRecruitStore.getState().watch_date}
-        onChange={(date) => setRecruitDetails({ watch_date: date })}
-        dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
-        placeholderText="날짜를 선택해주세요"
-        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
-        showPopperArrow={false}
-        minDate={new Date()}
+      <Calendar
+        selectedDate={useRecruitStore.getState().watch_date}
+        setSelectedDate={(date) => {
+          const validDate = date instanceof Date ? date : null; // date가 유효한 Date인지 확인
+          setRecruitDetails({ watch_date: validDate });
+        }}
       />
       </div>
       <div>
       <label htmlFor="startTime" className="block text-[15px] font-SemiBold text-Grey-800">시작 시간</label>
-      {/* <input 
-      type="text"
-      placeholder='00:00' 
-      maxLength={5}
-      pattern='[0-2][0-9]:[0-5][0-9]'
-      title='시간을 입력해주세요'
-      /> */}
       <DatePicker
         id="startTime"
         locale={ko}
