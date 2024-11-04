@@ -3,10 +3,10 @@ import React from 'react';
 
 const SignUpPage = () => {
   return (
-    <>
-      <h1>회원가입</h1>
+    <div className="mt-[108.56px] flex flex-col justify-center items-center">
+      <p className="title-m mb-[57.94px] text-center">회원가입</p>
       <SignUpForm />
-    </>
+    </div>
   );
 };
 

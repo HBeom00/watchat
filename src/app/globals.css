@@ -124,7 +124,7 @@ body {
 
 /** TITLE **/
 .title-l {
-  color: var(--static-black, #000);
+  color: var(--grey-900, #2a2a2a);
   /* Title/L */
   font-family: Pretendard;
   font-size: 22px;
