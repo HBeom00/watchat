@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 
 const ChatPage = async ({ params }: { params: { id: string } }) => {
   const roomId = params.id;
-  // start_time 불러오기 11.01
+
   const { data, error } = await createClient().from('party_info').select().eq('party_id', roomId);
 
   if (error) {

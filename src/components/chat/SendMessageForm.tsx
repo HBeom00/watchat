@@ -40,7 +40,7 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
     ]);
 
     if (error) console.error('Error sending message:', error);
-    else setContent(''); // 메시지 전송 후 입력란 초기화
+    else setContent('');
   };
 
   return (
