@@ -263,199 +263,114 @@ body {
   line-height: 16px; /* 145.455% */
 }
 
+/* custom button ------------------------------------------------------------------------------------ */
 .btn-xl {
-  padding: 16px 24px;
-  height: 56px;
-  background-color: var(--primary-400);
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-6 py-4 h-14 bg-primary-400 rounded-lg text-white font-semibold text-base;
 }
 .btn-xl:hover {
-  background-color: var(--primary-500);
+  @apply bg-primary-500;
 }
 
 /* Large Button */
 .btn-l {
-  padding: 12px 20px;
-  height: 48px;
-  background-color: var(--primary-400);
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-5 py-3 h-12 bg-primary-400 rounded-lg text-white font-semibold text-base;
 }
 .btn-l:hover {
-  background-color: var(--primary-500);
+  @apply bg-primary-500;
 }
 
 /* Medium Button */
 .btn-m {
-  padding: 8px 16px;
-  height: 40px;
-  background-color: var(--primary-400);
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
+  @apply px-4 py-2 h-10 bg-primary-400 rounded-lg text-white font-semibold text-sm;
 }
 .btn-m:hover {
-  background-color: var(--primary-500);
+  @apply bg-primary-500;
 }
 
 /* Small Button */
 .btn-s {
-  padding: 6px 12px;
-  height: 32px;
-  background-color: var(--primary-400);
-  border-radius: 8px;
+  @apply px-3 py-1.5 h-8 bg-primary-400 rounded-lg text-white font-semibold text-xs;
 }
+.btn-s:hover {
+  @apply bg-primary-500;
+}
+/* --------------------------------------------------------------------------------------------------------- */
 
 /* Extra Large Outline Button */
 .outline-btn-xl {
-  padding: 16px 24px;
-  height: 56px;
-  border: 1px solid var(--primary-400);
-  border-radius: 8px;
-  color: var(--primary-400);
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-6 py-4 h-14 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base;
 }
 .outline-btn-xl:hover {
-  background-color: var(--primary-50);
+  @apply bg-primary-50;
 }
 
 /* Large Outline Button */
 .outline-btn-l {
-  padding: 12px 20px;
-  height: 48px;
-  border: 1px solid var(--primary-400);
-  border-radius: 8px;
-  color: var(--primary-400);
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-5 py-3 h-12 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base;
 }
 .outline-btn-l:hover {
-  background-color: var(--primary-50);
+  @apply bg-primary-50;
 }
 
 /* Medium Outline Button */
 .outline-btn-m {
-  padding: 8px 16px;
-  height: 40px;
-  border: 1px solid var(--primary-400);
-  border-radius: 8px;
-  color: var(--primary-400);
-  font-weight: 600;
-  font-size: 14px;
+  @apply px-4 py-2 h-10 border border-primary-400 rounded-lg text-primary-400 font-semibold text-sm;
 }
 .outline-btn-m:hover {
-  background-color: var(--primary-50);
+  @apply bg-primary-50;
 }
 
 /* Small Outline Button */
 .outline-btn-s {
-  padding: 6px 12px;
-  height: 32px;
-  border: 1px solid var(--primary-400);
-  border-radius: 8px;
-  color: var(--primary-400);
-  font-weight: 600;
-  font-size: 13px;
+  @apply px-3 py-1.5 h-8 border border-primary-400 rounded-lg text-primary-400 font-semibold text-xs;
 }
 .outline-btn-s:hover {
-  background-color: var(--primary-50);
+  @apply bg-primary-50;
 }
 
+/* --------------------------------------------------------------------------------------------------------- */
 /* Extra Large Disabled Button */
 .disabled-btn-xl {
-  padding: 16px 24px;
-  height: 56px;
-  background-color: var(--grey-100);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-6 py-4 h-14 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-base;
 }
 
 /* Large Disabled Button */
 .disabled-btn-l {
-  padding: 12px 20px;
-  height: 48px;
-  background-color: var(--grey-100);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-5 py-3 h-12 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-base;
 }
 
 /* Medium Disabled Button */
 .disabled-btn-m {
-  padding: 8px 16px;
-  height: 40px;
-  background-color: var(--grey-100);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 14px;
+  @apply px-4 py-2 h-10 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-sm;
 }
 
 /* Small Disabled Button */
 .disabled-btn-s {
-  padding: 6px 12px;
-  height: 32px;
-  background-color: var(--grey-100);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 13px;
+  @apply px-3 py-1.5 h-8 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-xs;
 }
 
+/* ---------------------------------------------------------------------------------------------------- */
 /* Extra Large Outline Disabled Button */
 .outline-disabled-btn-xl {
-  padding: 16px 24px;
-  height: 56px;
-  border: 1px solid var(--grey-300);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-6 py-4 h-14 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-base;
 }
 
 /* Large Outline Disabled Button */
 .outline-disabled-btn-l {
-  padding: 12px 20px;
-  height: 48px;
-  border: 1px solid var(--grey-300);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 15px;
+  @apply px-5 py-3 h-12 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-base;
 }
 
 /* Medium Outline Disabled Button */
 .outline-disabled-btn-m {
-  padding: 8px 16px;
-  height: 40px;
-  border: 1px solid var(--grey-300);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 14px;
+  @apply px-4 py-2 h-10 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-sm;
 }
 
 /* Small Outline Disabled Button */
 .outline-disabled-btn-s {
-  padding: 6px 12px;
-  height: 32px;
-  border: 1px solid var(--grey-300);
-  border-radius: 8px;
-  color: var(--grey-400);
-  font-weight: 600;
-  font-size: 13px;
+  @apply px-3 py-1.5 h-8 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-xs;
 }
 
+/* ---------------------------------------------------------------------------------------------------- */
 /* custom input */
 .inputDiv {
   @apply flex flex-col justify-center items-start self-stretch gap-2;
