@@ -1,10 +1,10 @@
 'use client';
 import { getPartyMember } from '@/utils/memberCheck';
 import MemberProfileCard from './MemberProfile';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { memberExpulsion } from '@/utils/ownerRights';
+import { useQuery } from '@tanstack/react-query';
 import InvitedButton from './InvitedButton';
 import { partyInfo } from '@/types/partyInfo';
+import ExitButton from './ExitButton';
 
 const MemberList = ({
   partyData,
@@ -19,22 +19,10 @@ const MemberList = ({
   end: boolean;
   partyOwner: string;
 }) => {
-  const queryClient = useQueryClient();
-
   // 파티 멤버 정보들을 불러오기
   const { data, isLoading } = useQuery({
     queryKey: ['partyMember', partyData.party_id],
     queryFn: async () => await getPartyMember(partyData.party_id)
-  });
-
-  // 파티 탈퇴하기
-  const mutation = useMutation({
-    mutationFn: (userId: string) => memberExpulsion(partyData.party_id, userId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['partyMember', partyData.party_id] });
-      queryClient.invalidateQueries({ queryKey: ['isMember', partyData.party_id, userId] });
-      queryClient.invalidateQueries({ queryKey: ['myParty', userId] });
-    }
   });
 
   if (isLoading) {
@@ -77,12 +65,9 @@ const MemberList = ({
           )}
         </div>
         {userId && isMember && !end && !(partyOwner === userId) ? (
-          <button
-            className="inline-flex py-2 items-center my-[17.5px] text-Grey-400 body-xs-bold"
-            onClick={() => mutation.mutate(userId)}
-          >
-            참여 취소
-          </button>
+          <ExitButton partyId={partyData.party_id} userId={userId}>
+            <button className="inline-flex py-2 items-center my-[17.5px] text-Grey-400 body-xs-bold">참여 취소</button>
+          </ExitButton>
         ) : (
           <></>
         )}

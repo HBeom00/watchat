@@ -51,7 +51,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
       <div className="flex flex-col gap-4 items-start">
         {/* 상단 */}
         <div className="flex flex-col items-start gap-2 self-stretch">
-          <p className="self-stretch body-l-bold">{startTimeString(partyData.start_date_time)}</p>
+          <p className="self-stretch body-l-bold">{end ? '시청 종료' : startTimeString(partyData.start_date_time)}</p>
           <p className="self-stretch heading-l">{partyData.party_name}</p>
         </div>
         <div className="flex flex-row gap-1 self-stretch body-s">
@@ -89,17 +89,27 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
         {/* 하단 */}
         <div>
           {end ? (
-            <button className="disabled-btn-m">채팅 종료</button>
+            <button className="disabled-btn-m w-[164px]">채팅 종료</button>
           ) : isMember ? (
             <Link
-              className={chatOpenClose(partyData) === '시청중' ? 'bg-purple-600 p-2' : 'bg-slate-400 p-2'}
-              href={chatOpenClose(partyData) === '시청중' ? `/chat/${partyData.party_id}` : ''}
+              className={chatOpenClose(partyData) === '시청중' ? 'btn-m w-[164px]' : 'disabled-btn-m w-[164px]'}
+              href={`/chat/${partyData.party_id}`}
+              onClick={(e) => {
+                if (chatOpenClose(partyData) !== '시청중') {
+                  e.preventDefault();
+                }
+              }}
             >
               채팅하기
             </Link>
           ) : (
-            <ParticipationButton party_id={partyData.party_id} openControl={false}>
+            <ParticipationButton
+              party_id={partyData.party_id}
+              party_situation={partyData.situation}
+              openControl={false}
+            >
               <button
+                className="btn-m w-[164px]"
                 onClick={(e) => {
                   if (!userId) {
                     e.preventDefault();
@@ -108,7 +118,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
                   }
                 }}
               >
-                참가하기
+                참여하기
               </button>
             </ParticipationButton>
           )}

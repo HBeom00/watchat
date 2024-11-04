@@ -21,7 +21,7 @@ const RecruitList = () => {
 
   // 페이지, 필터, 검색 등의 상태값 재정리
   // 페이지
-  const pageSlice = 16;
+  const pageSlice = 20;
   const start = (pageNumber - 1) * pageSlice;
   const end = pageNumber * pageSlice - 1;
 
