@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction } from 'react';
 import DatePicker from 'react-datepicker';
 import { getMonth, getYear } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
-import {Left} from '../../public/arrow_left.svg';
-import Right from '../../public/arrow_right.svg';
+import Left from '../../../public/arrow_left.svg'
+import Right from '../../../public/arrow_right.svg'
 
 interface Props {
   selectedDate: Date | null;

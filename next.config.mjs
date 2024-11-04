@@ -1,3 +1,7 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const withSvgr = require('next-svgr');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -29,4 +33,5 @@ const nextConfig = {
   }
 };
 
-export default nextConfig;
+// SVG 지원 추가
+export default withSvgr(nextConfig);
