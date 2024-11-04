@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Cross2Icon } from '@radix-ui/react-icons';
 
 import { cn } from '@/lib/utils';
 
@@ -44,9 +43,19 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <Cross2Icon className="h-4 w-4" />
+      <DialogPrimitive.Close className="absolute right-5 top-[20px] rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
         <span className="sr-only">Close</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <mask id="mask0_884_29119" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+            <rect width="24" height="24" fill="#ffffff" />
+          </mask>
+          <g mask="url(#mask0_884_29119)">
+            <path
+              d="M6.39945 18.6537L5.3457 17.5999L10.9457 11.9999L5.3457 6.39994L6.39945 5.34619L11.9995 10.9462L17.5995 5.34619L18.6532 6.39994L13.0532 11.9999L18.6532 17.5999L17.5995 18.6537L11.9995 13.0537L6.39945 18.6537Z"
+              fill="#000000"
+            />
+          </g>
+        </svg>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>

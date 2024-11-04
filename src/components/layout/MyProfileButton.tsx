@@ -13,12 +13,23 @@ const MyProfileButton = () => {
   if (isLoading) <div>Loading...</div>;
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setIsOpen(!isOpen)} className="flex flex-row items-center justify-center gap-1">
+      <button onClick={() => setIsOpen(!isOpen)} className="flex flex-row items-center justify-center">
         {data ? (
-          <>
-            <Image src={data.profile_img} width={40} height={40} alt={data.nickname} />
+          <div className="flex flex-row gap-3 items-center justify-center">
+            <Image
+              src={data.profile_img}
+              width={40}
+              height={40}
+              style={{
+                objectFit: 'cover',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%'
+              }}
+              alt={data.nickname}
+            />
             <p className="text-static-black body-m-bold">{data.nickname} 님</p>
-          </>
+          </div>
         ) : (
           <></>
         )}
@@ -34,8 +45,11 @@ const MyProfileButton = () => {
         </div>
       </button>
       {isOpen && (
-        <div className="absolute bg-white flex flex-col gap-4 w-full justify-center items-center">
-          <Link href={'/myPage'} className="border-solid border-Grey-500 border-b-2">
+        <div className="absolute bg-static-white flex flex-col mt-2 w-full justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px]">
+          <Link
+            href={'/myPage'}
+            className="flex w-full py-1 px-3 border-solid border-Grey-200 border-b-[1px] justify-center items-center"
+          >
             마이프로필
           </Link>
 

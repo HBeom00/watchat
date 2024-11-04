@@ -13,7 +13,11 @@ const LogoutButton = () => {
     alert('로그아웃 되었습니다.');
     router.push('/login');
   };
-  return <button onClick={onClickLogoutBtn}>로그아웃</button>;
+  return (
+    <button className="flex w-full py-1 px-3 justify-center items-center" onClick={onClickLogoutBtn}>
+      로그아웃
+    </button>
+  );
 };
 
 export default LogoutButton;
