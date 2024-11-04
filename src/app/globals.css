@@ -293,7 +293,7 @@ select {
 }
 
 .selectClass {
-  @apply text-Grey-500 text-[14px] font-normal leading-[22px] flex h-8 pl-3 pr-1 py-1 items-center gap-1 border-solid border-Grey-200 border-[1px] rounded-2xl;
+  @apply text-Grey-500 text-[14px] font-normal leading-[22px] flex h-8 pl-3 pr-5 py-1 items-center gap-1 border-solid border-Grey-200 border-[1px] rounded-2xl;
 }
 
 .selectPartyInfo {

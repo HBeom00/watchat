@@ -42,31 +42,33 @@ const InvitedButton = ({
           </DialogHeader>
           <ul>
             {followerData && followerData.length > 0 ? (
-              <div>
-                {followerData.map((follower) => (
-                  <li key={follower.user_id}>
-                    <div>
-                      <input
-                        type="radio"
-                        id={follower.user_id}
-                        name="invitee"
-                        value={follower.user_id}
-                        onClick={() => setInviteeId(follower.user_id)}
-                      />
-                      <label></label>
-                      <Image
-                        src={
-                          follower.profile_img ||
-                          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                        }
-                        alt={`${follower.nickname} 님의 프로필 사진`}
-                        width={50}
-                        height={50}
-                      />
-                      <span>{follower.nickname}</span>
-                    </div>
-                  </li>
-                ))}
+              <div className="flex flex-col w-full">
+                <div className="flex flex-col py-4 w-full items-center gap-[9px] self-stretch">
+                  {followerData.map((follower) => (
+                    <li key={follower.user_id} className="w-full">
+                      <label className="flex flex-row w-full px-4 justify-between items-center self-stretch">
+                        <div className="flex flex-row items-center gap-2 flex-1">
+                          <Image
+                            src={
+                              follower.profile_img ||
+                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                            }
+                            alt={`${follower.nickname} 님의 프로필 사진`}
+                            width={50}
+                            height={50}
+                          />
+                          <span>{follower.nickname}</span>
+                        </div>
+                        <input
+                          type="radio"
+                          name="invitee"
+                          value={follower.user_id}
+                          onClick={() => setInviteeId(follower.user_id)}
+                        />
+                      </label>
+                    </li>
+                  ))}
+                </div>
                 <button onClick={() => inviteHandler(partyNumber, inviteeId)}>초대하기</button>
               </div>
             ) : (
