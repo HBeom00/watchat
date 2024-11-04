@@ -150,7 +150,18 @@ const ParticipationForm = ({
       <div className="flex flex-col">
         <div className="flex flex-col py-4 items-center gap-4 self-stretch">
           <button type="button" onClick={buttonClickHandler}>
-            <Image className="rounded-full" src={profile_image} alt="프로필 이미지" width={80} height={80} />
+            <Image
+              src={profile_image}
+              alt="프로필 이미지"
+              width={80}
+              height={80}
+              style={{
+                objectFit: 'cover',
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%'
+              }}
+            />
             <input
               className="hidden"
               id="party_profile"

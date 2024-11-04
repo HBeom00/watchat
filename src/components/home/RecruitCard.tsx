@@ -67,11 +67,16 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           {ownerInfo ? (
             <div className="flex flex-row items-center gap-[6px]">
               <Image
-                className="rounded-full"
                 src={ownerInfo[0].profile_image}
                 width={16}
                 height={16}
-                alt={ownerInfo[0].nickname}
+                style={{
+                  objectFit: 'cover',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%'
+                }}
+                alt={`${ownerInfo[0].nickname}의 프로필`}
               />
               <p className="text-Grey-900 label-m">{ownerInfo[0].nickname}</p>
             </div>

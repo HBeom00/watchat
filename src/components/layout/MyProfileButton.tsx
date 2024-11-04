@@ -13,12 +13,23 @@ const MyProfileButton = () => {
   if (isLoading) <div>Loading...</div>;
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setIsOpen(!isOpen)} className="flex flex-row items-center justify-center gap-1">
+      <button onClick={() => setIsOpen(!isOpen)} className="flex flex-row items-center justify-center">
         {data ? (
-          <>
-            <Image src={data.profile_img} width={40} height={40} alt={data.nickname} />
+          <div className="flex flex-row gap-3 items-center justify-center">
+            <Image
+              src={data.profile_img}
+              width={40}
+              height={40}
+              style={{
+                objectFit: 'cover',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%'
+              }}
+              alt={data.nickname}
+            />
             <p className="text-static-black body-m-bold">{data.nickname} 님</p>
-          </>
+          </div>
         ) : (
           <></>
         )}

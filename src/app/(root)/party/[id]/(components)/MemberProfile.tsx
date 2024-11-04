@@ -14,7 +14,18 @@ const MemberProfileCard = ({
 }) => {
   return (
     <div className="flex items-center gap-2">
-      <Image className="rounded-full" src={memberInfo.profile_image} width={40} height={40} alt="프로필이미지" />
+      <Image
+        src={memberInfo.profile_image}
+        width={40}
+        height={40}
+        style={{
+          objectFit: 'cover',
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%'
+        }}
+        alt="프로필이미지"
+      />
       <div className="flex items-center gap-1">
         <p>{memberInfo.nickname}</p>
         {ownerId === userId ? (

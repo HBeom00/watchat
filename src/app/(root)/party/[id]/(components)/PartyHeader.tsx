@@ -49,6 +49,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
         src={`https://image.tmdb.org/t/p/original${partyData.backdrop_image}`}
         className="relative brightness-50 -z-10"
         layout="fill"
+        style={{ objectFit: 'cover' }}
         alt={partyData.video_name}
       />
       <div className="flex flex-col gap-4 items-start">
@@ -71,7 +72,13 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
                 src={ownerInfo[0].profile_image}
                 width={16}
                 height={16}
-                alt="오너이미지"
+                alt={`${ownerInfo[0].nickname} 님의 프로필 사진`}
+                style={{
+                  objectFit: 'cover',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%'
+                }}
               />
               <p className="label-l">{ownerInfo[0].nickname}</p>
             </div>

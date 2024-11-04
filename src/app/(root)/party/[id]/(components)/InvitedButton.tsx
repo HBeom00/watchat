@@ -54,8 +54,14 @@ const InvitedButton = ({
                               'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
                             }
                             alt={`${follower.nickname} 님의 프로필 사진`}
-                            width={50}
-                            height={50}
+                            width={40}
+                            height={40}
+                            style={{
+                              objectFit: 'cover',
+                              width: '40px',
+                              height: '40px',
+                              borderRadius: '50%'
+                            }}
                           />
                           <span>{follower.nickname}</span>
                         </div>
