@@ -136,7 +136,7 @@ const MyInvitedParty = () => {
                       <div>
                         <Image
                           src={
-                            invite.party_info?.backdrop_image ||
+                            `https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}` ||
                             'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/noImage.jpg'
                           }
                           alt={`${invite.party_info?.video_name} 영상 이미지`}
