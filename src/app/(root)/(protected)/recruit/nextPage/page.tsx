@@ -10,6 +10,8 @@ import ParticipationButton from '@/components/button/ParticipationButton';
 import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 import { useState } from 'react';
+import {ko} from 'date-fns/esm/eoLocale';
+
 
 
 
@@ -143,6 +145,7 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
       <label htmlFor="watchDate" className="block text-[15px] font-SemiBold text-Grey-800">시청 날짜</label>
       <DatePicker
         id="watchDate"
+        locale={ko}
         selected={useRecruitStore.getState().watch_date}
         onChange={(date) => setRecruitDetails({ watch_date: date })}
         dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
@@ -163,6 +166,7 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
       /> */}
       <DatePicker
         id="startTime"
+        locale={ko}
         selected={useRecruitStore.getState().start_time}
         onChange={(time) => setRecruitDetails({ start_time: time })}
         showTimeSelect
