@@ -12,7 +12,10 @@ import visibility_off from '../../../public/visibility_off.svg';
 
 const signInSchema = z
   .object({
-    email: z.string().email({ message: '이메일 형식을 확인해주세요.' }),
+    email: z
+      .string()
+      .email({ message: '이메일 형식을 확인해주세요.' })
+      .nonempty({ message: '이메일을 입력해 주세요.' }),
     password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/, {
       message: '8~16자의 영문, 숫자, 특수문자를 모두 포함하여 입력해주세요.'
     }),
@@ -60,7 +63,7 @@ const SignUpForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
       <div className="w-[340px] flex flex-col items-start gap-4 mb-32">
-        <div className="inputDiv relative">
+        <div className="inputDiv">
           <label className="commonLabel">
             이메일<span className="commonEssential">*</span>
           </label>
@@ -95,9 +98,6 @@ const SignUpForm = () => {
         </div>
 
         <div className="inputDiv">
-          <label className="commonLabel">
-            비밀번호 확인<span className="commonEssential">*</span>
-          </label>
           <div className="w-full relative">
             <input
               type={showConfirmPassword ? 'text' : 'password'}
@@ -122,7 +122,7 @@ const SignUpForm = () => {
           )}
         </div>
       </div>
-      <button>가입하기</button>
+      <button className="btn-xl w-[340px] flex justify-center items-center">가입하기</button>
     </form>
   );
 };

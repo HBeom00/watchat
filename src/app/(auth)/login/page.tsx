@@ -10,7 +10,12 @@ const LoginPage = () => {
       </p>
       <SignInForm />
       <SocialLogin />
-      <Link href={'/signup'}>회원가입</Link>
+      <Link
+        href={'/signup'}
+        className="flex px-2 py-4 justify-center items-center self-stretch gap-2 body-m-bold text-Grey-400"
+      >
+        회원가입
+      </Link>
     </div>
   );
 };
