@@ -3,6 +3,7 @@ import MyParty from '@/components/home/MyParty';
 import RecruitList from '@/components/home/RecruitList';
 import { getLoginUserIdOnServer } from '@/utils/supabase/server';
 
+
 const Main = async () => {
   const userId = await getLoginUserIdOnServer();
 
