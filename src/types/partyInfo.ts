@@ -7,7 +7,7 @@ export type partyInfo = {
   video_image: string;
   limited_member: number;
   duration_time: number;
-  situation: string | null;
+  situation: string;
   owner_id: string;
   video_id: number;
   media_type: string;
@@ -15,7 +15,7 @@ export type partyInfo = {
   start_time: string;
   episode_number: number | null;
   popularity: number;
-  backdrop_image: string | null;
+  backdrop_image: string;
   start_date_time: string;
   end_time: string;
 };

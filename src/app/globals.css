@@ -82,8 +82,200 @@
   }
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2');
+}
+
+/** HEADING **/
+.heading-l {
+  /* Heading/L */
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 44px; /* 137.5% */
+  letter-spacing: -0.64px;
+}
+.heading-m {
+  /* Heading/M */
+  font-family: Pretendard;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px; /* 135.714% */
+  letter-spacing: -0.56px;
+}
+.heading-s {
+  /* Heading/S */
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 133.333% */
+  letter-spacing: -0.48px;
+}
+
+/** TITLE **/
+.title-l {
+  /* Title/L */
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 136.364% */
+  letter-spacing: -0.44px;
+}
+.title-m {
+  /* Title/M */
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 140% */
+  letter-spacing: -0.4px;
+}
+.title-s {
+  /* Title/S */
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; /* 133.333% */
+  letter-spacing: -0.36px;
+}
+
+/** BODY **/
+.body-l {
+  /* Body/L-400 */
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px; /* 162.5% */
+}
+.body-l-bold {
+  /* Body/L-600 */
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px; /* 162.5% */
+}
+.body-m {
+  /* Body/M-400 */
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 160% */
+}
+.body-m-bold {
+  /* Body/M-600 */
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 160% */
+}
+.body-s {
+  /* Body/S-400 */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+}
+.body-s-bold {
+  /* Body/S-600 */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px; /* 157.143% */
+}
+.body-xs {
+  /* Body/XS-400 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+}
+.body-xs-bold {
+  /* Body/XS-600 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
+}
+.label-l {
+  /* Label/L-400 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+}
+.label-l-bold {
+  /* Label/L-600 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
+}
+.label-m {
+  /* Label/M-400 */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 153.846% */
+}
+.label-m-bold {
+  /* Label/M-600 */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px; /* 150% */
+}
+.caption-l {
+  /* Caption/L */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 150% */
+}
+.caption-m {
+  /* Caption/M */
+  font-family: Pretendard;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 145.455% */
+}
+
 select {
   appearance: none;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cmask id='mask0_796_20608' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_796_20608)'%3E%3Cpath d='M7.77503 10.1846L4.00586 6.41539L4.70836 5.71289L7.77503 8.77956L10.8417 5.71289L11.5442 6.41539L7.77503 10.1846Z' fill='%238F8F8F'/%3E%3C/g%3E%3C/svg%3E")
     no-repeat 97% 50%/16px auto;
+  padding-right: 16px;
+}
+
+.card-down {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  padding: 4px 12px;
+  gap: 4px;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }

@@ -44,10 +44,9 @@ export const memberFullChecker = async (party_id: string) => {
   if (error || data === null) {
     return false;
   } else if (data && data >= limitMember) {
-    return false;
-  } else {
     return true;
   }
+  return false;
 };
 
 // 파티 상태를 모집마감으로 전환
