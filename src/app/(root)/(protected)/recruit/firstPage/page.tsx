@@ -98,6 +98,9 @@ const RecruitPage1 = () => {
         setShowResults(false);
         queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
     };
+    
+    // 필요한 필드의 상태를 검사하는 조건 추가
+const isNextButtonDisabled = !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
 
     return (
         <div className='grid place-items-center'>
@@ -116,31 +119,37 @@ const RecruitPage1 = () => {
             onChange={(e) => setPartyInfo({ party_detail: e.target.value })} 
             className='mt-[16px] bg-Grey-50 w-[520px] h-[112px] rounded-lg'
             />
-            <div className='flex mt-[32px]'>
+            <div className='flex w-[519px] justify-center align-item gap-1 mt-[32px]'>
             <h2 
-            className='text-[15px] text-Grey-800 SemiBold font-semibold block'
+            className='text-gray-800 font-pretendard text-[15px] font-semibold leading-[24px]'
             >시청할 영상을 선택해 주세요.</h2>
-            <h2 className='text-purple-600'>*</h2>
+            <h2 className='text-purple-600 font-[15px] '>*</h2>
             </div>
-            <input 
-            type="text" 
-            placeholder="선택하세요." 
-            value={video_name} 
-            onChange={(e) => InputChangehandle(e.target.value)}
-            className='rounded-md border-[1px] w-[519px] h-[48px] border-Grey-300' 
-            />
-            {showResults && searchResults?.results?.length ? (
-                <ul>
-                    {searchResults.results.map((result) => (
-                        <li key={result.id} onClick={() => handleSearchResultClick(result)}>
-                            {result.title || result.name}
-                        </li>
-                    ))}
-                </ul>
-            ) : null}
+            <div className='relative w-[519px]'>
+    <input 
+        type="text" 
+        placeholder="선택하세요." 
+        value={video_name} 
+        onChange={(e) => InputChangehandle(e.target.value)}
+        className='w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800'
+    />
+    {showResults && searchResults?.results?.length ? (
+        <ul className='absolute top-[50px] w-full max-h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10'>
+            {searchResults.results.map((result) => (
+                <li 
+                    key={result.id} 
+                    onClick={() => handleSearchResultClick(result)}
+                    className='px-4 py-3 text-[15px] text-gray-800 cursor-pointer hover:bg-gray-100'
+                >
+                    {result.title || result.name}
+                </li>
+            ))}
+        </ul>
+    ) : null}
+</div>
         <div className='flex space-x-[20px] mt-[16px]'>
             {/* 포스터 */}
-            {video_image && <img 
+            {video_name && video_image && <img 
             src={video_image} 
             alt="선택된 포스터" 
             className='w-[250px] h-[351px] rounded-md'/>}
@@ -162,7 +171,7 @@ const RecruitPage1 = () => {
             </div>)}
 
             
-            {video_image &&
+            { video_name && video_image &&
             <div>
             <div className='flex'>
             <h2>러닝타임</h2>
@@ -178,7 +187,7 @@ const RecruitPage1 = () => {
             </div>}
       {/* 플랫폼 */}
       
-      {video_platform && video_platform.length ? (
+      {video_name && video_platform && video_platform.length ? (
         <div>
         <h2>영상 플랫폼</h2>
         <div className="flex space-x-4 mt-2">
@@ -196,8 +205,10 @@ const RecruitPage1 = () => {
       </div>
             </div>
             <button 
-            className='mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] bg-Grey-100  rounded-md text-Grey-400 font-semibold  text-[15px]'
-            onClick={nextPageHandle}>다음</button>
+            className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isNextButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
+            onClick={nextPageHandle}
+            disabled={isNextButtonDisabled}
+            >다음</button>
         </div>
     );
 };

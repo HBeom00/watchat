@@ -6,7 +6,6 @@ import MemberList from './MemberList';
 import { isMemberExist } from '@/utils/memberCheck';
 import { useQuery } from '@tanstack/react-query';
 import { partyInfo } from '@/types/partyInfo';
-import { notSelectPartyInfo, selectPartyInfo } from '@/customCSS/platform';
 
 const PartyBottom = ({
   partyData,
@@ -35,13 +34,13 @@ const PartyBottom = ({
     <div className="flex flex-col w-full items-start mt-4">
       <div className="flex flex-row w-full mb-2 border-solid border-Grey-100 border-b-[1px] text-Grey-400 body-m-bold">
         <button
-          className={tab === '파티 정보' ? selectPartyInfo : notSelectPartyInfo}
+          className={tab === '파티 정보' ? 'selectPartyInfo' : 'notSelectPartyInfo'}
           onClick={() => setTab('파티 정보')}
         >
           파티 정보
         </button>
         <button
-          className={tab === '프로그램 정보' ? selectPartyInfo : notSelectPartyInfo}
+          className={tab === '프로그램 정보' ? 'selectPartyInfo' : 'notSelectPartyInfo'}
           onClick={() => setTab('프로그램 정보')}
         >
           프로그램 정보

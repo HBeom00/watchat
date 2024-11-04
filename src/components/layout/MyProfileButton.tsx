@@ -3,6 +3,7 @@ import Link from 'next/link';
 import LogoutButton from '../button/LogoutButton';
 import { useFetchUserData } from '@/store/userStore';
 import { RefObject, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 const MyProfileButton = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -13,8 +14,14 @@ const MyProfileButton = () => {
   return (
     <div ref={ref} className="relative">
       <button onClick={() => setIsOpen(!isOpen)} className="flex flex-row items-center justify-center gap-1">
-        <p>프로필 이미지 넣을 곳</p>
-        <p className="text-static-black body-m-bold">{data?.nickname} 님</p>
+        {data ? (
+          <>
+            <Image src={data.profile_img} width={40} height={40} alt={data.nickname} />
+            <p className="text-static-black body-m-bold">{data.nickname} 님</p>
+          </>
+        ) : (
+          <></>
+        )}
         <div className="p-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <mask id="mask0_831_18227" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">

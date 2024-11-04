@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+}
+
 @font-face {
   font-family: 'Pretendard';
   src: url('fonts/PretendardVariable.woff2');
@@ -81,6 +84,11 @@
     @apply bg-background text-foreground;
     font-family: 'Pretendard', sans-serif;
   }
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2');
 }
 
 /** HEADING **/
@@ -255,6 +263,243 @@
   line-height: 16px; /* 145.455% */
 }
 
+.btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+}
+.btn-xl:hover {
+  background-color: var(--primary-500);
+}
+
+/* Large Button */
+.btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+}
+.btn-l:hover {
+  background-color: var(--primary-500);
+}
+
+/* Medium Button */
+.btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+.btn-m:hover {
+  background-color: var(--primary-500);
+}
+
+/* Small Button */
+.btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  background-color: var(--primary-400);
+  border-radius: 8px;
+}
+
+/* Extra Large Outline Button */
+.outline-btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+.outline-btn-xl:hover {
+  background-color: var(--primary-50);
+}
+
+/* Large Outline Button */
+.outline-btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+.outline-btn-l:hover {
+  background-color: var(--primary-50);
+}
+
+/* Medium Outline Button */
+.outline-btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 14px;
+}
+.outline-btn-m:hover {
+  background-color: var(--primary-50);
+}
+
+/* Small Outline Button */
+.outline-btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  border: 1px solid var(--primary-400);
+  border-radius: 8px;
+  color: var(--primary-400);
+  font-weight: 600;
+  font-size: 13px;
+}
+.outline-btn-s:hover {
+  background-color: var(--primary-50);
+}
+
+/* Extra Large Disabled Button */
+.disabled-btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Large Disabled Button */
+.disabled-btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Medium Disabled Button */
+.disabled-btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Small Disabled Button */
+.disabled-btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  background-color: var(--grey-100);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Extra Large Outline Disabled Button */
+.outline-disabled-btn-xl {
+  padding: 16px 24px;
+  width: 252px;
+  height: 56px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Large Outline Disabled Button */
+.outline-disabled-btn-l {
+  padding: 12px 20px;
+  width: 136px;
+  height: 48px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Medium Outline Disabled Button */
+.outline-disabled-btn-m {
+  padding: 8px 16px;
+  width: 124px;
+  height: 40px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Small Outline Disabled Button */
+.outline-disabled-btn-s {
+  padding: 6px 12px;
+  width: 113px;
+  height: 32px;
+  border: 1px solid var(--grey-300);
+  border-radius: 8px;
+  color: var(--grey-400);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.commonLabel {
+  @apply body-m-bold self-stretch;
+}
+
+.commonEssential {
+  @apply text-[#7F4AF4];
+}
+
+.commonInput {
+  @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white body-m text-[#A8A8A8];
+}
+
+.commonHelpText {
+  @apply label-l self-stretch text-[#FB6362];
+}
+
+.selectClass {
+  @apply text-Grey-500 text-[14px] font-normal leading-[22px] flex h-8 pl-3 pr-5 py-1 items-center gap-1 border-solid border-Grey-200 border-[1px] rounded-2xl;
+}
+
+.selectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center border-solid border-Grey-900 border-b-2 text-Grey-900;
+}
+
+.notSelectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center;
+}
+
 select {
   appearance: none;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cmask id='mask0_796_20608' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_796_20608)'%3E%3Cpath d='M7.77503 10.1846L4.00586 6.41539L4.70836 5.71289L7.77503 8.77956L10.8417 5.71289L11.5442 6.41539L7.77503 10.1846Z' fill='%238F8F8F'/%3E%3C/g%3E%3C/svg%3E")
@@ -275,6 +520,7 @@ select {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
 }
+<<<<<<< HEAD
 
 .inputDiv {
   @apply flex flex-col justify-center items-start self-stretch gap-2;
@@ -303,3 +549,5 @@ select {
 .commonHelpText {
   @apply label-l self-stretch text-warning-50;
 }
+=======
+>>>>>>> d29d2c0a30362c2cd1c3fa9e5b26f1234ede3cb8
