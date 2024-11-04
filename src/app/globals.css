@@ -491,3 +491,31 @@ body {
   font-weight: 600;
   font-size: 13px;
 }
+
+.commonLabel {
+  @apply body-m-bold self-stretch;
+}
+
+.commonEssential {
+  @apply text-[#7F4AF4];
+}
+
+.commonInput {
+  @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white body-m text-[#A8A8A8];
+}
+
+.commonHelpText {
+  @apply label-l self-stretch text-[#FB6362];
+}
+
+.selectClass {
+  @apply text-Grey-500 text-[14px] font-normal leading-[22px] flex h-8 pl-3 pr-1 py-1 items-center gap-1 border-solid border-Grey-200 border-[1px] rounded-2xl;
+}
+
+.selectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center border-solid border-Grey-900 border-b-2 text-Grey-900;
+}
+
+.notSelectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center;
+}

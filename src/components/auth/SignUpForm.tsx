@@ -8,9 +8,6 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { IoEyeOffOutline } from 'react-icons/io5';
 import { IoEyeOutline } from 'react-icons/io5';
-import { commonEssential, commonHelpText, commonInput, commonLabel } from '@/customCSS/input/input';
-
-
 
 const signInSchema = z
   .object({
@@ -63,11 +60,11 @@ const SignUpForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <div className="w-[340px] flex flex-col justify-center items-center gap-2">
-          <label className={commonLabel}>
-            이메일<span className={commonEssential}>*</span>
+          <label className="commonLabel">
+            이메일<span className="commonEssential">*</span>
           </label>
-          <input type="email" {...register('email')} placeholder="예) example@gmail.com" className={commonInput} />
-          {formState.errors.email && <p className={commonHelpText}>{formState.errors.email.message}</p>}
+          <input type="email" {...register('email')} placeholder="예) example@gmail.com" className="commonInput" />
+          {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
         </div>
 
         <div>
