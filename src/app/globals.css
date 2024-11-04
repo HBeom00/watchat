@@ -499,3 +499,9 @@ body {
 .notSelectPartyInfo {
   @apply flex py-2 px-4 justify-center items-center;
 }
+
+.statusLabel {
+  background: '#F5F1FE';
+  border-radius: '8px';
+  color: '#7F4AF4';
+}

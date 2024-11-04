@@ -181,19 +181,26 @@ const MyInvitedParty = () => {
                               style={{
                                 background:
                                   viewingStatus === '시청완료'
-                                    ? 'none'
-                                    : `absolute linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
+                                    ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
+                                    : 'none'
                               }}
                             ></div>
-                            <div className="absolute top-3 left-3 text-white text-sm">
-                              {getViewStatus(invite.party_info) === '시청중' ? (
-                                <p>{getViewStatus(invite.party_info)} 시청중</p>
-                              ) : getViewStatus(invite.party_info) === '모집중' ? (
-                                <p>{getViewStatus(invite.party_info)}모집중</p>
-                              ) : (
-                                <p>{getViewStatus(invite.party_info)}시청완료</p>
-                              )}
-                            </div>
+
+                            {getViewStatus(invite.party_info) === '시청중' ? (
+                              <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : getViewStatus(invite.party_info) === '모집중' ? (
+                              <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : (
+                              <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            )}
+
                             <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
                               <p>{invite.startString}</p>
                             </div>
@@ -281,7 +288,20 @@ const MyInvitedParty = () => {
                                     : 'none'
                               }}
                             ></div>
-                            <p className="absolute top-3 left-3 ">{getViewStatus(invite.party_info)}</p>
+                            {getViewStatus(invite.party_info) === '시청중' ? (
+                              <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : getViewStatus(invite.party_info) === '모집중' ? (
+                              <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : (
+                              <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            )}
                             <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
                               <p>{invite.startString}</p>
                             </div>
