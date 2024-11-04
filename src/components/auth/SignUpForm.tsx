@@ -8,6 +8,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { IoEyeOffOutline } from 'react-icons/io5';
 import { IoEyeOutline } from 'react-icons/io5';
+import { commonEssential, commonHelpText, commonInput, commonLabel } from '@/customCss/input/input';
 
 const signInSchema = z
   .object({
@@ -58,10 +59,14 @@ const SignUpForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-4 border-solid border-2 border-black">
-        <label>이메일</label>
-        <input type="email" {...register('email')} placeholder="예) example@gmail.com" />
-        {formState.errors.email && <span className="text-red-600">{formState.errors.email.message}</span>}
+      <div>
+        <div className="w-[340px] flex flex-col justify-center items-center gap-2">
+          <label className={commonLabel}>
+            이메일<span className={commonEssential}>*</span>
+          </label>
+          <input type="email" {...register('email')} placeholder="예) example@gmail.com" className={commonInput} />
+          {formState.errors.email && <p className={commonHelpText}>{formState.errors.email.message}</p>}
+        </div>
 
         <div>
           <label>비밀번호</label>
@@ -72,7 +77,7 @@ const SignUpForm = () => {
           />
           {formState.errors.password && <span className="text-red-600">{formState.errors.password.message}</span>}
           <button type="button" onClick={onPasswordVisibility}>
-            {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+            {showPassword ? <IoEyeOutline className="w-6 h-6" /> : <IoEyeOffOutline className="w-6 h-6" />}
           </button>
         </div>
 
@@ -87,7 +92,7 @@ const SignUpForm = () => {
             <span className="text-red-600">{formState.errors.confirmPassword.message}</span>
           )}
           <button type="button" onClick={onConfirmPasswordVisibility}>
-            {showConfirmPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+            {showConfirmPassword ? <IoEyeOutline className="w-6 h-6" /> : <IoEyeOffOutline className="w-6 h-6" />}
           </button>
         </div>
 
