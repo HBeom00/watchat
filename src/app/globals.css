@@ -291,3 +291,15 @@ select {
 .commonHelpText {
   @apply label-l self-stretch text-[#FB6362];
 }
+
+.selectClass {
+  @apply text-Grey-500 text-[14px] font-normal leading-[22px] flex h-8 pl-3 pr-1 py-1 items-center gap-1 border-solid border-Grey-200 border-[1px] rounded-2xl;
+}
+
+.selectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center border-solid border-Grey-900 border-b-2 text-Grey-900;
+}
+
+.notSelectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center;
+}
