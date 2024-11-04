@@ -22,6 +22,7 @@ export const getViewStatus = (party: Party) => {
   } else if (currentDate > endDate) {
     return '시청완료';
   }
+  return '시청완료';
 };
 
 // const startTime = new Date(party.start_time.split('.')[0]);

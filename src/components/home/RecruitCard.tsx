@@ -28,6 +28,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
     }
   });
   if (isLoading || isCountLoading) <div>Loading...</div>;
+  console.log(getViewStatus(data), data.situation, data.video_name);
 
   return (
     <Link

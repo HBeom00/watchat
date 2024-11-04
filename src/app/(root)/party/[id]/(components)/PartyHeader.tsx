@@ -46,7 +46,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
   return (
     <div className="inline-flex w-full items-center pt-8 pl-8 pb-10 relative text-static-white">
       <Image
-        src={partyData.video_image}
+        src={`https://image.tmdb.org/t/p/original${partyData.backdrop_image}`}
         className="relative brightness-50 -z-10"
         layout="fill"
         alt={partyData.video_name}
