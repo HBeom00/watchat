@@ -42,7 +42,6 @@ interface InvitedParty {
 // supabase에서 초대정보 불러오기
 export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
   const userId = await getLoginUserIdOnClient();
-  console.log('유저ID => ', userId);
 
   const { data: InvitedParty, error: inviteListError } = await browserClient
     .from('invited')

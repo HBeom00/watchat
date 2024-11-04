@@ -82,11 +82,6 @@
   }
 }
 
-@font-face {
-  font-family: 'Pretendard';
-  src: url('./fonts/PretendardVariable.woff2');
-}
-
 /** HEADING **/
 .heading-l {
   /* Heading/L */

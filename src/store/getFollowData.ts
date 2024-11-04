@@ -18,8 +18,6 @@ export const getFollowerData = async (userId: string | undefined) => {
     return 0;
   }
 
-  console.log(data);
-  console.log(userId);
   // 팔로워수를 followerCount에 담아줌
   const followerCount = data?.length || 0;
 
@@ -46,7 +44,6 @@ export const getFollowerData = async (userId: string | undefined) => {
     profile_img: string;
   };
 
-  console.log('팔로우한 사람들 id => ', followIds);
   const { data: followingUserData, error: followingUserError } = await browserClient
     .from('user')
     .select('user_id,nickname,profile_img')
