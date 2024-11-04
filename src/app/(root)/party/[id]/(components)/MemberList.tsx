@@ -42,35 +42,53 @@ const MemberList = ({
   }
 
   return (
-    <div>
-      <p>파티 소개</p>
-      <p>{partyData.party_detail}</p>
-      <p>참여 멤버</p>
-      {/* 누르면 내가 팔로우한 유저들이 표시되고 그 중에서 초대할 수 있음 */}
-      {userId && isMember ? <InvitedButton partyNumber={partyData.party_id} userId={userId} /> : <></>}
-      <p>참여자 {data ? data.length : 0}명</p>
-      {data && data.length > 0 ? (
-        data.map((mem) => {
-          return (
-            <MemberProfileCard
-              key={mem.profile_id}
-              isMember={isMember}
-              memberInfo={mem}
-              userId={userId}
-              ownerId={partyData.owner_id}
-            />
-          );
-        })
-      ) : (
-        <>
-          <p>멤버가 없습니다</p>
-        </>
-      )}
-      {userId && isMember && !end && !(partyOwner === userId) ? (
-        <button onClick={() => mutation.mutate(userId)}>참가 취소하기</button>
-      ) : (
-        <></>
-      )}
+    <div className="flex flex-col w-full gap-4 items-start">
+      <div className="flex flex-col w-[519px] items-start gap-2 text-Grey-900">
+        <p className="self-stretch body-l-bold">파티 소개</p>
+        <div className="flex py-3 px-4 w-full items-center self-stretch rounded-lg bg-Grey-50">
+          <p>{partyData.party_detail}</p>
+        </div>
+      </div>
+      <div className="flex flex-col w-[520px] items-start gap-4 mb-[71px]">
+        <div className="flex flex-row justify-between items-center self-stretch">
+          <div className="flex flex-col items-start w-[257px]">
+            <p className="text-Grey-900 body-l-bold">참여 멤버</p>
+            <p className="text-Grey-600 label-l">참여자 {data ? data.length : 0}명</p>
+          </div>
+          {userId && isMember ? (
+            <InvitedButton partyNumber={partyData.party_id} userId={userId}>
+              <button className="flex w-[94px] py-[6px] px-3 justify-center items-center rounded-lg border-solid border-Grey-300 border-[1px] text-Grey-400 body-xs-bold">
+                초대하기
+              </button>
+            </InvitedButton>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="flex flex-col items-start gap-4 text-static-black body-s">
+          {data && data.length > 0 ? (
+            data.map((mem) => {
+              return (
+                <MemberProfileCard key={mem.profile_id} memberInfo={mem} userId={userId} ownerId={partyData.owner_id} />
+              );
+            })
+          ) : (
+            <>
+              <p>멤버가 없습니다</p>
+            </>
+          )}
+        </div>
+        {userId && isMember && !end && !(partyOwner === userId) ? (
+          <button
+            className="inline-flex py-2 items-center my-[17.5px] text-Grey-400 body-xs-bold"
+            onClick={() => mutation.mutate(userId)}
+          >
+            참여 취소
+          </button>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

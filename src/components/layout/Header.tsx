@@ -1,11 +1,11 @@
 'use client';
 
 import { useSearchStore } from '@/providers/searchStoreProvider';
-import LogoutButton from '../button/LogoutButton';
 import { useUserStore } from '@/providers/userStoreProvider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useWatchFilter } from '@/store/watchFilterStore';
+import MyProfileButton from './MyProfileButton';
 
 const Header = () => {
   const { isUser } = useUserStore((state) => state);
@@ -80,7 +80,7 @@ const Header = () => {
           </div>
           <div className="flex py-3 px-4 justify-center items-center">
             {isUser ? (
-              <LogoutButton />
+              <MyProfileButton />
             ) : (
               <Link className="font-semibold text-[15px] leading-6" href={'/login'}>
                 로그인
