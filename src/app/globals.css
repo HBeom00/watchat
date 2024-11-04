@@ -518,5 +518,5 @@ select {
   bottom: 0;
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+  border-radius: 0 0 4px 4px;
 }
