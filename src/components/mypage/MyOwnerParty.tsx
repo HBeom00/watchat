@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import '@/customCSS/label.css';
-import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
+import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyOwnerParty = () => {
   // 사용자 데이터 가져오기

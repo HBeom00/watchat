@@ -19,7 +19,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { getViewStatus } from '@/utils/viewStatus';
 import '@/customCSS/label.css';
-import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
+import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyInvitedParty = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);

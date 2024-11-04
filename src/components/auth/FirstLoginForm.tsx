@@ -11,8 +11,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import photoCameraIcon from '@/public/photo_camera.svg';
-import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
+import photoCameraIcon from '../../../public/photo_camera.svg';
+import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const nicknameSchema = z.object({
   nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' })
