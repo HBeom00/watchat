@@ -42,11 +42,11 @@ const Calendar = ({ selectedDate, setSelectedDate }: Props) => {
           decreaseMonth,
           increaseMonth,
           prevMonthButtonDisabled,
-          nextMonthButtonDisabled,
+          nextMonthButtonDisabled
         }) => (
           <div className="flex justify-between items-center bg-bg-color h-full mt-2 px-6">
               <button
-                type='button'
+                type="button"
                 onClick={decreaseMonth}
                 className="w-8 h-8 p-1 rounded-full hover:bg-opacity-20"
                 disabled={prevMonthButtonDisabled}
@@ -57,7 +57,7 @@ const Calendar = ({ selectedDate, setSelectedDate }: Props) => {
               <span className="text-lg font-medium">{MONTHS[getMonth(date)]}</span>
             </div>
               <button
-                type='button'
+                type="button"
                 onClick={increaseMonth}
                 className="w-8 h-8 p-1 rounded-full hover:bg-opacity-20"
                 disabled={nextMonthButtonDisabled}

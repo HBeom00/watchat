@@ -19,7 +19,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { getViewStatus } from '@/utils/viewStatus';
 import '@/customCSS/label.css';
-import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
+import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyInvitedParty = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -174,6 +174,7 @@ const MyInvitedParty = () => {
                               alt={`${invite.party_info?.video_name} 영상 이미지`}
                               layout="fill"
                               objectFit="cover"
+                              className="z-0"
                             />
                             <div
                               className="absolute inset-0 bg-gradient-to-t from-[rgba(143,143,143,0.25)] to-[rgba(143,143,143,0.00)]"
@@ -185,11 +186,27 @@ const MyInvitedParty = () => {
                               }}
                             ></div>
 
-                            <p className="absolute top-3 left-3 text-white text-sm">
-                              {viewingStatus === '모집중' ? invite.party_info.situation : viewingStatus}
-                            </p>
-                            <p>{invite.startString}</p>
+                            {getViewStatus(invite.party_info) === '시청중' ? (
+                              <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : getViewStatus(invite.party_info) === '모집중' ? (
+                              <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : (
+                              <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            )}
+
+                            <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
+                              <p>{invite.startString}</p>
+                            </div>
                           </div>
+
+                          {/* 하단정보 */}
                           <div>
                             <div className="my-2 border-b">
                               {invite.party_info?.media_type === 'tv' && (
@@ -271,11 +288,23 @@ const MyInvitedParty = () => {
                                     : 'none'
                               }}
                             ></div>
-
-                            <p className="absolute top-3 left-3 text-white text-sm">
-                              {viewingStatus === '모집중' ? invite.party_info.situation : viewingStatus}
-                            </p>
-                            <p>{invite.startString}</p>
+                            {getViewStatus(invite.party_info) === '시청중' ? (
+                              <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : getViewStatus(invite.party_info) === '모집중' ? (
+                              <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            ) : (
+                              <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
+                                <p>{getViewStatus(invite.party_info)} </p>
+                              </div>
+                            )}
+                            <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
+                              <p>{invite.startString}</p>
+                            </div>
                           </div>
                           <div>
                             <div className="my-2 border-b">
