@@ -174,22 +174,32 @@ const MyInvitedParty = () => {
                               alt={`${invite.party_info?.video_name} 영상 이미지`}
                               layout="fill"
                               objectFit="cover"
+                              className="z-0"
                             />
                             <div
                               className="absolute inset-0 bg-gradient-to-t from-[rgba(143,143,143,0.25)] to-[rgba(143,143,143,0.00)]"
                               style={{
                                 background:
                                   viewingStatus === '시청완료'
-                                    ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
-                                    : 'none'
+                                    ? 'none'
+                                    : `absolute linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
                               }}
                             ></div>
-
-                            <p className="absolute top-3 left-3 text-white text-sm">
-                              {viewingStatus === '모집중' ? invite.party_info.situation : viewingStatus}
-                            </p>
-                            <p>{invite.startString}</p>
+                            <div className="absolute top-3 left-3 text-white text-sm">
+                              {getViewStatus(invite.party_info) === '시청중' ? (
+                                <p>{getViewStatus(invite.party_info)} 시청중</p>
+                              ) : getViewStatus(invite.party_info) === '모집중' ? (
+                                <p>{getViewStatus(invite.party_info)}모집중</p>
+                              ) : (
+                                <p>{getViewStatus(invite.party_info)}시청완료</p>
+                              )}
+                            </div>
+                            <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
+                              <p>{invite.startString}</p>
+                            </div>
                           </div>
+
+                          {/* 하단정보 */}
                           <div>
                             <div className="my-2 border-b">
                               {invite.party_info?.media_type === 'tv' && (
@@ -271,11 +281,10 @@ const MyInvitedParty = () => {
                                     : 'none'
                               }}
                             ></div>
-
-                            <p className="absolute top-3 left-3 text-white text-sm">
-                              {viewingStatus === '모집중' ? invite.party_info.situation : viewingStatus}
-                            </p>
-                            <p>{invite.startString}</p>
+                            <p className="absolute top-3 left-3 ">{getViewStatus(invite.party_info)}</p>
+                            <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
+                              <p>{invite.startString}</p>
+                            </div>
                           </div>
                           <div>
                             <div className="my-2 border-b">

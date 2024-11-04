@@ -93,7 +93,6 @@ body {
 
 /** HEADING **/
 .heading-l {
-  color: var(--static-black, #000);
   /* Heading/L */
   font-family: Pretendard;
   font-size: 32px;
@@ -103,7 +102,6 @@ body {
   letter-spacing: -0.64px;
 }
 .heading-m {
-  color: var(--static-black, #000);
   /* Heading/M */
   font-family: Pretendard;
   font-size: 28px;
@@ -113,7 +111,6 @@ body {
   letter-spacing: -0.56px;
 }
 .heading-s {
-  color: var(--static-black, #000);
   /* Heading/S */
   font-family: Pretendard;
   font-size: 24px;
@@ -125,7 +122,6 @@ body {
 
 /** TITLE **/
 .title-l {
-  color: var(--static-black, #000);
   /* Title/L */
   font-family: Pretendard;
   font-size: 22px;
@@ -135,7 +131,6 @@ body {
   letter-spacing: -0.44px;
 }
 .title-m {
-  color: var(--static-black, #000);
   /* Title/M */
   font-family: Pretendard;
   font-size: 20px;
@@ -145,7 +140,6 @@ body {
   letter-spacing: -0.4px;
 }
 .title-s {
-  color: var(--static-black, #000);
   /* Title/S */
   font-family: Pretendard;
   font-size: 18px;
@@ -157,7 +151,6 @@ body {
 
 /** BODY **/
 .body-l {
-  color: var(--static-black, #000);
   /* Body/L-400 */
   font-family: Pretendard;
   font-size: 16px;
@@ -166,7 +159,6 @@ body {
   line-height: 26px; /* 162.5% */
 }
 .body-l-bold {
-  color: var(--static-black, #000);
   /* Body/L-600 */
   font-family: Pretendard;
   font-size: 16px;
@@ -175,7 +167,6 @@ body {
   line-height: 26px; /* 162.5% */
 }
 .body-m {
-  color: var(--static-black, #000);
   /* Body/M-400 */
   font-family: Pretendard;
   font-size: 15px;
@@ -184,7 +175,6 @@ body {
   line-height: 24px; /* 160% */
 }
 .body-m-bold {
-  color: var(--static-black, #000);
   /* Body/M-600 */
   font-family: Pretendard;
   font-size: 15px;
@@ -193,7 +183,6 @@ body {
   line-height: 24px; /* 160% */
 }
 .body-s {
-  color: var(--static-black, #000);
   /* Body/S-400 */
   font-family: Pretendard;
   font-size: 14px;
@@ -202,7 +191,6 @@ body {
   line-height: 22px; /* 157.143% */
 }
 .body-s-bold {
-  color: var(--static-black, #000);
   /* Body/S-600 */
   font-family: Pretendard;
   font-size: 14px;
@@ -211,7 +199,6 @@ body {
   line-height: 22px; /* 157.143% */
 }
 .body-xs {
-  color: var(--static-black, #000);
   /* Body/XS-400 */
   font-family: Pretendard;
   font-size: 13px;
@@ -220,7 +207,6 @@ body {
   line-height: 20px; /* 153.846% */
 }
 .body-xs-bold {
-  color: var(--static-black, #000);
   /* Body/XS-600 */
   font-family: Pretendard;
   font-size: 13px;
@@ -229,7 +215,6 @@ body {
   line-height: 20px; /* 153.846% */
 }
 .label-l {
-  color: var(--static-black, #000);
   /* Label/L-400 */
   font-family: Pretendard;
   font-size: 13px;
@@ -238,7 +223,6 @@ body {
   line-height: 20px; /* 153.846% */
 }
 .label-l-bold {
-  color: var(--static-black, #000);
   /* Label/L-600 */
   font-family: Pretendard;
   font-size: 13px;
@@ -247,7 +231,6 @@ body {
   line-height: 20px; /* 153.846% */
 }
 .label-m {
-  color: var(--static-black, #000);
   /* Label/L-600 */
   font-family: Pretendard;
   font-size: 13px;
@@ -256,7 +239,6 @@ body {
   line-height: 20px; /* 153.846% */
 }
 .label-m-bold {
-  color: var(--static-black, #000);
   /* Label/M-600 */
   font-family: Pretendard;
   font-size: 12px;
@@ -265,7 +247,6 @@ body {
   line-height: 18px; /* 150% */
 }
 .caption-l {
-  color: var(--static-black, #000);
   /* Caption/L */
   font-family: Pretendard;
   font-size: 12px;
@@ -274,7 +255,6 @@ body {
   line-height: 18px; /* 150% */
 }
 .caption-m {
-  color: var(--static-black, #000);
   /* Caption/M */
   font-family: Pretendard;
   font-size: 11px;
