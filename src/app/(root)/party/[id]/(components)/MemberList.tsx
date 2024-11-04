@@ -68,9 +68,7 @@ const MemberList = ({
         <div className="flex flex-col items-start gap-4 text-static-black body-s">
           {data && data.length > 0 ? (
             data.map((mem) => {
-              return (
-                <MemberProfileCard key={mem.profile_id} memberInfo={mem} userId={userId} ownerId={partyData.owner_id} />
-              );
+              return <MemberProfileCard key={mem.profile_id} memberInfo={mem} ownerId={partyData.owner_id} />;
             })
           ) : (
             <>

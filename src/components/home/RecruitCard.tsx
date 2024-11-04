@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import PlatformImageCard from '../styleComponents/PlatformImage';
+import WatchingLabel from '../styleComponents/WatchingLabel';
 
 const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   const platformArr: platform[] = JSON.parse(data.video_platform);
@@ -36,9 +37,10 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       className="relative flex flex-col w-[196px] items-start pb-3 gap-2 flex-shrink-0"
     >
       <div className="relative flex w-[196px] h-[280px] py-5 items-start gap-8 self-stretch rounded-sm">
-        <div className="flex py-1 px-3 justify-center items-center gap-2 absolute left-3 top-3 z-10 rounded-lg bg-purple-50">
+        {/* <div className="flex py-1 px-3 justify-center items-center gap-2 absolute left-3 top-3 z-10 rounded-lg bg-purple-50">
           <p className="">{getViewStatus(data) === '모집중' ? data.situation : getViewStatus(data)}</p>
-        </div>
+        </div> */}
+        <WatchingLabel partyData={data} />
         {platform ? <PlatformImageCard platform={platform} /> : <></>}
         <Image
           className={end ? 'rounded-sm brightness-50' : 'rounded-sm'}

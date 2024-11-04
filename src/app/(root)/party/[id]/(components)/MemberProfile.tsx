@@ -5,11 +5,11 @@ import Image from 'next/image';
 
 const MemberProfileCard = ({
   memberInfo,
-  userId,
+
   ownerId
 }: {
   memberInfo: member;
-  userId: string | null;
+
   ownerId: string;
 }) => {
   return (
@@ -28,7 +28,7 @@ const MemberProfileCard = ({
       />
       <div className="flex items-center gap-1">
         <p>{memberInfo.nickname}</p>
-        {ownerId === userId ? (
+        {ownerId === memberInfo.user_id ? (
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <mask id="mask0_828_2472" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
               <rect width="20" height="20" fill="#D9D9D9" />

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import '@/customCSS/label.css';
-import defaultAvatar from '@/public/38d1626935054d9b34fddd879b084da5.png';
+import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyOwnerParty = () => {
   // 사용자 데이터 가져오기
@@ -32,14 +32,14 @@ const MyOwnerParty = () => {
           더보기
         </Link>
       </div>
-      <ul>
+      <ul className="flex flex-row gap-5">
         {ownerParty && ownerParty.length > 0 ? (
           ownerParty.map((party) => {
             const viewingStatus = getViewStatus(party); // 시청 상태
 
             return (
-              <Link href={`/party/${party.party_id}`} key={party.party_id}>
-                <li>
+              <li key={party.party_id}>
+                <Link href={`/party/${party.party_id}`}>
                   <div>
                     <Image
                       src={
@@ -50,7 +50,32 @@ const MyOwnerParty = () => {
                       width={50}
                       height={50}
                     />
-                    <p>{viewingStatus === '모집중' ? party.situation : viewingStatus}</p>
+                    <p>
+                      {viewingStatus === '시청중' ? (
+                        <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                          <p>{getViewStatus(party)} </p>
+                        </div>
+                      ) : (
+                        viewingStatus
+                      )}
+                    </p>
+                    <div>
+                      {getViewStatus(party) === '시청중' ? (
+                        <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                          <p>{getViewStatus(party)} </p>
+                        </div>
+                      ) : getViewStatus(party) === '모집중' ? (
+                        <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
+                          <p>{getViewStatus(party)} </p>
+                        </div>
+                      ) : (
+                        <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
+                          <p>{getViewStatus(party)} </p>
+                        </div>
+                      )}
+                    </div>
                     <span>{party.startString}</span>
                   </div>
                   <div>
@@ -75,8 +100,8 @@ const MyOwnerParty = () => {
                       ({party.currentPartyPeople} / {party.limited_member})
                     </span>
                   </div>
-                </li>
-              </Link>
+                </Link>
+              </li>
             );
           })
         ) : (
