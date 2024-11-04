@@ -15,6 +15,8 @@ const ParticipationForm = ({
   party_id: string;
   closeHandler: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [message, setMessage] = useState<string>('');
+
   // 스토리지 업로드 이미지 파일
   const imgRef = useRef<HTMLInputElement>(null);
 
@@ -27,6 +29,15 @@ const ParticipationForm = ({
   const path = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  if (message !== '' && !path.includes('/recruit')) {
+    return (
+      <div className="flex flex-col h-16 justify-center self-stretch items-center body-m text-Grey-900">
+        <p>😢</p>
+        <p>{message}</p>
+      </div>
+    );
+  }
 
   // 이미지 업로드 onChange
   const uploadImage = () => {
@@ -51,7 +62,7 @@ const ParticipationForm = ({
     const user_Id = await getLoginUserIdOnClient();
 
     if (!user_Id) {
-      alert('먼저 로그인해주세요');
+      setMessage('먼저 로그인해주세요');
       router.push('/login');
       return;
     }
@@ -59,19 +70,19 @@ const ParticipationForm = ({
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
-      alert('존재하지 않는 파티입니다');
+      setMessage('존재하지 않는 파티입니다');
       return;
     } else if (endCheck === '모집마감') {
-      alert('모집이 마감된 파티입니다');
+      setMessage('마감된 파티입니다');
       return;
     } else if (endCheck === '종료') {
-      alert('종료된 파티입니다');
+      setMessage('종료된 파티입니다');
       return;
     }
 
     const isMember = await isMemberExist(party_id, user_Id);
     if (isMember) {
-      alert('이미 참가한 파티입니다');
+      setMessage('이미 참가한 파티입니다');
       router.replace(`/party/${party_id}`);
 
       return;
@@ -83,7 +94,7 @@ const ParticipationForm = ({
       .insert({ nickname, profile_image, party_id });
 
     if (participationError) {
-      alert('파티에 참가할 수 없습니다');
+      setMessage('파티에 참가할 수 없습니다');
       return;
     } else {
       let profile_img = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
@@ -106,7 +117,8 @@ const ParticipationForm = ({
         .eq('user_id', user_Id)
         .eq('party_id', party_id);
       if (error) {
-        alert('파티 참가에 실패하셨습니다');
+        setMessage('이미지 업로드에 실패하셨습니다');
+
         return;
       }
       // 이 초대하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
@@ -119,7 +131,8 @@ const ParticipationForm = ({
       // 멤버가 변동하면 바뀌어야 하는 값들
       queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
       queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
-      alert('파티에 참가하신 걸 환영합니다!');
+      queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
+      setMessage('파티에 참가하신 걸 환영합니다!');
       if (path.includes('/party')) {
         closeHandler(false);
       }
@@ -177,7 +190,7 @@ const uploadStorage = async (file: File, party_id: string, user_id: string | nul
     .eq('user_id', user_id)
     .eq('party_id', party_id);
   if (!memberIdResponse.data) {
-    console.error('멤버 ID를 가져오는 데 실패했습니다.');
+    // console.error('멤버 ID를 가져오는 데 실패했습니다.');
     return ''; // memberId가 유효하지 않으면 빈 문자열 반환
   }
 
@@ -189,7 +202,7 @@ const uploadStorage = async (file: File, party_id: string, user_id: string | nul
   });
 
   if (data) {
-    console.log('supabase에 이미지를 업로드 하는데 성공했습니다.');
+    // console.log('supabase에 이미지를 업로드 하는데 성공했습니다.');
     const newImageUrl = browserClient.storage.from('team_user_profile_image').getPublicUrl(profile_image_name)
       .data.publicUrl;
 
@@ -197,7 +210,7 @@ const uploadStorage = async (file: File, party_id: string, user_id: string | nul
   }
 
   if (error) {
-    console.error('supabase에 이미지를 업로드 하는데 실패했습니다.', error.message);
+    // console.error('supabase에 이미지를 업로드 하는데 실패했습니다.', error.message);
     return '';
   }
 };
