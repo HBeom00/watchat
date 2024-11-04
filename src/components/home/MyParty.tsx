@@ -40,24 +40,28 @@ const MyParty = ({ userId }: { userId: string }) => {
   if (isLoading) <div>Loading...</div>;
   return (
     <>
-      {searchText === '' ? (
-        <div>
+      {searchText === '' && userId ? (
+        <div className="flex flex-col gap-[18px] pt-8 pb-[18px] border-solid border-Grey-100 border-b-[1px]">
           <p>MY 파티</p>
-          <div className="flex flex-row gap-10 p-10">
-            {data
-              ?.filter((n) => !(n?.situation === '종료'))
-              .map((party) => {
-                if (party) {
-                  return (
-                    <RecruitCard
-                      key={party.party_id}
-                      data={party}
-                      end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
-                    />
-                  );
-                }
-              })}
-          </div>
+          {data && data.length > 0 ? (
+            <div className="grid grid-cols-5 gap-x-5 gap-y-8 text-Grey-900">
+              {data
+                .filter((n) => !(n?.situation === '종료'))
+                .map((party) => {
+                  if (party) {
+                    return (
+                      <RecruitCard
+                        key={party.party_id}
+                        data={party}
+                        end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
+                      />
+                    );
+                  }
+                })}
+            </div>
+          ) : (
+            <p>참가한 파티가 없습니다</p>
+          )}
         </div>
       ) : (
         <></>

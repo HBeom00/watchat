@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-}
-
 @font-face {
   font-family: 'Pretendard';
   src: url('fonts/PretendardVariable.woff2');
@@ -225,12 +222,12 @@ body {
   line-height: 20px; /* 153.846% */
 }
 .label-m {
-  /* Label/L-600 */
+  /* Label/M-400 */
   font-family: Pretendard;
-  font-size: 13px;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 600;
-  line-height: 20px; /* 153.846% */
+  font-weight: 400;
+  line-height: 18px; /* 153.846% */
 }
 .label-m-bold {
   /* Label/M-600 */
@@ -255,4 +252,25 @@ body {
   font-style: normal;
   font-weight: 400;
   line-height: 16px; /* 145.455% */
+}
+
+select {
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cmask id='mask0_796_20608' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_796_20608)'%3E%3Cpath d='M7.77503 10.1846L4.00586 6.41539L4.70836 5.71289L7.77503 8.77956L10.8417 5.71289L11.5442 6.41539L7.77503 10.1846Z' fill='%238F8F8F'/%3E%3C/g%3E%3C/svg%3E")
+    no-repeat 97% 50%/16px auto;
+  padding-right: 16px;
+}
+
+.card-down {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  padding: 4px 12px;
+  gap: 4px;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
