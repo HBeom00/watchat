@@ -39,22 +39,19 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
     return <div>Loading...</div>;
   }
 
-  // 버튼 비활성화
-  const disabled = chatOpenClose(partyData) === '시청중' ? `/chat/${partyData.party_id}` : '';
-
-  const disabledButtonClassname = chatOpenClose(partyData) === '시청중' ? 'bg-purple-600 p-2' : 'bg-slate-400 p-2';
   return (
     <div className="inline-flex w-full items-center pt-8 pl-8 pb-10 relative text-static-white">
       <Image
         src={`https://image.tmdb.org/t/p/original${partyData.backdrop_image}`}
         className="relative brightness-50 -z-10"
         layout="fill"
+        style={{ objectFit: 'cover' }}
         alt={partyData.video_name}
       />
       <div className="flex flex-col gap-4 items-start">
         {/* 상단 */}
         <div className="flex flex-col items-start gap-2 self-stretch">
-          <p className="self-stretch body-l-bold">{startTimeString(partyData.start_date_time)}</p>
+          <p className="self-stretch body-l-bold">{end ? '시청 종료' : startTimeString(partyData.start_date_time)}</p>
           <p className="self-stretch heading-l">{partyData.party_name}</p>
         </div>
         <div className="flex flex-row gap-1 self-stretch body-s">
@@ -71,7 +68,13 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
                 src={ownerInfo[0].profile_image}
                 width={16}
                 height={16}
-                alt="오너이미지"
+                alt={`${ownerInfo[0].nickname} 님의 프로필 사진`}
+                style={{
+                  objectFit: 'cover',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%'
+                }}
               />
               <p className="label-l">{ownerInfo[0].nickname}</p>
             </div>
@@ -86,24 +89,38 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
         {/* 하단 */}
         <div>
           {end ? (
-            <button>종료됨</button>
+            <button className="disabled-btn-m w-[164px]">채팅 종료</button>
           ) : isMember ? (
-            <Link className={disabledButtonClassname} href={disabled}>
-              채팅하기
-            </Link>
-          ) : userId ? (
-            <ParticipationButton party_id={partyData.party_id} openControl={false}>
-              <button>참가하기</button>
-            </ParticipationButton>
-          ) : (
-            <button
-              onClick={() => {
-                alert('먼저 로그인해주세요');
-                router.push('/login');
+            <Link
+              className={chatOpenClose(partyData) === '시청중' ? 'btn-m w-[164px]' : 'disabled-btn-m w-[164px]'}
+              href={`/chat/${partyData.party_id}`}
+              onClick={(e) => {
+                if (chatOpenClose(partyData) !== '시청중') {
+                  e.preventDefault();
+                }
               }}
             >
-              참가하기
-            </button>
+              채팅하기
+            </Link>
+          ) : (
+            <ParticipationButton
+              party_id={partyData.party_id}
+              party_situation={partyData.situation}
+              openControl={false}
+            >
+              <button
+                className="btn-m w-[164px]"
+                onClick={(e) => {
+                  if (!userId) {
+                    e.preventDefault();
+                    alert('먼저 로그인해주세요');
+                    router.push('/login');
+                  }
+                }}
+              >
+                참여하기
+              </button>
+            </ParticipationButton>
           )}
         </div>
       </div>

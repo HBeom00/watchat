@@ -62,7 +62,6 @@ const RecruitPage2 = () => {
       // 빈값의 플렛폼
       const platformData =
         video_platform && video_platform.length > 0 ? video_platform : [{ name: '알수없음', logoUrl: '알수없음' }];
-   
 
       const { data: insertPartyData, error }: { data: partyInfo[] | null; error: PostgrestError | null } =
         await browserClient
@@ -81,8 +80,8 @@ const RecruitPage2 = () => {
               limited_member,
               video_platform: platformData,
               situation: '모집중',
-              watch_date: plusWatchDate ? plusWatchDate .toISOString().split('T')[0] : null,
-              start_time: plusStartTime ? plusStartTime .toISOString().split('T')[1] : null,
+              watch_date: plusWatchDate ? plusWatchDate.toISOString().split('T')[0] : null,
+              start_time: plusStartTime ? plusStartTime.toISOString().split('T')[1] : null,
               start_date_time: start_date_time.toISOString(),
               end_time,
               owner_id: userId,
@@ -105,22 +104,23 @@ const RecruitPage2 = () => {
       queryClient.invalidateQueries({ queryKey: ['myParty'] });
     }
   });
- 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const number = Number(value);
 
     // 1~10 사이의 숫자만 허용
-    if (value === "" || (number >= 1 && number <= 10)) {
-        setRecruitDetails({ limited_member: number });
-        setErrorMessage(''); // 오류 메시지 초기화
+    if (value === '' || (number >= 1 && number <= 10)) {
+      setRecruitDetails({ limited_member: number });
+      setErrorMessage(''); // 오류 메시지 초기화
     } else {
-      setErrorMessage("1에서 10 사이의 숫자를 입력하세요.");
-        e.target.value = ""; // 잘못된 입력값을 지움
+      setErrorMessage('1에서 10 사이의 숫자를 입력하세요.');
+      e.target.value = ''; // 잘못된 입력값을 지움
     }
-};
+  };
 
-const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
+  const isRecruitButtonDisabled =
+    !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
 
   return (
     <div className="grid place-items-center">
@@ -218,12 +218,14 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
 </div>
       <ParticipationButton openControl={open} party_id={partyNumber}>
         <button
-        className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
+          className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${
+            isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
+          } rounded-md font-semibold text-[15px]`}
           onClick={(e) => {
             e.preventDefault();
             if (!isRecruitButtonDisabled) {
               submitRecruit();
-          }
+            }
           }}
           disabled={isRecruitButtonDisabled}
         >
@@ -233,6 +235,5 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
     </div>
   );
 };
-
 
 export default RecruitPage2;

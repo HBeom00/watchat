@@ -5,19 +5,30 @@ import Image from 'next/image';
 
 const MemberProfileCard = ({
   memberInfo,
-  userId,
+
   ownerId
 }: {
   memberInfo: member;
-  userId: string | null;
+
   ownerId: string;
 }) => {
   return (
     <div className="flex items-center gap-2">
-      <Image className="rounded-full" src={memberInfo.profile_image} width={40} height={40} alt="프로필이미지" />
+      <Image
+        src={memberInfo.profile_image}
+        width={40}
+        height={40}
+        style={{
+          objectFit: 'cover',
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%'
+        }}
+        alt="프로필이미지"
+      />
       <div className="flex items-center gap-1">
         <p>{memberInfo.nickname}</p>
-        {ownerId === userId ? (
+        {ownerId === memberInfo.user_id ? (
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <mask id="mask0_828_2472" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
               <rect width="20" height="20" fill="#D9D9D9" />

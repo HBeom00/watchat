@@ -21,7 +21,7 @@ const RecruitList = () => {
 
   // 페이지, 필터, 검색 등의 상태값 재정리
   // 페이지
-  const pageSlice = 16;
+  const pageSlice = 20;
   const start = (pageNumber - 1) * pageSlice;
   const end = pageNumber * pageSlice - 1;
 
@@ -226,15 +226,30 @@ const RecruitList = () => {
       </div>
       <div className="grid grid-cols-5 gap-x-5 gap-y-8 mt-8">
         {data && data.length > 0 ? (
-          data.map((recruit) => {
-            return (
-              <RecruitCard
-                key={recruit.party_id}
-                data={recruit}
-                end={recruit.situation === '종료' || getViewStatus(recruit) === '시청완료'}
-              />
-            );
-          })
+          <>
+            {data
+              .filter((n) => getViewStatus(n) === '시청중')
+              ?.map((recruit) => {
+                return (
+                  <RecruitCard
+                    key={recruit.party_id}
+                    data={recruit}
+                    end={recruit.situation === '종료' || getViewStatus(recruit) === '시청완료'}
+                  />
+                );
+              })}
+            {data
+              .filter((n) => getViewStatus(n) !== '시청중')
+              ?.map((recruit) => {
+                return (
+                  <RecruitCard
+                    key={recruit.party_id}
+                    data={recruit}
+                    end={recruit.situation === '종료' || getViewStatus(recruit) === '시청완료'}
+                  />
+                );
+              })}
+          </>
         ) : (
           <p>데이터가 없습니다</p>
         )}
