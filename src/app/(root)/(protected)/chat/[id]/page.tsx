@@ -17,9 +17,9 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="flex justify-center relative">
-      <div className="w-[700px] h-[960px] shrink-0">
+      <div className="w-[700px] h-[960px] shrink-0 bg-Grey-50">
         <div className="flex flex-col justify-center items-center">
-          <div className="flex pt-4 justify-between items-center self-stretch">
+          <div className="flex pt-4 justify-between items-center self-stretch bg-white">
             <div className="flex">
               <div className="w-10 p-2 flex justify-between items-center">
                 <Image src={arrow_back} alt="back_img" width={24} height={24} className="flex flex-shrink-0" />

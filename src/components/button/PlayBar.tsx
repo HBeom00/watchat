@@ -30,7 +30,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   }
   console.log(playTime, '확인값');
   return (
-    <div className="pt-2 pb-4 px-4 flex flex-col items-start gap-2 self-stretch">
+    <div className="pt-2 pb-4 px-4 flex flex-col items-start gap-2 self-stretch bg-white">
       {/* 현재 진행 시간 */}
       <div className="flex justify-between items-center self-stretch">
         {playTime > 0 && duration * 60 > playTime ? (
