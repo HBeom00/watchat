@@ -3,17 +3,24 @@
 import { useQuery } from '@tanstack/react-query';
 import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
-import browserClient from '@/utils/supabase/client';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 import { useSearchStore } from '@/providers/searchStoreProvider';
 
-const MyParty = ({ userId }: { userId: string }) => {
+const MyParty = () => {
   const searchText = useSearchStore((state) => state.searchText);
+  const { data: userId, isLoading: userLoading } = useQuery({
+    queryKey: ['loginUser'],
+    queryFn: () => getLoginUserIdOnClient()
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ['myParty', userId],
     queryFn: async () => {
+      if (!userId) {
+        return [];
+      }
       const myParty: PostgrestSingleResponse<{ party_id: string }[]> = await browserClient
         .from('team_user_profile')
         .select('party_id')
@@ -37,7 +44,7 @@ const MyParty = ({ userId }: { userId: string }) => {
       }
     }
   });
-  if (isLoading) <div>Loading...</div>;
+  if (isLoading || userLoading) <div>Loading...</div>;
   return (
     <>
       {searchText === '' && userId ? (

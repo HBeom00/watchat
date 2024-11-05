@@ -11,7 +11,9 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 import { useState } from 'react';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
-import Calendar from '@/components/Calendar/calendar';
+// import Calendar from '@/components/Calendar/calendar';
+import Image from 'next/image';
+
 
 
 
@@ -60,7 +62,6 @@ const RecruitPage2 = () => {
       // 빈값의 플렛폼
       const platformData =
         video_platform && video_platform.length > 0 ? video_platform : [{ name: '알수없음', logoUrl: '알수없음' }];
-   
 
       const { data: insertPartyData, error }: { data: partyInfo[] | null; error: PostgrestError | null } =
         await browserClient
@@ -79,8 +80,8 @@ const RecruitPage2 = () => {
               limited_member,
               video_platform: platformData,
               situation: '모집중',
-              watch_date: plusWatchDate ? plusWatchDate .toISOString().split('T')[0] : null,
-              start_time: plusStartTime ? plusStartTime .toISOString().split('T')[1] : null,
+              watch_date: plusWatchDate ? plusWatchDate.toISOString().split('T')[0] : null,
+              start_time: plusStartTime ? plusStartTime.toISOString().split('T')[1] : null,
               start_date_time: start_date_time.toISOString(),
               end_time,
               owner_id: userId,
@@ -103,22 +104,23 @@ const RecruitPage2 = () => {
       queryClient.invalidateQueries({ queryKey: ['myParty'] });
     }
   });
- 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const number = Number(value);
 
     // 1~10 사이의 숫자만 허용
-    if (value === "" || (number >= 1 && number <= 10)) {
-        setRecruitDetails({ limited_member: number });
-        setErrorMessage(''); // 오류 메시지 초기화
+    if (value === '' || (number >= 1 && number <= 10)) {
+      setRecruitDetails({ limited_member: number });
+      setErrorMessage(''); // 오류 메시지 초기화
     } else {
-      setErrorMessage("1에서 10 사이의 숫자를 입력하세요.");
-        e.target.value = ""; // 잘못된 입력값을 지움
+      setErrorMessage('1에서 10 사이의 숫자를 입력하세요.');
+      e.target.value = ''; // 잘못된 입력값을 지움
     }
-};
+  };
 
-const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
+  const isRecruitButtonDisabled =
+    !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
 
   return (
     <div className="grid place-items-center">
@@ -129,6 +131,15 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
       <div className='space-y-[32px]'>
       <div className='mt-[94px]'>
        <label htmlFor="member" className="block text-[15px] font-SemiBold text-Grey-800">모집 인원</label>
+     {/* svg */}
+      <div className='relative '>
+      <Image
+        src="/group.svg" // public 폴더 경로 사용
+        alt="User Icon"
+        width={24}
+        height={24}
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+      />
       <input
         id="member"
         type="text"
@@ -137,6 +148,14 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
         onChange={handleChange}
         className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
       />
+       <Image
+    src="/persons.svg" // public 폴더 경로 사용
+    alt="User Icon"
+    width={24}
+    height={24}
+    className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+  />
+      </div>
        {errorMessage && (
                 <p className="text-red-500">{errorMessage}</p> // 오류 메시지 표시
             )}
@@ -144,16 +163,44 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
       </div>
       <div>
       <label htmlFor="watchDate" className="block text-[15px] font-SemiBold text-Grey-800">시청 날짜</label>
-      <Calendar
+      <div className="relative">
+      <Image
+        src="/calendar_month.svg" // public 폴더 경로 사용
+        alt="User Icon"
+        width={24}
+        height={24}
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
+      />
+      <DatePicker
+        id="watchDate"
+        locale={ko}
+        selected={useRecruitStore.getState().watch_date}
+        onChange={(date) => setRecruitDetails({ watch_date: date })}
+        dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
+        placeholderText="날짜를 선택해주세요"
+        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
+        showPopperArrow={false}
+        minDate={new Date()}
+      />
+      {/* <Calendar
         selectedDate={useRecruitStore.getState().watch_date}
         setSelectedDate={(date) => {
           const validDate = date instanceof Date ? date : null; // date가 유효한 Date인지 확인
           setRecruitDetails({ watch_date: validDate });
         }}
-      />
+      /> */}
+      </div>
       </div>
       <div>
       <label htmlFor="startTime" className="block text-[15px] font-SemiBold text-Grey-800">시작 시간</label>
+      <div className="relative">
+      <Image
+        src="/schedule.svg" // public 폴더 경로 사용
+        alt="User Icon"
+        width={24}
+        height={24}
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
+      />
       <DatePicker
         id="startTime"
         locale={ko}
@@ -163,28 +210,35 @@ const isRecruitButtonDisabled = !limited_member || !useRecruitStore.getState().w
         showTimeSelectOnly
         timeIntervals={15}
         dateFormat="h:mm aa"
-        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center "
+        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center  "
         placeholderText="00:00"
       />
       </div>
+      </div>
 </div>
-      <ParticipationButton openControl={open} party_id={partyNumber}>
-        <button
-        className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
-          onClick={(e) => {
-            e.preventDefault();
-            if (!isRecruitButtonDisabled) {
-              submitRecruit();
+<button
+        className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${
+          isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
+        } rounded-md font-semibold text-[15px]`}
+        onClick={(e) => {
+          e.preventDefault();
+          if (!isRecruitButtonDisabled) {
+            submitRecruit();
           }
-          }}
-          disabled={isRecruitButtonDisabled}
-        >
-          모집하기
-        </button>
-      </ParticipationButton>
+        }}
+        disabled={isRecruitButtonDisabled}
+      >
+        모집하기
+      </button>
+      <ParticipationButton
+        openControl={open}
+        party_id={partyNumber}
+        party_situation="모집중"
+        isLogin={true}
+        setOpenControl={setOpen}
+      ></ParticipationButton>
     </div>
   );
 };
-
 
 export default RecruitPage2;

@@ -1,10 +1,11 @@
-import { createClient, getLoginUserIdOnServer } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import PartyHeader from './(components)/PartyHeader';
 
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import PartyBottom from './(components)/PartyBottom';
 import { partyInfo } from '@/types/partyInfo';
 import { chatOpenClose } from '@/utils/chatOpenClose';
+import { Suspense } from 'react';
 
 export const generateMetadata = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
@@ -20,7 +21,6 @@ export const generateMetadata = async ({ params }: { params: { id: string } }) =
 
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
-  const userId = await getLoginUserIdOnServer();
 
   // 현재 파티 정보 불러오기
   const res: PostgrestSingleResponse<partyInfo[]> = await supabase
@@ -38,9 +38,12 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="flex flex-col w-full">
-      <PartyHeader partyData={partyData} userId={userId} end={end} />
-
-      <PartyBottom partyData={partyData} userId={userId} end={end} partyOwner={partyData.owner_id} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <PartyHeader partyData={partyData} end={end} />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />
+      </Suspense>
     </div>
   );
 };
