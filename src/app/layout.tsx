@@ -1,11 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from 'next';
 import './globals.css';
 import Providers from '@/providers/queryProvider';
-import Header from '@/components/layout/Header';
 import { createClient } from '@/utils/supabase/server';
 import { UserStoreProvider } from '@/providers/userStoreProvider';
-import Footer from '@/components/layout/Footer';
 import { SearchProvider } from '@/providers/searchStoreProvider';
+import LayoutContent from '@/components/layout/LayoutContent';
 
 export const metadata: Metadata = {
   title: 'Wachat',
@@ -22,14 +22,12 @@ export default async function RootLayout({
   } = await createClient().auth.getUser();
 
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={`antialiased`}>
         <UserStoreProvider isUser={!!user}>
           <SearchProvider>
             <Providers>
-              <Header />
-              <main className="flex-grow pt-[80px]">{children}</main>
-              <Footer />
+              <LayoutContent>{children}</LayoutContent>
             </Providers>
           </SearchProvider>
         </UserStoreProvider>
