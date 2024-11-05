@@ -289,7 +289,7 @@ body {
 
 /* Small Button */
 .btn-s {
-  @apply px-3 py-1.5 h-8 bg-primary-400 rounded-lg text-white font-semibold text-xs;
+  @apply px-3 py-1.5 h-8 bg-primary-400 rounded-lg;
 }
 .btn-s:hover {
   @apply bg-primary-500;
@@ -458,4 +458,11 @@ select {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #718096; /* 스크롤바 호버 색상 */
+}
+
+/* 재생바의 기본 색상 */
+input[type='range']::-webkit-slider-runnable-track {
+  background: #dcdcdc;
+  height: 4px;
+  border-radius: 4px; /* 모서리 둥글게 */
 }
