@@ -9,13 +9,11 @@ import ExitButton from './ExitButton';
 const MemberList = ({
   partyData,
   userId,
-  isMember,
   end,
   partyOwner
 }: {
   partyData: partyInfo;
-  userId: string | null;
-  isMember: boolean | null | undefined;
+  userId: string | null | undefined;
   end: boolean;
   partyOwner: string;
 }) => {
@@ -28,6 +26,7 @@ const MemberList = ({
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  const isMember = data?.some((n) => n.user_id === userId);
 
   return (
     <div className="flex flex-col w-full gap-4 items-start">
@@ -44,11 +43,7 @@ const MemberList = ({
             <p className="text-Grey-600 label-l">참여자 {data ? data.length : 0}명</p>
           </div>
           {userId && isMember ? (
-            <InvitedButton partyNumber={partyData.party_id} userId={userId}>
-              <button className="flex w-[94px] py-[6px] px-3 justify-center items-center rounded-lg border-solid border-Grey-300 border-[1px] text-Grey-400 body-xs-bold">
-                초대하기
-              </button>
-            </InvitedButton>
+            <InvitedButton partyNumber={partyData.party_id} userId={userId} situation={partyData.situation} />
           ) : (
             <></>
           )}

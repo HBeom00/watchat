@@ -5,15 +5,19 @@ import ParticipationButton from '@/components/button/ParticipationButton';
 import { partyInfo } from '@/types/partyInfo';
 import { useQuery } from '@tanstack/react-query';
 import { isMemberExist, member } from '@/utils/memberCheck';
-import { useRouter } from 'next/navigation';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import browserClient from '@/utils/supabase/client';
+import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useMemberCount } from '@/utils/useMemberCount';
 import { chatOpenClose } from '@/utils/chatOpenClose';
 import { startTimeString } from '@/utils/startTimeString';
+import { useState } from 'react';
 
-const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId: string | null; end: boolean }) => {
-  const router = useRouter();
+const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean }) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const { data: userId, isLoading: userLoading } = useQuery({
+    queryKey: ['loginUser'],
+    queryFn: () => getLoginUserIdOnClient()
+  });
 
   const { data: isMember, isLoading: isMemberLoading } = useQuery({
     queryKey: ['isMember', partyData.party_id, userId],
@@ -35,7 +39,7 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
     }
   });
 
-  if (isLoading || isMemberLoading || isMemberCounting) {
+  if (isLoading || userLoading || isMemberLoading || isMemberCounting) {
     return <div>Loading...</div>;
   }
 
@@ -103,24 +107,18 @@ const PartyHeader = ({ partyData, userId, end }: { partyData: partyInfo; userId:
               채팅하기
             </Link>
           ) : (
-            <ParticipationButton
-              party_id={partyData.party_id}
-              party_situation={partyData.situation}
-              openControl={false}
-            >
-              <button
-                className="btn-m w-[164px]"
-                onClick={(e) => {
-                  if (!userId) {
-                    e.preventDefault();
-                    alert('먼저 로그인해주세요');
-                    router.push('/login');
-                  }
-                }}
-              >
+            <>
+              <button onClick={() => setOpen(true)} className="btn-m w-[164px]">
                 참여하기
               </button>
-            </ParticipationButton>
+              <ParticipationButton
+                party_id={partyData.party_id}
+                party_situation={partyData.situation}
+                openControl={open}
+                setOpenControl={setOpen}
+                isLogin={!!userId}
+              />
+            </>
           )}
         </div>
       </div>

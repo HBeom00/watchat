@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import LogoutButton from '../button/LogoutButton';
 import { useFetchUserData } from '@/store/userStore';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
+import { useDetectClose } from '@/utils/hooks/useDetectClose';
 
 const MyProfileButton = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -61,24 +62,3 @@ const MyProfileButton = () => {
 };
 
 export default MyProfileButton;
-
-const useDetectClose = (elem: RefObject<HTMLDivElement>, initialState: boolean) => {
-  const [isOpen, setIsOpen] = useState(initialState);
-
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (elem.current !== null && !elem.current.contains(e.target as Node)) {
-        setIsOpen(!isOpen);
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener('click', onClick);
-    }
-
-    return () => {
-      window.removeEventListener('click', onClick);
-    };
-  }, [isOpen, elem]);
-  return [isOpen, setIsOpen] as const;
-};

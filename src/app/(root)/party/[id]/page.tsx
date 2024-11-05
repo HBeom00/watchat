@@ -1,4 +1,4 @@
-import { createClient, getLoginUserIdOnServer } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import PartyHeader from './(components)/PartyHeader';
 
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
@@ -21,7 +21,6 @@ export const generateMetadata = async ({ params }: { params: { id: string } }) =
 
 const partyPage = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
-  const userId = await getLoginUserIdOnServer();
 
   // 현재 파티 정보 불러오기
   const res: PostgrestSingleResponse<partyInfo[]> = await supabase
@@ -40,10 +39,10 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="flex flex-col w-full">
       <Suspense fallback={<div>Loading...</div>}>
-        <PartyHeader partyData={partyData} userId={userId} end={end} />
+        <PartyHeader partyData={partyData} end={end} />
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
-        <PartyBottom partyData={partyData} userId={userId} end={end} partyOwner={partyData.owner_id} />
+        <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />
       </Suspense>
     </div>
   );
