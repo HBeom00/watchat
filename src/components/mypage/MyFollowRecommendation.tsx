@@ -10,7 +10,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import '@/customCSS/label.css';
-import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
@@ -117,7 +116,15 @@ const MyFollowRecommendation = () => {
       {/* 캐러셀 컨테이너 */}
       <div className="flex flex-row justify-between">
         <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
-          이전
+          <div className="w-10 h-10 flex items-center justify-center">
+            <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                id="arrow_back_ios_new"
+                d="M9.99916 19.3079L0.691406 10.0001L9.99916 0.692383L11.0627 1.75588L2.81841 10.0001L11.0627 18.2444L9.99916 19.3079Z"
+                fill="#C2C2C2"
+              />
+            </svg>
+          </div>
         </PrevButton>
         <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px]">
           <ul className="carousel-container flex items-center gap-5">
@@ -137,7 +144,10 @@ const MyFollowRecommendation = () => {
                           X
                         </button>
                         <Image
-                          src={member.user.profile_img || defaultAvatar}
+                          src={
+                            member.user.profile_img ||
+                            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+                          }
                           alt={`${member.user.nickname}의 프로필`}
                           width={80}
                           height={80}
@@ -171,7 +181,15 @@ const MyFollowRecommendation = () => {
           </ul>
         </div>
         <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled}>
-          다음
+          <div className="w-10 h-10 flex items-center justify-center">
+            <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                id="arrow_forward_ios"
+                d="M2.00491 19.3079L0.941406 18.2444L9.18566 10.0001L0.941406 1.75588L2.00491 0.692383L11.3127 10.0001L2.00491 19.3079Z"
+                fill="#757575"
+              />
+            </svg>
+          </div>
         </NextButton>
       </div>
     </article>

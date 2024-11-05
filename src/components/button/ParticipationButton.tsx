@@ -8,8 +8,8 @@ const ParticipationButton = ({
   children,
   party_id
 }: {
-  openControl: boolean;
-  children: React.ReactNode;
+  openControl?: boolean;
+  children?: React.ReactNode;
   party_id: string;
 }) => {
   const [open, setOpen] = useState(false);

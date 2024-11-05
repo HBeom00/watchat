@@ -10,7 +10,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { unfollow } from '@/store/followUnfollow';
 import browserClient from '@/utils/supabase/client';
 import '@/customCSS/label.css';
-import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
+import edit from '../../../public/edit.svg';
+import { platformArr } from '@/utils/prefer';
 
 const MyProfile = () => {
   // 사용자 데이터 가져오기
@@ -69,7 +70,10 @@ const MyProfile = () => {
     <section className="bg-[#f5f5f5] py-8">
       <div className="max-w-[1060px] m-auto flex gap-4 items-center">
         <Image
-          src={userData?.profile_img || defaultAvatar}
+          src={
+            userData?.profile_img ||
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+          }
           alt="프로필 이미지"
           width={100}
           height={100}
@@ -83,13 +87,15 @@ const MyProfile = () => {
         <article>
           <div className="flex gap-2">
             <h3 className="body-l-bold">{userData?.nickname}</h3>
-            <Link href={'/mypage/edit'}>프로필 편집</Link>
+            <Link href={'/myPage/edit'}>
+              <Image src={edit} width={20} height={20} alt="프로필 편집" />
+            </Link>
           </div>
           <div className="flex flex-row gap-8">
             <Dialog>
               <DialogTrigger>
                 <p className="flex flex-row items-center gap-2 body-xs">
-                  팔로잉 <span>{followerCount}</span>
+                  팔로잉 <span className="text-primary-400">{followerCount}</span>
                 </p>
               </DialogTrigger>
               <DialogContent>
@@ -104,7 +110,7 @@ const MyProfile = () => {
                           <Image
                             src={
                               follower.profile_img ||
-                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
+                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
                             }
                             alt={`${follower.nickname} 님의 프로필 사진`}
                             width={50}
@@ -124,10 +130,26 @@ const MyProfile = () => {
             </Dialog>
             <div className="flex flex-row items-center gap-2  body-xs">
               <span>플랫폼</span>
-              <ul className="flex flex-row items-center gap-1">
-                {userData?.platform.map((platform, index) => (
-                  <li key={index}>{platform}</li>
-                ))}
+              <ul className="flex flex-row items-center gap-2">
+                {userData?.platform.map((platformName, index) => {
+                  // platformArr에서 플랫폼 이미지 찾아 넣기
+                  const platformImg = platformArr.find((item) => item.name === platformName);
+
+                  return (
+                    <li key={index} className="flex items-center">
+                      {platformImg ? (
+                        <Image
+                          src={platformImg.logoUrl}
+                          alt={platformImg.name}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6"
+                        />
+                      ) : null}
+                      {/* <span>{platformImg ? platformImg.name : platformName}</span> */}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <div className="flex flex-row items-center gap-2  body-xs">

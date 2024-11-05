@@ -12,7 +12,6 @@ import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
-import defaultAvatar from '../../../public/38d1626935054d9b34fddd879b084da5.png';
 
 const nicknameSchema = z.object({
   nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' })
@@ -59,7 +58,7 @@ const FirstLoginForm = () => {
       const profileImgUrl = browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl;
 
       // 회원가입 또는 수정 로직
-      if (pathname === '/mypage/edit' && !!user) {
+      if (pathname === '/myPage/edit' && !!user) {
         await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제
         await browserClient
           .from('user')
@@ -72,7 +71,7 @@ const FirstLoginForm = () => {
           .eq('user_id', user.id);
 
         alert('수정이 완료되었습니다.');
-        route.push('/mypage');
+        route.push('/myPage');
       } else if (!!user) {
         await browserClient.from('user').insert({
           user_id: user.id,
@@ -88,8 +87,8 @@ const FirstLoginForm = () => {
       }
     },
     onSuccess: () => {
-      alert(pathname === '/mypage/edit' ? '수정이 완료되었습니다.' : '등록되었습니다.');
-      route.push(pathname === '/mypage/edit' ? '/mypage' : '/');
+      alert(pathname === '/myPage/edit' ? '수정이 완료되었습니다.' : '등록되었습니다.');
+      route.push(pathname === '/myPage/edit' ? '/myPage' : '/');
     },
     onError: (error) => {
       console.error('Mutation error:', error);
@@ -168,7 +167,7 @@ const FirstLoginForm = () => {
   };
 
   const editCancelHandler = () => {
-    route.push('/mypage');
+    route.push('/myPage');
 
     if (isPending) {
       return <div>사용자 정보를 불러오는 중 입니다...</div>;
@@ -179,60 +178,94 @@ const FirstLoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSuccessHandler)} className="flex flex-col gap-5">
-      <div className="w-[100px] h-[100px] relative">
-        <Image src={imgFile || defaultAvatar} alt="프로필 이미지" width={100} height={100} className="rounded-full" />
+    <form
+      onSubmit={handleSubmit(onSuccessHandler)}
+      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] "
+    >
+      <div className="w-[100px] h-[100px] relative m-auto mb-8">
+        <Image
+          src={
+            imgFile ||
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+          }
+          alt="프로필 이미지"
+          width={100}
+          height={100}
+          className="rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          style={{
+            objectFit: 'cover',
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%'
+          }}
+        />
         <label
           htmlFor="selectImg"
           className="absolute bottom-0 right-0 w-6 h-6 bg-[#c2c2c2] flex items-center justify-center rounded-[18px] cursor-pointer"
         >
           <Image src={photoCameraIcon} width={16} height={16} alt="프로필 이미지 선택" style={{ width: '16px' }} />
         </label>
-        <input id="selectImg" type="file" ref={imgRef} accept="image/*" onChange={uploadImage} className="hidden" />
+        <input
+          id="selectImg"
+          type="file"
+          ref={imgRef}
+          accept="image/png, image/jpeg, image/jpg, image/gif"
+          onChange={uploadImage}
+          className="hidden"
+        />
       </div>
 
-      <div>
-        <p className="font-bold text-[20px]">
-          닉네임<span>*</span>
+      <div className="text-start inputDiv mb-8">
+        <p className=" body-m-bold">
+          닉네임<span className="text-primary-400">*</span>
         </p>
         <input
           type="text"
           {...register('nickname')}
           placeholder="닉네임을 입력하세요"
           onChange={(e) => setNickname(e.target.value)}
-          className="border-2"
+          className="border-2 commonEmailInput border-Grey-50"
         />
         {formState.errors.nickname && <span className="text-red-600">{formState.errors.nickname.message}</span>}
       </div>
 
-      <div>
-        <p className="font-bold text-[20px]">플랫폼</p>
-        <ul>
+      <div className="mb-8">
+        <h3 className=" body-m-bold mb-2">플랫폼</h3>
+        <ul className="flex flex-wrap gap-2">
           {platformArr.map((platform, index) => {
             return (
               <li
                 key={index}
-                onClick={() => onClickPlatform({ platform, setPlatforms })}
+                onClick={() => onClickPlatform({ platform: platform.name, setPlatforms })}
                 className={
-                  platforms.includes(platform) ? 'text-purple-500 cursor-pointer' : 'text-black cursor-pointer'
+                  platforms.includes(platform.name)
+                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold text-xs border cursor-pointer border-primary-400'
+                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold text-xs border cursor-pointer'
                 }
               >
-                {platform}
+                <div className="flex items-center space-x-2">
+                  <Image src={platform.logoUrl} alt={`${platform.name} 로고`} width={16} height={16} />
+                  <span>{platform.name}</span>
+                </div>
               </li>
             );
           })}
         </ul>
       </div>
 
-      <div>
-        <p className="font-bold text-[20px]">장르</p>
-        <ul>
+      <div className="mb-8">
+        <h3 className=" body-m-bold mb-2">장르</h3>
+        <ul className="flex flex-wrap gap-2">
           {genreArr.map((genre, index) => {
             return (
               <li
                 key={index}
                 onClick={() => onClickGenre({ genre, setGenres })}
-                className={genres.includes(genre) ? 'text-purple-500 cursor-pointer' : 'text-black cursor-pointer'}
+                className={
+                  genres.includes(genre)
+                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold text-xs border cursor-pointer border-primary-400'
+                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold text-xs border cursor-pointer'
+                }
               >
                 {genre}
               </li>
@@ -240,10 +273,15 @@ const FirstLoginForm = () => {
           })}
         </ul>
       </div>
-      {pathname === '/mypage/edit' ? (
-        <div>
-          <button>수정하기</button>
-          <button onClick={editCancelHandler}>취소하기</button>
+      {pathname === '/myPage/edit' ? (
+        <div className="flex flex-row gap-5">
+          <button
+            onClick={editCancelHandler}
+            className="px-6 py-4 bg-white rounded-lg text-Grey-300 font-semibold text-[15px] border cursor-pointer w-[157px]"
+          >
+            취소
+          </button>
+          <button className="btn-xl bg-white w-[157px]">수정하기</button>
         </div>
       ) : (
         <button>완료</button>
