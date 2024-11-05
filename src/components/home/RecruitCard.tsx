@@ -56,14 +56,16 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       <div className="flex flex-col items-center gap-1 self-stretch">
         <div className="flex flex-col items-start gap-1 self-stretch">
           <div className="flex flex-row gap-1 text-Grey-600 label-l">
-            <p>{data.video_name}</p>
+            <p className="overflow-hidden whitespace-nowrap text-ellipsis break-all">{data.video_name}</p>
             {data.episode_number ? <p>{data.episode_number}화</p> : <></>}
           </div>
-          <p className="self-stretch text-static-black body-l-bold overflow-hidden text-ellipsis">{data.party_name}</p>
+          <p className="self-stretch text-static-black body-l-bold overflow-hidden whitespace-nowrap text-ellipsis break-all">
+            {data.party_name}
+          </p>
         </div>
         <div className="flex flex-row items-end gap-1 self-stretch">
           {ownerInfo ? (
-            <div className="flex flex-row items-center gap-[6px]">
+            <div className="flex flex-row max-w-[74px] items-center gap-[6px]">
               <Image
                 src={ownerInfo[0].profile_image}
                 width={16}
@@ -76,7 +78,9 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
                 }}
                 alt={`${ownerInfo[0].nickname}의 프로필`}
               />
-              <p className="text-Grey-900 label-m">{ownerInfo[0].nickname}</p>
+              <p className="text-Grey-900 label-m overflow-hidden whitespace-nowrap text-ellipsis break-all">
+                {ownerInfo[0].nickname}
+              </p>
             </div>
           ) : (
             <></>

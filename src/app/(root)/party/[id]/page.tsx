@@ -37,11 +37,9 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   const end = chatOpenClose(partyData) === '시청완료';
 
   return (
-    <div className="flex flex-col w-full">
-      <Suspense fallback={<div>Loading...</div>}>
+    <div className="flex flex-col w-[1060px]">
+      <Suspense>
         <PartyHeader partyData={partyData} end={end} />
-      </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
         <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />
       </Suspense>
     </div>
