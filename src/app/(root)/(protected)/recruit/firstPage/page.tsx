@@ -110,36 +110,36 @@ const isNextButtonDisabled = !party_name || !video_name || !party_detail || (med
             placeholder="파티 이름" 
             value={party_name} 
             onChange={(e) => setPartyInfo({ party_name: e.target.value })} 
-            className='bg-Grey-50 w-[519px] h-[48px] rounded-lg mt-[24px] '
+            className='bg-Grey-50 px-[16px] py-[12px] w-[519px] h-[48px] rounded-lg mt-[24px] border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none'
             />
             <input 
             type="text" 
             placeholder="파티에 대해서 소개해주세요." 
             value={party_detail} 
             onChange={(e) => setPartyInfo({ party_detail: e.target.value })} 
-            className='mt-[16px] bg-Grey-50 w-[520px] h-[112px] rounded-lg'
+            className='mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[112px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none'
             />
-            <div className='flex w-[519px] justify-center align-item gap-1 mt-[32px]'>
+            <div className='flex w-[519px]  align-item gap-1 mt-[32px] '>
             <h2 
             className='text-gray-800 font-pretendard text-[15px] font-semibold leading-[24px]'
             >시청할 영상을 선택해 주세요.</h2>
             <h2 className='text-purple-600 font-[15px] '>*</h2>
             </div>
-            <div className='relative w-[519px]'>
+            <div className='relative w-[519px] mt-[16px]'>
     <input 
         type="text" 
         placeholder="선택하세요." 
         value={video_name} 
         onChange={(e) => InputChangehandle(e.target.value)}
-        className='w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800'
+        className='w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none'
     />
     {showResults && searchResults?.results?.length ? (
-        <ul className='absolute top-[50px] w-full max-h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10'>
+        <ul className='custom-scrollbar absolute top-[50px] w-full h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10'>
             {searchResults.results.map((result) => (
                 <li 
                     key={result.id} 
                     onClick={() => handleSearchResultClick(result)}
-                    className='px-4 py-3 text-[15px] text-gray-800 cursor-pointer hover:bg-gray-100'
+                    className='px-4 py-3 text-[15px] text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg'
                 >
                     {result.title || result.name}
                 </li>
@@ -166,7 +166,7 @@ const isNextButtonDisabled = !party_name || !video_name || !party_detail || (med
                 placeholder="시청할 회차를 입력하세요" 
                 value={episode_number ?? ''} 
                 onChange={(e) => setPartyInfo({ episode_number: Number(e.target.value) })} 
-                className='h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300'
+                className='px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none'
                 />
             </div>)}
 
@@ -179,10 +179,10 @@ const isNextButtonDisabled = !party_name || !video_name || !party_detail || (med
             </div>
             <input 
             type="text" 
-            placeholder="00:00:00" 
+            placeholder="분단위로 입력해주세요" 
             value={duration_time!== 0? duration_time:''} 
             onChange={(e) => setPartyInfo({ duration_time: Number(e.target.value) })} 
-            className='h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300'
+            className='px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none'
             />
             </div>}
       {/* 플랫폼 */}
@@ -192,11 +192,13 @@ const isNextButtonDisabled = !party_name || !video_name || !party_detail || (med
         <h2>영상 플랫폼</h2>
         <div className="flex space-x-4 mt-2">
           {video_platform.map((platform) => (
-            <div key={platform.name} className="text-center">
+            <div key={platform.name} className="text-center ">
+             <div className='rounded-full border-[1px] border-Grey-200 bg-white p-[3px] shadow-lg '>
               <img 
               src={platform.logoUrl} alt={platform.name} 
-              className="w-12 h-auto mb-1" 
+              className="w-12 rounded-full " 
               />
+              </div>
             </div>
           ))}
         </div>
@@ -205,7 +207,7 @@ const isNextButtonDisabled = !party_name || !video_name || !party_detail || (med
       </div>
             </div>
             <button 
-            className='btn-xl'
+            className={`mt-[32px] w-[520px] ${isNextButtonDisabled ? 'disabled-btn-xl' : 'btn-xl'}`}
             // className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isNextButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
             onClick={nextPageHandle}
             disabled={isNextButtonDisabled}
