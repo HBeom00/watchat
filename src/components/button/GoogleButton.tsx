@@ -2,6 +2,8 @@
 
 import browserClient from '@/utils/supabase/client';
 import { useEffect } from 'react';
+import Google_Image from '../../../public/google.svg';
+import Image from 'next/image';
 
 const GoogleButton = () => {
   useEffect(() => {
@@ -22,8 +24,12 @@ const GoogleButton = () => {
   };
 
   return (
-    <button onClick={signInWithGoogle} className="border-black border-2 border-solid p-2 w-[10%]">
-      구글 로그인
+    <button
+      onClick={signInWithGoogle}
+      className="flex gap-2 w-[340px] px-6 py-4 justify-center items-center self-stretch rounded-lg border border-solid border-Grey-200 bg-white body-m-bold"
+    >
+      <Image src={Google_Image} alt="Google_Image" width={16} height={16} />
+      <p>Google 로그인</p>
     </button>
   );
 };

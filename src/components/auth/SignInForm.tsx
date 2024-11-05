@@ -7,8 +7,9 @@ import browserClient from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/providers/userStoreProvider';
 import { useState } from 'react';
-import { IoEyeOffOutline } from 'react-icons/io5';
-import { IoEyeOutline } from 'react-icons/io5';
+import Image from 'next/image';
+import visibility from '../../../public/visibility.svg';
+import visibility_off from '../../../public/visibility_off.svg';
 
 const signInSchema = z.object({
   email: z.string().email({ message: '이메일 형식을 확인해주세요' }),
@@ -66,23 +67,53 @@ const SignInForm = () => {
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-4 border-solid border-2 border-black">
-        <label>이메일</label>
-        <input type="email" {...register('email')} placeholder="이메일(example@gmail.com)" />
-        {formState.errors.email && <span className="text-red-600">{formState.errors.email.message}</span>}
-
-        <div>
-          <label>비밀번호</label>
-          <input type={showPassword ? 'text' : 'password'} {...register('password')} placeholder="비밀번호" />
-          {formState.errors.password && <span className="text-red-600">{formState.errors.password.message}</span>}
-          <button type="button" onClick={onPasswordVisibility}>
-            {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
-          </button>
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-4">
+      <div className="w-[340px] flex flex-col items-start gap-4 mb-12">
+        <div className="inputDiv">
+          <label className="commonLabel">이메일</label>
+          <input
+            type="email"
+            {...register('email')}
+            placeholder="이메일(example@gmail.com)"
+            className="commonEmailInput"
+          />
+          {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
         </div>
 
-        <button className="w-[10%]">로그인</button>
+        <div className="inputDiv">
+          <label className="commonLabel">비밀번호</label>
+          <div className="w-full relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              {...register('password')}
+              placeholder="비밀번호"
+              className="w-full commonPasswordInput"
+            />
+            <button
+              type="button"
+              onClick={onPasswordVisibility}
+              className="absolute top-2/4 -translate-y-1/2 right-[5%]"
+            >
+              {showPassword ? (
+                <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+              ) : (
+                <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+              )}
+            </button>
+          </div>
+          {formState.errors.password && <p className="commonHelpText">{formState.errors.password.message}</p>}
+        </div>
       </div>
+      <button
+        disabled={!formState.isValid}
+        className={
+          !formState.isValid
+            ? 'disabled-btn-xl w-[340px] flex justify-center items-center'
+            : 'btn-xl w-[340px] flex justify-center items-center'
+        }
+      >
+        로그인
+      </button>
     </form>
   );
 };
