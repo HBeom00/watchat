@@ -47,7 +47,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
         step={1}
         value={playTime}
         onChange={() => {}}
-        className="w-full h-1 bg-Grey-200"
+        className="progress-bar w-full h-1 bg-Grey-200"
       />
     </div>
   );

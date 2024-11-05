@@ -139,17 +139,7 @@ export default function Chat({ roomId }: { roomId: string }) {
 
   return (
     <div>
-      <div
-        ref={messageListRef}
-        style={{
-          height: '500px',
-          overflowY: 'auto',
-          border: '1px solid #ddd',
-          padding: '10px',
-          marginBottom: '10px',
-          position: 'relative'
-        }}
-      >
+      <div>
         {specialMessage && (
           <div
             style={{
@@ -167,6 +157,18 @@ export default function Chat({ roomId }: { roomId: string }) {
             {specialMessage}
           </div>
         )}
+      </div>
+      <div
+        ref={messageListRef}
+        style={{
+          height: '500px',
+          overflowY: 'auto',
+          border: '1px solid #ddd',
+          padding: '10px',
+          marginBottom: '10px',
+          position: 'relative'
+        }}
+      >
         {messages.map((msg, index) => {
           const isMyself = msg.sender_id === userId;
           const showProfile = index === 0 || messages[index - 1].sender_id !== msg.sender_id;
