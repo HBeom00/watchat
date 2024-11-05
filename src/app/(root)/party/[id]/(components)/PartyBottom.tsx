@@ -3,30 +3,18 @@
 import { useState } from 'react';
 import DetailInfo from './DetailInfo';
 import MemberList from './MemberList';
-import { isMemberExist } from '@/utils/memberCheck';
 import { useQuery } from '@tanstack/react-query';
 import { partyInfo } from '@/types/partyInfo';
+import { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
-const PartyBottom = ({
-  partyData,
-  userId,
-  end,
-  partyOwner
-}: {
-  partyData: partyInfo;
-  userId: string | null;
-  end: boolean;
-  partyOwner: string;
-}) => {
+const PartyBottom = ({ partyData, end, partyOwner }: { partyData: partyInfo; end: boolean; partyOwner: string }) => {
   const [tab, setTab] = useState<string>('파티 정보');
-
-  //로그인한 사용자가 해당 파티에 가입했을 때
-  const { data: isMember, isLoading } = useQuery({
-    queryKey: ['isMember', partyData.party_id, userId],
-    queryFn: async () => await isMemberExist(partyData.party_id, userId)
+  const { data: userId, isLoading: userLoading } = useQuery({
+    queryKey: ['loginUser'],
+    queryFn: () => getLoginUserIdOnClient()
   });
 
-  if (isLoading) {
+  if (userLoading) {
     return <div>Loading...</div>;
   }
 
@@ -47,7 +35,7 @@ const PartyBottom = ({
         </button>
       </div>
       {tab === '파티 정보' ? (
-        <MemberList partyData={partyData} userId={userId} isMember={isMember} end={end} partyOwner={partyOwner} />
+        <MemberList partyData={partyData} userId={userId} end={end} partyOwner={partyOwner} />
       ) : (
         <></>
       )}

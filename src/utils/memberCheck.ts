@@ -56,12 +56,15 @@ export const memberFullSwitch = async (party_id: string) => {
 };
 
 // 이미 참가한 멤버인지 확인
-export const isMemberExist = async (party_id: string, user_id: string | null) => {
+export const isMemberExist = async (party_id: string, user_id: string | null | undefined) => {
   const response = await browserClient
     .from('team_user_profile')
     .select('profile_id')
     .eq('party_id', party_id)
     .eq('user_id', user_id);
+  if (response.error) {
+    return false;
+  }
   return response.data && response.data?.length > 0;
 };
 
