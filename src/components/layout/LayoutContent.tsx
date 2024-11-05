@@ -12,11 +12,13 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
   const hideFooter = pathname.startsWith('/login') || pathname.startsWith('/signup') || hideHeaderFooter;
   // className="flex-grow pt-[80px]"
   return (
-    <>
+    <div className="flex flex-col">
       {!hideHeaderFooter && <Header />}
-      <main>{children}</main>
+      <main className={!hideHeaderFooter ? 'max-w-[1060px] mx-auto mt-[80px]' : 'max-w-[1060px] mx-auto'}>
+        {children}
+      </main>
       {!hideFooter && <Footer />}
-    </>
+    </div>
   );
 }
 // 모집 페이지에 Footer, 기본 정보 기입 페이지
