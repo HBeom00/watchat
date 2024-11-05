@@ -216,22 +216,27 @@ const RecruitPage2 = () => {
       </div>
       </div>
 </div>
-      <ParticipationButton openControl={open} party_id={partyNumber}>
-        <button
-          className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${
-            isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
-          } rounded-md font-semibold text-[15px]`}
-          onClick={(e) => {
-            e.preventDefault();
-            if (!isRecruitButtonDisabled) {
-              submitRecruit();
-            }
-          }}
-          disabled={isRecruitButtonDisabled}
-        >
-          모집하기
-        </button>
-      </ParticipationButton>
+<button
+        className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${
+          isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
+        } rounded-md font-semibold text-[15px]`}
+        onClick={(e) => {
+          e.preventDefault();
+          if (!isRecruitButtonDisabled) {
+            submitRecruit();
+          }
+        }}
+        disabled={isRecruitButtonDisabled}
+      >
+        모집하기
+      </button>
+      <ParticipationButton
+        openControl={open}
+        party_id={partyNumber}
+        party_situation="모집중"
+        isLogin={true}
+        setOpenControl={setOpen}
+      ></ParticipationButton>
     </div>
   );
 };
