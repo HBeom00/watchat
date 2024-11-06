@@ -19,22 +19,20 @@ const getRecruitList = async (
   const response: PostgrestSingleResponse<partyInfo[]> =
     // 검색을 안하는 경우
     wordConversion === '+'
-      ? partySituation === '모집중'
+      ? partySituation === 'recruiting'
         ? await browserClient
             .from('party_info')
             .select('*')
             .range(start, end)
-            .order('start_date_time', { ascending: false })
             .order(order, { ascending: false })
             .gte('start_date_time', now)
             .eq('situation', '모집중')
             .textSearch('video_platform', bull)
-        : partySituation === '시청중'
+        : partySituation === 'current'
         ? await browserClient
             .from('party_info')
             .select('*')
             .range(start, end)
-            .order('start_date_time', { ascending: false })
             .order(order, { ascending: false })
             .lte('start_date_time', now)
             .gte('end_time', now)
@@ -43,27 +41,24 @@ const getRecruitList = async (
             .from('party_info')
             .select('*')
             .range(start, end)
-            .order('start_date_time', { ascending: false })
             .order(order, { ascending: false })
             .textSearch('video_platform', bull)
       : //검색을 하는 경우
-      partySituation === '모집중'
+      partySituation === 'recruiting'
       ? await browserClient
           .from('party_info')
           .select('*')
           .range(start, end)
-          .order('start_date_time', { ascending: false })
           .order(order, { ascending: false })
           .textSearch('video_platform', bull)
           .gte('start_date_time', now)
           .eq('situation', '모집중')
           .textSearch('video_name', wordConversion)
-      : partySituation === '시청중'
+      : partySituation === 'current'
       ? await browserClient
           .from('party_info')
           .select('*')
           .range(start, end)
-          .order('start_date_time', { ascending: false })
           .order(order, { ascending: false })
           .lte('start_date_time', now)
           .gte('end_time', now)
@@ -73,7 +68,6 @@ const getRecruitList = async (
           .from('party_info')
           .select('*')
           .range(start, end)
-          .order('start_date_time', { ascending: false })
           .order(order, { ascending: false })
           .textSearch('video_platform', bull)
           .textSearch('video_name', wordConversion);
