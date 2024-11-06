@@ -9,7 +9,12 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
 
   // /chat, /login, /signup 경로에서 Footer 숨기기
   const hideHeaderFooter = pathname.startsWith('/chat');
-  const hideFooter = pathname.startsWith('/login') || pathname.startsWith('/signup') || hideHeaderFooter;
+  const hideFooter =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/signup') ||
+    pathname.startsWith('/recruit') ||
+    pathname.startsWith('/myPage/edit') ||
+    hideHeaderFooter;
   // className="flex-grow pt-[80px]"
   return (
     <div className="flex flex-col">
