@@ -110,8 +110,8 @@ const MyFollowRecommendation = () => {
   }
 
   return (
-    <article className="max-w-[1140px] m-auto mb-[85px]">
-      <div className="flex justify-between max-w-[1060px] m-auto mb-4">
+    <article className=" m-auto mb-[85px] w-[1060px]">
+      <div className="flex justify-between m-auto mb-4">
         <h3 className="title-m">팔로우 추천</h3>
       </div>
 
