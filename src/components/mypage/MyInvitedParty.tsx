@@ -187,7 +187,7 @@ const MyInvitedParty = () => {
                 return (
                   <li
                     key={invite.invite_id}
-                    className="carousel-item min-w-[250px]"
+                    className="carousel-item min-w-[250px] group"
                     onClick={() => isSelectionMode && partySelectionHandler(invite.invite_id)}
                   >
                     {isSelectionMode ? (
@@ -199,98 +199,98 @@ const MyInvitedParty = () => {
                         }}
                         className="cursor-pointer"
                       >
-                        <div>
-                          {/* 이미지영역 */}
+                        {/* 이미지영역 */}
 
-                          <div className="relative rounded-[4px] overflow-hidden h-[148px]">
-                            {isSelectionMode && (
-                              <input
-                                type="checkbox"
-                                checked={selectedParties.includes(invite.invite_id)}
-                                onChange={() => partySelectionHandler(invite.invite_id)}
-                                className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer accent-primary-400"
-                              />
-                            )}
-                            <Image
-                              src={
-                                `https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}` ||
-                                'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/noImage.jpg'
-                              }
-                              alt={`${invite.party_info?.video_name} 영상 이미지`}
-                              layout="fill"
-                              objectFit="cover"
-                              className="z-0"
+                        <div className="relative rounded-[4px] overflow-hidden h-[148px]">
+                          {isSelectionMode && (
+                            <input
+                              type="checkbox"
+                              checked={selectedParties.includes(invite.invite_id)}
+                              onChange={() => partySelectionHandler(invite.invite_id)}
+                              className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer accent-primary-400"
                             />
-                            <div
-                              className="absolute inset-0 bg-gradient-to-t from-[rgba(143,143,143,0.25)] to-[rgba(143,143,143,0.00)]"
-                              style={{
-                                background:
-                                  viewingStatus === '시청완료'
-                                    ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
-                                    : 'none'
-                              }}
-                            ></div>
+                          )}
+                          <Image
+                            src={
+                              `https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}` ||
+                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/noImage.jpg'
+                            }
+                            alt={`${invite.party_info?.video_name} 영상 이미지`}
+                            layout="fill"
+                            objectFit="cover"
+                            className="z-0 group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div
+                            className="absolute inset-0 bg-gradient-to-t from-[rgba(143,143,143,0.25)] to-[rgba(143,143,143,0.00)]"
+                            style={{
+                              background:
+                                viewingStatus === '시청완료'
+                                  ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
+                                  : 'none'
+                            }}
+                          ></div>
 
-                            {getViewStatus(invite.party_info) === '시청중' ? (
-                              <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
-                                <div className="w-2 h-2 bg-white rounded-full"></div>
-                                <p>{getViewStatus(invite.party_info)} </p>
-                              </div>
-                            ) : getViewStatus(invite.party_info) === '모집중' ? (
-                              <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
-                                <p>{getViewStatus(invite.party_info)} </p>
-                              </div>
-                            ) : (
-                              <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
-                                <p>{getViewStatus(invite.party_info)} </p>
-                              </div>
-                            )}
-
-                            <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
-                              <p>{invite.startString}</p>
+                          {getViewStatus(invite.party_info) === '시청중' ? (
+                            <div className="absolute top-3 left-3 text-white label-m-bold bg-primary-400 py-1 px-3 rounded-[8px] flex flex-row items-center gap-1 ">
+                              <div className="w-2 h-2 bg-white rounded-full"></div>
+                              <p>{getViewStatus(invite.party_info)} </p>
                             </div>
+                          ) : getViewStatus(invite.party_info) === '모집중' ? (
+                            <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold">
+                              <p>{getViewStatus(invite.party_info)} </p>
+                            </div>
+                          ) : (
+                            <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold">
+                              <p>{getViewStatus(invite.party_info)} </p>
+                            </div>
+                          )}
+
+                          <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
+                            <p>{invite.startString}</p>
                           </div>
+                        </div>
 
-                          {/* 영상정보 및 파티명 */}
+                        {/* 영상정보 및 파티명 */}
 
-                          <div className="my-2 border-b">
-                            {invite.party_info?.media_type === 'tv' && (
-                              <p className="label-l text-[#757575]">
-                                {invite.party_info.video_name} {invite.party_info.episode_number} 화
-                              </p>
-                            )}
-                            {invite.party_info?.media_type === 'movie' && (
-                              <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
-                            )}
-                            <p className="body-l-bold">{invite.party_info.party_name}</p>
-                          </div>
-
-                          {/* 프로필 영역 */}
-
-                          <div className="flex mb-3">
-                            <Image
-                              src={
-                                invite.inviter_user?.profile_img ||
-                                'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
-                              }
-                              alt={`${invite.inviter_user?.nickname}의 프로필 이미지`}
-                              width={50}
-                              height={50}
-                              style={{
-                                objectFit: 'cover',
-                                width: '16px',
-                                height: '16px',
-                                borderRadius: '50%'
-                              }}
-                            />
-                            <p className="label-m ml-[6px] after:content-['│'] after:text-[#c2c2c2]">
-                              {invite.inviter_user?.nickname}
+                        <div className="my-2 border-b">
+                          {invite.party_info?.media_type === 'tv' && (
+                            <p className="label-l text-[#757575]">
+                              {invite.party_info.video_name} {invite.party_info.episode_number} 화
                             </p>
-                            <p className="label-m">
-                              <span className="text-primary-400">{invite.currentPartyPeople}</span>명 참여 (
-                              {invite.currentPartyPeople}/{invite.party_info.limited_member}명)
-                            </p>
-                          </div>
+                          )}
+                          {invite.party_info?.media_type === 'movie' && (
+                            <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
+                          )}
+                          <p className="body-l-bold group-hover:text-primary-400 transition duration-300">
+                            {invite.party_info.party_name}
+                          </p>
+                        </div>
+
+                        {/* 프로필 영역 */}
+
+                        <div className="flex mb-3">
+                          <Image
+                            src={
+                              invite.inviter_user?.profile_img ||
+                              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+                            }
+                            alt={`${invite.inviter_user?.nickname}의 프로필 이미지`}
+                            width={50}
+                            height={50}
+                            style={{
+                              objectFit: 'cover',
+                              width: '16px',
+                              height: '16px',
+                              borderRadius: '50%'
+                            }}
+                          />
+                          <p className="label-m ml-[6px] after:content-['│'] after:text-[#c2c2c2]">
+                            {invite.inviter_user?.nickname}
+                          </p>
+                          <p className="label-m">
+                            <span className="text-primary-400">{invite.currentPartyPeople}</span>명 참여 (
+                            {invite.currentPartyPeople}/{invite.party_info.limited_member}명)
+                          </p>
                         </div>
                       </div>
                     ) : (
@@ -306,7 +306,7 @@ const MyInvitedParty = () => {
                                 type="checkbox"
                                 checked={selectedParties.includes(invite.invite_id)}
                                 onChange={() => partySelectionHandler(invite.invite_id)}
-                                className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer"
+                                className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer "
                               />
                             )}
                             <Image
@@ -317,13 +317,14 @@ const MyInvitedParty = () => {
                               alt={`${invite.party_info?.video_name} 영상 이미지`}
                               layout="fill"
                               objectFit="cover"
+                              className=" group-hover:scale-105 transition duration-300"
                             />
                             <div
                               className="absolute inset-0 bg-gradient-to-t from-[rgba(143,143,143,0.25)] to-[rgba(143,143,143,0.00)]"
                               style={{
                                 background:
                                   viewingStatus === '시청완료'
-                                    ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat`
+                                    ? `linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url(https://image.tmdb.org/t/p/original${invite.party_info?.backdrop_image}) lightgray 50% / cover no-repeat `
                                     : 'none'
                               }}
                             ></div>
@@ -357,7 +358,9 @@ const MyInvitedParty = () => {
                             {invite.party_info?.media_type === 'movie' && (
                               <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
                             )}
-                            <p className="body-l-bold">{invite.party_info.party_name}</p>
+                            <p className="body-l-bold group-hover:text-primary-400 transition duration-300">
+                              {invite.party_info.party_name}
+                            </p>
                           </div>
 
                           {/* 프로필 */}

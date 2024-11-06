@@ -2,7 +2,6 @@
 
 import { banUser } from '@/store/banUser';
 import { follow } from '@/store/followUnfollow';
-import { useInvitedParties } from '@/store/useInvitedParties';
 import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { useRecommendedUsers } from '@/store/useRecommendedUser';
 import { useFetchUserData } from '@/store/userStore';
@@ -12,10 +11,11 @@ import Image from 'next/image';
 import '@/customCSS/label.css';
 import closeBte from '../../../public/close.svg';
 import doesntExist from '../../../public/nobody.svg';
+import Link from 'next/link';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
-  const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
+  const visibleSlides = 6; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
     emblaApi,
@@ -46,15 +46,6 @@ const MyFollowRecommendation = () => {
   }
 
   const queryClient = useQueryClient();
-
-  // 초대받은 파티 가져오기
-  const {
-    data: invitedParties,
-    isPending: pendingInvitedParties,
-    isError: errorInvitedParties
-  } = useInvitedParties(userId);
-
-  console.log('초대된 파티 리스트 => ', invitedParties);
 
   // 팔로우 추천 목록 가져오기
   const {
@@ -87,7 +78,7 @@ const MyFollowRecommendation = () => {
   //  X 버튼을 누르면 해당 유저를 추천 목록에서 밴시킴
   const banMutation = useMutation({
     mutationFn: (bannedUserId: string) => banUser(userId as string, bannedUserId),
-    onSuccess: (_, bannedUserId) => {
+    onSuccess: (arr, bannedUserId) => {
       // 차단 후 추천 목록 업데이트
       queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
         if (!oldData) return [];
@@ -102,10 +93,10 @@ const MyFollowRecommendation = () => {
     }
   });
 
-  if (isPending || pendingInvitedParties || pendingRecommendedUsers) {
+  if (isPending || pendingRecommendedUsers) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || errorInvitedParties || errorRecommenedUsers) {
+  if (isError || errorRecommenedUsers) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
@@ -151,53 +142,67 @@ const MyFollowRecommendation = () => {
           <ul className="carousel-container flex items-center gap-5">
             {recommendedUsers && recommendedUsers.length > 0 ? (
               recommendedUsers.map((recommendedUser) => {
-                return (
-                  <li key={`${recommendedUser.party_id}-${crypto.randomUUID()}`} className="carousel-item min-w-[16%] ">
-                    {recommendedUser.team_user_profile.map((member) => (
-                      <div
-                        key={`${recommendedUser.party_id}-${member.user.user_id}`}
-                        className="flex flex-col items-center text-center relative pt-10 pb-4 px-4 rounded-[8px] border"
+                // 영상 제목 및 에피소드
+                const videoNameWithEpisode = `${recommendedUser.video_name} ${
+                  recommendedUser.media_type === 'tv' && recommendedUser.episode_number
+                    ? `${recommendedUser.episode_number} 화`
+                    : ''
+                }`;
+
+                // 길이가 8자 이상이면 잘라서 말줄임표 추가
+                const cutVideoNameWithEpisode =
+                  videoNameWithEpisode.length > 8 ? videoNameWithEpisode.slice(0, 8) + '...' : videoNameWithEpisode;
+
+                // 파티로 이동하는 링크
+                const linkToParty = `${recommendedUser.party_id}`;
+
+                return recommendedUser.team_user_profile.map((member) => (
+                  <li
+                    key={`${recommendedUser.party_id}-${crypto.randomUUID()}`}
+                    className="flex flex-row carousel-item gap-5 "
+                  >
+                    <div
+                      key={`${recommendedUser.party_id}-${member.user.user_id}`}
+                      className="flex flex-col items-center text-center relative pt-10 pb-4 px-4 rounded-[8px] border min-w-[160px] hover:border-primary-400 transition duration-300"
+                    >
+                      <button
+                        onClick={() => banMutation.mutate(member.user.user_id)}
+                        className="absolute top-4 right-4"
                       >
-                        <button
-                          onClick={() => banMutation.mutate(member.user.user_id)}
-                          className="absolute top-4 right-4"
-                        >
-                          <Image src={closeBte} width={24} height={24} alt="닫기" />
-                        </button>
-                        <Image
-                          src={
-                            member.user.profile_img ||
-                            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
-                          }
-                          alt={`${member.user.nickname}의 프로필`}
-                          width={80}
-                          height={80}
-                          style={{
-                            objectFit: 'cover',
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                            marginBottom: '8px'
-                          }}
-                        />
-                        <h3 className="body-m-bold">{member.user.nickname}</h3>
-                        <p className="body-s">
-                          {recommendedUser.video_name}
-                          {recommendedUser.media_type === 'tv' && recommendedUser.episode_number
-                            ? ` ${recommendedUser.episode_number} 화`
-                            : ''}
+                        <Image src={closeBte} width={24} height={24} alt="닫기" />
+                      </button>
+                      <Image
+                        src={
+                          member.user.profile_img ||
+                          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+                        }
+                        alt={`${member.user.nickname}의 프로필`}
+                        width={80}
+                        height={80}
+                        style={{
+                          objectFit: 'cover',
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          marginBottom: '8px'
+                        }}
+                      />
+                      <h3 className="body-m-bold">{member.user.nickname}</h3>
+                      <Link href={`/party/${linkToParty}`}>
+                        <p className="body-s hover:text-primary-400 transition duration-300">
+                          {cutVideoNameWithEpisode}
                         </p>
-                        <p className="body-s text-Grey-600">함께 시청했습니다.</p>
-                        <button
-                          onClick={() => followMutation.mutate(member.user.user_id)}
-                          className="mt-2 btn-s body-xs-bold text-white w-full"
-                        >
-                          팔로우
-                        </button>
-                      </div>
-                    ))}
+                      </Link>
+                      <p className="body-s text-Grey-600">함께 시청했습니다.</p>
+                      <button
+                        onClick={() => followMutation.mutate(member.user.user_id)}
+                        className="mt-2 btn-s body-xs-bold text-white w-full"
+                      >
+                        팔로우
+                      </button>
+                    </div>
                   </li>
-                );
+                ));
               })
             ) : (
               <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
