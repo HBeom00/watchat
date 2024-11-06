@@ -39,7 +39,7 @@ const MyOwnerParty = () => {
   }
 
   return (
-    <article className="max-w-[1060px] m-auto mb-8">
+    <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between mb-4">
         <h3 className="title-m">내가 오너인 파티</h3>
         {ownerParty && ownerParty.length > 0 ? (
