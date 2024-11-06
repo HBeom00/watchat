@@ -5,7 +5,11 @@ import Image from 'next/image';
 const Footer = () => {
   const options = 'location=no , toolbar=no , menubar =no, status=no';
   const howToUse = () => {
-    window.open('https://www.notion.so/Watchat-13094dc6c14c80a3af88f2a910dd8072', 'watchat 사용법', options);
+    window.open(
+      'https://honorable-navy-810.notion.site/Watchat-136dbe6b3f7580df8ab0da274b276df9?pvs=4',
+      'watchat 사용법',
+      options
+    );
   };
   const termsOfUse = () => {
     window.open('https://www.notion.so/13094dc6c14c808984fce7846c23ef08', '이용약관', options);
@@ -18,7 +22,7 @@ const Footer = () => {
       <div>
         <Image src="/logo.svg" alt="Slide3" width={142} height={24} />
         <div className="flex space-x-[8px] mt-[16px]">
-          <p onClick={howToUse} className="cursor-pointer hover:underline">
+          <p onClick={personalInformation} className="cursor-pointer hover:underline">
             서비스 이용약관
           </p>
           <p>|</p>
@@ -26,7 +30,7 @@ const Footer = () => {
             개인정보 처리방침
           </p>
           <p>|</p>
-          <p onClick={personalInformation} className="cursor-pointer hover:underline">
+          <p onClick={howToUse} className="cursor-pointer hover:underline">
             서비스 소개
           </p>
         </div>

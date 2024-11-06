@@ -31,6 +31,15 @@ const Banner = (props: PropType) => {
     onSelect();
   }, [emblaApi]);
 
+  const options = 'location=no , toolbar=no , menubar =no, status=no';
+
+  const howToUse = () => {
+    window.open(
+      'https://honorable-navy-810.notion.site/Watchat-136dbe6b3f7580df8ab0da274b276df9?pvs=4',
+      'watchat 사용법',
+      options
+    );
+  };
   return (
     <>
       {searchText === '' ? (
@@ -46,22 +55,22 @@ const Banner = (props: PropType) => {
               <Image src="/banner_3.svg" alt="Slide3" width={1060} height={360} />
             </div>
             <div className="embla_slide flex flex-none w-full min-w-0 justify-around">
-              <Image src="banner_4.svg" alt="Slide3" width={1060} height={360} />
+              <Image src="banner_4.svg" alt="Slide3" width={1060} height={360} onClick={howToUse} />
             </div>
           </div>
           {/* 좌우 화살표 버튼 */}
 
           <button
-            className="absolute left-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px]"
+            className="absolute  left-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px]"
             onClick={scrollPrev}
           >
-            <Image src="/arrow_left_2.svg" alt="User Icon" width={24} height={24} />
+            <Image src="/arrow_left_2.svg" alt="User Icon" width={24} height={24} className="ml-[11px]" />
           </button>
           <button
             className="absolute right-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px]"
             onClick={scrollNext}
           >
-            <Image src="/arrow_right_2.svg" alt="User Icon" width={24} height={24} />
+            <Image src="/arrow_right_2.svg" alt="User Icon" width={24} height={24} className="ml-[11px]" />
           </button>
 
           {/* 점 네비게이션 */}
