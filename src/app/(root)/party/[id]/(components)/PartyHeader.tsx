@@ -34,7 +34,9 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
       const response: PostgrestSingleResponse<member[]> = await browserClient
         .from('team_user_profile')
         .select('*')
-        .eq('user_id', partyData.owner_id);
+        .eq('user_id', partyData.owner_id)
+        .eq('party_id', partyData.party_id);
+
       return response.data;
     }
   });

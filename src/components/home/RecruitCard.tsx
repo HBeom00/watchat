@@ -24,7 +24,8 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       const response: PostgrestSingleResponse<member[]> = await browserClient
         .from('team_user_profile')
         .select('*')
-        .eq('user_id', data.owner_id);
+        .eq('user_id', data.owner_id)
+        .eq('party_id', data.party_id);
       return response.data;
     }
   });

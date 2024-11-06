@@ -67,8 +67,8 @@ const MyProfile = () => {
   }
 
   return (
-    <section className="bg-[#f5f5f5] py-8">
-      <div className="max-w-[1060px] m-auto flex gap-4 items-center">
+    <section className="bg-[#f5f5f5] py-8  w-full">
+      <div className=" gap-4 m-auto w-[1060px] flex flex-row items-center">
         <Image
           src={
             userData?.profile_img ||

@@ -85,12 +85,11 @@ const FirstLoginForm = () => {
           genre: genres
         });
 
-        alert('등록되었습니다.');
         route.push('/');
       }
     },
     onSuccess: () => {
-      alert(pathname === '/myPage/edit' ? '수정이 완료되었습니다.' : '등록되었습니다.');
+      alert(pathname === '/myPage/edit' ? '수정이 완료되었습니다.' : '회원가입이 완료되었습니다');
       route.push(pathname === '/myPage/edit' ? '/myPage' : '/');
     },
     onError: (error) => {
@@ -186,6 +185,18 @@ const FirstLoginForm = () => {
     }
   };
 
+  // 장르선택 핸들러
+  const genreClickHandler = (genre: string) => {
+    // 장르를 6개 이상 선택하려하면 alert (genres안에 선택하려는 장르가 포함되지 않은 경우)
+    if (genres.length >= 5 && !genres.includes(genre)) {
+      alert('최대 5개까지 선택할 수 있습니다!');
+      return;
+    }
+
+    // 장르 수가 5개 이하거나 이미 선택된 장르를 다시 누를 때 실행
+    onClickGenre({ genre, setGenres });
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSuccessHandler)}
@@ -269,7 +280,7 @@ const FirstLoginForm = () => {
             return (
               <li
                 key={index}
-                onClick={() => onClickGenre({ genre, setGenres })}
+                onClick={() => genreClickHandler(genre)}
                 className={
                   genres.includes(genre)
                     ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold text-xs border cursor-pointer border-primary-400'

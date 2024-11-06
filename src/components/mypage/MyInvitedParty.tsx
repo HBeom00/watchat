@@ -84,7 +84,7 @@ const MyInvitedParty = () => {
   }
 
   return (
-    <article className=" m-auto mb-8">
+    <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between m-auto mb-5">
         <h3 className="title-m">초대받은 파티</h3>
         {invitedParties && invitedParties.length > 0 ? (
@@ -391,11 +391,6 @@ const MyInvitedParty = () => {
                     )}
                     {/* 버튼영역 */}
                     <div className="flex gap-2">
-                      {/* <ParticipationButton party_id={invite.party_info.party_id}>
-                        <button className="btn-s w-[121px]" onClick={() => acceptInvite.mutate(invite.invite_id)}>
-                          수락하기
-                        </button>
-                      </ParticipationButton> */}
                       <button
                         className="btn-s w-[121px] body-xs-bold text-white"
                         onClick={() => {
