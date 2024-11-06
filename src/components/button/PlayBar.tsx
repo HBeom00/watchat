@@ -28,7 +28,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   if (duration * 60 > playTime) {
     setTimeout(() => setPlayTime(getPlayTime(startPlayTime)), 1000);
   }
-  console.log(playTime, '확인값');
+
   return (
     <div className="pt-2 pb-4 px-4 flex flex-col items-start gap-2 self-stretch bg-white">
       {/* 현재 진행 시간 */}
