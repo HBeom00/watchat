@@ -14,13 +14,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
   return (
     <div className="flex flex-col">
       {!hideHeaderFooter && <Header />}
-      <main
-        className={
-          !hideHeaderFooter
-            ? 'max-w-[1140px] mx-auto px-10 mt-[80px] overflow-auto'
-            : 'max-w-[1140px]  px-10 mx-auto overflow-auto'
-        }
-      >
+      <main className={!hideHeaderFooter ? ' mt-[80px] overflow-auto' : '  px-10 mx-auto overflow-auto'}>
         {children}
       </main>
       {!hideFooter && <Footer />}

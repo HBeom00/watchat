@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 const Main = async () => {
   return (
     <Suspense>
-      <div className="font-Pretendard">
+      <div className="font-Pretendard w-[1060px] m-auto">
         <Banner />
         <MyParty />
         <RecruitList />

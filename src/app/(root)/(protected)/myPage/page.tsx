@@ -6,7 +6,7 @@ import MyFollowRecommendation from '@/components/mypage/MyFollowRecommendation';
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col gap-8 min-w-[1060px]">
+    <div className="flex flex-col gap-8 w-full">
       {/* 프로필 영역 */}
       <MyProfile />
 

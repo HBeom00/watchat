@@ -22,8 +22,8 @@ const Header = () => {
   }
 
   return (
-    <div className=" fixed z-50  px-[190px] w-[1440px] h-[80px]  flex items-center justify-center  flex-shrink-0 border-solid border-b-[1px] border-gray-200 bg-white">
-      <div className="flex py-4 justify-between items-center flex-[1_0_0]  ">
+    <div className=" fixed z-50 w-full h-[80px]  flex items-center justify-center  flex-shrink-0 border-solid border-b-[1px] border-gray-200 bg-white">
+      <div className="flex py-4 justify-between items-center flex-[1_0_0] max-w-[1060px] ">
         <div className="flex flex-row items-center gap-6">
           <Link className="flex flex-col py-3 items-start" href={'/'}>
             <svg xmlns="http://www.w3.org/2000/svg" width="142" height="24" viewBox="0 0 142 24" fill="none">

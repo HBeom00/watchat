@@ -7,6 +7,9 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQueryClient } from '@tanstack/react-query';
+import { useInvitedParties } from '@/store/useInvitedParties';
+import { useAcceptMutation } from '@/store/useInviteMutation';
+import { useFetchUserData } from '@/store/userStore';
 
 const ParticipationForm = ({
   party_id,
@@ -29,6 +32,12 @@ const ParticipationForm = ({
   const path = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
+  // 사용자 데이터 가져오기
+  const { data: userData } = useFetchUserData();
+  const userId = userData?.user_id;
+  // 초대정보 가져오기
+  const { data: invitedParties } = useInvitedParties(userId); // 초대받은 파티 목록
+  const { mutate: acceptInvite } = useAcceptMutation(); // 초대 수락 처리
 
   // 이미지 업로드 onChange
   const uploadImage = () => {
@@ -58,24 +67,51 @@ const ParticipationForm = ({
       return;
     }
 
+    // 초대 목록에서 party_id와 일치하는 partyid를 찾음
+    const invite_id = invitedParties?.find((party) => party.party_id === party_id)?.invite_id;
+
+    if (invite_id) {
+      // 초대 수락 처리
+      acceptInvite(invite_id); // 초대 수락 후, 해당 invite_id를 삭제
+
+      // invite_id를 이용해 invited 테이블에서 삭제 처리
+      const { error: deleteInviteError } = await browserClient.from('invited').delete().eq('invite_id', invite_id);
+
+      if (deleteInviteError) {
+        setMessage('초대 수락 중 오류가 발생했습니다');
+        return;
+      }
+    }
+
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
       setMessage('존재하지 않는 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     } else if (endCheck === '모집마감') {
       setMessage('마감된 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     } else if (endCheck === '종료') {
       setMessage('종료된 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     }
 
     const isMember = await isMemberExist(party_id, user_Id);
     if (isMember) {
       setMessage('이미 참가한 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       router.replace(`/party/${party_id}`);
-
       return;
     }
 
@@ -124,12 +160,15 @@ const ParticipationForm = ({
       queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
       queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
       queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
       setMessage('파티에 참가하신 걸 환영합니다!');
+
       if (path.includes('/party')) {
         closeHandler(false);
       }
       router.replace(`/party/${party_id}`);
     }
+
     setDisabled(false);
   };
 
@@ -144,9 +183,31 @@ const ParticipationForm = ({
     setDisabled(true);
     const user_Id = await getLoginUserIdOnClient();
 
+    // 초대 목록에서 party_id와 일치하는 partyid를 찾음
+    const invite_id = invitedParties?.find((party) => party.party_id === party_id)?.invite_id;
+
+    if (invite_id) {
+      // 초대 수락 처리
+      acceptInvite(invite_id); // 초대 수락 후, 해당 invite_id를 삭제
+
+      // invite_id를 이용해 invited 테이블에서 삭제 처리
+      const { error: deleteInviteError } = await browserClient.from('invited').delete().eq('invite_id', invite_id);
+
+      if (deleteInviteError) {
+        setMessage('초대 수락 중 오류가 발생했습니다');
+        if (invite_id) {
+          await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+        }
+        return;
+      }
+    }
+
     if (!user_Id) {
       setMessage('먼저 로그인해주세요');
       router.push('/login');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     }
 
@@ -154,12 +215,21 @@ const ParticipationForm = ({
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
       setMessage('존재하지 않는 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     } else if (endCheck === '모집마감') {
       setMessage('마감된 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     } else if (endCheck === '종료') {
       setMessage('종료된 파티입니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     }
 
@@ -167,7 +237,9 @@ const ParticipationForm = ({
     if (isMember) {
       setMessage('이미 참가한 파티입니다');
       router.replace(`/party/${party_id}`);
-
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     }
     const { error: participationError } = await browserClient.from('team_user_profile').insert({
@@ -179,12 +251,16 @@ const ParticipationForm = ({
 
     if (participationError) {
       setMessage('파티에 참가할 수 없습니다');
+      if (invite_id) {
+        await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
+      }
       return;
     }
     // 멤버가 변동하면 바뀌어야 하는 값들
     queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
     queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
     queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
+    queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
     setDisabled(false);
   };
