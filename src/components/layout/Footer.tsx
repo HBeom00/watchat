@@ -34,7 +34,7 @@ const Footer = () => {
       </div>
       <div className="mt-[18px]">
         <div>
-          <p className="flex justify-end text-[12px] text-Grey-300">대표이사 ojosama</p>
+          <p className="flex justify-end text-[12px] text-Grey-300">대표이사 김경혜</p>
           <p className="flex justify-end text-[12px] text-Grey-300">이메일 team.watchat@gmail.com</p>
         </div>
         <div className="flex space-x-4 mt-4 justify-end">
