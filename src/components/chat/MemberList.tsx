@@ -5,9 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import { UserInfo } from '@/types/teamUserProfile';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
-import { GiQueenCrown } from 'react-icons/gi';
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '../ui/Dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { follow, unfollow } from '@/store/followUnfollow';
+import award_image from '../../../public/award_star.svg';
 
 const MemberList = ({
   members,
@@ -65,43 +65,55 @@ const MemberList = ({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="w-[340px] px-5 py-2 flex flex-col items-start gap-4">
       {members.map((el) => {
         return (
-          <div key={el.profile_id} className="flex justify-between items-center">
-            <div className="flex items-center">
+          <div key={el.profile_id} className="flex justify-between items-center self-stretch gap-2">
+            <div className="flex items-center gap-2">
               <Image
                 src={el.profile_image}
                 alt={el.profile_image}
-                width={30}
-                height={30}
-                className="rounded-full mr-2"
+                width={40}
+                height={40}
+                className="rounded-[20px] bg-center bg-cover bg-no-repeat"
               />
               <div>
                 {el.user_id === ownerId ? (
-                  <span className="flex justify-center items-center gap-1">
+                  <div className="flex justify-center items-center gap-1 body-s text-Grey-900">
                     {el.nickname}
-                    <GiQueenCrown className="text-yellow-400" />
-                  </span>
+                    <Image src={award_image} alt="award_image" width={20} height={20} />
+                  </div>
                 ) : (
-                  el.nickname
+                  <p className="body-s text-Grey-900">{el.nickname}</p>
                 )}
               </div>
             </div>
             {el.user_id !== userId ? (
               isSelect === 'members' ? (
-                <button onClick={() => toggleFollow(el.user_id)}>
+                <button onClick={() => toggleFollow(el.user_id)} className="btn-s body-xs-bold text-white">
                   {followStatus[el.user_id] ? '언팔로우' : '팔로우'}
                 </button>
               ) : (
                 <Dialog>
-                  <DialogTrigger>내보내기</DialogTrigger>
-                  <DialogContent>
-                    <DialogTitle>{`${el.nickname}님을 추방하시겠습니까?`}</DialogTitle>
-                    <div className="flex gap-2 justify-center items-center">
-                      <button onClick={() => exitParty(el.user_id)}>내보내기</button>
+                  <DialogTrigger className="flex justify-end items-center gap-1 text-Grey-400 font-bold text-xs">
+                    내보내기
+                  </DialogTrigger>
+                  <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
+                    <DialogTitle className="px-4 py-2"></DialogTitle>
+                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m text-[#191919]">
+                      정말 내보내시겠습니까?
+                    </DialogDescription>
+                    <div className="flex justify-center items-center mt-4 gap-4">
+                      <button
+                        className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
+                        onClick={() => exitParty(el.user_id)}
+                      >
+                        나가기
+                      </button>
                       <DialogClose>
-                        <button>취소</button>
+                        <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                          취소
+                        </button>
                       </DialogClose>
                     </div>
                   </DialogContent>

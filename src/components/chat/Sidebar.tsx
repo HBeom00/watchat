@@ -3,19 +3,18 @@
 import { UserInfo } from '@/types/teamUserProfile';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
-import { IoMdClose } from 'react-icons/io';
 import MemberList from './MemberList';
 import { Dialog, DialogClose } from '../ui/Dialog';
 import { DialogContent, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useRouter } from 'next/navigation';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import close_img from '../../../public/close.svg';
+import Image from 'next/image';
 
 const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: () => void; roomId: string }) => {
   const [isSelect, setIsSelect] = useState<string>('members');
   const [userId, setUserId] = useState<string>('');
-  // const [ownerId, setOwnerId] = useState<string>('');
-  // const [members, setMembers] = useState<UserInfo[]>([]);
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -47,54 +46,13 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
 
   useEffect(() => {
     const fetchUserId = async () => {
-      // // 파티 오너 유저 아이디 가져오기
-      // const { data: ownerData, error: ownerError } = await browserClient
-      //   .from('party_info')
-      //   .select('owner_id')
-      //   .eq('party_id', roomId);
-      // setOwnerId(ownerData?.[0].owner_id);
-
-      // if (ownerError) {
-      //   console.error('Error fetching owner ID:', ownerError);
-      // }
-
       // 로그인 유저 아이디 가져오기
       const user_id: string | null = await getLoginUserIdOnClient();
       if (user_id && user_id !== '') {
         setUserId(user_id);
       }
-
-      // // 파티 참여 유저 정보 불러오기
-      // const { data: memberData, error: memberError } = await browserClient
-      //   .from('team_user_profile')
-      //   .select()
-      //   .eq('party_id', roomId);
-
-      // if (memberData) {
-      //   setMembers(memberData);
-      // }
-
-      // if (memberError) {
-      //   console.error('Error fetching members:', memberError);
-      // }
     };
-
     fetchUserId();
-
-    // // 실시간 구독 설정
-    // const channel: RealtimeChannel = browserClient
-    //   .channel(`team_user_profile`)
-    //   .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'team_user_profile' }, (payload) => {
-    //     setMembers((prevMembers) => [...prevMembers, payload.new as UserInfo]);
-    //   })
-    //   .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'team_user_profile' }, (payload) => {
-    //     setMembers((prevMembers) => prevMembers.filter((member) => member.profile_id !== payload.old.profile_id));
-    //   })
-    //   .subscribe();
-
-    // return () => {
-    //   browserClient.removeChannel(channel); // 컴포넌트 언마운트 시 구독 해제
-    // };
   }, []);
 
   // 실시간 구독 설정
@@ -131,15 +89,6 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
     }
   });
 
-  // // 참여자 -> 파티 나가기 함수
-  // const leaveParty = async (id: string) => {
-  //   await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
-
-  //   setMembers((prevMembers) => prevMembers.filter((el) => el.user_id !== id)); // 로컬 업데이트
-  //   await queryClient.invalidateQueries({ queryKey: ['isMember', roomId, id] });
-  //   router.push(`/party/${roomId}`); // 나간 후 리디렉션
-  // };
-
   // 멤버 내보내기 기능
   const exitPartyMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -151,54 +100,62 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
     }
   });
 
-  // // 관리자 -> 내보내기 함수
-  // const exitParty = async (id: string) => {
-  //   await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
-
-  //   setMembers((prevMembers) => prevMembers.filter((el) => el.user_id !== id)); // 로컬 업데이트
-  //   await queryClient.invalidateQueries({ queryKey: ['isMember', roomId, id] });
-  // };
-
   return (
     <div
-      className={`h-screen w-[400px] bg-white fixed top-0 right-0 transform transition-transform duration-300 z-50 ${
+      className={`h-full w-[340px] bg-white fixed top-0 right-0 transform transition-transform duration-300 z-50 ${
         isVisible ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
-      <IoMdClose className="text-2xl m-4 cursor-pointer" onClick={onClose} />
-      <div>
-        {ownerId === userId ? (
-          <div className="flex gap-5">
-            <button
-              onClick={() => setIsSelect('members')}
-              className={isSelect === 'members' ? 'underline' : 'no-underline'}
-            >
-              함께보는 멤버
-            </button>
-            <button
-              onClick={() => setIsSelect('party')}
-              className={isSelect === 'party' ? 'underline' : 'no-underline'}
-            >
-              파티관리
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button onClick={() => setIsSelect('members')}>함께보는 멤버</button>
-          </div>
-        )}
-      </div>
-      <p className="text-gray-400 text-[12px]">{`참여자 ${members.length}명`}</p>
-      <div>
-        <MemberList
-          members={members}
-          isSelect={isSelect}
-          ownerId={ownerId}
-          roomId={roomId}
-          userId={userId}
-          exitParty={(id: string) => exitPartyMutation.mutate(id)}
-        />
-      </div>
+      <Image
+        src={close_img}
+        alt="close_img"
+        width={24}
+        height={24}
+        className="w-6 h-6 shrink-0 mt-5 ml-5 mb-[88px] cursor-pointer"
+        onClick={onClose}
+      />
+      {ownerId === userId ? (
+        <div className="w-[340px] flex px-5 items-start">
+          <button
+            onClick={() => setIsSelect('members')}
+            className={
+              isSelect === 'members'
+                ? 'flex px-4 py-2 justify-center items-center border-b-2 border-solid border-Grey-900 text-Grey-900 body-m-bold'
+                : 'flex px-4 py-2 justify-center items-center text-Grey-400 body-m-bold'
+            }
+          >
+            함께보는 멤버
+          </button>
+          <button
+            onClick={() => setIsSelect('party')}
+            className={
+              isSelect === 'party'
+                ? 'flex px-4 py-2 justify-center items-center border-b-2 border-solid border-Grey-900 text-Grey-900 body-m-bold'
+                : 'flex px-4 py-2 justify-center items-center text-Grey-400 body-m-bold'
+            }
+          >
+            파티관리
+          </button>
+        </div>
+      ) : (
+        <div className="w-[340px] flex px-5 flex-col items-start">
+          <button
+            onClick={() => setIsSelect('members')}
+            className="flex px-4 py-2 justify-center items-center border-b-2 border-solid border-Grey-900 body-m-bold"
+          >
+            함께보는 멤버
+          </button>
+        </div>
+      )}
+      <p className="inline-flex px-5 py-4 flex-col items-start label-l text-Grey-700">{`참여자 ${members.length}명`}</p>
+      <MemberList
+        members={members}
+        isSelect={isSelect}
+        ownerId={ownerId}
+        roomId={roomId}
+        userId={userId}
+        exitParty={(id: string) => exitPartyMutation.mutate(id)}
+      />
       {ownerId !== userId ? (
         <Dialog>
           <DialogTrigger>파티 탈퇴</DialogTrigger>

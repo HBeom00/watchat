@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useWatchFilter } from '@/store/watchFilterStore';
 import MyProfileButton from './MyProfileButton';
+import GoRecruitButton from './GoRecruitButton';
 
 const Header = () => {
   const { isUser } = useUserStore((state) => state);
@@ -115,16 +116,14 @@ const Header = () => {
             </svg>
             <input
               type="text"
-              className="w-[190px] flex-shrink-0 font-normal text-[14px] leading-[22px] text-gray-500 bg-transparent"
+              className="w-[190px] flex-shrink-0 font-normal text-[14px] leading-[22px] text-static-black bg-transparent"
               value={searchText}
               onChange={(e) => changeSearchWord(e.target.value)}
               placeholder="보고싶은 콘텐츠를 검색해보세요"
             />
           </div>
           <div className="flex py-3 px-4 justify-center items-center">
-            <Link className="font-semibold text-[15px] leading-6" href={'/recruit/firstPage'}>
-              모집하기
-            </Link>
+            <GoRecruitButton isLogin={isUser} />
           </div>
           <div className="flex py-3 px-4 justify-center items-center">
             {isUser ? (

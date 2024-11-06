@@ -11,7 +11,7 @@ import { memberExpulsion } from '@/utils/ownerRights';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-const ExitButton = ({ children, partyId, userId }: { children: React.ReactNode; partyId: string; userId: string }) => {
+const ExitButton = ({ partyId, userId }: { partyId: string; userId: string }) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
@@ -28,7 +28,9 @@ const ExitButton = ({ children, partyId, userId }: { children: React.ReactNode; 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger>{children}</DialogTrigger>
+        <DialogTrigger className="inline-flex py-2 items-center my-[17.5px] text-Grey-400 body-xs-bold">
+          참여 취소
+        </DialogTrigger>
         <DialogContent className="w-[340px] p-0 gap-0">
           <DialogHeader className="flex py-6">
             <DialogTitle></DialogTitle>

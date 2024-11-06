@@ -60,9 +60,7 @@ const MemberList = ({
           )}
         </div>
         {userId && isMember && !end && !(partyOwner === userId) ? (
-          <ExitButton partyId={partyData.party_id} userId={userId}>
-            <button className="inline-flex py-2 items-center my-[17.5px] text-Grey-400 body-xs-bold">참여 취소</button>
-          </ExitButton>
+          <ExitButton partyId={partyData.party_id} userId={userId} />
         ) : (
           <></>
         )}

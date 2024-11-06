@@ -24,6 +24,7 @@ interface InvitedParty {
     episode_number: number | null;
     video_id: string;
     start_date_time: string;
+    party_id: string;
   };
   inviter_user: {
     user_id: string;
@@ -66,7 +67,8 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
         start_time, 
         episode_number, 
         video_id,
-        start_date_time
+        start_date_time,
+        party_id
       ),
       inviter_user:inviter (
         user_id, 

@@ -3,6 +3,15 @@
 import { useState } from 'react';
 
 const PlayBar = ({ startTime, duration }: { startTime: string; duration: number }) => {
+  // 현재 날짜 구하기 yyyy-mm-dd 형식으로 반환
+  // const today = new Date();
+
+  // const year = today.getFullYear();
+  // const month = ('0' + (today.getMonth() + 1)).slice(-2);
+  // const day = ('0' + today.getDate()).slice(-2);
+
+  // const dateString = `${year}-${month}-${day}`;
+
   // supabase에서 가져와야한다
   // 시작 시간
   const startPlayTime = startTime;
@@ -21,16 +30,25 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   }
   console.log(playTime, '확인값');
   return (
-    <div>
-      <p>영상 시청 진도 바</p>
+    <div className="pt-2 pb-4 px-4 flex flex-col items-start gap-2 self-stretch bg-white">
       {/* 현재 진행 시간 */}
-      <div className="flex flex-row gap-6">
-        <p>{startTime.split('.')[0].split('T')[1]}</p>
-        {playTime > 0 && duration * 60 > playTime ? <p>{nowTimeDisplay(playTime)}</p> : <p>00:00:00</p>}
-
-        <input type="range" min={0} max={duration * 60} step={1} value={playTime} onChange={() => {}} />
-        <p>{`${playEnd[0]}:${playEnd[1]}:00`}</p>
+      <div className="flex justify-between items-center self-stretch">
+        {playTime > 0 && duration * 60 > playTime ? (
+          <p className="label-m text-Grey-500">{nowTimeDisplay(playTime)}</p>
+        ) : (
+          <p className="label-m text-Grey-500">00:00:00</p>
+        )}
+        <p className="label-m text-Grey-500">{`${playEnd[0]}:${playEnd[1]}:00`}</p>
       </div>
+      <input
+        type="range"
+        min={0}
+        max={duration * 60}
+        step={1}
+        value={playTime}
+        onChange={() => {}}
+        className="custom-scrollbar w-full h-1 bg-Grey-200"
+      />
     </div>
   );
 };
