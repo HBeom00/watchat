@@ -46,11 +46,8 @@ const MyProfileButton = () => {
         </div>
       </button>
       {isOpen && (
-        <div className="absolute bg-static-white flex flex-col mt-2 w-full justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px]">
-          <Link
-            href={'/myPage'}
-            className="flex w-full py-1 px-3 border-solid border-Grey-200 border-b-[1px] justify-center items-center"
-          >
+        <div className="selectDropBox">
+          <Link href={'/myPage'} className="selectDropBoxIn">
             마이프로필
           </Link>
 
