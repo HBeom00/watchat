@@ -5,11 +5,12 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import browserClient from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/providers/userStoreProvider';
+// import { useUserStore } from '@/providers/userStoreProvider';
 import { useState } from 'react';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';
 import visibility_off from '../../../public/visibility_off.svg';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const signInSchema = z.object({
   email: z.string().email({ message: '이메일 형식을 확인해주세요' }),
@@ -17,9 +18,10 @@ const signInSchema = z.object({
 });
 
 const SignInForm = () => {
-  const { userLogin } = useUserStore((state) => state);
-  const [showPassword, setShowPassword] = useState(false);
   const route = useRouter();
+  const queryClient = useQueryClient();
+  // const { userLogin } = useUserStore((state) => state);
+  const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -29,39 +31,52 @@ const SignInForm = () => {
     resolver: zodResolver(signInSchema)
   });
 
-  // 로그인 버튼 클릭 시
-  const onSubmit = async (userInfo: FieldValues) => {
-    const { data: session, error } = await browserClient.auth.signInWithPassword({
-      email: userInfo.email,
-      password: userInfo.password
-    });
+  // 로그인 하기
+  const { mutateAsync: loginBtn } = useMutation({
+    mutationFn: async (userInfo: FieldValues) => {
+      console.log(userInfo, 'userInfo');
+      const { data: session, error } = await browserClient.auth.signInWithPassword({
+        email: userInfo.email,
+        password: userInfo.password
+      });
 
-    if (error) {
-      alert('아이디와 비밀번호를 다시 입력해주세요.');
-      return;
-    }
-
-    const userId = session?.user?.id;
-
-    if (userId) {
-      const { data: user, error: userFetchError } = await browserClient.from('user').select('*').eq('user_id', userId);
-
-      if (userFetchError) {
-        console.error('유저 확인 오류:', userFetchError.message);
-        alert('사용자 확인 중 오류가 발생했습니다.');
+      if (error) {
+        console.log(error.message);
+        alert('아이디와 비밀번호를 다시 입력해주세요.');
         return;
       }
 
-      userLogin();
+      const userId = session?.user?.id;
 
-      if (user.length !== 1) {
-        route.push('/firstLogin');
+      if (userId) {
+        const { data: user, error: userFetchError } = await browserClient
+          .from('user')
+          .select('*')
+          .eq('user_id', userId);
+
+        if (userFetchError) {
+          console.error('유저 확인 오류:', userFetchError.message);
+          alert('사용자 확인 중 오류가 발생했습니다.');
+          return;
+        }
+
+        if (user.length !== 1) {
+          route.push('/firstLogin');
+        } else {
+          route.push('/');
+        }
       } else {
-        route.push('/');
+        alert('로그인 세션이 유효하지 않습니다.');
       }
-    } else {
-      alert('로그인 세션이 유효하지 않습니다.');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userId'] });
     }
+  });
+
+  // 로그인 버튼 클릭 시
+  const onSubmit = async (userInfo: FieldValues) => {
+    loginBtn(userInfo);
   };
 
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);

@@ -1,25 +1,46 @@
 'use client';
 
 import { useSearchStore } from '@/providers/searchStoreProvider';
-import { useUserStore } from '@/providers/userStoreProvider';
+// import { useUserStore } from '@/providers/userStoreProvider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useWatchFilter } from '@/store/watchFilterStore';
 import MyProfileButton from './MyProfileButton';
 import GoRecruitButton from './GoRecruitButton';
+import { useQuery } from '@tanstack/react-query';
+import browserClient from '@/utils/supabase/client';
 
 const Header = () => {
-  const { isUser } = useUserStore((state) => state);
   const partySituation = useWatchFilter((state) => state.partySituation);
   const watchFilter = useWatchFilter((state) => state.setPartySituation);
   const searchText = useSearchStore((state) => state.searchText);
-
   const changeSearchWord = useSearchStore((state) => state.changeSearchWord);
   const pathname = usePathname();
   if (pathname !== '/') {
     changeSearchWord('');
     watchFilter('');
   }
+
+  // 유저 ID 가져오기
+  const { data: isUser } = useQuery({
+    queryKey: ['userId'],
+    queryFn: async (): Promise<boolean> => {
+      try {
+        const { data, error } = await browserClient.auth.getSession();
+
+        if (error) {
+          console.error('Error fetching user ID:', error);
+          return false; // 에러 발생 시 false 반환
+        }
+
+        return data?.session !== null;
+      } catch (error) {
+        console.error('Unexpected error fetching user ID:', error);
+        return false; // 에러 발생 시 false 반환
+      }
+    },
+    initialData: false // 초기값을 false로 설정
+  });
 
   return (
     <div className=" fixed z-50 w-full h-[80px]  flex items-center justify-center  flex-shrink-0 border-solid border-b-[1px] border-gray-200 bg-white">

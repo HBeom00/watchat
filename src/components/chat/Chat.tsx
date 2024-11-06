@@ -112,16 +112,13 @@ export default function Chat({ roomId }: { roomId: string }) {
 
           if (now >= eventDateTime) {
             setSpecialMessage('다들 영상을 재생해주세요');
-            console.log('1 - 이벤트 시작 시간');
             clearInterval(intervalId); // 이벤트 시간이 지나면 타이머 중지
           } else if (now >= tenMinutesBefore && now < eventDateTime) {
             setSpecialMessage('시작하기 10분 전입니다');
-            console.log('2 - 10분 전');
           } else {
             setSpecialMessage('시작 전 입니다.'); // 아무 메시지도 필요하지 않으면 null로 설정
-            console.log('3 - 아직 시간 전');
           }
-        }, 1000); // 1분마다 확인
+        }, 1000); // 1초마다 확인
 
         return () => clearInterval(intervalId);
       }
