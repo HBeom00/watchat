@@ -56,6 +56,9 @@ const config: Config = {
           900: '#2A2A2A',
           1000: '#0F0F0F'
         },
+        boxShadow: {
+          'custom-light': '0px 4px 4px 0px rgba(0, 0, 0, 0.05)'
+        },
         static: { black: '#000', white: '#FFF' },
         muted: {
           DEFAULT: 'hsl(var(--muted))',

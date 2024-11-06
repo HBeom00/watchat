@@ -56,8 +56,8 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
         <button
           type="submit"
           disabled={content === ''}
-          className={`w-[124px] btn-m ${
-            content === '' ? 'text-gray-400 cursor-not-allowed' : 'text-black cursor-pointer'
+          className={`w-[124px] ${
+            content === '' ? 'disabled-btn-m text-gray-400 cursor-not-allowed' : 'btn-m text-black cursor-pointer'
           }`}
         >
           전송
