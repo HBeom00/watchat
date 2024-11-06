@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { fetchMovieWatchProvider, fetchTvWatchProvider } from '@/serverActions/TMDB';
 import Image from 'next/image';
 
-const RecruitPage1 = () => {
+const RecruitFirstPage = () => {
   const router = useRouter();
   const nextPageHandle = () => {
     router.push('/recruit/nextPage');
@@ -109,8 +109,8 @@ const RecruitPage1 = () => {
     !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
 
   return (
-    <div className="grid place-items-center">
-      <h1 className="text-[28px] font-bold mt-[48px]">파티 모집하기</h1>
+    <div className="grid place-items-center ">
+      <h1 className="text-[28px] font-bold mt-[70px]">파티 모집하기</h1>
       <input
         type="text"
         placeholder="파티 이름"
@@ -131,16 +131,16 @@ const RecruitPage1 = () => {
         </h2>
         <h2 className="text-purple-600 font-[15px] ">*</h2>
       </div>
-      <div className="relative w-[519px] mt-[16px]">
+      <div className="relative w-[519px]  mt-[16px]">
         <input
           type="text"
           placeholder="선택하세요."
           value={video_name}
           onChange={(e) => InputChangehandle(e.target.value)}
-          className="w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
+          className=" w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
         />
         {showResults && searchResults?.results?.length ? (
-          <ul className="custom-scrollbar absolute top-[50px] w-full h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
+          <ul className=" custom-scrollbar   w-full h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
             {searchResults.results.map((result) => (
               <li
                 key={result.id}
@@ -155,7 +155,7 @@ const RecruitPage1 = () => {
       </div>
       <div className="flex space-x-[20px] mt-[16px]">
         {/* 포스터 */}
-        {video_name && video_image && (
+        {searchResults && video_image && (
           <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[351px] rounded-md" />
         )}
 
@@ -176,7 +176,7 @@ const RecruitPage1 = () => {
             </div>
           )}
 
-          {searchResults && video_image && (
+          {video_name && video_image && (
             <div>
               <div className="flex">
                 <h2>러닝타임</h2>
@@ -216,20 +216,28 @@ const RecruitPage1 = () => {
           )}
           {/* 플랫폼 */}
 
-          {searchResults && video_platform && video_platform.length ? (
+          {searchResults && video_platform && video_platform.length > 0 ? (
             <div>
               <h2>영상 플랫폼</h2>
               <div className="flex space-x-4 mt-2">
                 {video_platform.map((platform) => (
                   <div key={platform.name} className="text-center ">
-                    <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px] shadow-lg ">
+                    <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
                       <img src={platform.logoUrl} alt={platform.name} className="w-12 rounded-full " />
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          ) : null}
+          ) : (
+            video_name &&
+            !video_platform && (
+              <div>
+                <h2>영상 플랫폼</h2>
+                <p>제공 플랫폼이 존재하지 않습니다.</p>
+              </div>
+            )
+          )}
         </div>
       </div>
       <button
@@ -244,6 +252,6 @@ const RecruitPage1 = () => {
   );
 };
 
-export default RecruitPage1;
+export default RecruitFirstPage;
 
 // 버튼 컴포넌트 만들기 ***** 컬러. 크기 . 등등 프롭스로 받아서 변경이 쉽게
