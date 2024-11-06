@@ -35,7 +35,7 @@ const MyOwnerParty = () => {
   const platformArr: platform[] =
     ownerParty && ownerParty[0]?.video_platform ? JSON.parse(ownerParty[0].video_platform) : [];
 
-  const platform = platformArr.length > 0 ? platformArr[0] : null;
+  const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
 
   console.log(platform);
 
@@ -48,8 +48,8 @@ const MyOwnerParty = () => {
 
   return (
     <article className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m">내가 오너인 파티</h3>
-      <ul className="flex flex-row gap-5">
+      <h3 className="title-m  mt-8 mb-4">내가 오너인 파티</h3>
+      <ul className="flex flex-row gap-5 flex-wrap">
         {ownerParty && ownerParty.length > 0 ? (
           ownerParty.slice(start, end).map((party) => {
             const viewingStatus = getViewStatus(party); // 시청 상태

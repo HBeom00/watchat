@@ -2,15 +2,7 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '../ui/Dialog';
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useInvitedParties } from '@/store/useInvitedParties';
 import { useAcceptMutation, useRefuseMutation } from '@/store/useInviteMutation';
 import { useFetchUserData } from '@/store/userStore';
@@ -19,7 +11,9 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { getViewStatus } from '@/utils/viewStatus';
 import '@/customCSS/label.css';
-import doesntExist from '../../../public/Vector.svg';
+import doesntExist from '../../../public/inviteCat.svg';
+import checkBox from '../../../public/checkbox.svg';
+import checkBoxDisable from '../../../public/checkboxDisable.svg';
 import ParticipationButton from '../button/ParticipationButton';
 
 const MyInvitedParty = () => {
@@ -27,6 +21,7 @@ const MyInvitedParty = () => {
   const [selectedParties, setSelectedParties] = useState<string[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
+  const [open, setOpen] = useState<boolean>(false);
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
     emblaApi,
@@ -89,55 +84,71 @@ const MyInvitedParty = () => {
   }
 
   return (
-    <article className="max-w-[1140px] m-auto mb-8">
-      <div className="flex justify-between max-w-[1060px] m-auto mb-5">
+    <article className=" m-auto mb-8">
+      <div className="flex justify-between m-auto mb-5">
         <h3 className="title-m">초대받은 파티</h3>
-        <div className="flex gap-4 body-xs-bold">
-          <button
-            onClick={selectModeToggleHandler}
-            className={`${isSelectionMode ? ' text-primary-400' : 'text-Grey-700'}`}
-          >
-            선택하기
-          </button>
-
-          {/* 선택하기 클릭시 상세페이지로 넘어가지 않도록 */}
-
-          <button
-            onClick={selectAllHandler}
-            disabled={!isSelectionMode}
-            className={`${isSelectionMode ? 'text-Grey-700' : 'text-Grey-300 cursor-not-allowed'}`}
-          >
-            모두 선택
-          </button>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button
-                disabled={!isSelectionMode || selectedParties.length === 0}
-                className={`${
-                  isSelectionMode && selectedParties.length > 0 ? 'text-Grey-700' : 'text-Grey-300 cursor-not-allowed'
-                }`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                거절하기
+        {invitedParties && invitedParties.length > 0 ? (
+          <div className="flex gap-4 body-xs-bold">
+            {isSelectionMode ? (
+              <button onClick={selectModeToggleHandler} className=" text-primary-400 flex flex-row items-center">
+                <Image src={checkBox} width={16} height={16} alt="체크박스" />
+                <span>선택하기</span>
               </button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>정말 총 {selectedParties.length}개의 파티 초대를 거절하시겠습니까?</DialogTitle>
-              </DialogHeader>
-              <DialogDescription></DialogDescription>
-              <button onClick={refuseSelectedInvitesHandler}>거절하기</button>
-              <DialogClose asChild>
-                <button type="button">취소하기</button>
-              </DialogClose>
-            </DialogContent>
-          </Dialog>
-        </div>
+            ) : (
+              <button onClick={selectModeToggleHandler} className="text-Grey-700 flex flex-row items-center">
+                <Image src={checkBoxDisable} width={16} height={16} alt="체크박스" />
+                <span>선택하기</span>
+              </button>
+            )}
+
+            {/* 선택하기 클릭시 상세페이지로 넘어가지 않도록 */}
+
+            <button
+              onClick={selectAllHandler}
+              disabled={!isSelectionMode}
+              className={`${isSelectionMode ? 'text-Grey-700' : 'text-Grey-300 cursor-not-allowed'}`}
+            >
+              모두 선택
+            </button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  disabled={!isSelectionMode || selectedParties.length === 0}
+                  className={`${
+                    isSelectionMode && selectedParties.length > 0 ? 'text-Grey-700' : 'text-Grey-300 cursor-not-allowed'
+                  }`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  거절하기
+                </button>
+              </DialogTrigger>
+              <DialogContent className="w-[340px]">
+                <DialogHeader>
+                  <DialogTitle>
+                    <h2 className="pt-16 pb-4">정말 거절하시겠습니까?</h2>
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="flex flex-row justify-center items-center gap-2">
+                  <DialogClose asChild>
+                    <button type="button" className="disabled-btn-l w-[121px]">
+                      취소하기
+                    </button>
+                  </DialogClose>
+                  <button onClick={refuseSelectedInvitesHandler} className="btn-l w-[121px] body-xs-bold text-white">
+                    거절하기
+                  </button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
 
       {/* 캐러셀 컨테이너 */}
-      <div className="flex flex-row justify-between">
-        <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
+      <div className="relative">
+        <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} className="absolute top-[50%] -left-10">
           <div className="w-10 h-10 flex items-center justify-center">
             <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -148,6 +159,17 @@ const MyInvitedParty = () => {
             </svg>
           </div>
         </PrevButton>
+        <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} className="absolute top-[50%] -right-10">
+          <div className="w-10 h-10 flex items-center justify-center">
+            <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                id="arrow_forward_ios"
+                d="M2.00491 19.3079L0.941406 18.2444L9.18566 10.0001L0.941406 1.75588L2.00491 0.692383L11.3127 10.0001L2.00491 19.3079Z"
+                fill="#757575"
+              />
+            </svg>
+          </div>
+        </NextButton>
         <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px] ">
           <ul className="carousel-container flex items-center gap-5 max-w-[1060px]">
             {invitedParties && invitedParties.length > 0 ? (
@@ -167,6 +189,7 @@ const MyInvitedParty = () => {
                           e.stopPropagation();
                           partySelectionHandler(invite.invite_id);
                         }}
+                        className="cursor-pointer"
                       >
                         <div>
                           {/* 이미지영역 */}
@@ -177,7 +200,7 @@ const MyInvitedParty = () => {
                                 type="checkbox"
                                 checked={selectedParties.includes(invite.invite_id)}
                                 onChange={() => partySelectionHandler(invite.invite_id)}
-                                className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer"
+                                className="absolute top-2 right-2 z-20 w-4 h-4 cursor-pointer accent-primary-400"
                               />
                             )}
                             <Image
@@ -360,23 +383,51 @@ const MyInvitedParty = () => {
                     )}
                     {/* 버튼영역 */}
                     <div className="flex gap-2">
-                      <ParticipationButton party_id={invite.party_info.party_id}>
+                      {/* <ParticipationButton party_id={invite.party_info.party_id}>
                         <button className="btn-s w-[121px]" onClick={() => acceptInvite.mutate(invite.invite_id)}>
                           수락하기
                         </button>
-                      </ParticipationButton>
+                      </ParticipationButton> */}
+                      <button
+                        className="btn-s w-[121px] body-xs-bold text-white"
+                        onClick={() => {
+                          acceptInvite.mutate(invite.invite_id);
+                          setOpen(true);
+                        }}
+                      >
+                        수락하기
+                      </button>
+                      <ParticipationButton
+                        party_id={invite.party_info.party_id}
+                        party_situation={invite.party_info.situation}
+                        openControl={open}
+                        setOpenControl={setOpen}
+                        isLogin={!!userId}
+                      />
+
                       <Dialog>
                         <DialogTrigger>
                           <button className="disabled-btn-s w-[121px]">거절하기</button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className="w-[340px]">
                           <DialogHeader>
-                            <DialogTitle>{invite.inviter_user?.nickname}님의 초대를 정말 거절하시겠습니까?</DialogTitle>
+                            <DialogTitle>
+                              <h2 className="pt-16 pb-4">정말 거절하시겠습니까?</h2>
+                            </DialogTitle>
                           </DialogHeader>
-                          <button onClick={() => refuseInvite.mutate(invite.invite_id)}>거절하기</button>
-                          <DialogClose asChild>
-                            <button type="button">취소하기</button>
-                          </DialogClose>
+                          <div className="flex flex-row justify-center items-center gap-2">
+                            <DialogClose asChild>
+                              <button type="button" className="disabled-btn-l w-[121px]">
+                                취소하기
+                              </button>
+                            </DialogClose>
+                            <button
+                              onClick={() => refuseInvite.mutate(invite.invite_id)}
+                              className="btn-l w-[121px] body-xs-bold text-white"
+                            >
+                              거절하기
+                            </button>
+                          </div>
                         </DialogContent>
                       </Dialog>
                     </div>
@@ -384,24 +435,13 @@ const MyInvitedParty = () => {
                 );
               })
             ) : (
-              <li>
-                <div>{doesntExist}</div>
-                <p>현재 초대받은 파티가 없습니다.</p>
+              <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+                <Image src={doesntExist} width={73} height={73} alt="초대받은 파티가 없습니다" />
+                <p className="body-m text-Grey-600">초대받은 파티가 없습니다.</p>
               </li>
             )}
           </ul>
         </div>
-        <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled}>
-          <div className="w-10 h-10 flex items-center justify-center">
-            <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                id="arrow_forward_ios"
-                d="M2.00491 19.3079L0.941406 18.2444L9.18566 10.0001L0.941406 1.75588L2.00491 0.692383L11.3127 10.0001L2.00491 19.3079Z"
-                fill="#757575"
-              />
-            </svg>
-          </div>
-        </NextButton>
       </div>
     </article>
   );

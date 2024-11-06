@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 import '@/customCSS/label.css';
 import PlatformImageCard from '../styleComponents/PlatformImage';
-import doesntExist from '../../../public/Vector.svg';
+import doesntExist from '../../../public/closeEyeCat.svg';
 
 export type platform = {
   logoUrl: string;
@@ -30,7 +30,7 @@ const MyParticipatingParty = () => {
   const platformArr: platform[] =
     enjoyingParty && enjoyingParty[0]?.video_platform ? JSON.parse(enjoyingParty[0].video_platform) : [];
 
-  const platform = platformArr.length > 0 ? platformArr[0] : null;
+  const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
 
   console.log(platform); // 단일 플랫폼
 
@@ -45,9 +45,13 @@ const MyParticipatingParty = () => {
     <article className="max-w-[1060px] m-auto mb-8">
       <div className="flex justify-between mb-4">
         <h3 className="title-m">참여한 파티</h3>
-        <Link href={'/myPage/participating-party'} className="body-s text-[#c2c2c2]">
-          더보기
-        </Link>
+        {enjoyingParty && enjoyingParty.length > 0 ? (
+          <Link href={'/myPage/participating-party'} className="body-s text-[#c2c2c2]">
+            더보기
+          </Link>
+        ) : (
+          <></>
+        )}
       </div>
 
       {/* 카드 리스트 */}
@@ -85,9 +89,9 @@ const MyParticipatingParty = () => {
                       </div>
                     )}
 
-                    {platformArr.length === 1 && platformArr[0].logoUrl ? (
-                      <PlatformImageCard platform={platformArr[0]} />
-                    ) : null}
+                    <div className="absolute top-0 right-0">
+                      {platform ? <PlatformImageCard platform={platform} /> : <></>}
+                    </div>
 
                     <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
                       <span>{party.startString}</span>
@@ -133,9 +137,9 @@ const MyParticipatingParty = () => {
             );
           })
         ) : (
-          <li>
-            <div>{doesntExist}</div>
-            <p>참여한 파티가 없습니다.</p>
+          <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+            <Image src={doesntExist} width={73} height={73} alt="참여한 파티가 없습니다" />
+            <p className="body-m text-Grey-600">참여한 파티가 없습니다.</p>
           </li>
         )}
       </ul>

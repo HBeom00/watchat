@@ -14,11 +14,6 @@ import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
 // import Calendar from '@/components/Calendar/calendar';
 import Image from 'next/image';
 
-
-
-
-
-
 const RecruitPage2 = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
@@ -125,98 +120,102 @@ const RecruitPage2 = () => {
   return (
     <div className="grid place-items-center">
       {/* <button onClick={() => router.back()}>뒤로 가기</button> */}
-      <h1
-      className='text-[28px] font-bold mt-[48px]'
-      >모집 조건</h1>
-      <div className='space-y-[32px]'>
-      <div className='mt-[94px]'>
-       <label htmlFor="member" className="block text-[15px] font-SemiBold text-Grey-800">모집 인원</label>
-     {/* svg */}
-      <div className='relative '>
-      <Image
-        src="/group.svg" // public 폴더 경로 사용
-        alt="User Icon"
-        width={24}
-        height={24}
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-      />
-      <input
-        id="member"
-        type="text"
-        placeholder="0~10"
-        value={limited_member!== 0? limited_member:''}
-        onChange={handleChange}
-        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
-      />
-       <Image
-    src="/persons.svg" // public 폴더 경로 사용
-    alt="User Icon"
-    width={24}
-    height={24}
-    className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-  />
-      </div>
-       {errorMessage && (
-                <p className="text-red-500">{errorMessage}</p> // 오류 메시지 표시
-            )}
-      <p className='text-[13px] text-Grey-400'>최대 인원은 10명입니다.</p>
-      </div>
-      <div>
-      <label htmlFor="watchDate" className="block text-[15px] font-SemiBold text-Grey-800">시청 날짜</label>
-      <div className="relative">
-      <Image
-        src="/calendar_month.svg" // public 폴더 경로 사용
-        alt="User Icon"
-        width={24}
-        height={24}
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
-      />
-      <DatePicker
-        id="watchDate"
-        locale={ko}
-        selected={useRecruitStore.getState().watch_date}
-        onChange={(date) => setRecruitDetails({ watch_date: date })}
-        dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
-        placeholderText="날짜를 선택해주세요"
-        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
-        showPopperArrow={false}
-        minDate={new Date()}
-      />
-      {/* <Calendar
+      <h1 className="text-[28px] font-bold mt-[48px]">모집 조건</h1>
+      <div className="space-y-[32px]">
+        <div className="mt-[94px]">
+          <label htmlFor="member" className="block text-[15px] font-SemiBold text-Grey-800">
+            모집 인원
+          </label>
+          {/* svg */}
+          <div className="relative ">
+            <Image
+              src="/group.svg" // public 폴더 경로 사용
+              alt="User Icon"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+            />
+            <input
+              id="member"
+              type="text"
+              placeholder="0~10"
+              value={limited_member !== 0 ? limited_member : ''}
+              onChange={handleChange}
+              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
+            />
+            <Image
+              src="/persons.svg" // public 폴더 경로 사용
+              alt="User Icon"
+              width={24}
+              height={24}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+            />
+          </div>
+          {errorMessage && (
+            <p className="text-red-500">{errorMessage}</p> // 오류 메시지 표시
+          )}
+          <p className="text-[13px] text-Grey-400">최대 인원은 10명입니다.</p>
+        </div>
+        <div>
+          <label htmlFor="watchDate" className="block text-[15px] font-SemiBold text-Grey-800">
+            시청 날짜
+          </label>
+          <div className="relative">
+            <Image
+              src="/calendar_month.svg" // public 폴더 경로 사용
+              alt="User Icon"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
+            />
+            <DatePicker
+              id="watchDate"
+              locale={ko}
+              selected={useRecruitStore.getState().watch_date}
+              onChange={(date) => setRecruitDetails({ watch_date: date })}
+              dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
+              placeholderText="날짜를 선택해주세요"
+              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
+              showPopperArrow={false}
+              minDate={new Date()}
+            />
+            {/* <Calendar
         selectedDate={useRecruitStore.getState().watch_date}
         setSelectedDate={(date) => {
           const validDate = date instanceof Date ? date : null; // date가 유효한 Date인지 확인
           setRecruitDetails({ watch_date: validDate });
         }}
       /> */}
+          </div>
+        </div>
+        <div>
+          <label htmlFor="startTime" className="block text-[15px] font-SemiBold text-Grey-800">
+            시작 시간
+          </label>
+          <div className="relative">
+            <Image
+              src="/schedule.svg" // public 폴더 경로 사용
+              alt="User Icon"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
+            />
+            <DatePicker
+              id="startTime"
+              locale={ko}
+              selected={useRecruitStore.getState().start_time}
+              onChange={(time) => setRecruitDetails({ start_time: time })}
+              showTimeSelect
+              showTimeSelectOnly
+              timeIntervals={15}
+              dateFormat="h:mm aa"
+              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center  "
+              placeholderText="00:00"
+            />
+          </div>
+        </div>
       </div>
-      </div>
-      <div>
-      <label htmlFor="startTime" className="block text-[15px] font-SemiBold text-Grey-800">시작 시간</label>
-      <div className="relative">
-      <Image
-        src="/schedule.svg" // public 폴더 경로 사용
-        alt="User Icon"
-        width={24}
-        height={24}
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
-      />
-      <DatePicker
-        id="startTime"
-        locale={ko}
-        selected={useRecruitStore.getState().start_time}
-        onChange={(time) => setRecruitDetails({ start_time: time })}
-        showTimeSelect
-        showTimeSelectOnly
-        timeIntervals={15}
-        dateFormat="h:mm aa"
-        className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center  "
-        placeholderText="00:00"
-      />
-      </div>
-      </div>
-</div>
-<button
+      <button
         className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${
           isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
         } rounded-md font-semibold text-[15px]`}

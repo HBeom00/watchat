@@ -12,15 +12,11 @@ const ParticipationButton = ({
   isLogin,
   setOpenControl
 }: {
-<<<<<<< HEAD
   openControl?: boolean;
   children?: React.ReactNode;
-=======
-  openControl: boolean;
->>>>>>> 852906f531455321c358667af77864ccd9a5ac7c
   party_id: string;
-  party_situation: string;
-  isLogin: boolean;
+  party_situation?: string;
+  isLogin?: boolean;
   setOpenControl: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [message, setMessage] = useState<string>('');

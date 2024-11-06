@@ -5,7 +5,7 @@ import { genreArr, platformArr } from '@/utils/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -24,6 +24,7 @@ const FirstLoginForm = () => {
   const [nickname, setNickname] = useState<string>('');
   const route = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const { data: userData, isPending, isError } = useFetchUserData();
 
@@ -47,6 +48,8 @@ const FirstLoginForm = () => {
       }
 
       const profile_image_name = `${user?.id}/${new Date().getTime()}`;
+      const defaultProfileImgUrl =
+        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png';
 
       if (file) {
         await browserClient.storage.from('profile_image').upload(profile_image_name, file, {
@@ -54,8 +57,9 @@ const FirstLoginForm = () => {
           upsert: true
         });
       }
-
-      const profileImgUrl = browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl;
+      const profileImgUrl = file
+        ? browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl
+        : defaultProfileImgUrl;
 
       // 회원가입 또는 수정 로직
       if (pathname === '/myPage/edit' && !!user) {
@@ -70,7 +74,6 @@ const FirstLoginForm = () => {
           })
           .eq('user_id', user.id);
 
-        alert('수정이 완료되었습니다.');
         route.push('/myPage');
       } else if (!!user) {
         await browserClient.from('user').insert({
@@ -166,8 +169,14 @@ const FirstLoginForm = () => {
     });
   };
 
-  const editCancelHandler = () => {
-    route.push('/myPage');
+  // 취소버튼 핸들러
+  const editCancelHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const confirmed = confirm('정말 취소하시겠습니까?');
+    if (confirmed) {
+      queryClient.invalidateQueries({ queryKey: ['userData'] });
+      route.back();
+    }
 
     if (isPending) {
       return <div>사용자 정보를 불러오는 중 입니다...</div>;
@@ -253,7 +262,7 @@ const FirstLoginForm = () => {
         </ul>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-16">
         <h3 className=" body-m-bold mb-2">장르</h3>
         <ul className="flex flex-wrap gap-2">
           {genreArr.map((genre, index) => {
@@ -284,7 +293,7 @@ const FirstLoginForm = () => {
           <button className="btn-xl bg-white w-[157px]">수정하기</button>
         </div>
       ) : (
-        <button>완료</button>
+        <button className="btn-xl bg-white w-full">완료</button>
       )}
     </form>
   );

@@ -6,17 +6,17 @@ import MyFollowRecommendation from '@/components/mypage/MyFollowRecommendation';
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 min-w-[1060px]">
       {/* 프로필 영역 */}
       <MyProfile />
 
       {/* 파티 및 파티원 영역  */}
       <section>
         {/* 참여한 파티 */}
-        {/* <MyParticipatingParty /> */}
+        <MyParticipatingParty />
 
         {/* 주최한 파티 */}
-        {/* <MyOwnerParty /> */}
+        <MyOwnerParty />
 
         {/* 초대받은 파티 */}
         <MyInvitedParty />

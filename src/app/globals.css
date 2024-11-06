@@ -384,7 +384,6 @@ body {
   @apply text-[#7F4AF4];
 }
 
-<<<<<<< HEAD
 .commonEmailInput {
   @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
 }
@@ -398,10 +397,9 @@ body {
 
 .commonInput::placeholder {
   @apply body-m text-Grey-400 flex-1;
-=======
+}
 .commonInput {
   @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white body-m text-[#A8A8A8];
->>>>>>> 852906f531455321c358667af77864ccd9a5ac7c
 }
 
 .commonHelpText {

@@ -46,14 +46,12 @@ const ParticipatingParty = () => {
   const platformArr: platform[] =
     enjoyingParty && enjoyingParty[0]?.video_platform ? JSON.parse(enjoyingParty[0].video_platform) : [];
 
-  const platform = platformArr.length > 0 ? platformArr[0] : null;
-
-  console.log(platform); // 단일 플랫폼
+  const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
 
   return (
     <section className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m">참여한 파티</h3>
-      <ul className="flex flex-row gap-5">
+      <h3 className="title-m mt-8 mb-4">참여한 파티</h3>
+      <ul className="flex flex-row gap-5 flex-wrap">
         {enjoyingParty && enjoyingParty.length > 0 ? (
           enjoyingParty.slice(start, end).map((party) => {
             const viewingStatus = getViewStatus(party); // 시청 상태
@@ -87,9 +85,9 @@ const ParticipatingParty = () => {
                       </div>
                     )}
 
-                    {platformArr.length === 1 && platformArr[0].logoUrl ? (
-                      <PlatformImageCard platform={platformArr[0]} />
-                    ) : null}
+                    <div className="absolute top-0 right-0">
+                      {platform ? <PlatformImageCard platform={platform} /> : <></>}
+                    </div>
 
                     <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
                       <span>{party.startString}</span>
