@@ -2,7 +2,7 @@ import PlayBar from '@/components/button/PlayBar';
 import Chat from '@/components/chat/Chat';
 import SidebarToggle from '@/components/chat/SidebarToggle';
 import { createClient } from '@/utils/supabase/server';
-import arrow_back from '../../../../../../public/arrow_back_ios_new.svg';
+import arrow_back from '../../../../../../public/arrow_left_2.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 
