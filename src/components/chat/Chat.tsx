@@ -121,7 +121,7 @@ export default function Chat({ roomId }: { roomId: string }) {
             setSpecialMessage('시작 전 입니다.'); // 아무 메시지도 필요하지 않으면 null로 설정
             console.log('3 - 아직 시간 전');
           }
-        }, 1000 * 60); // 1분마다 확인
+        }, 1000); // 1분마다 확인
 
         return () => clearInterval(intervalId);
       }
