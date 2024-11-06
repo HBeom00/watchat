@@ -96,7 +96,11 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
             <button className="disabled-btn-m w-[164px]">채팅 종료</button>
           ) : isMember ? (
             <Link
-              className={chatOpenClose(partyData) === '시청중' ? 'btn-m w-[164px]' : 'disabled-btn-m w-[164px]'}
+              className={
+                chatOpenClose(partyData) === '시청중'
+                  ? 'px-4 py-2 h-10 bg-primary-400 rounded-lg text-white font-semibold text-sm w-[164px]'
+                  : 'disabled-btn-m w-[164px]'
+              }
               href={`/chat/${partyData.party_id}`}
               onClick={(e) => {
                 if (chatOpenClose(partyData) !== '시청중') {

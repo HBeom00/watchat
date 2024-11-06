@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -28,7 +29,9 @@ const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
         <div className="flex flex-col gap-4 w-full items-start">
           <p className="self-stretch pt-4 text-center body-m text-static-black">로그인이 필요한 서비스입니다.</p>
           <div className="flex flex-row p-4 items-center gap-2 self-stretch w-full">
-            <button className="btn-l w-full">로그인</button>
+            <Link href={'/login'} className="btn-l w-full">
+              로그인
+            </Link>
           </div>
         </div>
         <DialogDescription></DialogDescription>
