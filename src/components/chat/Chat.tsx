@@ -3,9 +3,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import SendMessageForm from './SendMessageForm';
 import Image from 'next/image';
-import { GiQueenCrown } from 'react-icons/gi';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import award_image from '../../../public/award_star.svg';
 
 type Chat = {
   id: string;
@@ -121,7 +121,7 @@ export default function Chat({ roomId }: { roomId: string }) {
             setSpecialMessage('시작 전 입니다.'); // 아무 메시지도 필요하지 않으면 null로 설정
             console.log('3 - 아직 시간 전');
           }
-        }, 1000 * 60); // 1분마다 확인
+        }, 1000); // 1분마다 확인
 
         return () => clearInterval(intervalId);
       }
@@ -139,32 +139,12 @@ export default function Chat({ roomId }: { roomId: string }) {
 
   return (
     <div>
-      <div
-        ref={messageListRef}
-        style={{
-          height: '500px',
-          overflowY: 'auto',
-          border: '1px solid #ddd',
-          padding: '10px',
-          marginBottom: '10px',
-          position: 'relative'
-        }}
-      >
+      <div ref={messageListRef} className="h-[846px] custom-chat-scrollbar overflow-x-hidden">
         {specialMessage && (
-          <div
-            style={{
-              padding: '10px',
-              backgroundColor: '#fff3cd',
-              color: '#856404',
-              border: '1px solid #ffeeba',
-              borderRadius: '5px',
-              marginBottom: '10px',
-              textAlign: 'center',
-              position: 'sticky',
-              top: '0'
-            }}
-          >
-            {specialMessage}
+          <div className="w-[700px] p-4 flex flex-col items-start fixed top-[114px] bg-Grey-50">
+            <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white text-Grey-900 text-center body-s">
+              {specialMessage}
+            </div>
           </div>
         )}
         {messages.map((msg, index) => {
@@ -181,21 +161,21 @@ export default function Chat({ roomId }: { roomId: string }) {
               }}
             >
               {showProfile && (
-                <div className={`flex items-center ${isMyself ? 'justify-end' : 'justify-start'}`}>
+                <div className={`flex items-center px-4 gap-2 ${isMyself ? 'justify-end' : 'justify-start'}`}>
                   {!isMyself && (
                     <Image
                       src={msg.profile_image}
                       alt={msg.profile_image}
-                      width={30}
-                      height={30}
-                      className="rounded-full mr-2 h-auto w-auto"
+                      width={32}
+                      height={32}
+                      className="rounded-full h-auto w-auto"
                     />
                   )}
                   {!isMyself ? (
                     ownerId === msg.sender_id ? (
                       <div className="flex justify-center items-center gap-1">
                         {msg.nickname}
-                        <GiQueenCrown className="text-yellow-400" />
+                        <Image src={award_image} alt="award_image" width={20} height={20} />
                       </div>
                     ) : (
                       <div>{msg.nickname}</div>
@@ -205,29 +185,25 @@ export default function Chat({ roomId }: { roomId: string }) {
                   )}
                 </div>
               )}
-              <div
-                className="content"
-                style={{
-                  marginTop: showProfile ? '8px' : '2px',
-                  padding: '5px 10px',
-                  backgroundColor: isMyself ? '#DCF8C6' : '#DCF8C6',
-                  borderRadius: '15px',
-                  maxWidth: '70%',
-                  display: 'inline-block'
-                }}
-              >
-                {msg.content}
+              <div className={'content  mb-2'}>
+                {isMyself ? (
+                  <div className="flex justify-end items-end pl-[54px] pr-4">
+                    <span className="text-Grey-600 text-center caption-m">
+                      {msg.created_at.slice(11, 16).split('T').join(' ')}
+                    </span>
+                    <div className="px-4 py-2 justify-center items-center rounded-[19px] text-white body-s bg-primary-400">
+                      {msg.content}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-start items-end px-[54px]">
+                    <div className="px-4 py-2 body-s rounded-[19px] bg-white">{msg.content}</div>
+                    <span className="text-Grey-600 text-center caption-m">
+                      {msg.created_at.slice(11, 16).split('T').join(' ')}
+                    </span>
+                  </div>
+                )}
               </div>
-              <p
-                style={{
-                  color: '#b4b2b2',
-                  fontSize: '12px',
-                  marginTop: '2px',
-                  padding: '0 10px'
-                }}
-              >
-                {msg.created_at.slice(0, 16).split('T').join(' ')}
-              </p>
             </div>
           );
         })}

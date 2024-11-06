@@ -91,15 +91,15 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
           <p className="label-l">참여 예정 {`(${memberCount || 0}/${partyData.limited_member})명`}</p>
         </div>
         {/* 하단 */}
-        <div>
+        <div className="flex w-[164px] justify-center items-center text-center">
           {end ? (
-            <button className="disabled-btn-m w-[164px]">채팅 종료</button>
+            <button className="disabled-btn-m w-full">채팅 종료</button>
           ) : isMember ? (
             <Link
               className={
                 chatOpenClose(partyData) === '시청중'
-                  ? 'px-4 py-2 h-10 bg-primary-400 rounded-lg text-white font-semibold text-sm w-[164px]'
-                  : 'disabled-btn-m w-[164px]'
+                  ? 'flex btn-m w-full justify-center items-center'
+                  : 'flex disabled-btn-m w-full justify-center items-center'
               }
               href={`/chat/${partyData.party_id}`}
               onClick={(e) => {
@@ -112,7 +112,7 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
             </Link>
           ) : (
             <>
-              <button onClick={() => setOpen(true)} className="btn-m w-[164px]">
+              <button onClick={() => setOpen(true)} className="btn-m w-full">
                 참여하기
               </button>
               <ParticipationButton

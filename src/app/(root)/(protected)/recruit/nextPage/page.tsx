@@ -178,14 +178,8 @@ const RecruitPage2 = () => {
               className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
               showPopperArrow={false}
               minDate={new Date()}
+              popperClassName="custom-datepicker"
             />
-            {/* <Calendar
-        selectedDate={useRecruitStore.getState().watch_date}
-        setSelectedDate={(date) => {
-          const validDate = date instanceof Date ? date : null; // date가 유효한 Date인지 확인
-          setRecruitDetails({ watch_date: validDate });
-        }}
-      /> */}
           </div>
         </div>
         <div>

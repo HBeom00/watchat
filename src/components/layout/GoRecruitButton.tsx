@@ -29,7 +29,11 @@ const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
         <div className="flex flex-col gap-4 w-full items-start">
           <p className="self-stretch pt-4 text-center body-m text-static-black">로그인이 필요한 서비스입니다.</p>
           <div className="flex flex-row p-4 items-center gap-2 self-stretch w-full">
-            <Link href={'/login'} className="btn-l w-full">
+            <Link
+              href={'/login'}
+              className="flex btn-l w-full justify-center items-center"
+              onClick={() => setOpen(false)}
+            >
               로그인
             </Link>
           </div>
