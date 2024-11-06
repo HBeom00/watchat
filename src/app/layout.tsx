@@ -9,7 +9,10 @@ import { SearchProvider } from '@/providers/searchStoreProvider';
 
 export const metadata: Metadata = {
   title: 'Wachat',
-  description: '함께보면 더 즐거운 watchat'
+  description: '함께보면 더 즐거운 watchat',
+  icons: {
+    icon: '/favicon.svg'
+  }
 };
 
 export default async function RootLayout({
