@@ -15,7 +15,7 @@ const SidebarToggle = ({ roomId }: { roomId: string }) => {
   return (
     <div className="p-2">
       <Image src={menu} alt="menu" width={24} height={24} onClick={toggleSidebar} className="cursor-pointer" />
-      {isSidebarVisible && <div className="fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none" />}
+      {isSidebarVisible && <div className="fixed inset-0 bg-black bg-opacity-50 z-40" />}
       <Sidebar isVisible={isSidebarVisible} onClose={() => setSidebarVisible(false)} roomId={roomId} />
     </div>
   );

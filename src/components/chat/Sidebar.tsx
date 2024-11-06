@@ -11,6 +11,7 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import close_img from '../../../public/close.svg';
 import Image from 'next/image';
+import { DialogDescription } from '@radix-ui/react-dialog';
 
 const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: () => void; roomId: string }) => {
   const [isSelect, setIsSelect] = useState<string>('members');
@@ -157,18 +158,32 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
         exitParty={(id: string) => exitPartyMutation.mutate(id)}
       />
       {ownerId !== userId ? (
-        <Dialog>
-          <DialogTrigger>파티 탈퇴</DialogTrigger>
-          <DialogContent>
-            <DialogTitle>파티를 나가시겠습니까?</DialogTitle>
-            <div className="flex gap-2 justify-center items-center">
-              <button onClick={() => leavePartyMutation.mutate(userId)}>나가기</button>
-              <DialogClose>
-                <button>취소</button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <div className="p-5 w-[340px] flex flex-col items-start">
+          <Dialog>
+            <DialogTrigger className="w-[300px] fixed bottom-5 outline-disabled-btn-l flex justify-center items-center gap-1 self-stretch">
+              파티 탈퇴
+            </DialogTrigger>
+            <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
+              <DialogTitle className="px-4 py-2"></DialogTitle>
+              <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m text-[#191919]">
+                파티를 나가시겠습니까?
+              </DialogDescription>
+              <div className="flex justify-center items-center mt-4 gap-4">
+                <button
+                  onClick={() => leavePartyMutation.mutate(userId)}
+                  className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
+                >
+                  나가기
+                </button>
+                <DialogClose>
+                  <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                    취소
+                  </button>
+                </DialogClose>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       ) : null}
     </div>
   );
