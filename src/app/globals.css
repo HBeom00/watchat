@@ -387,12 +387,9 @@ body {
 .commonEmailInput {
   @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
 }
-<<<<<<< HEAD
 .commonEmailInput:focus {
   outline: 1px solid #7f4af4;
 } /* 포커스 스타일 추가 */
-=======
->>>>>>> 9b5dab2e28995b449c0eda77c2855dae04918039
 
 .commonPasswordInput {
   @apply flex pl-4 pr-11 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
@@ -400,12 +397,9 @@ body {
 
 .commonInput::placeholder {
   @apply body-m text-Grey-400 flex-1;
-<<<<<<< HEAD
 }
 .commonInput {
   @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white body-m text-[#A8A8A8];
-=======
->>>>>>> 9b5dab2e28995b449c0eda77c2855dae04918039
 }
 
 .commonHelpText {
