@@ -41,9 +41,10 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
         <Image
           className={end ? 'rounded-sm brightness-50' : 'rounded-sm'}
           src={data.video_image}
-          layout="fill"
-          objectFit="cover"
           alt={data.video_name}
+          style={{ objectFit: 'cover' }}
+          sizes="196px"
+          fill
         />
         {end ? (
           <></>
@@ -55,13 +56,11 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       </div>
       <div className="flex flex-col items-center gap-1 self-stretch">
         <div className="flex flex-col items-start gap-1 self-stretch">
-          <div className="flex flex-row gap-1 text-Grey-600 label-l">
-            <p className="overflow-hidden whitespace-nowrap text-ellipsis break-all">{data.video_name}</p>
-            {data.episode_number ? <p>{data.episode_number}화</p> : <></>}
-          </div>
-          <p className="self-stretch text-static-black body-l-bold overflow-hidden whitespace-nowrap text-ellipsis break-all">
-            {data.party_name}
+          <p className="text-Grey-600 label-l text-overflow-hidden self-stretch">
+            {data.video_name}
+            {data.episode_number ? ' ' + data.episode_number + '화' : null}
           </p>
+          <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch">{data.party_name}</p>
         </div>
         <div className="flex flex-row items-end gap-1 self-stretch">
           {ownerInfo ? (
@@ -78,9 +77,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
                 }}
                 alt={`${ownerInfo[0].nickname}의 프로필`}
               />
-              <p className="text-Grey-900 label-m overflow-hidden whitespace-nowrap text-ellipsis break-all">
-                {ownerInfo[0].nickname}
-              </p>
+              <p className="text-Grey-900 label-m text-overflow-hidden">{ownerInfo[0].nickname}</p>
             </div>
           ) : (
             <></>

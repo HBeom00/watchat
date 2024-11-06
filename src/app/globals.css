@@ -467,6 +467,17 @@ select {
   border-radius: 0 0 4px 4px;
 }
 
+.text-overflow-hidden {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  align-self: stretch;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* ---------------------------------------------------------------------------------------------------- */
+
 /* 커스텀 스크롤바 스타일 */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px; /* 스크롤바 너비 */

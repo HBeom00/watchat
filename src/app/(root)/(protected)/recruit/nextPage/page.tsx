@@ -9,7 +9,7 @@ import browserClient from '../../../../../utils/supabase/client';
 import ParticipationButton from '@/components/button/ParticipationButton';
 import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
 // import Calendar from '@/components/Calendar/calendar';
 import Image from 'next/image';
@@ -21,6 +21,12 @@ const RecruitPage2 = () => {
   // const router = useRouter();
   const { limited_member, setRecruitDetails } = useRecruitStore();
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (partyNumber !== '') {
+      setOpen(true);
+    }
+  }, [partyNumber]);
 
   const { mutate: submitRecruit } = useMutation({
     mutationFn: async () => {
@@ -86,11 +92,20 @@ const RecruitPage2 = () => {
           .select();
       if (error) throw new Error('데이터 삽입 실패');
       alert('모집이 업로드 되었습니다.');
-      if (insertPartyData) {
+      if (insertPartyData !== null) {
         console.log('파티아이디', insertPartyData[0].party_id);
-        setPartyNumber(insertPartyData[0].party_id);
+        const { error: ownerInsertError } = await browserClient.from('team_user_profile').insert({
+          nickname: '익명',
+          profile_image:
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+          user_id: userId,
+          party_id: insertPartyData[0].party_id
+        });
 
-        setOpen(true);
+        if (ownerInsertError) {
+          alert('프로필 업로드에 실패하셨습니다.');
+        }
+        setPartyNumber(insertPartyData[0].party_id);
       }
     },
     onSuccess: async () => {

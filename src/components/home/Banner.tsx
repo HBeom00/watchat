@@ -5,11 +5,13 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useSearchStore } from '@/providers/searchStoreProvider';
+import { useSearchParams } from 'next/navigation';
 
 type PropType = {
   options?: EmblaOptionsType;
 };
 const Banner = (props: PropType) => {
+  const params = useSearchParams();
   const [emblaRef, emblaApi] = useEmblaCarousel(props.options);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [slidesInView, setSlidesInView] = useState(0);
@@ -33,7 +35,7 @@ const Banner = (props: PropType) => {
 
   return (
     <>
-      {searchText === '' ? (
+      {searchText === '' && params.get('watch') === null ? (
         <div className="embla w-full, h-full relative mt-[16px] overflow-hidden" ref={emblaRef}>
           <div className="embla_container flex  ">
             <div className="embla_slide flex flex-none w-full min-w-0 justify-around">
