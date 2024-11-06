@@ -244,7 +244,7 @@ const ParticipationForm = ({
         <button onClick={submitHandler} className="btn-l w-full" disabled={disabled}>
           저장
         </button>
-        <button className="px-5 py-3 h-12 text-Grey-400 w-full" onClick={skipHandler}>
+        <button className="px-5 py-3 h-12 text-Grey-400 w-full" onClick={skipHandler} disabled={disabled}>
           넘어가기
         </button>
       </div>
