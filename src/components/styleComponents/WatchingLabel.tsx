@@ -17,11 +17,11 @@ const WatchingLabel = ({ partyData }: { partyData: Party }) => {
         </div>
       ) : getViewStatus(partyData) === '모집중' ? (
         <div className="absolute top-3 left-3  text-sm bg-primary-50 py-1 px-3 rounded-[8px] text-primary-400 label-m-bold z-10">
-          <p>{partyData.situation} </p>
+          <p>{partyData.situation}</p>
         </div>
       ) : (
         <div className="absolute top-3 left-3 text-white text-sm bg-[#424242] py-1 px-3 rounded-[8px] label-m-bold z-10">
-          <p>{getViewStatus(partyData)} </p>
+          <p>{getViewStatus(partyData)}</p>
         </div>
       )}
     </>

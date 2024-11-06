@@ -27,7 +27,7 @@ export const inviteHandler = async (
   // 초대하기 전에 이미 참가한 멤버인지 확인
   const isMember = await isMemberExist(party_id, invitee);
   if (isMember) {
-    setMessage('이미 참가한 멤버입니다.');
+    setMessage('이미 참여중인 멤버입니다.');
     return;
   }
 

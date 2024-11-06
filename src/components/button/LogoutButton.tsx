@@ -14,7 +14,7 @@ const LogoutButton = () => {
     router.push('/login');
   };
   return (
-    <button className="flex w-full py-1 px-3 justify-center items-center" onClick={onClickLogoutBtn}>
+    <button className="selectDropBoxLast" onClick={onClickLogoutBtn}>
       로그아웃
     </button>
   );

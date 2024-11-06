@@ -219,8 +219,7 @@ const RecruitPage2 = () => {
         className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${
           isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
         } rounded-md font-semibold text-[15px]`}
-        onClick={(e) => {
-          e.preventDefault();
+        onClick={() => {
           if (!isRecruitButtonDisabled) {
             submitRecruit();
           }
