@@ -3,13 +3,14 @@
 import { UserInfo } from '@/types/teamUserProfile';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
-import { IoMdClose } from 'react-icons/io';
 import MemberList from './MemberList';
 import { Dialog, DialogClose } from '../ui/Dialog';
 import { DialogContent, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useRouter } from 'next/navigation';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import close_img from '../../../public/close.svg';
+import Image from 'next/image';
 
 const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: () => void; roomId: string }) => {
   const [isSelect, setIsSelect] = useState<string>('members');
@@ -105,7 +106,14 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
         isVisible ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
-      <IoMdClose className="w-6 h-6 shrink-0 mt-5 ml-5 mb-[88px] cursor-pointer" onClick={onClose} />
+      <Image
+        src={close_img}
+        alt="close_img"
+        width={24}
+        height={24}
+        className="w-6 h-6 shrink-0 mt-5 ml-5 mb-[88px] cursor-pointer"
+        onClick={onClose}
+      />
       {ownerId === userId ? (
         <div className="w-[340px] flex px-5 items-start">
           <button

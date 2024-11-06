@@ -49,12 +49,15 @@ const config: Config = {
           200: '#DCDCDC',
           300: '#C2C2C2',
           400: '#A8A8A8',
-          500: '#A8A8A8',
+          500: '#5C5C5C',
           600: '#8F8F8F',
           700: '#757575',
           800: '#424242',
           900: '#2A2A2A',
           1000: '#0F0F0F'
+        },
+        boxShadow: {
+          'custom-light': '0px 4px 4px 0px rgba(0, 0, 0, 0.05)'
         },
         static: { black: '#000', white: '#FFF' },
         muted: {

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UserInfo } from '@/types/teamUserProfile';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '../ui/Dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { follow, unfollow } from '@/store/followUnfollow';
 import award_image from '../../../public/award_star.svg';
 
@@ -95,17 +95,25 @@ const MemberList = ({
                 </button>
               ) : (
                 <Dialog>
-                  <DialogTrigger className="flex justify-end items-center gap-1 body-xs-bold text-Grey-400">
+                  <DialogTrigger className="flex justify-end items-center gap-1 text-Grey-400 font-bold text-xs">
                     내보내기
                   </DialogTrigger>
-                  <DialogContent>
-                    <DialogTitle>{`${el.nickname}님을 추방하시겠습니까?`}</DialogTitle>
-                    <div className="flex gap-2 justify-center items-center">
-                      <button className="btn-l body-m-bold" onClick={() => exitParty(el.user_id)}>
+                  <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
+                    <DialogTitle className="px-4 py-2"></DialogTitle>
+                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m text-[#191919]">
+                      정말 내보내시겠습니까?
+                    </DialogDescription>
+                    <div className="flex justify-center items-center mt-4 gap-4">
+                      <button
+                        className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
+                        onClick={() => exitParty(el.user_id)}
+                      >
                         나가기
                       </button>
                       <DialogClose>
-                        <button className="disabled-btn-l body-m-bold text-Grey-400">취소</button>
+                        <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                          취소
+                        </button>
                       </DialogClose>
                     </div>
                   </DialogContent>
