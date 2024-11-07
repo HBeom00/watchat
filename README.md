@@ -82,11 +82,13 @@
 <details>
 <summary>이현주</summary>
 
+
 - UX 기획 & 와이어프레임
   - UI 디자인
   - 디자인시스템 구성
   - 로고 & 그래픽 제작
   </details>
+
 
 <br/>
 
@@ -140,6 +142,7 @@
 
 - supabase 메서드(order,textSearch, gte, lte, range)를 이용하여 페이지네이션과 정렬 필터를 결합하였다
   ![Wachat-Chrome2024-11-0710-38-24-ezgif com-crop (2)](https://github.com/user-attachments/assets/e581defe-b412-4d2b-9319-5120821dafaf)
+
 - 디바운싱을 검색에 적용하여 데이터 요청횟수를 줄였다
 
 </details>
@@ -279,6 +282,7 @@
 ```
 
 </details>
+
 
 <h3><디자인 방면></h3>
 ➡️ 오류케이스에 대한 부분을 놓쳐 디자인 없이 들어간 경우가 있다
