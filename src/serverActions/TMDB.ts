@@ -123,3 +123,30 @@ export const fetchTvWatchProvider = async (
     return null;
   }
 };
+
+// TV 에피소드  PATH params (series_id, season_number, episode_number)
+
+export const fetchTvEpisode = async (
+  series_id: number,
+  season_number: number,
+  episode_number: number
+): Promise<{ runtime: number } | null> => {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}/episode/${episode_number}?language=ko-KR`,
+      options
+    );
+    const data = await res.json();
+
+    // 에피소드의 런타임이 있는 경우 반환
+    if (data && data.runtime) {
+      return { runtime: data.runtime };
+    } else {
+      console.warn('런타임 정보가 없습니다.');
+      return null;
+    }
+  } catch (err) {
+    console.error('TV 에피소드 정보 가져오기 중 오류 발생:', err);
+    return null;
+  }
+};

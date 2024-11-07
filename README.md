@@ -21,7 +21,7 @@
 
 #### 🔗 배포 링크 : [Watchat 바로가기](https://watchat.vercel.app/)
 
-#### 🪶 깃허브 주소 : [깃허브 바로가기](https://github.com/HBeom00/watchat)
+#### 🪶 깃허브 주소 : [깃허 바로가기](https://github.com/HBeom00/watchat)
 
 <br/>
 
@@ -29,18 +29,9 @@
 
 <details>
 <summary>김경혜</summary>
-
-- 상세페이지
-
-  - 참가하기
-  - 초대하기
-  - 채팅창 들어가는 시간(시청시간 10분 전후) 조절
-
-- 메인페이지
-  - 검색, 정렬 및 필터와 페이지네이션
-  - 헤더의 검색 필터 쿼리 스트링으로
-  - 드롭다운 제작
-
+ 
+ - 예시
+   - 예시
 </details>
 
 <details>
@@ -53,14 +44,29 @@
 <details>
 <summary>김태흔</summary>
  
- - 예시
-   - 예시
+ - 모집 페이지
+   - 검색창에서 영상 제목 검색 (api)
+   - 검색된 영상 제목을 기반으로 영상정보 자동입력
+   - 시청 날짜와 시청시간 선택
+   - supabase 데이터 베이스에 기입한 정보와 영화 정보 insert
+ - TMDB API 호출
+   - api 호출 (Multi Search, 
+, Movie Details
+, Movie Provider
+, Tv Details
+, Tv Provider
+, Tv Episode)
+- 배너 
+   - embla carusel 라이브러리 사용
+- 푸터
+- 헤더
+  - ui 만 구성
 </details>
 
 <details>
 <summary>신희범</summary>
  
- - 회원가입 / 소셜로그인
+ - 로그인/로그아웃
    - supabase auth를 활용한 로그인 기능 구현
    - 소셜 로그인(카카오, 구글) 기능 구현
  - 실시간 채팅
@@ -70,10 +76,8 @@
 <details>
 <summary>이현주</summary>
  
- - UX 기획 & 와이어프레임
-   - UI 디자인
-   - 디자인시스템 구성
-   - 로고 & 그래픽 제작
+ - 예시
+   - 예시
 </details>
 
 <br/>
@@ -85,11 +89,12 @@
 
 <br />
 
-- Supabase Auth Providers를 이용하여 소셜 로그인(카카오, 구글) 기능 구현
-- react-hook-form를 사용하여 로그인/회원가입 폼 구성
-- zod를 사용하여 실시간 유효성 검사 진행
-- tanstack query를 활용하여 사용자 로그인 유무 관리
-- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근
+**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현 >**
+
+- 소셜 로그인(카카오, 구글) 기능 구현
+- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
+- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
 ---
 
@@ -106,9 +111,12 @@
 
 <br />
 
-- Supabase Storage를 이용한 이미지 파일 관리
-- 플랫폼, 장르는 배열 형태로 상수화 하여 코드 간결성 및 유지 보수성 UP!!
-- 마이페이지의 프로필 편집과 코드가 비슷해서 공용 컴포넌트로 따로 분리하여 코드 재사용
+**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
+- 소셜 로그인(카카오, 구글) 기능 구현
+- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
+- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
 ---
 
@@ -121,17 +129,14 @@
  
 <br />
 
-**<supabase 메서드를 사용하여 페이지네이션과 정렬 필터 기능 구현>**
+**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
 
-- 헤더의 필터는 useSearchParams로 query string으로 필터링과 검색
+- 소셜 로그인(카카오, 구글) 기능 구현
+- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
+- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
-![Wachat-Chrome2024-11-0710-13-06-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/5cf30b72-ffd3-432c-8ec8-923619489fd7)
-
-- supabase 메서드(order,textSearch, gte, lte, range)를 이용하여 페이지네이션과 정렬 필터를 결합하였다
-
-![Wachat-Chrome2024-11-0710-38-24-ezgif com-crop (2)](https://github.com/user-attachments/assets/e581defe-b412-4d2b-9319-5120821dafaf)
-
-- 디바운싱을 검색에 적용하여 데이터 요청횟수를 줄였다
+---
 
 </details>
 
@@ -154,12 +159,15 @@
 
 <br />
 
-**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+**<TMDB API 를 사용하여 영상 이름을 기반으로 데이터 입력 및 가져오기>**
 
-- 소셜 로그인(카카오, 구글) 기능 구현
-- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
-- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
+- TMDB API Multi Search 를 사용해서 영상제목 입력시 영상 정보 가져오기
+- 검색 디바운싱
+- 가져온 영상 정보를 자동 입력 (포스터,플랫폼,런타임,회차,시즌)
+- (search로 가져온 영상\_id를 기반으로 Movie,Tv Detail api 사용 > 영상 정보 자동 입력)
+- TV 프로그램 시즌, 회차, 런타임 자동입력 (Tv Episode api 사용 (params(영상\_id, season_id, episode_id)))
+- 날짜, 시간 선택식으로 입력
+- 기입한 정보와 영상 정보 insert
 
 ---
 
@@ -172,12 +180,12 @@
 
 <br />
 
-**<참가하기, 초대하기, 영상 정보 확인, 채팅하기 입장 컨트롤>**
+**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
 
-- 참가하기 모달 창을 통해 파티 프로필을 작성하면 파티에 참가할 수 있습니다
-- 초대하기 모달 창을 통해 내가 팔로우한 사람을 현재 파티에 초대할 수 있습니다.
-- 시청 시간 10분 전후에 채팅하기 페이지로 이동할 수 있습니다.
-- 현재 파티의 정보나 시청 영상 정보를 확인 할 수 있습니다.
+- 소셜 로그인(카카오, 구글) 기능 구현
+- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
+- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
 ---
 
@@ -190,24 +198,126 @@
 
 <br />
 
-- Supabase Realtime을 활용하여 실시간 채팅 기능 구현
-- 영상 시청 흐름을 파악할 수 있도록 재생바 기능 구현
-- 공지 메세지 기능
-- 팔로우 / 언팔로우 기능
-- 추방하기 기능
-- 파티 탈퇴 기능
+**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
+- 소셜 로그인(카카오, 구글) 기능 구현
+- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
+- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
 </details>
 
 <br/>
 
-## 📂 프로젝트 구조
+## 📂 프로젝트 구조 <-ERD 및 아키텍쳐 들어갈 예정
 
 <details>
+<summary>폴더 구조</summary>
 
-<summary>ERD 구조</summary>
-
-![image](https://github.com/user-attachments/assets/e6aa6f64-2dec-48f7-bad7-8d821513d668)
+```
+📦src
+ ┣ 📂app
+ ┃ ┣ 📂(auth)
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂reset-password
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂signup
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂update-password
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📜auth-layout.tsx
+ ┃ ┃ ┗ 📜loading.tsx
+ ┃ ┣ 📂(root)
+ ┃ ┃ ┣ 📂(protected)
+ ┃ ┃ ┃ ┗ 📂mypage
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📂detail
+ ┃ ┃ ┃ ┗ 📂[category]
+ ┃ ┃ ┃ ┃ ┗ 📂[id]
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AllComments.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Comment.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Comments.tsx
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MyComments.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂api
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┃ ┣ 📂logout
+ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┃ ┣ 📂signup
+ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┃ ┗ 📜auth.ts
+ ┃ ┣ 📂auth
+ ┃ ┃ ┗ 📂callback
+ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┣ 📂fonts
+ ┃ ┃ ┣ 📜GeistMonoVF.woff
+ ┃ ┃ ┣ 📜GeistVF.woff
+ ┃ ┃ ┗ 📜PretendardVariable.woff2
+ ┃ ┣ 📜favicon.ico
+ ┃ ┣ 📜globals.css
+ ┃ ┣ 📜layout.tsx
+ ┃ ┣ 📜page.tsx
+ ┃ ┗ 📜providers.tsx
+ ┣ 📂components
+ ┃ ┣ 📂common
+ ┃ ┃ ┣ 📂Button
+ ┃ ┃ ┃ ┣ 📜GoogleButton.tsx
+ ┃ ┃ ┃ ┣ 📜KakaoButton.tsx
+ ┃ ┃ ┃ ┗ 📜LogoutButton.tsx
+ ┃ ┃ ┣ 📂Form
+ ┃ ┃ ┃ ┣ 📜LoginForm.tsx
+ ┃ ┃ ┃ ┣ 📜ResetPasswordForm.tsx
+ ┃ ┃ ┃ ┣ 📜SignUpForm.tsx
+ ┃ ┃ ┃ ┗ 📜UpdatePasswordForm.tsx
+ ┃ ┃ ┗ 📂InputFeild
+ ┃ ┃ ┃ ┗ 📜InputField.tsx
+ ┃ ┣ 📂layout
+ ┃ ┃ ┣ 📜Footer.tsx
+ ┃ ┃ ┗ 📜Header.tsx
+ ┃ ┣ 📂likes
+ ┃ ┃ ┗ 📜LikeButton.tsx
+ ┃ ┣ 📂mainPage
+ ┃ ┃ ┣ 📜CategoryNewsCard.tsx
+ ┃ ┃ ┣ 📜CategoryNewsList.tsx
+ ┃ ┃ ┣ 📜TopNewsCard.tsx
+ ┃ ┃ ┗ 📜TopNewsList.tsx
+ ┃ ┗ 📂mypage
+ ┃ ┃ ┣ 📜Card.tsx
+ ┃ ┃ ┣ 📜Comment.tsx
+ ┃ ┃ ┣ 📜Likes.tsx
+ ┃ ┃ ┣ 📜Modal.tsx
+ ┃ ┃ ┗ 📜Profile.tsx
+ ┣ 📂providers
+ ┃ ┗ 📜userStoreProvider.tsx
+ ┣ 📂public
+ ┃ ┣ 📂images
+ ┃ ┃ ┣ 📜default_img.jpg
+ ┃ ┃ ┗ 📜default_profile.jpeg
+ ┃ ┣ 📜google.png
+ ┃ ┣ 📜kakao.png
+ ┃ ┗ 📜news_image.jpg
+ ┣ 📂serverActions
+ ┃ ┣ 📜newsApi.ts
+ ┃ ┗ 📜profileActions.ts
+ ┣ 📂store
+ ┃ ┗ 📜user-store.ts
+ ┣ 📂types
+ ┃ ┣ 📜comment.ts
+ ┃ ┣ 📜mypageTypes.ts
+ ┃ ┗ 📜newsInfo.ts
+ ┣ 📂utils
+ ┃ ┣ 📂category
+ ┃ ┃ ┗ 📜categoryArr.ts
+ ┃ ┣ 📂supabase
+ ┃ ┃ ┣ 📜client.ts
+ ┃ ┃ ┣ 📜middleware.ts
+ ┃ ┃ ┣ 📜profileService.ts
+ ┃ ┃ ┗ 📜server.ts
+ ┃ ┗ 📜teamInfo.ts
+ ┗ 📜middleware.ts
+```
 
 </details>
 
@@ -236,43 +346,4 @@
 
 ## ⚔️ 트러블 슈팅
 
-<h3><기능 방면></h3>
-➡️ 다른 채팅방과 채팅이 공유되는 이슈
-<div>원인 : 같은 채널명으로 실시간 메세지를 구독하도록 설정</div>  
-<div>해결 : 분기가 필요했기 때문에 각 채팅방 채널명에 고유 번호를 할당 하였고, 필터링을 해주었다</div>
-<details>
-
-<summary> 참가하기 모달 창 오류</summary>
-
-- 참가하기 모달 창은 총 3군데에서 사용되고 한 곳에서는 사용자가 함부로 닫을 수 없지만 나머지 2곳에서는 마음대로 닫을 수 있어야 한다. 때문에 openclose trigger를 컨트롤 할 수 있도록 했다. 이를 고려하여 구성한 모달 창이 button태그 중복 사용으로 인한 chlid props 오류가 떠서 refactoring을 하게 되었다.
-
-  해결책들
-
-  1.  chlid의 버튼 태그를 div 태그로(실패)
-  2.  트리거를 따로 만들기(성공)
-  3.  2개의 open 컨트롤 상태값 합치기(성공)
-
-1. 첫번째 해결책은 트리거 버튼이 비동기 통신 로직을 가지고 있기 때문에 button 태그의 disabled 기능이 필요해서 기각되었다.
-2. 두번째 해결책은 얼추 성공하였는데 모달창으로 버튼을 감싸지 말고 모달창과 버튼을 따로 두는 방법을 선택했다. chlid props를 내려주지 않기 때문에 button 태그를 중복으로 사용하는 문제는 해결했다. 또한 별도로 존재하는 모달창의 트리거 버튼을 안 보이게 했다.
-3. 세번째 해결책으로 인해 최종적으로 모달 창 조정을 마쳤다. 기존에 open과 openControl이라는 2개의 상태값을 통해 모달 창을 컨트롤 했는데 이를 하나로 합치고 onOpenChange에서 이를 사용처에 따라 다르게 컨트롤 하도록 하였다.
-
-```
-<Dialog
-        open={openControl}
-        onOpenChange={() => {
-          if (openControl && path.includes('/recruit')) {
-            return setOpenControl(true);
-          }
-          return setOpenControl(!openControl);
-        }}
-      >
-```
-
-</details>
-
-<h3><디자인 방면></h3>
-➡️ 오류케이스에 대한 부분을 놓쳐 디자인 없이 들어간 경우가 있다
-<div>해결 : 회의 할 때 더 꼼꼼하게 신경써서 기획하기!!</div>
-➡️ 개발자 분들이 작업하면서 전달주시는데 다양한 경우를 고려한 기획이 필요할 것 같습니다
-<div>해결 : 이것 또한 모두가 같이 더욱 신경써서 기획하기..!!</div>
-➡️ 디자인 시스템 정리가 아직 미흡해서 기본화면과 호버 화면 등 전달에 대한 아쉬움이 있습니다
+- 예시시
