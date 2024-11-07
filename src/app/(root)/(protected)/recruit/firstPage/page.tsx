@@ -51,7 +51,7 @@ const RecruitFirstPage = () => {
       duration_time: 0,
       video_platform: [],
       video_image: '',
-      episode_number: null
+      episode_number: 0
     });
 
     // 캐시 초기화 재렌더링
@@ -133,6 +133,11 @@ const RecruitFirstPage = () => {
     const seasonNumber = useRecruitStore.getState().season_number; // 입력한 시즌
     const seriesId = useRecruitStore.getState().video_id;
 
+    // 회차 없을때 러닝타임 초기화
+    if (!episodeNum) {
+      setPartyInfo({ duration_time: 0 });
+      return;
+    }
     // media_type, episodeNumber, seasonNumber, seriesId가 존재할 때만 실행
     if (episodeNumber && seasonNumber && seriesId) {
       const episodeDetail = await fetchTvEpisode(seriesId, seasonNumber, episodeNumber);
@@ -203,17 +208,21 @@ const RecruitFirstPage = () => {
         )}
 
         <div className="space-y-[15px]">
-          {searchResults && media_type === 'tv'}
-          <div>
-            <h2>시즌</h2>
-            <input
-              type="text"
-              placeholder="시즌을 입력하세요"
-              value={season_number ?? ''}
-              onChange={(e) => seasonHandle(e.target.value)}
-              className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
-            />
-          </div>
+          {searchResults && media_type === 'tv' && (
+            <div>
+              <div className="flex">
+                <h2>시즌</h2>
+                <h2 className="text-purple-600">*</h2>
+              </div>
+              <input
+                type="text"
+                placeholder="시즌을 입력하세요"
+                value={season_number ?? ''}
+                onChange={(e) => seasonHandle(e.target.value)}
+                className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
+              />
+            </div>
+          )}
           {searchResults && media_type === 'tv' && (
             <div className="space-y-[20px]">
               <div>
@@ -224,7 +233,7 @@ const RecruitFirstPage = () => {
                 <input
                   type="text"
                   placeholder="시청할 회차를 입력하세요"
-                  value={episode_number ?? ''}
+                  value={episode_number}
                   onChange={(e) => episodeHandle(e.target.value)}
                   className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
                 />

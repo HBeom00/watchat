@@ -14,7 +14,7 @@ interface RecruitState {
   video_image: string;
   backdrop_image: string;
   video_id: number | null;
-  episode_number: number | null;
+  episode_number: number;
   situation: string;
   popularity: number | null;
   date_recruitment: Date | null;
@@ -37,11 +37,11 @@ export const useRecruitStore = create<RecruitState>((set) => ({
   video_image: '',
   backdrop_image: '',
   video_id: null,
-  episode_number: null,
+  episode_number: 0,
   situation: '모집중',
   popularity: null,
   date_recruitment: null,
-  season_number: null,
+  season_number: 1,
 
   // 아래 애들이 요청에 들어감
   setPartyInfo: (info) => set((state) => ({ ...state, ...info })),
