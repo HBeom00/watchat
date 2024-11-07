@@ -52,7 +52,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           sizes="196px"
           fill
         />
-        {end ? (
+        {end || getViewStatus(data) === '시청중' ? (
           <></>
         ) : (
           <div className="card-down">

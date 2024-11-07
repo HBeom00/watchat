@@ -19,7 +19,6 @@ export const memberFullCheckerOnServer = async (party_id: string) => {
 
   // 참가하고자 하는 파티의 인원 확인
   const { data } = await supabase.from('team_user_profile').select('profile_id').eq('party_id', party_id);
-  console.log('멤버가 가득 찼는지 확인', data);
 
   // 파티 인원제한과 파티인원을 대조하여 파티가 가득 찼는지 아닌지 확인
   if (!data) {

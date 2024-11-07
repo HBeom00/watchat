@@ -4,25 +4,25 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
-import { useSearchStore } from '@/providers/searchStoreProvider';
 import { useDetectClose } from '@/utils/hooks/useDetectClose';
 import { transPlatform } from '@/utils/transPlatform';
 import getRecruitList from '@/utils/recruitList';
 import getRecruitListPage from '@/utils/recuritListPage';
 import { useSearchParams } from 'next/navigation';
+import PageSelect from './PageSelect';
 
 const RecruitList = () => {
   const queryClient = useQueryClient();
   const params = useSearchParams();
   const orderRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
+
   // 정렬과 필터 상태값
-  const [order, setOrder] = useState<string>('start_date_time');
+  const [order, setOrder] = useState<string>('date_recruitment');
   const [orderOpen, setOrderOpen] = useDetectClose(orderRef, false);
   const [filter, setFilter] = useState<string>('전체');
   const [filterOpen, setFilterOpen] = useDetectClose(filterRef, false);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const searchWord = useSearchStore((state) => state.searchText);
   const partySituation = params.get('watch');
 
   // 페이지, 필터, 검색 등의 상태값 재정리
@@ -34,13 +34,14 @@ const RecruitList = () => {
   // 플랫폼 필터
   const bull = filter === '전체' ? 'name' : filter;
 
-  // 검색
-  const wordConversion = searchWord
+  const searchWord = decodeURIComponent(params.get('search') + '');
+  let wordConversion = searchWord
     .split(' ')
     .map((n) => {
       return `${n}+`;
     })
     .join('');
+  wordConversion = wordConversion === 'null+' ? '+' : wordConversion;
 
   // 현재시간
   const d = new Date();
@@ -51,7 +52,7 @@ const RecruitList = () => {
   const { data: pageData, isLoading: isPageLoading } = useQuery({
     queryKey: ['recruitListPages'],
     queryFn: async () => {
-      const allPage = await getRecruitListPage(wordConversion, partySituation, order, bull, now, pageSlice);
+      const allPage = await getRecruitListPage(wordConversion, partySituation, bull, now, pageSlice);
       return allPage;
     }
   });
@@ -72,11 +73,12 @@ const RecruitList = () => {
     queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
   }, [order, filter, pageNumber, searchWord, partySituation, queryClient]);
 
+  // 페이지 리셋
+  // 추후 리펙토링 필요
+  // 페이지를 query로 관리하는 등의
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['recruitList'] });
-    queryClient.invalidateQueries({ queryKey: ['recruitListPages'] });
     setPageNumber(1);
-  }, [order, filter, searchWord, partySituation, queryClient]);
+  }, [filter, searchWord, partySituation, queryClient]);
 
   if (isLoading || isPageLoading) <div>Loading...</div>;
 
@@ -119,7 +121,7 @@ const RecruitList = () => {
             {/* 정렬 드롭다운 박스 */}
             <div ref={orderRef} className="relative z-20">
               <button onClick={() => setOrderOpen(!orderOpen)} className="selectBox">
-                <p>{order === 'start_date_time' ? '최신순' : '인기순'}</p>
+                <p>{order === 'date_recruitment' ? '최신순' : order === 'start_date_time' ? '날짜순' : '인기순'}</p>
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
                   <mask id="mask0_1043_34855" maskUnits="userSpaceOnUse" x="0" y="0" width="17" height="16">
                     <rect x="0.5" width="16" height="16" fill="#D9D9D9" />
@@ -134,7 +136,7 @@ const RecruitList = () => {
               </button>
               {orderOpen && (
                 <div className="selectDropBox">
-                  <button className="selectDropBoxIn" onClick={() => setOrder('start_date_time')}>
+                  <button className="selectDropBoxIn" onClick={() => setOrder('date_recruitment')}>
                     최신순
                   </button>
                   <button className="selectDropBoxIn" onClick={() => setOrder('start_date_time')}>
@@ -176,7 +178,7 @@ const RecruitList = () => {
                   <button className="selectDropBoxIn" onClick={() => setFilter('wavve')}>
                     웨이브
                   </button>
-                  <button className="selectDropBoxIn" onClick={() => setFilter('Disney Plus')}>
+                  <button className="selectDropBoxIn" onClick={() => setFilter('Disney+Plus')}>
                     디즈니플러스
                   </button>
                   <button className="selectDropBoxIn" onClick={() => setFilter('Coupang')}>
@@ -224,66 +226,8 @@ const RecruitList = () => {
           </div>
 
           {/* 페이지 셀렉트 */}
-          {data && data.length > 0 ? (
-            <div className="flex w-full mt-[31.5px] mb-[29.5px] justify-center items-center">
-              <div className="flex flex-row gap-1 justify-center items-center text-static-black body-xs ">
-                <button onClick={() => setPageNumber(1)} className="p-[10px]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M10.75 0.596249L11.8038 1.65L7.20375 6.25L11.8038 10.85L10.75 11.9037L5.09625 6.25L10.75 0.596249ZM1.5 0.5L1.5 12H1.00536e-06L0 0.5L1.5 0.5Z"
-                      fill="#2A2A2A"
-                    />
-                  </svg>
-                </button>
-                <button onClick={() => setPageNumber((now) => (now !== 1 ? now - 1 : now))} className="px-3 py-[10px]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="13" viewBox="0 0 7 13" fill="none">
-                    <path
-                      d="M2.1075 6.50043L6.7075 11.1004L5.65375 12.1542L0 6.50043L5.65375 0.84668L6.7075 1.90043L2.1075 6.50043Z"
-                      fill="#2A2A2A"
-                    />
-                  </svg>
-                </button>
-                {pageData &&
-                  Array.from({ length: pageData })
-                    .map((arr, i) => {
-                      return i + 1;
-                    })
-                    .map((page) => {
-                      return (
-                        <button
-                          className={
-                            page === pageNumber
-                              ? 'flex w-8 h-8 bg-primary-400 rounded-full justify-center items-center self-stretch text-static-white text-center'
-                              : 'flex w-8 h-8 justify-center items-center self-stretch text-center'
-                          }
-                          key={page}
-                          onClick={() => setPageNumber(page)}
-                        >
-                          {page}
-                        </button>
-                      );
-                    })}
-                <button
-                  onClick={() => setPageNumber((now) => (now !== pageData ? now + 1 : now))}
-                  className="px-3 py-[10px]"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="13" viewBox="0 0 7 13" fill="none">
-                    <path
-                      d="M4.6 6.50043L0 1.90043L1.05375 0.84668L6.7075 6.50043L1.05375 12.1542L0 11.1004L4.6 6.50043Z"
-                      fill="#2A2A2A"
-                    />
-                  </svg>
-                </button>
-                <button onClick={() => setPageNumber(pageData ? pageData : 1)} className="p-[10px]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M1.05375 11.9038L0 10.85L4.6 6.25L0 1.65L1.05375 0.596249L6.7075 6.25L1.05375 11.9038ZM10.3038 12V0.5H11.8038V12H10.3038Z"
-                      fill="#2A2A2A"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
+          {data && data.length > 0 && pageData ? (
+            <PageSelect pageData={pageData} pageNumber={pageNumber} setPageNumber={setPageNumber} />
           ) : (
             <></>
           )}

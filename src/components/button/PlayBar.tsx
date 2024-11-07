@@ -23,12 +23,11 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
 
   // 플레이타임
   // 초
-  const [playTime, setPlayTime] = useState<number>(getPlayTime(startPlayTime));
+  const [playTime, setPlayTime] = useState<number>(0);
 
   if (duration * 60 > playTime) {
     setTimeout(() => setPlayTime(getPlayTime(startPlayTime)), 1000);
   }
-
   return (
     <div className="pt-2 pb-4 px-4 flex flex-col items-start gap-2 self-stretch bg-white">
       {/* 현재 진행 시간 */}
@@ -88,3 +87,5 @@ const nowTimeDisplay = (playTime: number) => {
   const seconds = playTime % 60 < 10 ? `0${playTime % 60}` : String(playTime % 60);
   return `${hours}:${minutes}:${seconds}`;
 };
+
+// const hourMultiply = 60*60
