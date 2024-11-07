@@ -133,7 +133,8 @@ const RecruitFirstPage = () => {
     const seasonNumber = useRecruitStore.getState().season_number; // 입력한 시즌
     const seriesId = useRecruitStore.getState().video_id; // 영상 아이디
 
-    setPartyInfo({ episode_number: Number(episodeNum) });
+    setPartyInfo({ episode_number: episodeNumber });
+
     // 회차 없을때 러닝타임 초기화
     if (!episodeNum) {
       setPartyInfo({ duration_time: 0 });
@@ -204,12 +205,12 @@ const RecruitFirstPage = () => {
       </div>
       <div className="flex space-x-[20px] mt-[16px]">
         {/* 포스터 */}
-        {searchResults && video_image && (
+        {video_name && video_image && (
           <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[351px] rounded-md" />
         )}
 
         <div className="space-y-[15px]">
-          {searchResults && media_type === 'tv' && (
+          {video_image && media_type === 'tv' && season_number && (
             <div>
               <div className="flex">
                 <h2>시즌</h2>
@@ -224,7 +225,7 @@ const RecruitFirstPage = () => {
               />
             </div>
           )}
-          {searchResults && media_type === 'tv' && (
+          {video_image && media_type === 'tv' && season_number && (
             <div className="space-y-[20px]">
               <div>
                 <div className="flex">
@@ -234,7 +235,7 @@ const RecruitFirstPage = () => {
                 <input
                   type="text"
                   placeholder="시청할 회차를 입력하세요"
-                  value={episode_number}
+                  value={episode_number || ''}
                   onChange={(e) => episodeHandle(e.target.value)}
                   className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
                 />
@@ -242,7 +243,7 @@ const RecruitFirstPage = () => {
             </div>
           )}
 
-          {searchResults && video_image && (
+          {video_image && video_image && (
             <div>
               <div className="flex">
                 <h2>러닝타임</h2>
@@ -259,7 +260,7 @@ const RecruitFirstPage = () => {
                 <input
                   type="text"
                   placeholder="분단위로 입력하세요"
-                  value={duration_time !== 0 ? duration_time : ''}
+                  value={duration_time || ''}
                   onChange={(e) => {
                     const value = Number(e.target.value);
                     if (value <= 480) {
@@ -283,7 +284,7 @@ const RecruitFirstPage = () => {
           )}
           {/* 플랫폼 */}
 
-          {searchResults && video_platform && video_platform.length > 0 ? (
+          {video_image && video_platform && video_platform.length > 0 ? (
             <div>
               <h2>영상 플랫폼</h2>
               <div className="flex space-x-4 mt-2">
@@ -297,7 +298,8 @@ const RecruitFirstPage = () => {
               </div>
             </div>
           ) : (
-            video_name && (
+            video_image &&
+            video_image && (
               <div>
                 <h2>영상 플랫폼</h2>
                 <p>제공 플랫폼이 존재하지 않습니다.</p>
