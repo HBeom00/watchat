@@ -1,24 +1,27 @@
 'use client';
 
-import { useSearchStore } from '@/providers/searchStoreProvider';
 // import { useUserStore } from '@/providers/userStoreProvider';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import MyProfileButton from './MyProfileButton';
 import GoRecruitButton from './GoRecruitButton';
 import { useQuery } from '@tanstack/react-query';
 import browserClient from '@/utils/supabase/client';
 import SearchBar from './SearchBar';
+import { useCallback } from 'react';
 
 const Header = () => {
-  const changeSearchWord = useSearchStore((state) => state.changeSearchWord);
+  const searchParams = useSearchParams();
 
-  const pathname = usePathname();
-  const params = useSearchParams();
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
 
-  if (pathname !== '/') {
-    changeSearchWord('');
-  }
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   // 유저 ID 가져오기
   const { data: isUser } = useQuery({
@@ -41,7 +44,7 @@ const Header = () => {
     initialData: false // 초기값을 false로 설정
   });
 
-  const filter = params.get('watch');
+  const filter = searchParams.get('watch');
 
   return (
     <div className=" fixed z-50 w-full h-[80px]  flex items-center justify-center  flex-shrink-0 border-solid border-b-[1px] border-gray-200 bg-white">
@@ -99,13 +102,22 @@ const Header = () => {
             </svg>
           </Link>
           <div className="flex flex-row h-7 gap-8 items-center text-xl font-bold tracking-[-0.4px]">
-            <Link href={'/'} className={filter === null ? 'text-gray-900' : 'text-gray-400'}>
+            <Link
+              href={'/?' + createQueryString('watch', '')}
+              className={filter === '' || filter === null ? 'text-gray-900' : 'text-gray-400'}
+            >
               전체
             </Link>
-            <Link href={'/?watch=시청중'} className={filter === '시청중' ? 'text-gray-900' : 'text-gray-400'}>
+            <Link
+              href={'/?' + createQueryString('watch', 'current')}
+              className={filter === 'current' ? 'text-gray-900' : 'text-gray-400'}
+            >
               시청중
             </Link>
-            <Link href={'/?watch=모집중'} className={filter === '모집중' ? 'text-gray-900' : 'text-gray-400'}>
+            <Link
+              href={'/?' + createQueryString('watch', 'recruiting')}
+              className={filter === 'recruiting' ? 'text-gray-900' : 'text-gray-400'}
+            >
               모집중
             </Link>
           </div>

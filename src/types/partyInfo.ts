@@ -18,6 +18,7 @@ export type partyInfo = {
   backdrop_image: string;
   start_date_time: string;
   end_time: string;
+  date_recruitment: string | null;
 };
 export type platform = { logoUrl: string; name: string };
 
