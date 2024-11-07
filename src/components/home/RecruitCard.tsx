@@ -34,13 +34,18 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   return (
     <Link
       href={`/party/${data.party_id}`}
-      className="relative flex flex-col w-[196px] items-start pb-3 gap-2 flex-shrink-0"
+      className="relative flex flex-col w-[196px] items-start pb-3 gap-2 flex-shrink-0 group"
     >
-      <div className="relative flex w-[196px] h-[280px] py-5 items-start gap-8 self-stretch rounded-sm">
+      <div className="relative flex w-[196px] h-[280px] py-5 items-start gap-8 self-stretch rounded-sm overflow-hidden">
         <WatchingLabel partyData={data} />
         {platform ? <PlatformImageCard platform={platform} /> : <></>}
+
         <Image
-          className={end ? 'rounded-sm brightness-50' : 'rounded-sm'}
+          className={
+            end
+              ? 'rounded-sm brightness-50  group-hover:scale-105 transition duration-300'
+              : 'rounded-sm  group-hover:scale-105 transition duration-300'
+          }
           src={data.video_image}
           alt={data.video_name}
           style={{ objectFit: 'cover' }}
@@ -61,7 +66,9 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
             {data.video_name}
             {data.episode_number ? ' ' + data.episode_number + '화' : null}
           </p>
-          <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch">{data.party_name}</p>
+          <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
+            {data.party_name}
+          </p>
         </div>
         <div className="flex flex-row items-end gap-1 self-stretch">
           {ownerInfo ? (

@@ -265,7 +265,7 @@ body {
 
 /* custom button ------------------------------------------------------------------------------------ */
 .btn-xl {
-  @apply px-6 py-4 h-14 bg-primary-400 rounded-lg text-white font-semibold text-base;
+  @apply px-6 py-4 h-14 bg-primary-400 rounded-lg text-white font-semibold text-base transition duration-300;
 }
 .btn-xl:hover {
   @apply bg-primary-500;
@@ -273,7 +273,7 @@ body {
 
 /* Large Button */
 .btn-l {
-  @apply px-5 py-3 h-12 bg-primary-400 rounded-lg text-white font-semibold text-base;
+  @apply px-5 py-3 h-12 bg-primary-400 rounded-lg text-white font-semibold text-base transition duration-300;
 }
 .btn-l:hover {
   @apply bg-primary-500;
@@ -281,7 +281,7 @@ body {
 
 /* Medium Button */
 .btn-m {
-  @apply px-4 py-2 h-10 bg-primary-400 rounded-lg text-white font-semibold text-sm;
+  @apply px-4 py-2 h-10 bg-primary-400 rounded-lg text-white font-semibold text-sm transition duration-300;
 }
 .btn-m:hover {
   @apply bg-primary-500;
@@ -289,7 +289,7 @@ body {
 
 /* Small Button */
 .btn-s {
-  @apply px-3 py-1.5 h-8 bg-primary-400 rounded-lg;
+  @apply px-3 py-1.5 h-8 bg-primary-400 rounded-lg transition duration-300;
 }
 .btn-s:hover {
   @apply bg-primary-500;
@@ -298,7 +298,7 @@ body {
 
 /* Extra Large Outline Button */
 .outline-btn-xl {
-  @apply px-6 py-4 h-14 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base;
+  @apply px-6 py-4 h-14 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base transition duration-300;
 }
 .outline-btn-xl:hover {
   @apply bg-primary-50;
@@ -306,7 +306,7 @@ body {
 
 /* Large Outline Button */
 .outline-btn-l {
-  @apply px-5 py-3 h-12 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base;
+  @apply px-5 py-3 h-12 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base transition duration-300;
 }
 .outline-btn-l:hover {
   @apply bg-primary-50;
@@ -314,7 +314,7 @@ body {
 
 /* Medium Outline Button */
 .outline-btn-m {
-  @apply px-4 py-2 h-10 border border-primary-400 rounded-lg text-primary-400 font-semibold text-sm;
+  @apply px-4 py-2 h-10 border border-primary-400 rounded-lg text-primary-400 font-semibold text-sm transition duration-300;
 }
 .outline-btn-m:hover {
   @apply bg-primary-50;
@@ -322,7 +322,7 @@ body {
 
 /* Small Outline Button */
 .outline-btn-s {
-  @apply px-3 py-1.5 h-8 border border-primary-400 rounded-lg text-primary-400 font-semibold text-xs;
+  @apply px-3 py-1.5 h-8 border border-primary-400 rounded-lg text-primary-400 font-semibold text-xs transition duration-300;
 }
 .outline-btn-s:hover {
   @apply bg-primary-50;
@@ -421,7 +421,7 @@ body {
 }
 
 .selectDropBoxIn {
-  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] text-Grey-600;
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] text-Grey-600 transition duration-300;
 }
 
 .selectDropBoxIn:hover {
@@ -429,7 +429,7 @@ body {
 }
 
 .selectDropBoxLast {
-  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch;
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch transition duration-300;
 }
 
 .selectDropBoxLast:hover {
@@ -521,6 +521,7 @@ select {
 
 .react-datepicker__day {
   padding-top: 5px !important;
+  transition: 0.3s;
 }
 
 .react-datepicker__day:hover {
@@ -612,6 +613,7 @@ select {
   padding: 25px !important;
   font-size: 25px !important;
   text-align: center !important;
+  transition: 0.3s;
 }
 
 .react-datepicker__time-list-item:hover {

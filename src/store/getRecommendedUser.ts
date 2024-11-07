@@ -1,6 +1,7 @@
 // 팔로우 추천 ( 이전 파티원 ) 목록 가져오기
 
 import browserClient from '@/utils/supabase/client';
+import { getFollowerData } from './getFollowData';
 
 // 멤버 타입 정의
 interface Member {
@@ -16,6 +17,7 @@ interface RecentParticipantsData {
   party_name: string;
   episode_number?: number;
   media_type: string;
+  end_time: string;
   team_user_profile: {
     user: Member;
   }[];
@@ -45,6 +47,15 @@ export const getRecommendedMembers = async (userId?: string) => {
   // 차단된 사용자 목록에서 중복 제거
   const bannedUserIds = Array.from(new Set(bannedUsersData.map((bannedUser) => bannedUser.banned_user)));
 
+  // 팔로우 데이터 가져오기
+  const result = await getFollowerData(userId);
+
+  // 팔로우 데이터에서 팔로워 목록만 followerData에 담아줌
+  const followerData = result !== 0 ? result.followerData : [];
+
+  // 팔로잉된 사용자 목록에서 user_id만 추출
+  const followedUserIds = followerData?.map((user) => user.user_id) || [];
+
   const { data, error } = await browserClient
     .from('party_info')
     .select(
@@ -55,6 +66,7 @@ export const getRecommendedMembers = async (userId?: string) => {
       episode_number,
       media_type,
       watch_date,
+      end_time,
       team_user_profile (
         user: user_id (
           nickname,
@@ -64,7 +76,6 @@ export const getRecommendedMembers = async (userId?: string) => {
       )
         `
     )
-    .eq('situation', '종료')
     .gte('watch_date', oneWeekAgo.toISOString().split('T')[0]) // 7일 전까지의 데이터만 가져온다
     .returns<RecentParticipantsData[]>();
 
@@ -73,11 +84,16 @@ export const getRecommendedMembers = async (userId?: string) => {
     return [];
   }
 
-  // 추천 목록에서 차단된 사용자 필터링
+  // 추천 목록에서 사용자 본인, 차단된 사용자, 이미 팔로우된 유저 필터링
   const filteredData = data
     .map((party) => ({
       ...party,
-      team_user_profile: party.team_user_profile.filter((profile) => !bannedUserIds.includes(profile.user.user_id))
+      team_user_profile: party.team_user_profile.filter(
+        (profile) =>
+          profile.user.user_id !== userId &&
+          !bannedUserIds.includes(profile.user.user_id) &&
+          !followedUserIds.includes(profile.user.user_id)
+      )
     }))
     .filter((party) => party.team_user_profile.length > 0); // 필터링된 프로필이 있는 파티만 유지
   return filteredData;
