@@ -198,7 +198,9 @@ ___
 
 ---
 
-![파티-모집](https://github.com/user-attachments/assets/d59bf6b3-2184-4798-b926-1da054a1d6fe)
+![2024-11-07-12-42-04](https://github.com/user-attachments/assets/f138cf64-0bc0-4162-bcba-de5f93a67a50)
+
+
 
 </details>
 
