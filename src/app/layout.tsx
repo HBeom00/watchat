@@ -4,7 +4,6 @@ import './globals.css';
 import Providers from '@/providers/queryProvider';
 import { createClient } from '@/utils/supabase/server';
 import { UserStoreProvider } from '@/providers/userStoreProvider';
-import { SearchProvider } from '@/providers/searchStoreProvider';
 import LayoutContent from '@/components/layout/LayoutContent';
 
 export const metadata: Metadata = {
@@ -28,11 +27,9 @@ export default async function RootLayout({
     <html lang="ko">
       <body className={`antialiased`}>
         <UserStoreProvider isUser={!!user}>
-          <SearchProvider>
-            <Providers>
-              <LayoutContent>{children}</LayoutContent>
-            </Providers>
-          </SearchProvider>
+          <Providers>
+            <LayoutContent>{children}</LayoutContent>
+          </Providers>
         </UserStoreProvider>
       </body>
     </html>

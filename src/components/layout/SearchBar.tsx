@@ -1,14 +1,27 @@
-import { useSearchStore } from '@/providers/searchStoreProvider';
 import useDebounce from '@/utils/hooks/useDebounce';
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 const SearchBar = () => {
   const [text, setText] = useState<string>('');
   const debounce = useDebounce(text, 1000);
-  const changeSearchWord = useSearchStore((state) => state.changeSearchWord);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, encodeURIComponent(value));
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   useEffect(() => {
-    changeSearchWord(debounce);
+    if (debounce !== null) {
+      router.push('/?' + createQueryString('search', debounce));
+    }
   }, [debounce]);
 
   return (

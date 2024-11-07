@@ -6,12 +6,13 @@ import { getViewStatus } from '@/utils/viewStatus';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
-import { useSearchStore } from '@/providers/searchStoreProvider';
 import { useSearchParams } from 'next/navigation';
 
 const MyParty = () => {
   const params = useSearchParams();
-  const searchText = useSearchStore((state) => state.searchText);
+  const filter = params.get('watch');
+  const searchText = params.get('search');
+
   const { data: userId, isLoading: userLoading } = useQuery({
     queryKey: ['loginUser'],
     queryFn: () => getLoginUserIdOnClient()
@@ -49,7 +50,7 @@ const MyParty = () => {
   if (isLoading || userLoading) <div>Loading...</div>;
   return (
     <>
-      {searchText === '' && userId && params.get('watch') === null ? (
+      {(filter === '' || filter === null) && (searchText === '' || searchText === null) && userId ? (
         <div className="flex flex-col gap-[18px] pt-8 pb-[18px] border-solid border-Grey-100 border-b-[1px]">
           <p>MY 파티</p>
           {data && data.length > 0 ? (
