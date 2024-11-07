@@ -1,4 +1,5 @@
 # 🫂 ![logo](https://github.com/user-attachments/assets/7649a528-d89c-4256-ba1a-d77534cf5f61) 🫂
+
 ### 여러 사람들과 함께 소통하며 OTT를 즐기고 싶을땐?
 
 ![carousel (2)](https://github.com/user-attachments/assets/6e0bfa15-87d7-495d-aa18-a430babf22b4)
@@ -8,20 +9,24 @@
 
 ## 🫂 팀원 소개
 
-| | 김경혜 | 홍연주 | 김태흔 | 신희범 | 이현주 |
-| :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
-| 역할 | 리더/FE | 부리더/FE | 팀원/FE | 팀원/FE | 팀원/DS |
-| Github | <a href=https://github.com/nangnanang> @nangnanang </a> | <a href=https://github.com/play93> @play93 </a> | <a href=https://github.com/taeheun01> @taeheun01 </a> | <a href=https://github.com/HBeom00> @HBeom00 </a> | <a href=https://blog.naver.com/wezzzle> @wezzzle </a> |
-| Blog | <a href=https://fpzmfks.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://fpzmfks.tistory.com"> </a> | <a href=https://playhong.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://playhong.tistory.com/"> </a> | <a href=https://earl-grey-tea.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://earl-grey-tea.tistory.com/"> </a> | <a href=https://velog.io/@hbeom00/posts> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://velog.io/@hbeom00/posts"> </a> | <a href=https://blog.naver.com/wezzzle> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://blog.naver.com/wezzzle"> </a> |
+|        |                                                                                        김경혜                                                                                        |                                                                                         홍연주                                                                                          |                                                                                              김태흔                                                                                               |                                                                                         신희범                                                                                          |                                                                                        이현주                                                                                         |
+| :----: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|  역할  |                                                                                       리더/FE                                                                                        |                                                                                        부리더/FE                                                                                        |                                                                                              팀원/FE                                                                                              |                                                                                         팀원/FE                                                                                         |                                                                                        팀원/DS                                                                                        |
+| Github |                                                               <a href=https://github.com/nangnanang> @nangnanang </a>                                                                |                                                                     <a href=https://github.com/play93> @play93 </a>                                                                     |                                                                       <a href=https://github.com/taeheun01> @taeheun01 </a>                                                                       |                                                                    <a href=https://github.com/HBeom00> @HBeom00 </a>                                                                    |                                                                 <a href=https://blog.naver.com/wezzzle> @wezzzle </a>                                                                 |
+|  Blog  | <a href=https://fpzmfks.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://fpzmfks.tistory.com"> </a> | <a href=https://playhong.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://playhong.tistory.com/"> </a> | <a href=https://earl-grey-tea.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://earl-grey-tea.tistory.com/"> </a> | <a href=https://velog.io/@hbeom00/posts> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://velog.io/@hbeom00/posts"> </a> | <a href=https://blog.naver.com/wezzzle> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://blog.naver.com/wezzzle"> </a> |
 
 #### 🕓 작업 기간 : 24.10.18 ~ 24.11.07
+
 #### 📆 팀 노션 : [팀 노션 바로가기](https://www.notion.so/teamsparta/5-5-1222dc3ef51481a587efd07a9090088f)
+
 #### 🔗 배포 링크 : [Watchat 바로가기](https://watchat.vercel.app/)
+
 #### 🪶 깃허브 주소 : [깃허 바로가기](https://github.com/HBeom00/watchat)
 
 <br/>
 
 ## ⚔️ 파트 분배
+
 <details>
 <summary>김경혜</summary>
  
@@ -39,8 +44,23 @@
 <details>
 <summary>김태흔</summary>
  
- - 예시
-   - 예시
+ - 모집 페이지
+   - 검색창에서 영상 제목 검색 (api)
+   - 검색된 영상 제목을 기반으로 영상정보 자동입력
+   - 시청 날짜와 시청시간 선택
+   - supabase 데이터 베이스에 기입한 정보와 영화 정보 insert
+ - TMDB API 호출
+   - api 호출 (Multi Search, 
+, Movie Details
+, Movie Provider
+, Tv Details
+, Tv Provider
+, Tv Episode)
+- 배너 
+   - embla carusel 라이브러리 사용
+- 푸터
+- 헤더
+  - ui 만 구성
 </details>
 
 <details>
@@ -69,14 +89,19 @@
 
 <br />
 
-**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현 >**
+
 - 소셜 로그인(카카오, 구글) 기능 구현
 - 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
 - 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕ 
-___
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
+
+---
+
 ![회원가입_수정본 (1)](https://github.com/user-attachments/assets/52200771-3680-4aae-80d0-e990ab29ad7a)
-___
+
+---
+
 ![스크린샷 2024-11-07 043849](https://github.com/user-attachments/assets/c1b327c7-d15c-40f2-9ae5-eb00cf6591ef)
 
 </details>
@@ -87,13 +112,15 @@ ___
 <br />
 
 **<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
 - 소셜 로그인(카카오, 구글) 기능 구현
 - 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
 - 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕ 
-___
-![개인정보기입](https://github.com/user-attachments/assets/b8879fda-4a43-49c2-b6ed-aea6347a5387)
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
+---
+
+![개인정보기입](https://github.com/user-attachments/assets/b8879fda-4a43-49c2-b6ed-aea6347a5387)
 
 </details>
 
@@ -103,12 +130,13 @@ ___
 <br />
 
 **<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
 - 소셜 로그인(카카오, 구글) 기능 구현
 - 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
 - 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
 - register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
-___
 
+---
 
 </details>
 
@@ -118,10 +146,11 @@ ___
 <br />
 
 **<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
 - 소셜 로그인(카카오, 구글) 기능 구현
 - 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
 - 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕ 
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
 
 </details>
 
@@ -130,12 +159,18 @@ ___
 
 <br />
 
-**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
-- 소셜 로그인(카카오, 구글) 기능 구현
-- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
-- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
-___
+**<TMDB API 를 사용하여 영상 이름을 기반으로 데이터 입력 및 가져오기>**
+
+- TMDB API Multi Search 를 사용해서 영상제목 입력시 영상 정보 가져오기
+- 검색 디바운싱
+- 가져온 영상 정보를 자동 입력 (포스터,플랫폼,런타임,회차,시즌)
+- (search로 가져온 영상\_id를 기반으로 Movie,Tv Detail api 사용 > 영상 정보 자동 입력)
+- TV 프로그램 시즌, 회차, 런타임 자동입력 (Tv Episode api 사용 (params(영상\_id, season_id, episode_id)))
+- 날짜, 시간 선택식으로 입력
+- 기입한 정보와 영상 정보 insert
+
+---
+
 ![파티-모집](https://github.com/user-attachments/assets/d59bf6b3-2184-4798-b926-1da054a1d6fe)
 
 </details>
@@ -146,14 +181,16 @@ ___
 <br />
 
 **<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
 - 소셜 로그인(카카오, 구글) 기능 구현
 - 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
 - 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
 - register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
-___
+
+---
+
 ![파티-상세](https://github.com/user-attachments/assets/f48a2408-d298-4a47-b62f-6b232154311a)
 
- 
 </details>
 
 <details>
@@ -162,11 +199,12 @@ ___
 <br />
 
 **<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+
 - 소셜 로그인(카카오, 구글) 기능 구현
 - 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
 - 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕ 
- 
+- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
+
 </details>
 
 <br/>
@@ -285,7 +323,6 @@ ___
 
 <br/>
 
-
 ## 🛠️ 기술 스택
 
 <div><img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white"></div>
@@ -308,4 +345,5 @@ ___
 <br/>
 
 ## ⚔️ 트러블 슈팅
+
 - 예시시

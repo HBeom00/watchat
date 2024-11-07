@@ -131,8 +131,9 @@ const RecruitFirstPage = () => {
   const episodeHandle = async (episodeNum: string) => {
     const episodeNumber = Number(episodeNum);
     const seasonNumber = useRecruitStore.getState().season_number; // 입력한 시즌
-    const seriesId = useRecruitStore.getState().video_id;
+    const seriesId = useRecruitStore.getState().video_id; // 영상 아이디
 
+    setPartyInfo({ episode_number: Number(episodeNum) });
     // 회차 없을때 러닝타임 초기화
     if (!episodeNum) {
       setPartyInfo({ duration_time: 0 });
