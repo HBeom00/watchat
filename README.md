@@ -82,11 +82,13 @@
 <details>
 <summary>이현주</summary>
 
- - UX 기획 & 와이어프레임
-   - UI 디자인
-   - 디자인시스템 구성
-   - 로고 & 그래픽 제작
-</details>
+
+- UX 기획 & 와이어프레임
+  - UI 디자인
+  - 디자인시스템 구성
+  - 로고 & 그래픽 제작
+  </details>
+
 
 <br/>
 
@@ -137,8 +139,10 @@
 
 헤더의 필터는 useSearchParams로 query string으로 필터링과 검색
 ![Wachat-Chrome2024-11-0710-13-06-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/5cf30b72-ffd3-432c-8ec8-923619489fd7)
+
 - supabase 메서드(order,textSearch, gte, lte, range)를 이용하여 페이지네이션과 정렬 필터를 결합하였다
-![Wachat-Chrome2024-11-0710-38-24-ezgif com-crop (2)](https://github.com/user-attachments/assets/e581defe-b412-4d2b-9319-5120821dafaf)
+  ![Wachat-Chrome2024-11-0710-38-24-ezgif com-crop (2)](https://github.com/user-attachments/assets/e581defe-b412-4d2b-9319-5120821dafaf)
+
 - 디바운싱을 검색에 적용하여 데이터 요청횟수를 줄였다
 
 </details>
@@ -207,7 +211,7 @@
 - 팔로우 / 언팔로우 기능
 - 추방하기 기능
 - 파티 탈퇴 기능
-  
+
 </details>
 
 <br/>

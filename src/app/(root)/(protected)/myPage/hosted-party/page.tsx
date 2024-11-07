@@ -54,6 +54,10 @@ const MyOwnerParty = () => {
           ownerParty.slice(start, end).map((party) => {
             const viewingStatus = getViewStatus(party); // 시청 상태
 
+            // 길이가 8자 이상이면 잘라서 말줄임표 추가
+            const cutPartyName =
+              party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
+
             return (
               <li key={party.party_id} className=" min-w-[196px] group">
                 <Link href={`/party/${party.party_id}`}>
@@ -94,9 +98,7 @@ const MyOwnerParty = () => {
                       {party.video_name}
                       {party.media_type === 'tv' && party.episode_number ? `  ${party.episode_number} 화` : ''}
                     </p>
-                    <h3 className="body-l-bold group-hover:text-primary-400 transition duration-300">
-                      {party.party_name}
-                    </h3>
+                    <h3 className="body-l-bold group-hover:text-primary-400 transition duration-300">{cutPartyName}</h3>
                   </div>
                   <div>
                     <div className="flex">
