@@ -198,7 +198,8 @@ ___
 
 ---
 
-![Uploading 2024-11-07-12-42-04.gif…]()
+![2024-11-07-12-42-04](https://github.com/user-attachments/assets/f138cf64-0bc0-4162-bcba-de5f93a67a50)
+
 
 
 </details>
