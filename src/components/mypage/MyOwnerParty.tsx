@@ -55,7 +55,7 @@ const MyOwnerParty = () => {
           ownerParty.slice(0, 5).map((party) => {
             const viewingStatus = getViewStatus(party); // 시청 상태
             return (
-              <li key={party.party_id} className=" min-w-[196px]">
+              <li key={party.party_id} className=" min-w-[196px] group">
                 <Link href={`/party/${party.party_id}`}>
                   <div className="relative h-[280px] rounded-[4px] overflow-hidden">
                     <Image
@@ -66,7 +66,7 @@ const MyOwnerParty = () => {
                       alt={`${party?.video_name} 영상 이미지`}
                       layout="fill"
                       objectFit="cover"
-                      className="z-0"
+                      className="z-0 group-hover:scale-105 transition duration-300"
                     />
 
                     {viewingStatus === '시청중' ? (
@@ -98,7 +98,9 @@ const MyOwnerParty = () => {
                       {party.video_name}
                       {party.media_type === 'tv' && party.episode_number ? `  ${party.episode_number} 화` : ''}
                     </p>
-                    <h3 className="body-l-bold">{party.party_name}</h3>
+                    <h3 className="body-l-bold group-hover:text-primary-400 transition duration-300">
+                      {party.party_name}
+                    </h3>
                   </div>
                   <div>
                     <div className="flex">

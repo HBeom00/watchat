@@ -111,10 +111,10 @@ export default function Chat({ roomId }: { roomId: string }) {
           const now = new Date();
 
           if (now >= eventDateTime) {
-            setSpecialMessage('다들 영상을 재생해주세요');
+            setSpecialMessage('다들 영상을 재생해주세요.');
             clearInterval(intervalId); // 이벤트 시간이 지나면 타이머 중지
           } else if (now >= tenMinutesBefore && now < eventDateTime) {
-            setSpecialMessage('시작하기 10분 전입니다');
+            setSpecialMessage('곧 영상이 시작합니다. 자리에 착석해 주세요.');
           } else {
             setSpecialMessage('시작 전 입니다.'); // 아무 메시지도 필요하지 않으면 null로 설정
           }
@@ -138,7 +138,7 @@ export default function Chat({ roomId }: { roomId: string }) {
     <div>
       <div ref={messageListRef} className="h-[846px] custom-chat-scrollbar overflow-x-hidden">
         {specialMessage && (
-          <div className="w-[700px] p-4 flex flex-col items-start fixed top-[114px] bg-Grey-50">
+          <div className="w-[700px] p-4 flex flex-col items-start fixed top-[114px] bg-Grey-50 -z-10">
             <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white text-Grey-900 text-center body-s">
               {specialMessage}
             </div>
