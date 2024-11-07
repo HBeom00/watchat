@@ -12,10 +12,7 @@ import visibility_off from '../../../public/visibility_off.svg';
 
 const signInSchema = z
   .object({
-    email: z
-      .string()
-      .email({ message: '이메일 형식을 확인해주세요.' })
-      .nonempty({ message: '이메일을 입력해 주세요.' }),
+    email: z.string().email({ message: '이메일 형식을 확인해주세요.' }),
     password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/, {
       message: '8~16자의 영문, 숫자, 특수문자를 모두 포함하여 입력해주세요.'
     }),

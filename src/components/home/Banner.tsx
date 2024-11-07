@@ -33,22 +33,31 @@ const Banner = (props: PropType) => {
     onSelect();
   }, [emblaApi]);
 
+  const options = 'location=no , toolbar=no , menubar =no, status=no';
+
+  const howToUse = () => {
+    window.open(
+      'https://honorable-navy-810.notion.site/Watchat-136dbe6b3f7580df8ab0da274b276df9?pvs=4',
+      'watchat 사용법',
+      options
+    );
+  };
   return (
     <>
       {(searchText === '' || searchText === null) && (filter === '' || filter === null) ? (
         <div className="embla w-full, h-full relative mt-[16px] overflow-hidden" ref={emblaRef}>
           <div className="embla_container flex  ">
             <div className="embla_slide flex flex-none w-full min-w-0 justify-around">
-              <Image src="/banner_1.svg" alt="Slide1" width={1060} height={360} />
+              <Image src="/banner_1.jpg" alt="Slide1" width={1060} height={360} />
             </div>
             <div className="embla_slide flex flex-none w-full min-w-0 justify-around">
-              <Image src="/banner_2.svg" alt="Slide2" width={1060} height={360} />
+              <Image src="/banner_2.jpg" alt="Slide2" width={1060} height={360} />
             </div>
             <div className="embla_slide flex flex-none w-full min-w-0 justify-around">
-              <Image src="/banner_3.svg" alt="Slide3" width={1060} height={360} />
+              <Image src="/banner_3.jpg" alt="Slide3" width={1060} height={360} />
             </div>
             <div className="embla_slide flex flex-none w-full min-w-0 justify-around">
-              <Image src="banner_4.svg" alt="Slide3" width={1060} height={360} />
+              <Image src="/banner_4.jpg" alt="Slide3" width={1060} height={360} onClick={howToUse} />
             </div>
           </div>
           {/* 좌우 화살표 버튼 */}
@@ -63,7 +72,7 @@ const Banner = (props: PropType) => {
             className="absolute right-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px] flex justify-center items-center"
             onClick={scrollNext}
           >
-            <Image src="/arrow_right_2.svg" alt="User Icon" width={24} height={24} />
+            <Image src="/arrow_right_2.svg" alt="User Icon" width={24} height={24} className="ml-[5px]" />
           </button>
 
           {/* 점 네비게이션 */}

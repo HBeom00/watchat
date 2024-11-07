@@ -184,6 +184,11 @@ const MyInvitedParty = () => {
               invitedParties.map((invite) => {
                 const viewingStatus = getViewStatus(invite.party_info);
 
+                const cutPartyName =
+                  invite.party_info.party_name.length > 16
+                    ? invite.party_info.party_name.slice(0, 16) + '...'
+                    : invite.party_info.party_name;
+
                 return (
                   <li
                     key={invite.invite_id}
@@ -262,7 +267,7 @@ const MyInvitedParty = () => {
                             <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
                           )}
                           <p className="body-l-bold group-hover:text-primary-400 transition duration-300">
-                            {invite.party_info.party_name}
+                            {cutPartyName}
                           </p>
                         </div>
 
@@ -359,7 +364,7 @@ const MyInvitedParty = () => {
                               <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
                             )}
                             <p className="body-l-bold group-hover:text-primary-400 transition duration-300">
-                              {invite.party_info.party_name}
+                              {cutPartyName}
                             </p>
                           </div>
 

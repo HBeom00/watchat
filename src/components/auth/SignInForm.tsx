@@ -20,7 +20,6 @@ const signInSchema = z.object({
 const SignInForm = () => {
   const route = useRouter();
   const queryClient = useQueryClient();
-  // const { userLogin } = useUserStore((state) => state);
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
@@ -34,7 +33,6 @@ const SignInForm = () => {
   // 로그인 하기
   const { mutateAsync: loginBtn } = useMutation({
     mutationFn: async (userInfo: FieldValues) => {
-      console.log(userInfo, 'userInfo');
       const { data: session, error } = await browserClient.auth.signInWithPassword({
         email: userInfo.email,
         password: userInfo.password
