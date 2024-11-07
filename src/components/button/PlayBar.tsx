@@ -23,7 +23,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
 
   // 플레이타임
   // 초
-  const [playTime, setPlayTime] = useState<number>(getPlayTime(startPlayTime));
+  const [playTime, setPlayTime] = useState<number>(0);
 
   if (duration * 60 > playTime) {
     setTimeout(() => setPlayTime(getPlayTime(startPlayTime)), 1000);
