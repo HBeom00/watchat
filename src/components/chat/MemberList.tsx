@@ -70,13 +70,15 @@ const MemberList = ({
         return (
           <div key={el.profile_id} className="flex justify-between items-center self-stretch gap-2">
             <div className="flex items-center gap-2">
-              <Image
-                src={el.profile_image}
-                alt={el.profile_image}
-                width={40}
-                height={40}
-                className="rounded-[20px] bg-center bg-cover bg-no-repeat"
-              />
+              <div className="w-10 h-10">
+                <Image
+                  src={el.profile_image}
+                  alt={el.profile_image}
+                  width={40}
+                  height={40}
+                  className="rounded-[20px] w-full h-full object-cover"
+                />
+              </div>
               <div>
                 {el.user_id === ownerId ? (
                   <div className="flex justify-center items-center gap-1 body-s text-Grey-900">
