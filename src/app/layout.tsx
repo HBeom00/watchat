@@ -7,10 +7,23 @@ import { UserStoreProvider } from '@/providers/userStoreProvider';
 import LayoutContent from '@/components/layout/LayoutContent';
 
 export const metadata: Metadata = {
-  title: 'Wachat',
-  description: '함께보면 더 즐거운 watchat',
+  title: 'Watchat | 왓챗 ',
+  description: '여럿이 보면 더 즐거우니까! 영상메이트가 필요할 땐 watchat',
   icons: {
     icon: '/favicon.svg'
+  },
+  openGraph: {
+    title: 'Watchat | 왓챗 ',
+    description: '여럿이 보면 더 즐거우니까! 영상메이트가 필요할 땐 watchat',
+    url: 'https://watchat.vercel.app/',
+    images: [
+      {
+        url: '/open_graph.png',
+        width: 800,
+        height: 400,
+        alt: 'Watchat'
+      }
+    ]
   }
 };
 

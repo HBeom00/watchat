@@ -8,6 +8,7 @@ export type videoTV = {
   overview: string;
   popularity: number;
   poster_path: string;
+  episode_run_time: number[];
 };
 
 export type creditTV = {
@@ -33,6 +34,7 @@ export type videoMOVIE = {
   overview: string;
   popularity: number;
   poster_path: string;
+  runtime: number;
 };
 export type creditMOVIE = {
   cast: {

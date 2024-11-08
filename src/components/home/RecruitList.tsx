@@ -1,30 +1,27 @@
 'use client';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
-import { useDetectClose } from '@/utils/hooks/useDetectClose';
-import { transPlatform } from '@/utils/transPlatform';
 import getRecruitList from '@/utils/recruitList';
 import getRecruitListPage from '@/utils/recuritListPage';
 import { useSearchParams } from 'next/navigation';
 import PageSelect from './PageSelect';
+import SelectDropBox from './SelectDropBox';
 
 const RecruitList = () => {
   const queryClient = useQueryClient();
   const params = useSearchParams();
-  const orderRef = useRef<HTMLDivElement>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   // 정렬과 필터 상태값
-  const [order, setOrder] = useState<string>('write_time');
-  const [orderOpen, setOrderOpen] = useDetectClose(orderRef, false);
-  const [filter, setFilter] = useState<string>('전체');
-  const [filterOpen, setFilterOpen] = useDetectClose(filterRef, false);
+  // const [order, setOrder] = useState<string>('write_time');
+  // const [filter, setFilter] = useState<string>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const partySituation = params.get('watch');
 
+  const partySituation = params.get('watch');
+  const order = params.get('order') !== null ? params.get('order') + '' : 'write_time';
+  const filter = params.get('filter');
   // 페이지, 필터, 검색 등의 상태값 재정리
   // 페이지
   const pageSlice = 10;
@@ -32,7 +29,7 @@ const RecruitList = () => {
   const end = pageNumber * pageSlice - 1;
 
   // 플랫폼 필터
-  const bull = filter === '전체' ? 'name' : filter;
+  const bull = filter === 'all' || filter === null ? 'name' : filter;
 
   const searchWord = decodeURIComponent(params.get('search') + '');
   let wordConversion = searchWord
@@ -117,126 +114,7 @@ const RecruitList = () => {
         </div>
       ) : (
         <>
-          <div className="inline-flex items-center gap-2 text-Grey-500 body-s">
-            {/* 정렬 드롭다운 박스 */}
-            <div ref={orderRef} className="relative z-20">
-              <button onClick={() => setOrderOpen(!orderOpen)} className="selectBox">
-                <p>{order === 'write_time' ? '최신순' : order === 'start_date_time' ? '날짜순' : '인기순'}</p>
-                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
-                  <mask id="mask0_1043_34855" maskUnits="userSpaceOnUse" x="0" y="0" width="17" height="16">
-                    <rect x="0.5" width="16" height="16" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_1043_34855)">
-                    <path
-                      d="M8.27503 10.1846L4.50586 6.41539L5.20836 5.71289L8.27503 8.77956L11.3417 5.71289L12.0442 6.41539L8.27503 10.1846Z"
-                      fill="#8F8F8F"
-                    />
-                  </g>
-                </svg>
-              </button>
-              {orderOpen && (
-                <div className="selectDropBox">
-                  {order !== 'write_time' ? (
-                    <button className="selectDropBoxIn" onClick={() => setOrder('write_time')}>
-                      최신순
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {order !== 'start_date_time' ? (
-                    <button
-                      className={order === 'popularity' ? 'selectDropBoxLast' : 'selectDropBoxIn'}
-                      onClick={() => setOrder('start_date_time')}
-                    >
-                      날짜순
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {order !== 'popularity' ? (
-                    <button className="selectDropBoxLast" onClick={() => setOrder('popularity')}>
-                      인기순
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              )}
-            </div>
-            {/* 필터 드롭다운 박스 */}
-            <div ref={filterRef} className="relative z-20">
-              <button onClick={() => setFilterOpen(!filterOpen)} className="selectBox">
-                <p>{transPlatform(filter)}</p>
-                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
-                  <mask id="mask0_1043_34855" maskUnits="userSpaceOnUse" x="0" y="0" width="17" height="16">
-                    <rect x="0.5" width="16" height="16" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_1043_34855)">
-                    <path
-                      d="M8.27503 10.1846L4.50586 6.41539L5.20836 5.71289L8.27503 8.77956L11.3417 5.71289L12.0442 6.41539L8.27503 10.1846Z"
-                      fill="#8F8F8F"
-                    />
-                  </g>
-                </svg>
-              </button>
-              {filterOpen && (
-                <div className="selectDropBox">
-                  {filter !== '전체' ? (
-                    <button className="selectDropBoxIn" onClick={() => setFilter('전체')}>
-                      전체
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {filter !== 'Netflix' ? (
-                    <button className="selectDropBoxIn" onClick={() => setFilter('Netflix')}>
-                      넷플릭스
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {filter !== 'Tving' ? (
-                    <button className="selectDropBoxIn" onClick={() => setFilter('Tving')}>
-                      티빙
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {filter !== 'wavve' ? (
-                    <button className="selectDropBoxIn" onClick={() => setFilter('wavve')}>
-                      웨이브
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {filter !== 'Disney+Plus' ? (
-                    <button className="selectDropBoxIn" onClick={() => setFilter('Disney+Plus')}>
-                      디즈니플러스
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {filter !== 'Coupang' ? (
-                    <button
-                      className={filter === 'Watcha' ? 'selectDropBoxLast' : 'selectDropBoxIn'}
-                      onClick={() => setFilter('Coupang')}
-                    >
-                      쿠팡플레이
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                  {filter !== 'Watcha' ? (
-                    <button className="selectDropBoxLast" onClick={() => setFilter('Watcha')}>
-                      왓챠
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+          <SelectDropBox />
 
           <div className="grid grid-cols-5 gap-x-5 gap-y-8 mt-8">
             {data && data.length > 0 ? (

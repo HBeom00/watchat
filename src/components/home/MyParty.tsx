@@ -45,6 +45,7 @@ const MyParty = () => {
           }
         });
       }
+      return [];
     }
   });
   if (isLoading || userLoading) <div>Loading...</div>;

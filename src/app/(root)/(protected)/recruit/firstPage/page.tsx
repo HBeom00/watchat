@@ -2,11 +2,18 @@
 
 import { useRecruitStore } from '../recruitStore';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchMultiSearch } from '@/serverActions/TMDB';
+import {
+  fetchMultiSearch,
+  fetchMovieWatchProvider,
+  fetchTvWatchProvider,
+  fetchMoviesDetail,
+  fetchTvDetail,
+  fetchTvEpisode
+} from '@/serverActions/TMDB';
 import { SearchResult, SearchResponse } from '../../../../../types/Search';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { fetchMovieWatchProvider, fetchTvWatchProvider } from '@/serverActions/TMDB';
+import CustomSelect from '@/components/recruit/CustomSelect';
 import Image from 'next/image';
 
 const RecruitFirstPage = () => {
@@ -23,13 +30,14 @@ const RecruitFirstPage = () => {
     video_image,
     episode_number,
     video_platform,
+    season_number,
     setPartyInfo
   } = useRecruitStore();
 
   const [showResults, setShowResults] = useState(false);
   const [debouncedVideoName, setDebouncedVideoName] = useState(video_name);
-  const queryClient = useQueryClient();
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null); // duration_time 에관한 오류
 
   useEffect(() => {
@@ -44,7 +52,8 @@ const RecruitFirstPage = () => {
       duration_time: 0,
       video_platform: [],
       video_image: '',
-      episode_number: null
+      episode_number: 0,
+      season_number: 0
     });
 
     // 캐시 초기화 재렌더링
@@ -65,7 +74,7 @@ const RecruitFirstPage = () => {
 
     const timeout = setTimeout(() => {
       setDebouncedVideoName(value);
-    }, 300); // 300ms 후에 업데이트
+    }, 300); // 디바운싱
 
     setSearchTimeout(timeout);
   };
@@ -86,11 +95,23 @@ const RecruitFirstPage = () => {
     }
   };
 
+  // 검색창 클릭
   const handleSearchResultClick = async (result: SearchResult) => {
     const video_id = result.id;
     const media_type = result.media_type;
 
+    //플렛폼 정보 불러오기
     const providerData = await fetchProviders(video_id, media_type);
+
+    //영화/TV 상세 정보 불러오기
+    let duration = 0;
+    if (media_type === 'movie') {
+      const movieDetail = await fetchMoviesDetail(video_id);
+      duration = movieDetail?.detail.runtime || 0; // 영화 런타임
+    } else if (media_type === 'tv') {
+      const tvDetail = await fetchTvDetail(video_id);
+      duration = tvDetail?.detail.episode_run_time[0] || 0; // TV 에피소드 런타임
+    }
     setPartyInfo({
       video_name: result.title || result.name || '',
       video_image: result.poster_path ? `https://image.tmdb.org/t/p/w500${result.poster_path}` : '',
@@ -98,13 +119,51 @@ const RecruitFirstPage = () => {
       video_id: result.id,
       video_platform: providerData || [],
       popularity: result.popularity,
-      backdrop_image: result.backdrop_path
+      backdrop_image: result.backdrop_path,
+      duration_time: duration,
+      season_number
     });
     setShowResults(false);
     queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
   };
 
-  // 필요한 필드의 상태를 검사하는 조건 추가
+  const seasonOptions = Array.from({ length: 10 }, (_, i) => ({
+    value: i + 1,
+    label: `${i + 1} 시즌`
+  }));
+
+  const seasonHandle = (seasonNum: string | number) => {
+    const seasonNumber = typeof seasonNum === 'string' ? Number(seasonNum) : seasonNum;
+    setPartyInfo({ season_number: seasonNumber });
+  };
+
+  const episodeHandle = async (episodeNum: string) => {
+    const episodeNumber = Number(episodeNum);
+    const seasonNumber = useRecruitStore.getState().season_number; // 입력한 시즌
+    const seriesId = useRecruitStore.getState().video_id; // 영상 아이디
+
+    setPartyInfo({ episode_number: episodeNumber });
+
+    // 회차 없을때 러닝타임 초기화
+    if (!episodeNum) {
+      setPartyInfo({ duration_time: 0 });
+      return;
+    }
+    // media_type, episodeNumber, seasonNumber, seriesId가 존재할 때만 실행
+    if (episodeNumber && seasonNumber && seriesId) {
+      const episodeDetail = await fetchTvEpisode(seriesId, seasonNumber, episodeNumber);
+
+      // 런타임이 있을 경우 duration_time에 설정
+      if (episodeDetail?.runtime) {
+        setPartyInfo({ duration_time: episodeDetail.runtime });
+        setError(null); // 오류 메시지 초기화
+      } else {
+        setError('런타임 정보가 없습니다.');
+      }
+    }
+  };
+
+  // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
     !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
 
@@ -125,7 +184,7 @@ const RecruitFirstPage = () => {
         onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
         className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[112px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
-      <div className="flex w-[519px]  align-item gap-1 mt-[32px] ">
+      <div className="flex w-[520px]  align-item gap-1 mt-[32px] ">
         <h2 className="text-gray-800 font-pretendard text-[15px] font-semibold leading-[24px]">
           시청할 영상을 선택해 주세요.
         </h2>
@@ -155,28 +214,39 @@ const RecruitFirstPage = () => {
       </div>
       <div className="flex space-x-[20px] mt-[16px]">
         {/* 포스터 */}
-        {searchResults && video_image && (
-          <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[351px] rounded-md" />
+        {video_name && video_image && (
+          <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[360px] rounded-md" />
         )}
 
-        <div className="space-y-[20px]">
-          {searchResults && media_type === 'tv' && (
+        <div className="space-y-[15px]">
+          {video_image && media_type === 'tv' && (
             <div>
               <div className="flex">
-                <h2>회차</h2>
+                <h2>시즌</h2>
                 <h2 className="text-purple-600">*</h2>
               </div>
-              <input
-                type="text"
-                placeholder="시청할 회차를 입력하세요"
-                value={episode_number ?? ''}
-                onChange={(e) => setPartyInfo({ episode_number: Number(e.target.value) })}
-                className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
-              />
+              <CustomSelect options={seasonOptions} value={season_number || ''} onChange={seasonHandle} />
+            </div>
+          )}
+          {video_image && media_type === 'tv' && (
+            <div className="space-y-[20px]">
+              <div>
+                <div className="flex">
+                  <h2>회차</h2>
+                  <h2 className="text-purple-600">*</h2>
+                </div>
+                <input
+                  type="text"
+                  placeholder="시청할 회차를 입력하세요"
+                  value={episode_number || ''}
+                  onChange={(e) => episodeHandle(e.target.value)}
+                  className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
+                />
+              </div>
             </div>
           )}
 
-          {video_name && video_image && (
+          {video_image && video_image && (
             <div>
               <div className="flex">
                 <h2>러닝타임</h2>
@@ -192,8 +262,8 @@ const RecruitFirstPage = () => {
                 />
                 <input
                   type="text"
-                  placeholder="분단위로 입력해주세요"
-                  value={duration_time !== 0 ? duration_time : ''}
+                  placeholder="분단위로 입력하세요"
+                  value={duration_time || ''}
                   onChange={(e) => {
                     const value = Number(e.target.value);
                     if (value <= 480) {
@@ -204,9 +274,10 @@ const RecruitFirstPage = () => {
                     }
                     if (value >= 10) {
                       setError(null);
-                    } else {
-                      setError('러닝타임은 최소 10분까지 입력 가능합니다');
                     }
+                    // else {
+                    //   setError('러닝타임은 최소 10분까지 입력 가능합니다');
+                    // }
                   }}
                   className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
                 />
@@ -216,22 +287,22 @@ const RecruitFirstPage = () => {
           )}
           {/* 플랫폼 */}
 
-          {searchResults && video_platform && video_platform.length > 0 ? (
+          {video_image && video_platform && video_platform.length > 0 ? (
             <div>
               <h2>영상 플랫폼</h2>
-              <div className="flex space-x-4 mt-2">
+              <div className="flex space-x-[4px] mt-2">
                 {video_platform.map((platform) => (
                   <div key={platform.name} className="text-center ">
                     <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
-                      <img src={platform.logoUrl} alt={platform.name} className="w-12 rounded-full " />
+                      <img src={platform.logoUrl} alt={platform.name} className="w-9 rounded-full " />
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            video_name &&
-            !video_platform && (
+            video_image &&
+            video_image && (
               <div>
                 <h2>영상 플랫폼</h2>
                 <p>제공 플랫폼이 존재하지 않습니다.</p>
@@ -242,7 +313,6 @@ const RecruitFirstPage = () => {
       </div>
       <button
         className={`mt-[32px] w-[520px] ${isNextButtonDisabled ? 'disabled-btn-xl' : 'btn-xl'}`}
-        // className={`mt-[37px] px-[24px] py-[16px] w-[520px] h-[56px] ${isNextButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'} rounded-md font-semibold text-[15px]`}
         onClick={nextPageHandle}
         disabled={isNextButtonDisabled}
       >
