@@ -41,7 +41,7 @@ export const useRecruitStore = create<RecruitState>((set) => ({
   situation: '모집중',
   popularity: null,
   date_recruitment: null,
-  season_number: 1,
+  season_number: null,
 
   // 아래 애들이 요청에 들어감
   setPartyInfo: (info) => set((state) => ({ ...state, ...info })),
