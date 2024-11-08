@@ -28,7 +28,7 @@ export async function GET(request: Request) {
       }
 
       // 유저가 존재하면 메인 페이지로, 존재하지 않으면 firstLogin 페이지로 리다이렉트
-      const redirectPath = user.length === 1 ? next : '/firstLogin';
+      const redirectPath = user && user.length > 0 ? next : '/firstLogin';
       const forwardedHost = request.headers.get('x-forwarded-host');
       const isLocalEnv = process.env.NODE_ENV === 'development';
 
