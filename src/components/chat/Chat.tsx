@@ -138,7 +138,7 @@ export default function Chat({ roomId }: { roomId: string }) {
     <div>
       <div ref={messageListRef} className="h-[846px] custom-chat-scrollbar overflow-x-hidden">
         {specialMessage && (
-          <div className="w-[700px] p-4 flex flex-col items-start fixed top-[114px] bg-Grey-50 -z-10">
+          <div className="w-[700px] p-4 flex flex-col items-start bg-Grey-50 fixed top-[120px]">
             <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white text-Grey-900 text-center body-s">
               {specialMessage}
             </div>

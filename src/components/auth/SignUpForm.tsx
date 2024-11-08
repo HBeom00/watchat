@@ -68,68 +68,62 @@ const SignUpForm = () => {
   const onConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-      <div className="w-[340px] flex flex-col items-start gap-4 mb-32">
-        <div className="inputDiv">
-          <label className="commonLabel">
-            이메일<span className="commonEssential">*</span>
-          </label>
-          <input type="email" {...register('email')} placeholder="예) example@gmail.com" className="commonEmailInput" />
-          {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
-        </div>
-
-        <div className="inputDiv">
-          <label className="commonLabel">
-            비밀번호<span className="commonEssential">*</span>
-          </label>
-          <div className="w-full relative">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              {...register('password')}
-              placeholder="특수문자, 영문, 숫자 조합 8~16자"
-              className="w-full commonPasswordInput"
-            />
-            <button
-              type="button"
-              onClick={onPasswordVisibility}
-              className="absolute top-2/4 -translate-y-1/2 right-[5%]"
-            >
-              {showPassword ? (
-                <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
-              ) : (
-                <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-          {formState.errors.password && <p className="commonHelpText">{formState.errors.password.message}</p>}
-        </div>
-
-        <div className="inputDiv">
-          <div className="w-full relative">
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              {...register('confirmPassword')}
-              placeholder="비밀번호 재입력"
-              className="w-full commonPasswordInput"
-            />
-            <button
-              type="button"
-              onClick={onConfirmPasswordVisibility}
-              className="absolute top-2/4 -translate-y-1/2 right-[5%]"
-            >
-              {showConfirmPassword ? (
-                <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
-              ) : (
-                <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-          {formState.errors.confirmPassword && (
-            <p className="commonHelpText">{formState.errors.confirmPassword.message}</p>
-          )}
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start gap-4 self-stretch">
+      <div className="inputDiv">
+        <label className="commonLabel">
+          이메일<span className="commonEssential">*</span>
+        </label>
+        <input type="email" {...register('email')} placeholder="예) example@gmail.com" className="commonEmailInput" />
+        {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
       </div>
-      <button className="btn-xl w-[340px] flex justify-center items-center">가입하기</button>
+
+      <div className="inputDiv">
+        <label className="commonLabel">
+          비밀번호<span className="commonEssential">*</span>
+        </label>
+        <div className="w-full relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            placeholder="특수문자, 영문, 숫자 조합 8~16자"
+            className="w-full commonPasswordInput"
+          />
+          <button type="button" onClick={onPasswordVisibility} className="absolute top-2/4 -translate-y-1/2 right-[5%]">
+            {showPassword ? (
+              <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+            ) : (
+              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+        {formState.errors.password && <p className="commonHelpText">{formState.errors.password.message}</p>}
+      </div>
+
+      <div className="inputDiv">
+        <div className="w-full relative">
+          <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            {...register('confirmPassword')}
+            placeholder="비밀번호를 다시 한 번 입력해주세요."
+            className="w-full commonPasswordInput"
+          />
+          <button
+            type="button"
+            onClick={onConfirmPasswordVisibility}
+            className="absolute top-2/4 -translate-y-1/2 right-[5%]"
+          >
+            {showConfirmPassword ? (
+              <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+            ) : (
+              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+        {formState.errors.confirmPassword && (
+          <p className="commonHelpText">{formState.errors.confirmPassword.message}</p>
+        )}
+      </div>
+      <button className="btn-xl w-[340px] flex justify-center items-center gap-1 mt-[50px]">가입하기</button>
     </form>
   );
 };

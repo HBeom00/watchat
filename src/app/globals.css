@@ -371,28 +371,49 @@ body {
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-/* custom input */
+
+/* Input div */
 .inputDiv {
   @apply flex flex-col justify-center items-start self-stretch gap-2;
 }
 
+/* 라벨 */
 .commonLabel {
   @apply body-m-bold self-stretch text-Grey-800;
 }
 
+/* 필수사항 기호(*) */
 .commonEssential {
   @apply body-m-bold text-primary-400;
 }
 
+/* 이메일 Input */
 .commonEmailInput {
   @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
 }
-.commonEmailInput:focus {
-  outline: 1px solid #7f4af4;
-} /* 포커스 스타일 추가 */
 
+/* 이메일 Input placeholder */
+.commonEmailInput::placeholder {
+  @apply body-m text-Grey-300 flex-1;
+}
+
+/* 비밀번호 Input placeholder */
 .commonPasswordInput {
   @apply flex pl-4 pr-11 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
+}
+
+/* 비밀번호 Input placeholder */
+.commonPasswordInput::placeholder {
+  @apply body-m text-Grey-300 flex-1;
+}
+
+/* 포커스 스타일 추가 */
+.commonEmailInput:focus {
+  outline: 1px solid #7f4af4;
+}
+
+.commonPasswordInput:focus {
+  outline: 1px solid #7f4af4;
 }
 
 .commonInput::placeholder {
@@ -406,9 +427,6 @@ body {
   @apply label-l self-stretch text-[#FB6362];
 }
 
-.commonHelpText {
-  @apply label-l self-stretch text-warning-50;
-}
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* 셀렉트 클래스 */

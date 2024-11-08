@@ -57,8 +57,8 @@ const SignInForm = () => {
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-4">
-      <div className="w-[340px] flex flex-col items-start gap-4 mb-12">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col items-start gap-4 self-stretch">
         <div className="inputDiv">
           <label className="commonLabel">이메일</label>
           <input
@@ -98,8 +98,8 @@ const SignInForm = () => {
         disabled={!formState.isValid}
         className={
           !formState.isValid
-            ? 'disabled-btn-xl w-[340px] flex justify-center items-center'
-            : 'btn-xl w-[340px] flex justify-center items-center'
+            ? 'disabled-btn-xl w-[340px] flex justify-center items-center mt-12'
+            : 'btn-xl w-[340px] flex justify-center items-center mt-12'
         }
       >
         로그인

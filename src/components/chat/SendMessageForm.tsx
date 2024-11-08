@@ -33,9 +33,7 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
       {
         content,
         sender_id: userId,
-        room_id: roomId,
-        nickname: data?.[0].nickname,
-        profile_image: data?.[0].profile_image
+        room_id: roomId
       }
     ]);
 

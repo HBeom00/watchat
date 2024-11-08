@@ -23,7 +23,7 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="flex justify-center relative pt-[200px]">
+    <div className="flex justify-center relative mt-[205px]">
       <div className="w-[700px] h-[960px] shrink-0 bg-Grey-50">
         <div className="w-[700px] flex flex-col justify-center items-center fixed top-0">
           <div className="flex pt-4 justify-between items-center self-stretch bg-white">
