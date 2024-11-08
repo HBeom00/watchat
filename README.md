@@ -9,11 +9,11 @@
 
 ## 🫂 팀원 소개
 
-|        |                                                                                        김경혜                                                                                        |                                                                                         홍연주                                                                                          |                                                                                              김태흔                                                                                               |                                                                                         신희범                                                                                          |                                                                                        이현주                                                                                         |
-| :----: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|  역할  |                                                                                       리더/FE                                                                                        |                                                                                        부리더/FE                                                                                        |                                                                                              팀원/FE                                                                                              |                                                                                         팀원/FE                                                                                         |                                                                                        팀원/DS                                                                                        |
-| Github |                                                               <a href=https://github.com/nangnanang> @nangnanang </a>                                                                |                                                                     <a href=https://github.com/play93> @play93 </a>                                                                     |                                                                       <a href=https://github.com/taeheun01> @taeheun01 </a>                                                                       |                                                                    <a href=https://github.com/HBeom00> @HBeom00 </a>                                                                    |                                                                 <a href=https://blog.naver.com/wezzzle> @wezzzle </a>                                                                 |
-|  Blog  | <a href=https://fpzmfks.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://fpzmfks.tistory.com"> </a> | <a href=https://playhong.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://playhong.tistory.com/"> </a> | <a href=https://earl-grey-tea.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://earl-grey-tea.tistory.com/"> </a> | <a href=https://velog.io/@hbeom00/posts> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://velog.io/@hbeom00/posts"> </a> | <a href=https://blog.naver.com/wezzzle> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://blog.naver.com/wezzzle"> </a> |
+|| 김경혜 | 홍연주 | 김태흔 | 신희범 | 이현주 |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| 역할 | 리더/FE | 부리더/FE | 팀원/FE | 팀원/FE | 팀원/DS |
+| Github | <a href=https://github.com/nangnanang> @nangnanang </a> | <a href=https://github.com/play93> @play93 </a> | <a href=https://github.com/taeheun01> @taeheun01 </a> | <a href=https://github.com/HBeom00> @HBeom00 </a> | <a href=https://blog.naver.com/wezzzle> @wezzzle </a> |
+| Blog | <a href=https://fpzmfks.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://fpzmfks.tistory.com"> </a> | <a href=https://playhong.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://playhong.tistory.com/"> </a> | <a href=https://earl-grey-tea.tistory.com/> <img src="https://img.shields.io/badge/Tistory-000000?style=for-the-badge&logo=Tistory&logoColor=white&link=https://earl-grey-tea.tistory.com/"> </a> | <a href=https://velog.io/@hbeom00/posts> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://velog.io/@hbeom00/posts"> </a> | <a href=https://blog.naver.com/wezzzle> <img src="https://img.shields.io/badge/Velog-20C997?style=for-the-badge&logo=Velog&logoColor=white&link=https://blog.naver.com/wezzzle"> </a> |
 
 #### 🕓 작업 기간 : 24.10.18 ~ 24.11.07
 
@@ -21,7 +21,7 @@
 
 #### 🔗 배포 링크 : [Watchat 바로가기](https://watchat.vercel.app/)
 
-#### 🪶 깃허브 주소 : [깃허 바로가기](https://github.com/HBeom00/watchat)
+#### 🪶 깃허브 주소 : [깃허브 바로가기](https://github.com/HBeom00/watchat)
 
 <br/>
 
@@ -38,13 +38,18 @@
   - 검색, 정렬 및 필터와 페이지네이션
   - 헤더의 검색 필터 쿼리 스트링으로
   - 드롭다운 제작
+    
 </details>
 
 <details>
 <summary>홍연주</summary>
  
- - 예시
-   - 예시
+ - 마이페이지
+  - 프로필 편집
+  - 참여한 파티정보, 오너인 파티정보
+  - 초대받은 파티정보
+  - 팔로우 추천
+  
 </details>
 
 <details>
@@ -73,20 +78,24 @@
 <summary>신희범</summary>
  
  - 회원가입 / 소셜로그인
-   - supabase auth를 활용한 로그인 기능 구현
-   - 소셜 로그인(카카오, 구글) 기능 구현
+   - supabase auth를 활용한 로그인 기능
+   - 소셜 로그인(카카오, 구글) 기능
  - 실시간 채팅
    - supabase realtime 이용
+   - 팔로우 기능
+   - 내보내기 기능
+   - 파티 탈퇴 기능능
 </details>
 
 <details>
 <summary>이현주</summary>
-
+ 
 - UX 기획 & 와이어프레임
   - UI 디자인
   - 디자인시스템 구성
   - 로고 & 그래픽 제작
-  </details>
+</details>
+
 
 <br/>
 
@@ -140,6 +149,7 @@
 
 - supabase 메서드(order,textSearch, gte, lte, range)를 이용하여 페이지네이션과 정렬 필터를 결합하였다
   ![Wachat-Chrome2024-11-0710-38-24-ezgif com-crop (2)](https://github.com/user-attachments/assets/e581defe-b412-4d2b-9319-5120821dafaf)
+
 - 디바운싱을 검색에 적용하여 데이터 요청횟수를 줄였다
 
 </details>
@@ -149,12 +159,25 @@
   
 <br />
 
-**<supabase auth를 사용해 이메일과 OAuth 기반의 소셜 로그인 기능 구현>**
+ **프로필 편집 기능 구현**
+- 프로필 이미지 변경시 이전 이미지 삭제 (불필요한 이미지가 계속 쌓이지 않도록 삭제)
 
-- 소셜 로그인(카카오, 구글) 기능 구현
-- 로그인 후 발급된 JWT토큰을 쿠키에 저장해 클라이언트측에서 토큰 기반으로 인증 상태를 확인해 인가된 리소스에 접근 ⭕
-- 로그인, 회원가입 폼을 react-hook-form 라이브러리를 사용해 구성 ⭕
-- register를 이용해 비제어 컴포넌트로 폼을 관리해 실시간 유효성 검사도 진행 ⭕
+**사용자가 참여한 파티정보, 오너인 파티정보 기능 구현**
+- 최신순으로 4개씩만 보이도록 설정하고 그 이상은 더보기버튼을 통해 확인
+
+**초대받은 파티정보 기능 구현**
+- 캐러셀로 구성되어 4개 이상 쌓이면 좌우 버튼으로 이동하며 확인가능
+- 다중선택기능으로 많은 초대를 한번에 거절할 수 있음
+- 수락 시 파티 프로필을 작성하고 바로 해당 파티페이지로 이동
+
+**팔로우 추천 불러오기**
+- 캐러셀로 구성되어 6개 이상 쌓이면 좌우 버튼으로 이동하며 확인가능
+- 종료된지 7일 이내의 파티의 파티원 목록을 불러옴
+- 사용자 본인, 차단된 유저, 이미 팔로우된 유저 필터링
+___
+![screencapture-watchat-vercel-app-myPage-2024-11-07-13_14_54](https://github.com/user-attachments/assets/abfd74b9-2416-4c19-874b-10f4e81ecb55)
+___
+![스크린샷 2024-11-07 131315](https://github.com/user-attachments/assets/b025956c-9f67-427f-aecc-75073b3824a0)
 
 </details>
 
@@ -175,7 +198,9 @@
 
 ---
 
-![파티-모집](https://github.com/user-attachments/assets/d59bf6b3-2184-4798-b926-1da054a1d6fe)
+![2024-11-07-12-42-04](https://github.com/user-attachments/assets/f138cf64-0bc0-4162-bcba-de5f93a67a50)
+
+
 
 </details>
 
@@ -208,6 +233,8 @@
 - 팔로우 / 언팔로우 기능
 - 추방하기 기능
 - 파티 탈퇴 기능
+___
+![채팅_수정본](https://github.com/user-attachments/assets/833f6a69-3564-420c-a9d7-bdaf0ee44aaa)
 
 </details>
 
@@ -248,9 +275,17 @@
 ## ⚔️ 트러블 슈팅
 
 <h3><기능 방면></h3>
-➡️ 다른 채팅방과 채팅이 공유되는 이슈
-<div>원인 : 같은 채널명으로 실시간 메세지를 구독하도록 설정</div>  
-<div>해결 : 분기가 필요했기 때문에 각 채팅방 채널명에 고유 번호를 할당 하였고, 필터링을 해주었다</div>
+<details>
+<summary>다른 채팅방과 채팅이 공유되는 이슈</summary>
+ 
+<br>*원인*<br>
+- 같은 채널명으로 실시간 메세지를 구독하도록 설정
+
+<br>*해결과정*<br>
+- 분기가 필요했기 때문에 각 채팅방 채널명에 고유 번호를 할당 하였고, 필터링을 해주었다
+
+</details>
+
 <details>
 <summary> 참가하기 모달 창 오류</summary>
 
@@ -280,9 +315,29 @@
 
 </details>
 
+<details>
+<summary>팔로우 추천에서 팔로우 했다가 팔로우 취소한 유저가 추천 목록에 뜨는 문제</summary>
+
+<br>*해결과정*<br>
+- 팔로우 취소한 유저를 필터링하기위해 ban_recommend 테이블을 별도로 만들어 한 번 팔로우 했다가 취소한 유저를 필터링 할 수 있도록 수정
+
+</details>
+
+<details>
+<summary>각 카드마다 닫기버튼을 클릭하면 카드가 삭제되어야 했는데 단순 필터링만 해주다 보니 삭제를 할 수 없는 문제</summary>
+
+<br>*해결과정*<br>
+- 로컬스토리지를 이용해 삭제한 카드목록을 로컬스토리지에 담아 필터링하고, 로컬스토리지에 담긴 데이터는 7일후에 삭제되도록 계획
+- 로컬스토리지를 이용해 관리하는 것은 로그인상태같은 정보를 담는데에 사용하는데 적합하고 구현하려는 필터링 내용은 사용자가 재로그인을 하던, 다른 브라우저에서 실행하던 동일해야하므로 적절하지 않다는 피드백
+- 팔로우 취소한 유저를 필터링하기위해 만든 ban_recommend활용해 닫기버튼을 눌렀을 때에도 테이블에 담아 필터링할 수 있도록 수정
+
+</details>
+
 <h3><디자인 방면></h3>
 ➡️ 오류케이스에 대한 부분을 놓쳐 디자인 없이 들어간 경우가 있다
 <div>해결 : 회의 할 때 더 꼼꼼하게 신경써서 기획하기!!</div>
 ➡️ 개발자 분들이 작업하면서 전달주시는데 다양한 경우를 고려한 기획이 필요할 것 같습니다
 <div>해결 : 이것 또한 모두가 같이 더욱 신경써서 기획하기..!!</div>
 ➡️ 디자인 시스템 정리가 아직 미흡해서 기본화면과 호버 화면 등 전달에 대한 아쉬움이 있습니다
+
+
