@@ -10,7 +10,8 @@ const ParticipationButton = ({
   party_id,
   party_situation,
   isLogin,
-  setOpenControl
+  setOpenControl,
+  invite_id
 }: {
   openControl?: boolean;
   children?: React.ReactNode;
@@ -18,6 +19,7 @@ const ParticipationButton = ({
   party_situation?: string;
   isLogin?: boolean;
   setOpenControl: Dispatch<SetStateAction<boolean>>;
+  invite_id: string;
 }) => {
   const [message, setMessage] = useState<string>('');
 
@@ -89,7 +91,12 @@ const ParticipationButton = ({
               <p>{message}</p>
             </div>
           ) : (
-            <ParticipationForm party_id={party_id} closeHandler={setOpenControl} setMessage={setMessage} />
+            <ParticipationForm
+              party_id={party_id}
+              closeHandler={setOpenControl}
+              setMessage={setMessage}
+              invite_id={invite_id}
+            />
           )}
           <DialogDescription></DialogDescription>
         </DialogContent>

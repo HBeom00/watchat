@@ -36,6 +36,11 @@ interface InvitedParty {
     nickname: string;
     profile_img: string;
   };
+  team_user_profiles: Array<{
+    user_id: string;
+    nickname: string;
+    profile_img: string;
+  }>;
   currentPartyPeople: number;
   startString: string;
 }
@@ -79,7 +84,11 @@ export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {
         user_id,     
         nickname, 
         profile_img
-      )
+      ),
+      team_user_profiles:team_user_profile (
+        user_id,
+        nickname,
+        profile_img)
       `
     )
     .eq('invitee', userId)

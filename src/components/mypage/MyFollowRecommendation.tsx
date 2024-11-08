@@ -14,7 +14,10 @@ import doesntExist from '../../../public/nobody.svg';
 import Link from 'next/link';
 
 const MyFollowRecommendation = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false, // 반복하지 않음
+    align: 'center' // 중앙 정렬
+  });
   const visibleSlides = 6; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
