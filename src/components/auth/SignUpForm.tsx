@@ -46,7 +46,7 @@ const SignUpForm = () => {
       options: {
         data: {
           profile_img:
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
           nickname: randomname
         }
       }
