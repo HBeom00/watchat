@@ -25,7 +25,11 @@ const getRecruitListPage = async (
             .lte('start_date_time', now)
             .gte('end_time', now)
             .textSearch('video_platform', bull)
-        : await browserClient.from('party_info').select('party_id').textSearch('video_platform', bull)
+        : await browserClient
+            .from('party_info')
+            .select('party_id')
+            .gte('end_time', now) // 종료 시간이 지나지 않은 경우만
+            .textSearch('video_platform', bull)
       : // 검색을 하는 경우
       partySituation === 'recruiting'
       ? await browserClient
@@ -46,6 +50,7 @@ const getRecruitListPage = async (
       : await browserClient
           .from('party_info')
           .select('party_id')
+          .gte('end_time', now) // 종료 시간이 지나지 않은 경우만
           .textSearch('video_platform', bull)
           .textSearch('video_name', wordConversion);
   if (response.error) {

@@ -417,7 +417,7 @@ body {
 }
 
 .selectDropBox {
-  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-600 body-s;
+  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-600 body-s overflow-hidden;
 }
 
 .selectDropBoxIn {

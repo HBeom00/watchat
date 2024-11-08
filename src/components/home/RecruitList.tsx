@@ -18,7 +18,7 @@ const RecruitList = () => {
   const filterRef = useRef<HTMLDivElement>(null);
 
   // 정렬과 필터 상태값
-  const [order, setOrder] = useState<string>('date_recruitment');
+  const [order, setOrder] = useState<string>('write_time');
   const [orderOpen, setOrderOpen] = useDetectClose(orderRef, false);
   const [filter, setFilter] = useState<string>('전체');
   const [filterOpen, setFilterOpen] = useDetectClose(filterRef, false);
@@ -121,7 +121,7 @@ const RecruitList = () => {
             {/* 정렬 드롭다운 박스 */}
             <div ref={orderRef} className="relative z-20">
               <button onClick={() => setOrderOpen(!orderOpen)} className="selectBox">
-                <p>{order === 'date_recruitment' ? '최신순' : order === 'start_date_time' ? '날짜순' : '인기순'}</p>
+                <p>{order === 'write_time' ? '최신순' : order === 'start_date_time' ? '날짜순' : '인기순'}</p>
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
                   <mask id="mask0_1043_34855" maskUnits="userSpaceOnUse" x="0" y="0" width="17" height="16">
                     <rect x="0.5" width="16" height="16" fill="#D9D9D9" />
@@ -136,15 +136,30 @@ const RecruitList = () => {
               </button>
               {orderOpen && (
                 <div className="selectDropBox">
-                  <button className="selectDropBoxIn" onClick={() => setOrder('date_recruitment')}>
-                    최신순
-                  </button>
-                  <button className="selectDropBoxIn" onClick={() => setOrder('start_date_time')}>
-                    날짜순
-                  </button>
-                  <button className="selectDropBoxLast" onClick={() => setOrder('popularity')}>
-                    인기순
-                  </button>
+                  {order !== 'write_time' ? (
+                    <button className="selectDropBoxIn" onClick={() => setOrder('write_time')}>
+                      최신순
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {order !== 'start_date_time' ? (
+                    <button
+                      className={order === 'popularity' ? 'selectDropBoxLast' : 'selectDropBoxIn'}
+                      onClick={() => setOrder('start_date_time')}
+                    >
+                      날짜순
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {order !== 'popularity' ? (
+                    <button className="selectDropBoxLast" onClick={() => setOrder('popularity')}>
+                      인기순
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               )}
             </div>
@@ -166,27 +181,58 @@ const RecruitList = () => {
               </button>
               {filterOpen && (
                 <div className="selectDropBox">
-                  <button className="selectDropBoxIn" onClick={() => setFilter('전체')}>
-                    전체
-                  </button>
-                  <button className="selectDropBoxIn" onClick={() => setFilter('Netflix')}>
-                    넷플릭스
-                  </button>
-                  <button className="selectDropBoxIn" onClick={() => setFilter('Tving')}>
-                    티빙
-                  </button>
-                  <button className="selectDropBoxIn" onClick={() => setFilter('wavve')}>
-                    웨이브
-                  </button>
-                  <button className="selectDropBoxIn" onClick={() => setFilter('Disney+Plus')}>
-                    디즈니플러스
-                  </button>
-                  <button className="selectDropBoxIn" onClick={() => setFilter('Coupang')}>
-                    쿠팡플레이
-                  </button>
-                  <button className="selectDropBoxLast" onClick={() => setFilter('Watcha')}>
-                    왓챠
-                  </button>
+                  {filter !== '전체' ? (
+                    <button className="selectDropBoxIn" onClick={() => setFilter('전체')}>
+                      전체
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {filter !== 'Netflix' ? (
+                    <button className="selectDropBoxIn" onClick={() => setFilter('Netflix')}>
+                      넷플릭스
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {filter !== 'Tving' ? (
+                    <button className="selectDropBoxIn" onClick={() => setFilter('Tving')}>
+                      티빙
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {filter !== 'wavve' ? (
+                    <button className="selectDropBoxIn" onClick={() => setFilter('wavve')}>
+                      웨이브
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {filter !== 'Disney+Plus' ? (
+                    <button className="selectDropBoxIn" onClick={() => setFilter('Disney+Plus')}>
+                      디즈니플러스
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {filter !== 'Coupang' ? (
+                    <button
+                      className={filter === 'Watcha' ? 'selectDropBoxLast' : 'selectDropBoxIn'}
+                      onClick={() => setFilter('Coupang')}
+                    >
+                      쿠팡플레이
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {filter !== 'Watcha' ? (
+                    <button className="selectDropBoxLast" onClick={() => setFilter('Watcha')}>
+                      왓챠
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               )}
             </div>
