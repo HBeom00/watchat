@@ -9,6 +9,7 @@ import { z } from 'zod';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';
 import visibility_off from '../../../public/visibility_off.svg';
+import { randomNickname } from '@/utils/randomName';
 
 const signInSchema = z
   .object({
@@ -36,14 +37,23 @@ const SignUpForm = () => {
     },
     resolver: zodResolver(signInSchema)
   });
+  const randomname = randomNickname();
 
   const onSubmit = async (userInfo: FieldValues) => {
     const { error } = await browserClient.auth.signUp({
       email: userInfo.email,
-      password: userInfo.password
+      password: userInfo.password,
+      options: {
+        data: {
+          profile_img:
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+          nickname: randomname
+        }
+      }
     });
 
     if (error) {
+      console.log(error.message, '에러 확인');
       alert('이미 존재하는 아이디입니다.');
       return;
     }
