@@ -5,6 +5,12 @@ import { createClient } from '@/utils/supabase/server';
 import arrow_back from '../../../../../../public/arrow_left_2.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '라이브 채팅방',
+  description: '파티 참여자와 실시간 소통할 수 있는 페이지'
+};
 
 const ChatPage = async ({ params }: { params: { id: string } }) => {
   const roomId = params.id;
