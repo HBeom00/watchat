@@ -1,16 +1,17 @@
 'use client';
 
-import browserClient from '@/utils/supabase/client';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FieldValues, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { randomNickname } from '@/utils/randomName';
+import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';
 import visibility_off from '../../../public/visibility_off.svg';
-import { randomNickname } from '@/utils/randomName';
 
+// 유효성 검사
 const signInSchema = z
   .object({
     email: z.string().email({ message: '이메일 형식을 확인해주세요.' }),
@@ -25,9 +26,9 @@ const signInSchema = z
   });
 
 const SignUpForm = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const router = useRouter();
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -37,8 +38,11 @@ const SignUpForm = () => {
     },
     resolver: zodResolver(signInSchema)
   });
+
+  // 랜덤 닉네임 받아오기
   const randomname = randomNickname();
 
+  // 가입 버튼 클릭 시
   const onSubmit = async (userInfo: FieldValues) => {
     const { error } = await browserClient.auth.signUp({
       email: userInfo.email,
@@ -53,17 +57,18 @@ const SignUpForm = () => {
     });
 
     if (error) {
-      console.log(error.message, '에러 확인');
       alert('이미 존재하는 아이디입니다.');
       return;
     }
 
+    // 회원가입 시, 들어오는 쿠키 값 삭제
     await browserClient.auth.signOut();
 
     alert('회원가입 되었습니다.');
     router.push('/login');
   };
 
+  // 비밀번호 type 속성 변경
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
   const onConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
