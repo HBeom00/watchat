@@ -13,6 +13,7 @@ import {
 import { SearchResult, SearchResponse } from '../../../../../types/Search';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import CustomSelect from '@/components/recruit/CustomSelect';
 import Image from 'next/image';
 
 const RecruitFirstPage = () => {
@@ -51,7 +52,8 @@ const RecruitFirstPage = () => {
       duration_time: 0,
       video_platform: [],
       video_image: '',
-      episode_number: 0
+      episode_number: 0,
+      season_number: 0
     });
 
     // 캐시 초기화 재렌더링
@@ -118,14 +120,21 @@ const RecruitFirstPage = () => {
       video_platform: providerData || [],
       popularity: result.popularity,
       backdrop_image: result.backdrop_path,
-      duration_time: duration
+      duration_time: duration,
+      season_number
     });
     setShowResults(false);
     queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
   };
 
-  const seasonHandle = (seasonNum: string) => {
-    setPartyInfo({ season_number: Number(seasonNum) });
+  const seasonOptions = Array.from({ length: 10 }, (_, i) => ({
+    value: i + 1,
+    label: `${i + 1} 시즌`
+  }));
+
+  const seasonHandle = (seasonNum: string | number) => {
+    const seasonNumber = typeof seasonNum === 'string' ? Number(seasonNum) : seasonNum;
+    setPartyInfo({ season_number: seasonNumber });
   };
 
   const episodeHandle = async (episodeNum: string) => {
@@ -175,7 +184,7 @@ const RecruitFirstPage = () => {
         onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
         className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[112px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
-      <div className="flex w-[519px]  align-item gap-1 mt-[32px] ">
+      <div className="flex w-[520px]  align-item gap-1 mt-[32px] ">
         <h2 className="text-gray-800 font-pretendard text-[15px] font-semibold leading-[24px]">
           시청할 영상을 선택해 주세요.
         </h2>
@@ -206,26 +215,20 @@ const RecruitFirstPage = () => {
       <div className="flex space-x-[20px] mt-[16px]">
         {/* 포스터 */}
         {video_name && video_image && (
-          <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[351px] rounded-md" />
+          <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[360px] rounded-md" />
         )}
 
         <div className="space-y-[15px]">
-          {video_image && media_type === 'tv' && season_number && (
+          {video_image && media_type === 'tv' && (
             <div>
               <div className="flex">
                 <h2>시즌</h2>
                 <h2 className="text-purple-600">*</h2>
               </div>
-              <input
-                type="text"
-                placeholder="시즌을 입력하세요"
-                value={season_number ?? ''}
-                onChange={(e) => seasonHandle(e.target.value)}
-                className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
-              />
+              <CustomSelect options={seasonOptions} value={season_number || ''} onChange={seasonHandle} />
             </div>
           )}
-          {video_image && media_type === 'tv' && season_number && (
+          {video_image && media_type === 'tv' && (
             <div className="space-y-[20px]">
               <div>
                 <div className="flex">
@@ -287,11 +290,11 @@ const RecruitFirstPage = () => {
           {video_image && video_platform && video_platform.length > 0 ? (
             <div>
               <h2>영상 플랫폼</h2>
-              <div className="flex space-x-4 mt-2">
+              <div className="flex space-x-[4px] mt-2">
                 {video_platform.map((platform) => (
                   <div key={platform.name} className="text-center ">
                     <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
-                      <img src={platform.logoUrl} alt={platform.name} className="w-12 rounded-full " />
+                      <img src={platform.logoUrl} alt={platform.name} className="w-9 rounded-full " />
                     </div>
                   </div>
                 ))}

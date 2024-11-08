@@ -47,7 +47,8 @@ const RecruitNextPage = () => {
         video_id,
         start_time,
         popularity,
-        video_platform
+        video_platform,
+        season_number
       } = useRecruitStore.getState();
 
       const plusWatchDate = watch_date ? new Date(watch_date.getTime() + 9 * 60 * 60 * 1000) : null;
@@ -86,7 +87,8 @@ const RecruitNextPage = () => {
               end_time,
               owner_id: userId,
               popularity,
-              date_recruitment: new Date()
+              write_time: new Date(),
+              season_number
             }
           ])
           .select();
