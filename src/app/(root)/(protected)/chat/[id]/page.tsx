@@ -16,18 +16,9 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
   const roomId = params.id;
 
   const { data, error } = await createClient().from('party_info').select().eq('party_id', roomId);
-  const { data: userData, error: userDateError } = await createClient()
-    .from('team_user_profile')
-    .select()
-    .eq('party_id', roomId);
 
   if (error) {
     console.error('Error fetching party info:', error);
-    return <div>Error loading party info.</div>;
-  }
-
-  if (userDateError) {
-    console.error('Error fetching team_user_profile info:', userDateError);
     return <div>Error loading party info.</div>;
   }
 
@@ -49,7 +40,7 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
           </div>
           <PlayBar startTime={data?.[0].start_date_time} duration={data?.[0].duration_time} />
         </div>
-        <Chat roomId={roomId} userData={userData} />
+        <Chat roomId={roomId} />
       </div>
     </div>
   );

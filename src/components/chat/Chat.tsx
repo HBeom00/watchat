@@ -25,7 +25,7 @@ type Team_user_info = {
   party_id: string;
 };
 
-export default function Chat({ roomId, userData }: { roomId: string; userData: Team_user_info[] }) {
+export default function Chat({ roomId }: { roomId: string }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [specialMessage, setSpecialMessage] = useState<string | null>(null);
   const messageListRef = useRef<HTMLDivElement | null>(null);
@@ -89,6 +89,23 @@ export default function Chat({ roomId, userData }: { roomId: string; userData: T
         return [];
       }
       return data;
+    }
+  });
+
+  // 채팅방에 참여한 유저 정보 가져오기
+  const { data: userData = [] } = useQuery<Team_user_info[], Error>({
+    queryKey: ['userData', roomId],
+    queryFn: async () => {
+      const { data: userData, error: userDateError } = await browserClient
+        .from('team_user_profile')
+        .select()
+        .eq('party_id', roomId);
+
+      if (userDateError) {
+        console.error('Error fetching messages:', userDateError);
+        return [];
+      }
+      return userData;
     }
   });
 
