@@ -190,6 +190,13 @@ const ParticipationForm = ({
       return;
     }
 
+    const isMember = await isMemberExist(party_id, user_Id);
+    if (isMember) {
+      router.replace(`/party/${party_id}`);
+
+      return;
+    }
+
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
@@ -206,12 +213,6 @@ const ParticipationForm = ({
       return;
     }
 
-    const isMember = await isMemberExist(party_id, user_Id);
-    if (isMember) {
-      router.replace(`/party/${party_id}`);
-
-      return;
-    }
     const { error: participationError } = await browserClient.from('team_user_profile').insert({
       nickname: '익명',
       profile_image:
@@ -229,6 +230,12 @@ const ParticipationForm = ({
     queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
     queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
+
+    if (path.includes('/party')) {
+      closeHandler(false);
+    } else {
+      router.replace(`/party/${party_id}`);
+    }
     setDisabled(false);
   };
 

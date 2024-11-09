@@ -9,7 +9,9 @@ const Main = async () => {
       <div className="font-Pretendard w-[1060px] m-auto">
         <Banner />
         <MyParty />
-        <RecruitList />
+        <Suspense fallback={<div>Loading......</div>}>
+          <RecruitList />
+        </Suspense>
       </div>
     </Suspense>
   );

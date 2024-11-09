@@ -1,4 +1,4 @@
-export const transPlatform = (platform: string) => {
+export const transPlatform = (platform: string | null) => {
   if (platform === 'Netflix') return '넷플릭스';
 
   if (platform === 'Tving') return '티빙';

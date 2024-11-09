@@ -11,7 +11,7 @@ const SearchBar = () => {
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set(name, encodeURIComponent(value));
+      params.set(name, value);
 
       return params.toString();
     },
@@ -19,8 +19,8 @@ const SearchBar = () => {
   );
 
   useEffect(() => {
-    if (debounce !== null) {
-      router.push('/?' + createQueryString('search', debounce));
+    if (debounce !== '') {
+      router.push('/?' + createQueryString('search', encodeURIComponent(debounce)));
     }
   }, [debounce]);
 

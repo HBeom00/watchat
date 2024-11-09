@@ -46,12 +46,12 @@ const MyProfileButton = () => {
         </div>
       </button>
       {isOpen && (
-        <div className="selectDropBox">
-          <Link href={'/myPage'} className="selectDropBoxIn">
+        <div className="selectDropBox right-0">
+          <Link href={'/myPage'} className="selectDropBoxIn" onClick={() => setIsOpen(false)}>
             마이프로필
           </Link>
 
-          <LogoutButton />
+          <LogoutButton setIsOpen={setIsOpen} />
         </div>
       )}
     </div>
