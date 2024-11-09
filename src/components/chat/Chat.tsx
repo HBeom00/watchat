@@ -189,7 +189,10 @@ export default function Chat({ roomId }: { roomId: string }) {
                 <div className={`flex items-center px-4 gap-2 ${isMyself ? 'justify-end' : 'justify-start'}`}>
                   {!isMyself && (
                     <Image
-                      src={userData.filter((el) => el.user_id === msg.sender_id)[0].profile_image}
+                      src={
+                        userData.filter((el) => el.user_id === msg.sender_id)[0]?.profile_image ||
+                        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
+                      }
                       alt="profile_image"
                       width={32}
                       height={32}
@@ -199,11 +202,11 @@ export default function Chat({ roomId }: { roomId: string }) {
                   {!isMyself ? (
                     ownerId === msg.sender_id ? (
                       <div className="flex justify-center items-center gap-1">
-                        {userData.filter((el) => el.user_id === msg.sender_id)[0].nickname}
+                        {userData.filter((el) => el.user_id === msg.sender_id)[0]?.nickname || '익명'}
                         <Image src={award_image} alt="award_image" width={20} height={20} />
                       </div>
                     ) : (
-                      <div>{userData.filter((el) => el.user_id === msg.sender_id)[0].nickname}</div>
+                      <div>{userData.filter((el) => el.user_id === msg.sender_id)[0]?.nickname || '익명'}</div>
                     )
                   ) : (
                     ''
