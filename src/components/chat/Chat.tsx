@@ -17,12 +17,20 @@ type Chat = {
   created_at: string;
 };
 
-export default function Chat({ roomId }: { roomId: string }) {
+type Team_user_info = {
+  profile_id: string;
+  nickname: string;
+  profile_image: string;
+  user_id: string;
+  party_id: string;
+};
+
+export default function Chat({ roomId, userData }: { roomId: string; userData: Team_user_info[] }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [specialMessage, setSpecialMessage] = useState<string | null>(null);
   const messageListRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
-
+  console.log(userData, 'userDate 확인');
   useEffect(() => {
     // 로그인 유저 아이디 가져오기
     const fetchUserId = async () => {
@@ -75,6 +83,7 @@ export default function Chat({ roomId }: { roomId: string }) {
         .select('*')
         .eq('room_id', roomId)
         .order('created_at', { ascending: true });
+
       if (error) {
         console.error('Error fetching messages:', error);
         return [];
@@ -137,7 +146,7 @@ export default function Chat({ roomId }: { roomId: string }) {
 
   return (
     <div>
-      <div ref={messageListRef} className="h-[846px] custom-chat-scrollbar overflow-x-hidden">
+      <div ref={messageListRef} className="chatting_height custom-chat-scrollbar overflow-x-hidden">
         {specialMessage && (
           <div className="w-[700px] p-4 flex flex-col items-start bg-Grey-50">
             <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white text-Grey-900 text-center body-s">
@@ -162,8 +171,8 @@ export default function Chat({ roomId }: { roomId: string }) {
                 <div className={`flex items-center px-4 gap-2 ${isMyself ? 'justify-end' : 'justify-start'}`}>
                   {!isMyself && (
                     <Image
-                      src={msg.profile_image}
-                      alt={msg.profile_image}
+                      src={userData.filter((el) => el.user_id === msg.sender_id)[0].profile_image}
+                      alt="profile_image"
                       width={32}
                       height={32}
                       className="rounded-full h-auto w-auto"
@@ -172,11 +181,11 @@ export default function Chat({ roomId }: { roomId: string }) {
                   {!isMyself ? (
                     ownerId === msg.sender_id ? (
                       <div className="flex justify-center items-center gap-1">
-                        {msg.nickname}
+                        {userData.filter((el) => el.user_id === msg.sender_id)[0].nickname}
                         <Image src={award_image} alt="award_image" width={20} height={20} />
                       </div>
                     ) : (
-                      <div>{msg.nickname}</div>
+                      <div>{userData.filter((el) => el.user_id === msg.sender_id)[0].nickname}</div>
                     )
                   ) : (
                     ''

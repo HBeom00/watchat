@@ -704,3 +704,7 @@ input[type='range']::-webkit-slider-thumb {
   border-radius: 50%; /* 핸들 모양: 원형 */
   margin-top: -7px; /* 핸들 위치 조정 (트랙에 맞춰) */
 }
+
+.chatting_height {
+  height: calc(100vh - 226px);
+}
