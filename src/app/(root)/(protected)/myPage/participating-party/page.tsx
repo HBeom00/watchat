@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import '@/customCSS/label.css';
 import PlatformImageCard from '../../../../../components/styleComponents/PlatformImage';
-import doesntExist from '../../../public/closeEyeCat.svg';
+import doesntExist from '../../../../../../public/closeEyeCat.svg';
 
 export type platform = {
   logoUrl: string;

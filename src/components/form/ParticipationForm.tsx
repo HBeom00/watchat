@@ -242,19 +242,16 @@ const ParticipationForm = ({
     queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
 
-<<<<<<< HEAD
     // 초대된 상태면 초대 목록에서 해당 초대를 삭제
     if (invite_id) {
       deleteInviteMutation.mutate(invite_id);
     }
 
-=======
     if (path.includes('/party')) {
       closeHandler(false);
     } else {
       router.replace(`/party/${party_id}`);
     }
->>>>>>> 69dde8acdc1487c0f09e6542f8955fd1de7de5bc
     setDisabled(false);
   };
 
