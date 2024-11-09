@@ -107,6 +107,7 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
               onClick={(e) => {
                 if (chatOpenClose(partyData) !== '시청중') {
                   e.preventDefault();
+                  alert('시청시간 10분 전부터 입장하실 수 있습니다.');
                 }
               }}
             >
