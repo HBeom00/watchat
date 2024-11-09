@@ -55,9 +55,6 @@ export const getFollowerData = async (userId: string | undefined) => {
     console.error('팔로잉 목록 정보를 가져오는데 실패했습니다 => ', followingUserError);
   }
 
-  console.log('팔로잉 목록정보=> ', followingUsers);
-  console.log('팔로우 카운트, 팔로잉 데이터 =>', { followerCount, followerData: followingUsers });
-
   // 팔로워 정보를 followerData에 담아줌
   return { followerCount, followerData: followingUsers };
 };

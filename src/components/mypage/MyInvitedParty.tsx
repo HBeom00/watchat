@@ -20,13 +20,10 @@ const MyInvitedParty = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedParties, setSelectedParties] = useState<string[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
-  const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
+  //const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
   const [open, setOpen] = useState<boolean>(false);
 
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
-    emblaApi,
-    visibleSlides
-  );
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
@@ -84,7 +81,7 @@ const MyInvitedParty = () => {
   }
 
   return (
-    <article className="m-auto mb-8 w-[1060px]">
+    <article className="m-auto mb-8 w-[1140px]">
       <div className="flex justify-between m-auto mb-5">
         <h3 className="title-m">초대받은 파티</h3>
         {invitedParties && invitedParties.length > 0 ? (
@@ -149,7 +146,7 @@ const MyInvitedParty = () => {
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
         {invitedParties && invitedParties.length > 4 && (
-          <>
+          <div className="embla_controls">
             <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} className="absolute top-[50%] -left-10">
               <div className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300">
                 <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -176,10 +173,10 @@ const MyInvitedParty = () => {
                 </svg>
               </div>
             </NextButton>
-          </>
+          </div>
         )}
-        <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px] ">
-          <ul className="carousel-container flex items-center gap-5 max-w-[1060px]">
+        <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px] embla__viewport">
+          <ul className="carousel-container flex items-center gap-5 max-w-[1060px] embla__container">
             {invitedParties && invitedParties.length > 0 ? (
               invitedParties.map((invite) => {
                 const viewingStatus = getViewStatus(invite.party_info);
@@ -192,11 +189,12 @@ const MyInvitedParty = () => {
                 return (
                   <li
                     key={invite.invite_id}
-                    className="carousel-item min-w-[250px] group"
+                    className="carousel-item min-w-[250px] group embla__slide"
                     onClick={() => isSelectionMode && partySelectionHandler(invite.invite_id)}
                   >
                     {isSelectionMode ? (
                       // 선택모드일 때 Link태그를 div로
+
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
@@ -414,6 +412,7 @@ const MyInvitedParty = () => {
                         openControl={open}
                         setOpenControl={setOpen}
                         isLogin={!!userId}
+                        invite_id={invite.invite_id}
                       />
 
                       <Dialog>

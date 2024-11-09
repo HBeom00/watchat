@@ -23,14 +23,6 @@ const MyOwnerParty = () => {
   // 주최중인 파티 가져오기
   const { data: ownerParty, isPending: pandingOwnerParty, isError: errorOwnerParty } = useOwnerParty(userId as string);
 
-  // 플랫폼
-  const platformArr: platform[] =
-    ownerParty && ownerParty[0]?.video_platform ? JSON.parse(ownerParty[0].video_platform) : [];
-
-  const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
-
-  console.log(platform);
-
   if (isPending || pandingOwnerParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
@@ -58,6 +50,12 @@ const MyOwnerParty = () => {
             const cutPartyName =
               party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
 
+            // 각 파티의 video_platform을 가져옴
+            const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
+
+            // 첫 번째 플랫폼이 존재하고 logoUrl이 '알수없음'이 아닌 경우에만 platform 할당
+            const platform = platformArr.length > 0 && platformArr[0].logoUrl !== '알수없음' ? platformArr[0] : null;
+
             return (
               <li key={party.party_id} className=" min-w-[196px] group">
                 <Link href={`/party/${party.party_id}`}>
@@ -68,9 +66,8 @@ const MyOwnerParty = () => {
                         'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/noImage.jpg'
                       }
                       alt={`${party?.video_name} 영상 이미지`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="z-0 group-hover:scale-105 transition duration-300"
+                      fill
+                      className="object-cover z-0 group-hover:scale-105 transition duration-300"
                     />
 
                     {viewingStatus === '시청중' ? (
@@ -102,13 +99,13 @@ const MyOwnerParty = () => {
                       {party.video_name}
                       {party.media_type === 'tv' && party.episode_number ? `  ${party.episode_number} 화` : ''}
                     </p>
-                    <h3 className="body-l-bold group-hover:text-primary-400 transition duration-300">{cutPartyName}</h3>
+                    <h3 className="body-l-bold ">{cutPartyName}</h3>
                   </div>
                   <div>
                     <div className="flex">
                       <Image
                         src={
-                          party.ownerProfile.profile_img ||
+                          party.ownerProfile?.profile_image ||
                           'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
                         }
                         alt={`${party.ownerProfile.nickname}의 프로필`}

@@ -14,7 +14,7 @@ import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
 
 const nicknameSchema = z.object({
-  nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' })
+  nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' }).max(7, { message: '7글자 이하로 입력해주세요' })
 });
 
 const FirstLoginForm = () => {

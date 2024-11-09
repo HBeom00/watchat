@@ -24,7 +24,7 @@ type PartyInfo = {
 
 // 작성자 정보 타입
 interface OwnerProfile {
-  profile_img: string;
+  profile_image: string;
   nickname: string;
 }
 
@@ -45,9 +45,6 @@ export const getParticipatingParty = async (): Promise<ParticipatingParty[]> => 
     .select(`party_id`)
     .eq('user_id', userId);
 
-  if (partyId) {
-    console.log('참여한 파티 목록 => ', partyId);
-  }
   if (partyIdError) {
     console.error('참여한 파티 목록을 불러오는데 실패했습니다 => ', partyIdError.message);
   }
@@ -58,11 +55,9 @@ export const getParticipatingParty = async (): Promise<ParticipatingParty[]> => 
   const { data: partyInfo, error: partyInfoError } = await browserClient
     .from('party_info')
     .select('*')
-    .in('party_id', partyIds);
+    .in('party_id', partyIds)
+    .order('write_time', { ascending: false }); // 내림차순 정렬;
 
-  if (partyInfo) {
-    console.log('참여한 파티 정보 => ', partyInfo);
-  }
   if (partyInfoError) {
     console.error('(참여한 파티) 정보를 불러오는데 실패했습니다. => ', partyIdError);
     return [];
@@ -77,9 +72,10 @@ export const getParticipatingParty = async (): Promise<ParticipatingParty[]> => 
 
       // 작성자 정보 가져오기
       const { data: ownerData, error: ownerError } = await browserClient
-        .from('user')
-        .select('profile_img, nickname')
+        .from('team_user_profile')
+        .select('*')
         .eq('user_id', party.owner_id)
+        .eq('party_id', party.party_id)
         .single();
 
       if (ownerError) {
@@ -109,5 +105,7 @@ export const getParticipatingParty = async (): Promise<ParticipatingParty[]> => 
       };
     })
   );
+
+  console.log('참여파티', partyWithDetails);
   return partyWithDetails;
 };
