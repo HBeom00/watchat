@@ -33,9 +33,7 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
       {
         content,
         sender_id: userId,
-        room_id: roomId,
-        nickname: data?.[0].nickname,
-        profile_image: data?.[0].profile_image
+        room_id: roomId
       }
     ]);
 
@@ -44,7 +42,7 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
   };
 
   return (
-    <form onSubmit={sendMessage} className="w-[700px] px-4 pb-4 flex flex-col items-start gap-2 bg-Grey-50">
+    <form onSubmit={sendMessage} className="w-[700px] px-4 pb-4 flex flex-col items-start bg-Grey-50">
       <div className="flex px-4 py-3 items-center self-stretch gap-2 rounded-lg bg-white">
         <input
           type="text"

@@ -1,8 +1,8 @@
 'use client';
 
-import browserClient from '@/utils/supabase/client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import browserClient from '@/utils/supabase/client';
 import { Dispatch, SetStateAction } from 'react';
 
 const LogoutButton = ({ setIsOpen }: { setIsOpen: Dispatch<SetStateAction<boolean>> }) => {
