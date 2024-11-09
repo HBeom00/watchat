@@ -36,6 +36,11 @@ interface InvitedParty {
     nickname: string;
     profile_img: string;
   };
+  team_user_profiles: Array<{
+    user_id: string;
+    nickname: string;
+    profile_img: string;
+  }>;
   currentPartyPeople: number;
   startString: string;
 }

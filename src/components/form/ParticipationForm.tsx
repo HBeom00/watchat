@@ -7,16 +7,22 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import partyProfileImageUploader from '@/utils/partyProfileImageUploader';
+import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
 
 const ParticipationForm = ({
   party_id,
   closeHandler,
-  setMessage
+  setMessage,
+  invite_id
 }: {
   party_id: string;
   closeHandler: Dispatch<SetStateAction<boolean>>;
   setMessage: Dispatch<SetStateAction<string>>;
+  invite_id?: string;
 }) => {
+  // 초대 삭제 mutation 사용
+  const deleteInviteMutation = useDeleteInviteMutation();
+
   // 스토리지 업로드 이미지 파일
   const imgRef = useRef<HTMLInputElement>(null);
 
@@ -169,6 +175,11 @@ const ParticipationForm = ({
     queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
 
+    // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+    if (invite_id) {
+      deleteInviteMutation.mutate(invite_id);
+    }
+
     if (path.includes('/party')) {
       closeHandler(false);
     } else {
@@ -230,6 +241,11 @@ const ParticipationForm = ({
     queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
     queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
+
+    // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+    if (invite_id) {
+      deleteInviteMutation.mutate(invite_id);
+    }
 
     if (path.includes('/party')) {
       closeHandler(false);

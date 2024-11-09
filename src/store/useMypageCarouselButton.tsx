@@ -8,28 +8,23 @@ type UsePrevNextButtonsType = {
   onNextButtonClick: () => void;
 };
 
-export const usePrevNextButtons = (
-  emblaApi: EmblaCarouselType | undefined,
-  visibleSlides: number
-): UsePrevNextButtonsType => {
+export const usePrevNextButtons = (emblaApi: EmblaCarouselType | undefined): UsePrevNextButtonsType => {
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
 
   const onPrevButtonClick = useCallback(() => {
     if (!emblaApi) return;
-
-    const currentIndex = emblaApi.selectedScrollSnap(); // 현재 선택된 슬라이드의 인덱스
-    const newIndex = Math.max(currentIndex - visibleSlides, 0); // 이전으로 이동할 인덱스 계산
-    emblaApi.scrollTo(newIndex); // 해당 인덱스로 스크롤
-  }, [emblaApi, visibleSlides]);
+    const currentIndex = emblaApi.selectedScrollSnap();
+    const prevIndex = Math.max(currentIndex - 6, 0); // 뒤로 6칸 이동하되, 최소 0번까지 이동
+    emblaApi.scrollTo(prevIndex);
+  }, [emblaApi]);
 
   const onNextButtonClick = useCallback(() => {
     if (!emblaApi) return;
-
-    const currentIndex = emblaApi.selectedScrollSnap(); // 현재 선택된 슬라이드의 인덱스
-    const newIndex = Math.min(currentIndex + visibleSlides, emblaApi.scrollSnapList().length - 1); // 다음으로 이동할 인덱스 계산
-    emblaApi.scrollTo(newIndex); // 해당 인덱스로 스크롤
-  }, [emblaApi, visibleSlides]);
+    const currentIndex = emblaApi.selectedScrollSnap();
+    const nextIndex = Math.min(currentIndex + 6, emblaApi.scrollSnapList().length - 1); // 앞으로 6칸 이동하되, 마지막 슬라이드까지 이동
+    emblaApi.scrollTo(nextIndex);
+  }, [emblaApi]);
 
   const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
     setPrevBtnDisabled(!emblaApi.canScrollPrev());
