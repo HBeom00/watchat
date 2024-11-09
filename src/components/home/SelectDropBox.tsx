@@ -2,45 +2,25 @@
 
 import { useDetectClose } from '@/utils/hooks/useDetectClose';
 import { transPlatform } from '@/utils/transPlatform';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 
-const SelectDropBox = () => {
+type Props = {
+  order: string;
+  setOrder: Dispatch<SetStateAction<string>>;
+  filter: string;
+  setFilter: Dispatch<SetStateAction<string>>;
+  setPageNumber: Dispatch<SetStateAction<number>>;
+};
+
+const SelectDropBox = ({ order, setOrder, filter, setFilter, setPageNumber }: Props) => {
   const orderRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
   const [orderOpen, setOrderOpen] = useDetectClose(orderRef, false);
   const [filterOpen, setFilterOpen] = useDetectClose(filterRef, false);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const searchParams = useSearchParams();
-
-  const order = searchParams.get('order');
-  const filter = searchParams.get('filter');
-
-  useEffect(() => {
-    if (order !== null || filter !== null) {
-      setTimeout(() => {
-        scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 1000);
-    }
-    setOrderOpen(false);
-    setFilterOpen(false);
-  }, [order, filter]);
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams]
-  );
   return (
     <>
-      <div className="inline-flex items-center gap-2 text-Grey-500 body-s" ref={scrollRef}>
+      <div className="inline-flex items-center gap-2 text-Grey-500 body-s">
         {/* 정렬 드롭다운 박스 */}
         <div ref={orderRef} className="relative z-20">
           <button onClick={() => setOrderOpen(!orderOpen)} className="selectBox">
@@ -58,34 +38,34 @@ const SelectDropBox = () => {
             </svg>
           </button>
           {orderOpen && (
-            <div className="selectDropBox">
-              {order !== 'write_time' ? (
-                <Link
-                  href={'/?' + createQueryString('order', 'write_time') + '#recruitList'}
-                  className="selectDropBoxIn"
-                >
-                  최신순
-                </Link>
-              ) : (
-                <></>
-              )}
-              {order !== 'start_date_time' ? (
-                <Link
-                  href={'/?' + createQueryString('order', 'start_date_time')}
-                  className={order === 'popularity' ? 'selectDropBoxLast' : 'selectDropBoxIn'}
-                >
-                  날짜순
-                </Link>
-              ) : (
-                <></>
-              )}
-              {order !== 'popularity' ? (
-                <Link href={'/?' + createQueryString('order', 'popularity')} className="selectDropBoxLast">
-                  인기순
-                </Link>
-              ) : (
-                <></>
-              )}
+            <div className="selectDropBox w-full">
+              <button
+                className={order !== 'write_time' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setOrder('write_time');
+                  setPageNumber(1);
+                }}
+              >
+                최신순
+              </button>
+              <button
+                className={order !== 'start_date_time' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setOrder('start_date_time');
+                  setPageNumber(1);
+                }}
+              >
+                날짜순
+              </button>
+              <button
+                className={order !== 'popularity' ? 'selectDropBoxLast' : 'selectingDropBoxLast'}
+                onClick={() => {
+                  setOrder('popularity');
+                  setPageNumber(1);
+                }}
+              >
+                인기순
+              </button>
             </div>
           )}
         </div>
@@ -107,58 +87,69 @@ const SelectDropBox = () => {
           </button>
           {filterOpen && (
             <div className="selectDropBox">
-              {filter !== 'all' ? (
-                <Link href={'/?' + createQueryString('filter', 'all')} className="selectDropBoxIn">
-                  전체
-                </Link>
-              ) : (
-                <></>
-              )}
-              {filter !== 'Netflix' ? (
-                <Link href={'/?' + createQueryString('filter', 'Netflix')} className="selectDropBoxIn">
-                  넷플릭스
-                </Link>
-              ) : (
-                <></>
-              )}
-              {filter !== 'Tving' ? (
-                <Link href={'/?' + createQueryString('filter', 'Tving')} className="selectDropBoxIn">
-                  티빙
-                </Link>
-              ) : (
-                <></>
-              )}
-              {filter !== 'wavve' ? (
-                <Link href={'/?' + createQueryString('filter', 'wavve')} className="selectDropBoxIn">
-                  웨이브
-                </Link>
-              ) : (
-                <></>
-              )}
-              {filter !== 'Disney+Plus' ? (
-                <Link href={'/?' + createQueryString('filter', 'Disney+Plus')} className="selectDropBoxIn">
-                  디즈니플러스
-                </Link>
-              ) : (
-                <></>
-              )}
-              {filter !== 'Coupang' ? (
-                <Link
-                  href={'/?' + createQueryString('filter', 'Coupang')}
-                  className={filter === 'Watcha' ? 'selectDropBoxLast' : 'selectDropBoxIn'}
-                >
-                  쿠팡플레이
-                </Link>
-              ) : (
-                <></>
-              )}
-              {filter !== 'Watcha' ? (
-                <Link href={'/?' + createQueryString('filter', 'Watcha')} className="selectDropBoxLast">
-                  왓챠
-                </Link>
-              ) : (
-                <></>
-              )}
+              <button
+                className={filter !== '전체' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setFilter('전체');
+                  setPageNumber(1);
+                }}
+              >
+                전체
+              </button>
+              <button
+                className={filter !== 'Netflix' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setFilter('Netflix');
+                  setPageNumber(1);
+                }}
+              >
+                넷플릭스
+              </button>
+              <button
+                className={filter !== 'Tving' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setFilter('Tving');
+                  setPageNumber(1);
+                }}
+              >
+                티빙
+              </button>
+              <button
+                className={filter !== 'wavve' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setFilter('wavve');
+                  setPageNumber(1);
+                }}
+              >
+                웨이브
+              </button>
+              <button
+                className={filter !== 'Disney+Plus' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setFilter('Disney+Plus');
+                  setPageNumber(1);
+                }}
+              >
+                디즈니플러스
+              </button>
+              <button
+                className={filter !== 'Coupang' ? 'selectDropBoxIn' : 'selectingDropBoxIn'}
+                onClick={() => {
+                  setFilter('Coupang');
+                  setPageNumber(1);
+                }}
+              >
+                쿠팡플레이
+              </button>
+              <button
+                className={filter !== 'Watcha' ? 'selectDropBoxLast' : 'selectingDropBoxLast'}
+                onClick={() => {
+                  setFilter('Watcha');
+                  setPageNumber(1);
+                }}
+              >
+                왓챠
+              </button>
             </div>
           )}
         </div>

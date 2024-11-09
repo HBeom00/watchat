@@ -2,7 +2,7 @@
 
 const nextConfig = {
   images: {
-    domains: ['image.tmdb.org'],
+    domains: ['image.tmdb.org', 'img1.kakaocdn.net', 't1.kakaocdn.net', 'lh3.googleusercontent.com'],
     remotePatterns: [
       {
         protocol: 'https',

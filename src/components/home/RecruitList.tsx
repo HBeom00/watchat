@@ -2,34 +2,32 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import RecruitCard from './RecruitCard';
-import { getViewStatus } from '@/utils/viewStatus';
 import getRecruitList from '@/utils/recruitList';
 import getRecruitListPage from '@/utils/recuritListPage';
 import { useSearchParams } from 'next/navigation';
 import PageSelect from './PageSelect';
 import SelectDropBox from './SelectDropBox';
+import { endDataNumber, startDataNumber } from '@/utils/mainPageData/pageFilter';
+import ListDiv from './ListDiv';
 
 const RecruitList = () => {
   const queryClient = useQueryClient();
   const params = useSearchParams();
 
   // 정렬과 필터 상태값
-  // const [order, setOrder] = useState<string>('write_time');
-  // const [filter, setFilter] = useState<string>('전체');
+  const [order, setOrder] = useState<string>('write_time');
+  const [filter, setFilter] = useState<string>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
-
   const partySituation = params.get('watch');
-  const order = params.get('order') !== null ? params.get('order') + '' : 'write_time';
-  const filter = params.get('filter');
+
   // 페이지, 필터, 검색 등의 상태값 재정리
   // 페이지
   const pageSlice = 10;
-  const start = (pageNumber - 1) * pageSlice;
-  const end = pageNumber * pageSlice - 1;
+  const start = startDataNumber(pageNumber);
+  const end = endDataNumber(pageNumber);
 
   // 플랫폼 필터
-  const bull = filter === 'all' || filter === null ? 'name' : filter;
+  const bull = filter === '전체' ? 'name' : filter;
 
   const searchWord = decodeURIComponent(params.get('search') + '');
   let wordConversion = searchWord
@@ -114,47 +112,17 @@ const RecruitList = () => {
         </div>
       ) : (
         <>
-          <SelectDropBox />
-
-          <div className="grid grid-cols-5 gap-x-5 gap-y-8 mt-8">
-            {data && data.length > 0 ? (
-              <>
-                {data
-                  .filter((n) => getViewStatus(n) === '시청중')
-                  ?.map((recruit) => {
-                    return (
-                      <RecruitCard
-                        key={recruit.party_id}
-                        data={recruit}
-                        end={recruit.situation === '종료' || getViewStatus(recruit) === '시청완료'}
-                      />
-                    );
-                  })}
-                {data
-                  .filter((n) => getViewStatus(n) !== '시청중')
-                  ?.map((recruit) => {
-                    return (
-                      <RecruitCard
-                        key={recruit.party_id}
-                        data={recruit}
-                        end={recruit.situation === '종료' || getViewStatus(recruit) === '시청완료'}
-                      />
-                    );
-                  })}
-              </>
-            ) : (
-              <div className="w-full h-52">
-                <p>데이터가 없습니다</p>
-              </div>
-            )}
-          </div>
+          <SelectDropBox
+            order={order}
+            setOrder={setOrder}
+            filter={filter}
+            setFilter={setFilter}
+            setPageNumber={setPageNumber}
+          />
+          <ListDiv data={data} />
 
           {/* 페이지 셀렉트 */}
-          {data && data.length > 0 && pageData ? (
-            <PageSelect pageData={pageData} pageNumber={pageNumber} setPageNumber={setPageNumber} />
-          ) : (
-            <></>
-          )}
+          <PageSelect pageData={pageData} pageNumber={pageNumber} setPageNumber={setPageNumber} />
         </>
       )}
     </div>

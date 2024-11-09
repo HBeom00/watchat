@@ -436,6 +436,14 @@ body {
   @apply bg-[#F5F5F5];
 }
 
+.selectingDropBoxIn {
+  @apply selectDropBoxIn text-primary-400 body-s-bold;
+}
+
+.selectingDropBoxLast {
+  @apply selectDropBoxLast text-primary-400 body-s-bold;
+}
+
 .selectPartyInfo {
   @apply flex py-2 px-4 justify-center items-center border-solid border-Grey-900 border-b-2 text-Grey-900;
 }
