@@ -30,7 +30,7 @@ export default function Chat({ roomId, userData }: { roomId: string; userData: T
   const [specialMessage, setSpecialMessage] = useState<string | null>(null);
   const messageListRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
-  console.log(userData, 'userDate 확인');
+
   useEffect(() => {
     // 로그인 유저 아이디 가져오기
     const fetchUserId = async () => {
@@ -148,7 +148,7 @@ export default function Chat({ roomId, userData }: { roomId: string; userData: T
     <div>
       <div ref={messageListRef} className="chatting_height custom-chat-scrollbar overflow-x-hidden">
         {specialMessage && (
-          <div className="w-[700px] p-4 flex flex-col items-start bg-Grey-50">
+          <div className="w-[700px] p-4 flex flex-col items-start bg-Grey-50 fixed top-[118px]">
             <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white text-Grey-900 text-center body-s">
               {specialMessage}
             </div>
@@ -163,7 +163,8 @@ export default function Chat({ roomId, userData }: { roomId: string; userData: T
               key={msg.id}
               className="message"
               style={{
-                marginBottom: '5px',
+                marginTop: '4px',
+                marginBottom: '3px',
                 textAlign: isMyself ? 'right' : 'left'
               }}
             >
