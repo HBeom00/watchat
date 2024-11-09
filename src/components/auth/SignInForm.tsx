@@ -5,7 +5,6 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import browserClient from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-// import { useUserStore } from '@/providers/userStoreProvider';
 import { useState } from 'react';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';
@@ -33,7 +32,7 @@ const SignInForm = () => {
   // 로그인 하기
   const { mutateAsync: loginBtn } = useMutation({
     mutationFn: async (userInfo: FieldValues) => {
-      const { data: session, error } = await browserClient.auth.signInWithPassword({
+      const { error } = await browserClient.auth.signInWithPassword({
         email: userInfo.email,
         password: userInfo.password
       });
@@ -43,29 +42,7 @@ const SignInForm = () => {
         alert('아이디와 비밀번호를 다시 입력해주세요.');
         return;
       }
-
-      const userId = session?.user?.id;
-
-      if (userId) {
-        const { data: user, error: userFetchError } = await browserClient
-          .from('user')
-          .select('*')
-          .eq('user_id', userId);
-
-        if (userFetchError) {
-          console.error('유저 확인 오류:', userFetchError.message);
-          alert('사용자 확인 중 오류가 발생했습니다.');
-          return;
-        }
-
-        if (user.length !== 1) {
-          route.push('/firstLogin');
-        } else {
-          route.push('/');
-        }
-      } else {
-        alert('로그인 세션이 유효하지 않습니다.');
-      }
+      route.push('/');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userId'] });
