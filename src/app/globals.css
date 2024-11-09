@@ -413,15 +413,15 @@ body {
 
 /* 셀렉트 클래스 */
 .selectBox {
-  @apply flex h-8 py-1 pl-3 pr-2 items-center gap-1 rounded-2xl border-solid border-Grey-200 border-[1px];
+  @apply flex h-8 py-1 pl-3 pr-2 items-center gap-1 text-Grey-600 rounded-2xl border-solid border-Grey-200 border-[1px];
 }
 
 .selectDropBox {
-  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-600 body-s;
+  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-500 body-s overflow-hidden;
 }
 
 .selectDropBoxIn {
-  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] text-Grey-600 transition duration-300;
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] transition duration-300;
 }
 
 .selectDropBoxIn:hover {
@@ -434,6 +434,14 @@ body {
 
 .selectDropBoxLast:hover {
   @apply bg-[#F5F5F5];
+}
+
+.selectingDropBoxIn {
+  @apply selectDropBoxIn text-primary-400 body-s-bold;
+}
+
+.selectingDropBoxLast {
+  @apply selectDropBoxLast text-primary-400 body-s-bold;
 }
 
 .selectPartyInfo {

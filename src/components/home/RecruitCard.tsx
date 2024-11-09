@@ -61,15 +61,16 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
         )}
       </div>
       <div className="flex flex-col items-center gap-1 self-stretch">
-        <div className="flex flex-col items-start gap-1 self-stretch">
-          <p className="text-Grey-600 label-l text-overflow-hidden self-stretch">
-            {data.video_name}
+        <div className="flex flex-row items-start gap-1 self-stretch">
+          <p className="text-Grey-600 label-l text-overflow-hidden self-stretch">{data.video_name}</p>
+          <p className="text-Grey-600 label-l self-stretch">
+            {data.season_number ? ' ' + data.season_number + '화' : null}
             {data.episode_number ? ' ' + data.episode_number + '화' : null}
           </p>
-          <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
-            {data.party_name}
-          </p>
         </div>
+        <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
+          {data.party_name}
+        </p>
         <div className="flex flex-row items-end gap-1 self-stretch">
           {ownerInfo ? (
             <div className="flex flex-row max-w-[74px] items-center gap-[6px]">

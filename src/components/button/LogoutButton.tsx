@@ -3,8 +3,9 @@
 import browserClient from '@/utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction } from 'react';
 
-const LogoutButton = () => {
+const LogoutButton = ({ setIsOpen }: { setIsOpen: Dispatch<SetStateAction<boolean>> }) => {
   const route = useRouter();
   const queryClient = useQueryClient();
 
@@ -18,7 +19,13 @@ const LogoutButton = () => {
   });
 
   return (
-    <button className="selectDropBoxLast" onClick={() => logoutBtn()}>
+    <button
+      className="selectDropBoxLast"
+      onClick={() => {
+        logoutBtn();
+        setIsOpen(false);
+      }}
+    >
       로그아웃
     </button>
   );
