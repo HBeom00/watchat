@@ -9,7 +9,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: '라이브 채팅방',
-  description: '파티 참여자와 실시간 소통할 수 있는 페이지'
+  description: '파티 참여자와 실시간 소통할 수 있는 채팅방 입니다.'
 };
 
 const ChatPage = async ({ params }: { params: { id: string } }) => {
@@ -23,9 +23,9 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="flex justify-center relative mt-[205px]">
+    <div className="flex justify-center relative">
       <div className="w-[700px] h-[960px] shrink-0 bg-Grey-50">
-        <div className="w-[700px] flex flex-col justify-center items-center fixed top-0">
+        <div className="w-[700px] flex flex-col justify-center items-center">
           <div className="flex pt-4 justify-between items-center self-stretch bg-white">
             <div className="flex">
               <Link href={`/party/${roomId}`} className="w-10 p-2 flex justify-between items-center">

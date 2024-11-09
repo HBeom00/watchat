@@ -14,6 +14,7 @@ export type partyInfo = {
   watch_date: string;
   start_time: string;
   episode_number: number | null;
+  season_number: number | null;
   popularity: number;
   backdrop_image: string;
   start_date_time: string;

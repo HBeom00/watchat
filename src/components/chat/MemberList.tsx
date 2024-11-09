@@ -110,7 +110,7 @@ const MemberList = ({
                         className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
                         onClick={() => exitParty(el.user_id)}
                       >
-                        나가기
+                        내보내기
                       </button>
                       <DialogClose>
                         <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
