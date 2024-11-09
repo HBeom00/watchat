@@ -6,24 +6,8 @@ import Image from 'next/image';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import award_image from '../../../public/award_star.svg';
-
-type Chat = {
-  id: string;
-  sender_id: string;
-  room_id: string;
-  content: string;
-  nickname: string;
-  profile_image: string;
-  created_at: string;
-};
-
-type Team_user_info = {
-  profile_id: string;
-  nickname: string;
-  profile_image: string;
-  user_id: string;
-  party_id: string;
-};
+import { UserInfo } from '@/types/teamUserProfile';
+import { ChatInfo } from '@/types/chatInfo';
 
 export default function Chat({ roomId }: { roomId: string }) {
   const [userId, setUserId] = useState<string | null>(null);
@@ -50,7 +34,7 @@ export default function Chat({ roomId }: { roomId: string }) {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'chat', filter: `room_id=eq.${roomId}` },
         (payload) => {
-          displayNewMessage(payload.new as Chat);
+          displayNewMessage(payload.new as ChatInfo);
         }
       )
       .subscribe();
@@ -75,7 +59,7 @@ export default function Chat({ roomId }: { roomId: string }) {
   });
 
   // 초기 메세지 불러오기
-  const { data: messages = [] } = useQuery<Chat[], Error>({
+  const { data: messages = [] } = useQuery<ChatInfo[], Error>({
     queryKey: ['messages', roomId],
     queryFn: async () => {
       const { data, error } = await browserClient
@@ -93,7 +77,7 @@ export default function Chat({ roomId }: { roomId: string }) {
   });
 
   // 채팅방에 참여한 유저 정보 가져오기
-  const { data: userData = [] } = useQuery<Team_user_info[], Error>({
+  const { data: userData = [] } = useQuery<UserInfo[], Error>({
     queryKey: ['userData', roomId],
     queryFn: async () => {
       const { data: userData, error: userDateError } = await browserClient
@@ -110,8 +94,8 @@ export default function Chat({ roomId }: { roomId: string }) {
   });
 
   // 새 메시지를 캐시에 추가하고 자동으로 스크롤 이동
-  const displayNewMessage = (message: Chat) => {
-    queryClient.setQueryData<Chat[]>(['messages', roomId], (oldMessages = []) => [...oldMessages, message]);
+  const displayNewMessage = (message: ChatInfo) => {
+    queryClient.setQueryData<ChatInfo[]>(['messages', roomId], (oldMessages = []) => [...oldMessages, message]);
   };
 
   useEffect(() => {
@@ -163,7 +147,7 @@ export default function Chat({ roomId }: { roomId: string }) {
 
   return (
     <div>
-      <div ref={messageListRef} className="chatting_height custom-chat-scrollbar overflow-x-hidden">
+      <div ref={messageListRef} className="chatting_height custom-chat-scrollbar overflow-x-hidden mt-[86px]">
         {specialMessage && (
           <div className="w-[700px] p-4 flex flex-col items-start bg-Grey-50 fixed top-[118px]">
             <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white text-Grey-900 text-center body-s">
