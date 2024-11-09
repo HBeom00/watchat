@@ -50,6 +50,7 @@ export default function Chat({ roomId }: { roomId: string }) {
     return () => {
       messageSubscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, queryClient]);
 
   // 파티 소유자 ID 가져오기

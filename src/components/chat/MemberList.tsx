@@ -102,7 +102,7 @@ const MemberList = ({
                   </DialogTrigger>
                   <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
                     <DialogTitle className="px-4 py-2"></DialogTitle>
-                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m text-[#191919]">
+                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m">
                       정말 내보내시겠습니까?
                     </DialogDescription>
                     <div className="flex justify-center items-center mt-4 gap-4">
