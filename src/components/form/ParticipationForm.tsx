@@ -18,7 +18,7 @@ const ParticipationForm = ({
   party_id: string;
   closeHandler: Dispatch<SetStateAction<boolean>>;
   setMessage: Dispatch<SetStateAction<string>>;
-  invite_id: string;
+  invite_id?: string;
 }) => {
   // 초대 삭제 mutation 사용
   const deleteInviteMutation = useDeleteInviteMutation();

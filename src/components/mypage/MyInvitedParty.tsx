@@ -81,7 +81,7 @@ const MyInvitedParty = () => {
   }
 
   return (
-    <article className="m-auto mb-8 w-[1060px]">
+    <article className="m-auto mb-8 w-[1140px]">
       <div className="flex justify-between m-auto mb-5">
         <h3 className="title-m">초대받은 파티</h3>
         {invitedParties && invitedParties.length > 0 ? (

@@ -15,15 +15,12 @@ import Link from 'next/link';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false, // 반복하지 않음
-    align: 'center' // 중앙 정렬
+    loop: true, // 반복하지 않음
+    align: 'start' // 중앙 정렬
   });
-  const visibleSlides = 6; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
+  // const visibleSlides = 6; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
 
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
-    emblaApi,
-    visibleSlides
-  );
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
@@ -142,7 +139,7 @@ const MyFollowRecommendation = () => {
           </>
         )}
         <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px]">
-          <ul className="carousel-container flex items-center gap-5">
+          <ul className="carousel-container flex items-center">
             {recommendedUsers && recommendedUsers.length > 0 ? (
               recommendedUsers.map((recommendedUser) => {
                 // 영상 제목 및 에피소드
@@ -166,7 +163,7 @@ const MyFollowRecommendation = () => {
                   >
                     <div
                       key={`${recommendedUser.party_id}-${member.user.user_id}`}
-                      className="flex flex-col items-center text-center relative pt-10 pb-4 px-4 rounded-[8px] border min-w-[160px] hover:border-primary-400 transition duration-300"
+                      className="flex flex-col items-center text-center relative pt-10 pb-4 px-4 rounded-[8px] border min-w-[160px] mr-5 hover:border-primary-400 transition duration-300"
                     >
                       <button
                         onClick={() => banMutation.mutate(member.user.user_id)}

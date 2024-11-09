@@ -19,7 +19,7 @@ const ParticipationButton = ({
   party_situation?: string;
   isLogin?: boolean;
   setOpenControl: Dispatch<SetStateAction<boolean>>;
-  invite_id: string;
+  invite_id?: string;
 }) => {
   const [message, setMessage] = useState<string>('');
 

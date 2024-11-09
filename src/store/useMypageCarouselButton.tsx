@@ -14,12 +14,16 @@ export const usePrevNextButtons = (emblaApi: EmblaCarouselType | undefined): Use
 
   const onPrevButtonClick = useCallback(() => {
     if (!emblaApi) return;
-    emblaApi.scrollPrev();
+    const currentIndex = emblaApi.selectedScrollSnap();
+    const prevIndex = Math.max(currentIndex - 6, 0); // 뒤로 6칸 이동하되, 최소 0번까지 이동
+    emblaApi.scrollTo(prevIndex);
   }, [emblaApi]);
 
   const onNextButtonClick = useCallback(() => {
     if (!emblaApi) return;
-    emblaApi.scrollNext();
+    const currentIndex = emblaApi.selectedScrollSnap();
+    const nextIndex = Math.min(currentIndex + 6, emblaApi.scrollSnapList().length - 1); // 앞으로 6칸 이동하되, 마지막 슬라이드까지 이동
+    emblaApi.scrollTo(nextIndex);
   }, [emblaApi]);
 
   const onSelect = useCallback((emblaApi: EmblaCarouselType) => {

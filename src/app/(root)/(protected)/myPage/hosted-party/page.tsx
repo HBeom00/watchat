@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import '@/customCSS/label.css';
 import PlatformImageCard from '../../../../../components/styleComponents/PlatformImage';
+import doesntExist from '../../../public/openEyeCat.svg';
 
 export type platform = {
   logoUrl: string;
@@ -58,6 +59,12 @@ const MyOwnerParty = () => {
             const cutPartyName =
               party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
 
+            // 각 파티의 video_platform을 가져옴
+            const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
+
+            // 첫 번째 플랫폼이 존재하고 logoUrl이 '알수없음'이 아닌 경우에만 platform 할당
+            const platform = platformArr.length > 0 && platformArr[0].logoUrl !== '알수없음' ? platformArr[0] : null;
+
             return (
               <li key={party.party_id} className=" min-w-[196px] group">
                 <Link href={`/party/${party.party_id}`}>
@@ -87,7 +94,9 @@ const MyOwnerParty = () => {
                       </div>
                     )}
 
-                    {platformArr.length === 1 && <PlatformImageCard platform={platformArr[0]} />}
+                    <div className="absolute top-0 right-0">
+                      {platform ? <PlatformImageCard platform={platform} /> : <></>}
+                    </div>
                   </div>
 
                   <div>{/* 재생바 */}</div>
@@ -104,7 +113,7 @@ const MyOwnerParty = () => {
                     <div className="flex">
                       <Image
                         src={
-                          party.ownerProfile.profile_img ||
+                          party.ownerProfile.profile_image ||
                           'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
                         }
                         alt={`${party.ownerProfile.nickname}의 프로필`}
@@ -131,7 +140,10 @@ const MyOwnerParty = () => {
             );
           })
         ) : (
-          <li>주최한 파티가 없습니다.</li>
+          <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+            <Image src={doesntExist} width={73} height={73} alt="주최한 파티가 없습니다" />
+            <p className="body-m text-Grey-600">주최한 파티가 없습니다.</p>
+          </li>
         )}
       </ul>
 
