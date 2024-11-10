@@ -1,26 +1,82 @@
 'use client';
 
-import { useRecruitStore } from '../recruitStore';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import browserClient from '../../../../../utils/supabase/client';
-// import { useRouter } from 'next/navigation';
 import ParticipationButton from '@/components/button/ParticipationButton';
 import { PostgrestError } from '@supabase/supabase-js';
-import { partyInfo } from '@/types/partyInfo';
+import { PartyInfo } from '@/types/partyInfo';
 import { useEffect, useState } from 'react';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const RecruitNextPage = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  // const router = useRouter();
-  const { limited_member, setRecruitDetails } = useRecruitStore();
-  const queryClient = useQueryClient();
+  const [partyInfo, setPartyInfo] = useState<PartyInfo>({
+    party_id: null,
+    party_name: '',
+    party_detail: null,
+    video_name: '',
+    video_platform: [{ name: '', logoUrl: '' }],
+    video_image: '',
+    limited_member: 0,
+    duration_time: 0,
+    situation: '',
+    owner_id: null,
+    media_type: '',
+    watch_date: null,
+    start_time: null,
+    episode_number: null,
+    popularity: 0,
+    backdrop_image: '',
+    start_date_time: '',
+    end_time: '',
+    season_number: 1,
+    video_id: 0
+  });
 
+  useEffect(() => {
+    const {
+      party_name,
+      party_detail,
+      video_id,
+      video_name,
+      video_platform,
+      video_image,
+      media_type,
+      duration_time,
+      episode_number,
+      popularity,
+      backdrop_image,
+      season_number
+    } = router.query;
+
+    if (party_name) {
+      setPartyInfo((prev) => ({
+        ...prev,
+        party_name: String(party_name),
+        party_detail: String(party_detail || ''),
+        video_id: video_id ? Number(video_id) : 0,
+        video_name: String(video_name || ''),
+        video_platform: video_platform ? JSON.parse(String(video_platform)) : [],
+        video_image: String(video_image || ''),
+        media_type: String(media_type || ''),
+        duration_time: duration_time ? Number(duration_time) : 0,
+        episode_number: episode_number ? Number(episode_number) : 0,
+        popularity: popularity ? Number(popularity) : 0,
+        backdrop_image: String(backdrop_image || ''),
+        season_number: season_number ? Number(season_number) : 1
+      }));
+    }
+  }, [router.query]);
+
+  // 참가하기 open
   useEffect(() => {
     if (partyNumber !== '') {
       setOpen(true);
@@ -33,81 +89,65 @@ const RecruitNextPage = () => {
       if (userError || !userData) throw new Error('유저 정보 가져오기 실패');
 
       const userId = userData.user.id;
-      const {
-        party_name,
-        video_name,
-        party_detail,
-        duration_time,
-        media_type,
-        video_image,
-        backdrop_image,
-        episode_number,
-        limited_member,
-        watch_date,
-        video_id,
-        start_time,
-        popularity,
-        video_platform,
-        season_number
-      } = useRecruitStore.getState();
-
-      const plusWatchDate = watch_date ? new Date(watch_date.getTime() + 9 * 60 * 60 * 1000) : null;
-      const plusStartTime = start_time ? new Date(start_time.getTime() + 9 * 60 * 60 * 1000) : null;
-
+      const plusWatchDate = partyInfo.watch_date ? new Date(partyInfo.watch_date.getTime() + 9 * 60 * 60 * 1000) : null;
+      const plusStartTime = partyInfo.start_time ? new Date(partyInfo.start_time.getTime() + 9 * 60 * 60 * 1000) : null;
       const start_date_time = new Date(
         `${plusWatchDate?.toISOString().split('T')[0]}T${plusStartTime?.toISOString().split('T')[1]}`
       );
-      // `duration_time`을 더해 `end_time` 생성
-      const end_time = new Date(start_date_time.getTime() + duration_time * 60 * 1000).toISOString();
+      const end_time = new Date(start_date_time.getTime() + partyInfo.duration_time * 60 * 1000).toISOString();
 
-      // 빈값의 플렛폼
       const platformData =
-        video_platform && video_platform.length > 0 ? video_platform : [{ name: '알수없음', logoUrl: '알수없음' }];
+        partyInfo.video_platform.length > 0 ? partyInfo.video_platform : [{ name: '알수없음', logoUrl: '알수없음' }];
 
-      const { data: insertPartyData, error }: { data: partyInfo[] | null; error: PostgrestError | null } =
+      const { data: insertPartyData, error }: { data: PartyInfo[] | null; error: PostgrestError | null } =
         await browserClient
           .from('party_info')
           .insert([
             {
-              party_name,
-              video_id,
-              video_name,
-              party_detail,
-              duration_time,
-              media_type,
-              video_image,
-              backdrop_image,
-              episode_number,
-              limited_member,
+              party_name: partyInfo.party_name,
+              party_detail: partyInfo.party_detail,
+              video_name: partyInfo.video_name,
               video_platform: platformData,
+              video_image: partyInfo.video_image,
+              limited_member: partyInfo.limited_member,
+              duration_time: partyInfo.duration_time,
               situation: '모집중',
-              watch_date: plusWatchDate ? plusWatchDate.toISOString().split('T')[0] : null,
-              start_time: plusStartTime ? plusStartTime.toISOString().split('T')[1] : null,
-              start_date_time: start_date_time.toISOString(),
-              end_time,
               owner_id: userId,
-              popularity,
               write_time: new Date(),
-              season_number
+              watch_date: plusWatchDate?.toISOString().split('T')[0] || null,
+              start_time: plusStartTime?.toISOString().split('T')[1] || null,
+              start_date_time: start_date_time.toISOString(),
+              end_time: end_time,
+              season_number: partyInfo.season_number,
+              video_id: partyInfo.video_id
             }
           ])
           .select();
+
       if (error) throw new Error('데이터 삽입 실패');
       alert('모집이 업로드 되었습니다.');
-      if (insertPartyData !== null) {
-        console.log('파티아이디', insertPartyData[0].party_id);
-        const { error: ownerInsertError } = await browserClient.from('team_user_profile').insert({
-          nickname: '익명',
-          profile_image:
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
-          user_id: userId,
-          party_id: insertPartyData[0].party_id
-        });
+      if (insertPartyData !== null && insertPartyData.length > 0) {
+        const partyId = insertPartyData[0].party_id;
+        if (partyId) {
+          console.log('파티아이디', partyId);
 
-        if (ownerInsertError) {
-          alert('프로필 업로드에 실패하셨습니다.');
+          const { error: ownerInsertError } = await browserClient.from('team_user_profile').insert({
+            nickname: '익명',
+            profile_image:
+              'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+            user_id: userId,
+            party_id: partyId // party_id가 null이 아닐 때만 사용
+          });
+
+          if (ownerInsertError) {
+            alert('프로필 업로드에 실패하셨습니다.');
+          }
+
+          // partyId가 null이 아닐 때만 상태 업데이트
+          setPartyNumber(partyId);
+        } else {
+          alert('파티 아이디가 생성되지 않았습니다.'); // party_id가 null인 경우
         }
-        setPartyNumber(insertPartyData[0].party_id);
       }
     },
     onSuccess: async () => {
@@ -117,13 +157,13 @@ const RecruitNextPage = () => {
     }
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const memberHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const number = Number(value);
 
     // 1~10 사이의 숫자만 허용
     if (value === '' || (number >= 1 && number <= 10)) {
-      setRecruitDetails({ limited_member: number });
+      setPartyInfo({ ...partyInfo, limited_member: number });
       setErrorMessage(''); // 오류 메시지 초기화
     } else {
       setErrorMessage('1에서 10 사이의 숫자를 입력하세요.');
@@ -131,8 +171,7 @@ const RecruitNextPage = () => {
     }
   };
 
-  const isRecruitButtonDisabled =
-    !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
+  const isRecruitButtonDisabled = !partyInfo.limited_member || !partyInfo.watch_date || !partyInfo.start_time;
 
   return (
     <div className="grid place-items-center">
@@ -156,8 +195,8 @@ const RecruitNextPage = () => {
               id="member"
               type="text"
               placeholder="0~10"
-              value={limited_member !== 0 ? limited_member : ''}
-              onChange={handleChange}
+              value={partyInfo.limited_member !== 0 ? partyInfo.limited_member : ''}
+              onChange={memberHandle}
               className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
             />
             <Image
@@ -188,8 +227,8 @@ const RecruitNextPage = () => {
             <DatePicker
               id="watchDate"
               locale={ko}
-              selected={useRecruitStore.getState().watch_date}
-              onChange={(date) => setRecruitDetails({ watch_date: date })}
+              selected={partyInfo.watch_date}
+              onChange={(date) => setPartyInfo({ ...partyInfo, watch_date: date })}
               dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
               placeholderText="날짜를 선택해주세요"
               className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center z-10"
@@ -214,8 +253,8 @@ const RecruitNextPage = () => {
             <DatePicker
               id="startTime"
               locale={ko}
-              selected={useRecruitStore.getState().start_time}
-              onChange={(time) => setRecruitDetails({ start_time: time })}
+              selected={partyInfo.start_time}
+              onChange={(time) => setPartyInfo({ ...partyInfo, start_time: time })}
               showTimeSelect
               showTimeSelectOnly
               timeIntervals={15}

@@ -1,7 +1,6 @@
 'use client';
 
-import { useRecruitStore } from '../recruitStore';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   fetchMultiSearch,
   fetchMovieWatchProvider,
@@ -11,85 +10,61 @@ import {
   fetchTvEpisode
 } from '@/serverActions/TMDB';
 import { SearchResult, SearchResponse } from '../../../../../types/Search';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { RecruitData } from '@/types/partyInfo';
 import CustomSelect from '@/components/recruit/CustomSelect';
 import Image from 'next/image';
 
 const RecruitFirstPage = () => {
   const router = useRouter();
-  const nextPageHandle = () => {
-    router.push('/recruit/nextPage');
-  };
-  const {
-    party_name,
-    video_name,
-    party_detail,
-    duration_time,
-    media_type,
-    video_image,
-    episode_number,
-    video_platform,
-    season_number,
-    setPartyInfo
-  } = useRecruitStore();
-
   const [showResults, setShowResults] = useState(false);
-  const [debouncedVideoName, setDebouncedVideoName] = useState(video_name);
+  const [debouncedVideoName, setDebouncedVideoName] = useState('');
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
-  const queryClient = useQueryClient();
-  const [error, setError] = useState<string | null>(null); // duration_time 에관한 오류
+  const [error, setError] = useState<string | null>(null);
+  const [partyInfo, setPartyInfo] = useState<RecruitData>({
+    party_name: '',
+    video_name: '',
+    video_image: '',
+    party_detail: '',
+    duration_time: 0,
+    media_type: '',
+    video_platform: [], // 빈 배열로 초기화
+    episode_number: 0,
+    season_number: 0,
+    watch_date: null,
+    start_time: null,
+    limited_member: 0,
+    video_id: null,
+    popularity: null,
+    backdrop_image: ''
+  });
 
-  useEffect(() => {
-    //상태 초기화
-    setPartyInfo({
-      party_name: '',
-      video_name: '',
-      party_detail: '',
-      limited_member: 0,
-      watch_date: null,
-      start_time: null,
-      duration_time: 0,
-      video_platform: [],
-      video_image: '',
-      episode_number: 0,
-      season_number: 0
-    });
-
-    // 캐시 초기화 재렌더링
-    queryClient.refetchQueries({ queryKey: ['searchVideo'] as const });
-  }, [queryClient, setPartyInfo]);
-
-  const InputChangehandle = (value: string) => {
-    setPartyInfo({ video_name: value });
-    setShowResults(true);
-
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
-    }
-
-    if (!value) {
-      setPartyInfo({ video_image: '' });
-    }
-
-    const timeout = setTimeout(() => {
-      setDebouncedVideoName(value);
-    }, 300); // 디바운싱
-
-    setSearchTimeout(timeout);
-  };
-
+  // 검색 결과 쿼리
   const { data: searchResults } = useQuery<SearchResponse>({
     queryKey: ['searchVideo', debouncedVideoName],
     queryFn: () => fetchMultiSearch(debouncedVideoName),
     enabled: !!debouncedVideoName
   });
 
+  const InputChangehandle = (value: string) => {
+    setPartyInfo({ ...partyInfo, video_name: value });
+    setShowResults(true);
+
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      setDebouncedVideoName(value); // 300ms 후에 검색어 업데이트
+    }, 300);
+
+    setSearchTimeout(timeout); // 타임아웃 ID 저장
+  };
+
   const fetchProviders = async (id: number, media_type: string) => {
     try {
-      const providerData =
-        media_type === 'movie' ? await fetchMovieWatchProvider(id) : await fetchTvWatchProvider(id, 1);
-      return providerData;
+      return media_type === 'movie' ? await fetchMovieWatchProvider(id) : await fetchTvWatchProvider(id, 1);
     } catch (error) {
       console.error('플랫폼 정보를 가져오는 중 오류 발생:', error);
     }
@@ -113,18 +88,18 @@ const RecruitFirstPage = () => {
       duration = tvDetail?.detail.episode_run_time[0] || 0; // TV 에피소드 런타임
     }
     setPartyInfo({
+      ...partyInfo,
       video_name: result.title || result.name || '',
       video_image: result.poster_path ? `https://image.tmdb.org/t/p/w500${result.poster_path}` : '',
       media_type: result.media_type || '',
       video_id: result.id,
       video_platform: providerData || [],
       popularity: result.popularity,
-      backdrop_image: result.backdrop_path,
+      backdrop_image: result.backdrop_path as string,
       duration_time: duration,
-      season_number
+      season_number: 0
     });
     setShowResults(false);
-    queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
   };
 
   const seasonOptions = Array.from({ length: 10 }, (_, i) => ({
@@ -133,29 +108,27 @@ const RecruitFirstPage = () => {
   }));
 
   const seasonHandle = (seasonNum: string | number) => {
-    const seasonNumber = typeof seasonNum === 'string' ? Number(seasonNum) : seasonNum;
-    setPartyInfo({ season_number: seasonNumber });
+    setPartyInfo({ ...partyInfo, season_number: Number(seasonNum) });
   };
 
   const episodeHandle = async (episodeNum: string) => {
     const episodeNumber = Number(episodeNum);
-    const seasonNumber = useRecruitStore.getState().season_number; // 입력한 시즌
-    const seriesId = useRecruitStore.getState().video_id; // 영상 아이디
+    const { season_number, video_id } = partyInfo;
 
-    setPartyInfo({ episode_number: episodeNumber });
+    setPartyInfo({ ...partyInfo, episode_number: episodeNumber });
 
     // 회차 없을때 러닝타임 초기화
     if (!episodeNum) {
-      setPartyInfo({ duration_time: 0 });
+      setPartyInfo({ ...partyInfo, duration_time: 0 });
       return;
     }
     // media_type, episodeNumber, seasonNumber, seriesId가 존재할 때만 실행
-    if (episodeNumber && seasonNumber && seriesId) {
-      const episodeDetail = await fetchTvEpisode(seriesId, seasonNumber, episodeNumber);
+    if (episodeNumber && season_number && video_id) {
+      const episodeDetail = await fetchTvEpisode(video_id, season_number, episodeNumber);
 
       // 런타임이 있을 경우 duration_time에 설정
       if (episodeDetail?.runtime) {
-        setPartyInfo({ duration_time: episodeDetail.runtime });
+        setPartyInfo({ ...partyInfo, duration_time: episodeDetail.runtime });
         setError(null); // 오류 메시지 초기화
       } else {
         setError('런타임 정보가 없습니다.');
@@ -163,9 +136,29 @@ const RecruitFirstPage = () => {
     }
   };
 
+  const nextPageHandle = () => {
+    const queryString = new URLSearchParams({
+      party_name: partyInfo.party_name,
+      party_detail: partyInfo.party_detail || '',
+      video_id: partyInfo.video_id?.toString() || '',
+      video_name: partyInfo.video_name,
+      video_platform: JSON.stringify(partyInfo.video_platform),
+      video_image: partyInfo.video_image,
+      media_type: partyInfo.media_type,
+      duration_time: partyInfo.duration_time.toString(),
+      episode_number: partyInfo.episode_number?.toString() || '',
+      popularity: partyInfo.popularity?.toString() || '',
+      backdrop_image: partyInfo.backdrop_image,
+      season_number: partyInfo.season_number.toString()
+    }).toString();
+
+    if (!isNextButtonDisabled) {
+      router.push(`/recruit/nextPage?${queryString}`);
+    }
+  };
   // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
-    !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
+    !partyInfo.party_name || !partyInfo.video_name || !partyInfo.party_detail || !partyInfo.duration_time;
 
   return (
     <div className="grid place-items-center ">
@@ -173,15 +166,15 @@ const RecruitFirstPage = () => {
       <input
         type="text"
         placeholder="파티 이름"
-        value={party_name}
-        onChange={(e) => setPartyInfo({ party_name: e.target.value })}
+        value={partyInfo.party_name}
+        onChange={(e) => setPartyInfo({ ...partyInfo, party_name: e.target.value })}
         className="bg-Grey-50 px-[16px] py-[12px] w-[519px] h-[48px] rounded-lg mt-[24px] border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
       <input
         type="text"
         placeholder="파티에 대해서 소개해주세요."
-        value={party_detail}
-        onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
+        value={partyInfo.party_detail}
+        onChange={(e) => setPartyInfo({ ...partyInfo, party_detail: e.target.value })}
         className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[112px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
       <div className="flex w-[520px]  align-item gap-1 mt-[32px] ">
@@ -194,8 +187,12 @@ const RecruitFirstPage = () => {
         <input
           type="text"
           placeholder="선택하세요."
-          value={video_name}
-          onChange={(e) => InputChangehandle(e.target.value)}
+          value={partyInfo.video_name}
+          onChange={(e) => {
+            setPartyInfo({ ...partyInfo, video_name: e.target.value });
+            InputChangehandle(e.target.value);
+            setShowResults(true);
+          }}
           className=" w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
         />
         {showResults && searchResults?.results?.length ? (
@@ -214,21 +211,21 @@ const RecruitFirstPage = () => {
       </div>
       <div className="flex space-x-[20px] mt-[16px]">
         {/* 포스터 */}
-        {video_name && video_image && (
-          <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[360px] rounded-md" />
+        {partyInfo.video_name && partyInfo.video_image && (
+          <img src={partyInfo.video_image} alt="선택된 포스터" className="w-[250px] h-[360px] rounded-md" />
         )}
 
         <div className="space-y-[15px]">
-          {video_image && media_type === 'tv' && (
+          {partyInfo.video_image && partyInfo.media_type === 'tv' && (
             <div>
               <div className="flex">
                 <h2>시즌</h2>
                 <h2 className="text-purple-600">*</h2>
               </div>
-              <CustomSelect options={seasonOptions} value={season_number || ''} onChange={seasonHandle} />
+              <CustomSelect options={seasonOptions} value={partyInfo.season_number || ''} onChange={seasonHandle} />
             </div>
           )}
-          {video_image && media_type === 'tv' && (
+          {partyInfo.video_image && partyInfo.media_type === 'tv' && (
             <div className="space-y-[20px]">
               <div>
                 <div className="flex">
@@ -238,7 +235,7 @@ const RecruitFirstPage = () => {
                 <input
                   type="text"
                   placeholder="시청할 회차를 입력하세요"
-                  value={episode_number || ''}
+                  value={partyInfo.episode_number || ''}
                   onChange={(e) => episodeHandle(e.target.value)}
                   className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
                 />
@@ -246,7 +243,7 @@ const RecruitFirstPage = () => {
             </div>
           )}
 
-          {video_image && video_image && (
+          {partyInfo.video_image && (
             <div>
               <div className="flex">
                 <h2>러닝타임</h2>
@@ -254,7 +251,7 @@ const RecruitFirstPage = () => {
               </div>
               <div className="relative">
                 <Image
-                  src="/second.svg" // public 폴더 경로 사용
+                  src="/second.svg"
                   alt="User Icon"
                   width={24}
                   height={24}
@@ -263,11 +260,11 @@ const RecruitFirstPage = () => {
                 <input
                   type="text"
                   placeholder="분단위로 입력하세요"
-                  value={duration_time || ''}
+                  value={partyInfo.duration_time || ''}
                   onChange={(e) => {
                     const value = Number(e.target.value);
                     if (value <= 480) {
-                      setPartyInfo({ duration_time: value });
+                      setPartyInfo((prevState) => ({ ...prevState, duration_time: value }));
                       setError(null); // 오류 메시지 초기화
                     } else {
                       setError('러닝타임은 최대 480분까지 입력 가능합니다');
@@ -287,11 +284,11 @@ const RecruitFirstPage = () => {
           )}
           {/* 플랫폼 */}
 
-          {video_image && video_platform && video_platform.length > 0 ? (
+          {partyInfo.video_image && partyInfo.video_platform && partyInfo.video_platform.length > 0 ? (
             <div>
               <h2>영상 플랫폼</h2>
               <div className="flex space-x-[4px] mt-2">
-                {video_platform.map((platform) => (
+                {partyInfo.video_platform.map((platform) => (
                   <div key={platform.name} className="text-center ">
                     <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
                       <img src={platform.logoUrl} alt={platform.name} className="w-9 rounded-full " />
@@ -301,8 +298,8 @@ const RecruitFirstPage = () => {
               </div>
             </div>
           ) : (
-            video_image &&
-            video_image && (
+            partyInfo.video_image &&
+            partyInfo.video_image && (
               <div>
                 <h2>영상 플랫폼</h2>
                 <p>제공 플랫폼이 존재하지 않습니다.</p>
