@@ -6,6 +6,7 @@ import arrow_back from '../../../../../../public/arrow_left_2.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import Notify from '@/components/chat/Notify';
 
 export const metadata: Metadata = {
   title: '라이브 채팅방',
@@ -23,23 +24,26 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="flex justify-center relative h-[100vh]">
-      <div className="w-[700px] shrink-0 bg-Grey-50">
-        <div className="w-[700px] flex flex-col justify-center items-center">
-          <div className="flex pt-4 justify-between items-center self-stretch bg-white">
-            <div className="flex">
-              <Link href={`/party/${roomId}`} className="w-10 p-2 flex justify-between items-center">
-                <Image src={arrow_back} alt="back_img" width={24} height={24} className="flex flex-shrink-0" />
-              </Link>
-              <div className="w-[545px] flex flex-col justify-center items-start">
-                <p className="body-l-bold text-center text-Grey-900">{data?.[0].party_name}</p>
-                <p className="label-m text-Grey-700">{data?.[0].video_name}</p>
-              </div>
+    <div className="h-[100vh] flex justify-center items-center">
+      <div className="w-[700px] bg-Grey-50">
+        {/* 뒤로가기, 프로그램 정보, 사이드바 */}
+        <div className="flex pt-4 justify-between items-center self-stretch bg-white">
+          <div className="flex items-center">
+            <Link href={`/party/${roomId}`} className="w-10 p-2 flex justify-between items-center text-Grey-900">
+              <Image src={arrow_back} alt="back_img" width={24} height={24} className="w-6 h-6 flex shrink-0" />
+            </Link>
+            <div className="w-[545px] flex flex-col justify-center items-start">
+              <p className="body-l-bold text-center text-Grey-900">{data?.[0].party_name}</p>
+              <p className="label-m text-Grey-700">{data?.[0].video_name}</p>
             </div>
-            <SidebarToggle roomId={roomId} />
           </div>
-          <PlayBar startTime={data?.[0].start_date_time} duration={data?.[0].duration_time} />
+          <SidebarToggle roomId={roomId} />
         </div>
+        {/* 재생바 */}
+        <PlayBar startTime={data?.[0].start_date_time} duration={data?.[0].duration_time} />
+        {/* 공지사항 */}
+        <Notify roomId={roomId} />
+        {/* 채팅창 */}
         <Chat roomId={roomId} />
       </div>
     </div>

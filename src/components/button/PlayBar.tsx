@@ -33,11 +33,11 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
       {/* 현재 진행 시간 */}
       <div className="flex justify-between items-center self-stretch">
         {playTime > 0 && duration * 60 > playTime ? (
-          <p className="label-m text-Grey-500">{nowTimeDisplay(playTime)}</p>
+          <p className="label-m text-Grey-700">{nowTimeDisplay(playTime)}</p>
         ) : (
-          <p className="label-m text-Grey-500">00:00:00</p>
+          <p className="label-m text-Grey-700">00:00:00</p>
         )}
-        <p className="label-m text-Grey-500">{`${playEnd[0]}:${playEnd[1]}:00`}</p>
+        <p className="label-m text-Grey-700">{`${playEnd[0]}:${playEnd[1]}:00`}</p>
       </div>
       <input
         type="range"
@@ -46,7 +46,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
         step={1}
         value={playTime}
         onChange={() => {}}
-        className="custom-scrollbar w-full h-1 bg-Grey-200"
+        className="custom-scrollbar w-full h-1 flex flex-col gap-2 self-stretch bg-Grey-200"
       />
     </div>
   );
