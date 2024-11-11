@@ -105,26 +105,36 @@ const ParticipationForm = ({
     const memberCheck = await memberFullChecker(party_id);
     if (endCheck === '알수없음') {
       setMessage('존재하지 않는 파티입니다');
-      // if (invite_id) {
-      //   await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
-      // }
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
+
       return;
     } else if (endCheck === '모집마감') {
       await memberFullSwitch(party_id);
       setMessage('마감된 파티입니다');
-      // if (invite_id) {
-      //   await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
-      // }
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
+
       return;
     } else if (endCheck === '종료') {
       setMessage('종료된 파티입니다');
-      // if (invite_id) {
-      //   await browserClient.from('invited').delete().eq('invite_id', invite_id); // 초대 삭제
-      // }
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
+
       return;
     } else if (memberCheck && endCheck !== '모집마감') {
       await memberFullSwitch(party_id);
       setMessage('마감된 파티입니다');
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
       return;
     }
 
@@ -212,14 +222,26 @@ const ParticipationForm = ({
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
       setMessage('존재하지 않는 파티입니다');
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
 
       return;
     } else if (endCheck === '모집마감') {
       setMessage('마감된 파티입니다');
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
 
       return;
     } else if (endCheck === '종료') {
       setMessage('종료된 파티입니다');
+      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+      if (invite_id) {
+        deleteInviteMutation.mutate(invite_id);
+      }
 
       return;
     }

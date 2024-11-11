@@ -105,7 +105,7 @@ const MyParticipatingParty = () => {
                       {party.video_name}
                       {party.media_type === 'tv' && party.episode_number ? ` ${party.episode_number} 화` : ''}
                     </p>
-                    <h3 className="body-l-bold group-hover:text-primary-400 transition duration-300">{cutPartyName}</h3>
+                    <h3 className="body-l-bold">{cutPartyName}</h3>
                   </div>
                   <div>
                     <div className="flex">
