@@ -1,21 +1,22 @@
+import { partySituationChecker } from './memberCheck';
 import browserClient from './supabase/client';
 
 // 강퇴하기
 export const memberExpulsion = async (party_id: string, member_Id: string) => {
   // 파티 나가기
-  const { data, error } = await browserClient
+  const { error } = await browserClient
     .from('team_user_profile')
     .delete()
     .eq('user_id', member_Id)
-    .eq('party_id', party_id)
-    .select('profile_id');
+    .eq('party_id', party_id);
 
   if (error) {
     console.log(error.message);
+    return;
   }
   // 모집 상태 변경
-  const situationResponse = await browserClient.from('party_info').select('situation').eq('party_id', party_id);
-  if (situationResponse.data && situationResponse.data[0].situation === '모집완료') {
+  const situationResponse = await partySituationChecker(party_id);
+  if (situationResponse === '모집완료') {
     const { error: updateError } = await browserClient
       .from('party_info')
       .update({ situation: '모집중' })
@@ -28,7 +29,7 @@ export const memberExpulsion = async (party_id: string, member_Id: string) => {
   //이미지 삭제
   const { error: deleteError } = await browserClient.storage
     .from('team_user_profile_image')
-    .remove([data?.[0].profile_id]);
+    .remove([`${party_id}/${member_Id}`]);
   if (deleteError) {
     console.log('이미지 삭제를 실패했습니다', deleteError.message);
   }

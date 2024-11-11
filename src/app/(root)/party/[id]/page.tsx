@@ -5,7 +5,6 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import PartyBottom from './(components)/PartyBottom';
 import { partyInfo } from '@/types/partyInfo';
 import { chatOpenClose } from '@/utils/chatOpenClose';
-import { Suspense } from 'react';
 
 export const generateMetadata = async ({ params }: { params: { id: string } }) => {
   const supabase = createClient();
@@ -38,10 +37,8 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="flex flex-col w-[1060px] m-auto">
-      <Suspense>
-        <PartyHeader partyData={partyData} end={end} />
-        <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />
-      </Suspense>
+      <PartyHeader partyData={partyData} end={end} />
+      <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />
     </div>
   );
 };
