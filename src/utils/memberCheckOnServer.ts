@@ -4,7 +4,6 @@ import { createClient } from './supabase/server';
 export const partySituationCheckerOnServer = async (party_id: string) => {
   const supabase = createClient();
   const { data } = await supabase.from('party_info').select('situation').eq('party_id', party_id);
-  console.log('파티상태체크', data);
 
   const situation: string = data ? data[0].situation : '알수없음';
   return situation;
@@ -28,13 +27,6 @@ export const memberFullCheckerOnServer = async (party_id: string) => {
   } else {
     return true;
   }
-};
-
-// 파티 상태를 모집마감으로 전환
-export const memberFullSwitchOnServer = async (party_id: string) => {
-  const supabase = createClient();
-  const response = await supabase.from('party_info').update({ situation: '모집마감' }).eq('party_id', party_id);
-  console.log('파티상태를 모집마감으로 전환', response);
 };
 
 // 이미 참가한 멤버인지 확인

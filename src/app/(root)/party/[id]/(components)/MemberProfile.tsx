@@ -1,6 +1,6 @@
 'use client';
 
-import { member } from '@/utils/memberCheck';
+import { member } from '@/types/partyMember';
 import Image from 'next/image';
 
 const MemberProfileCard = ({

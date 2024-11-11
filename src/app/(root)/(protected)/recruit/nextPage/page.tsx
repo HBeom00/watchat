@@ -246,7 +246,7 @@ const RecruitNextPage = () => {
         party_situation="모집중"
         isLogin={true}
         setOpenControl={setOpen}
-      ></ParticipationButton>
+      />
     </div>
   );
 };
