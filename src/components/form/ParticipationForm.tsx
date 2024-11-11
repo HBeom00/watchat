@@ -1,25 +1,27 @@
 'use client';
 
-import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
-import { isMemberExist, memberFullChecker, memberFullSwitch, partySituationChecker } from '@/utils/memberCheck';
+import { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import { isMemberExist } from '@/utils/memberCheck';
 import { usePathname, useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { useQueryClient } from '@tanstack/react-query';
-import partyProfileImageUploader from '@/utils/partyProfileImageUploader';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
 import uploadImage from '@/utils/fileUploader/uploadImage';
+import submitParticipation from '@/utils/participation/submitParticipation';
+import { useFetchUserData } from '@/store/userStore';
+import skipParticipation from '@/utils/participation/skipParticipation';
 
 const ParticipationForm = ({
   party_id,
-  closeHandler,
   setMessage,
-  invite_id
+  invite_id,
+  display
 }: {
   party_id: string;
-  closeHandler: Dispatch<SetStateAction<boolean>>;
   setMessage: Dispatch<SetStateAction<string>>;
   invite_id?: string;
+  display: boolean;
 }) => {
   // 초대 삭제 mutation 사용
   const deleteInviteMutation = useDeleteInviteMutation();
@@ -37,238 +39,103 @@ const ParticipationForm = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // 참가하기 함수
-  const submitHandler = async () => {
-    setDisabled(true);
-    const user_Id = await getLoginUserIdOnClient();
-    const selectImg = imgRef.current?.files?.[0];
-    let upload_profile_img: string = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
+  const selectImg = imgRef.current?.files?.[0];
+  const upload_profile_img: string = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
 
-    // 로그인하지 않았을 시
-    if (!user_Id) {
-      setMessage('먼저 로그인해주세요');
-      router.push('/login');
-      return;
+  const { data } = useFetchUserData();
+
+  useEffect(() => {
+    if (data) {
+      setNickname(data.nickname);
+      setProfile_image(data.profile_img);
     }
+  }, [data]);
 
-    // 이미 멤버일 때 프로필 변경
-    // 오너의 프로필 설정
-    const isMember = await isMemberExist(party_id, user_Id);
+  // 저장하기 함수
+  const submitHandlerMutation = useMutation({
+    mutationFn: async () => {
+      setDisabled(true);
+      const user_Id = await getLoginUserIdOnClient();
 
-    if (isMember) {
-      // 이미지 업서트하기
-      if (selectImg) {
-        const newProfileImgURL = await partyProfileImageUploader(selectImg, party_id, user_Id); // 선택된 이미지가있다면 선택된 이미지를 스토리지에 올리고 newProfileImgURL에 선언
-
-        if (newProfileImgURL) {
-          upload_profile_img = newProfileImgURL;
-        } else if (newProfileImgURL === '') {
-          alert('이미지업로드에 실패했습니다');
-          upload_profile_img =
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
-        }
+      // 로그인하지 않았을 시
+      if (!user_Id) {
+        alert('먼저 로그인해주세요');
+        router.push('/login');
+        return;
       }
 
-      // 프로필 업데이트
-      const { error: upDateError } = await browserClient
-        .from('team_user_profile')
-        .update({ nickname, profile_image: upload_profile_img })
-        .eq('party_id', party_id)
-        .eq('user_id', user_Id);
-      if (upDateError) {
-        setMessage('프로필 변경을 실패하셨습니다.');
+      await submitParticipation(
+        nickname,
+        selectImg,
+        upload_profile_img,
+        party_id,
+        user_Id,
+        setMessage,
+        deleteInviteMutation,
+        invite_id
+      );
+
+      if (!path.includes('/party')) {
         router.replace(`/party/${party_id}`);
       }
+
+      setDisabled(false);
+    },
+    onSuccess: async () => {
+      const user_Id = await getLoginUserIdOnClient();
+
       queryClient.invalidateQueries({ queryKey: ['partyOwnerInfo', party_id] });
-      router.replace(`/party/${party_id}`);
-
-      return;
+      queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
+      queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['memberCount', party_id] });
     }
+  });
 
-    // 파티 상태 확인하기
-    const endCheck = await partySituationChecker(party_id);
-    const memberCheck = await memberFullChecker(party_id);
-    if (endCheck === '알수없음') {
-      setMessage('존재하지 않는 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
+  // 넘어가기 함수
+  const skipHandlerMutation = useMutation({
+    mutationFn: async () => {
+      setDisabled(true);
+      const user_Id = await getLoginUserIdOnClient();
+      if (!user_Id) {
+        setMessage('먼저 로그인해주세요');
+        router.push('/login');
+        return;
       }
-
-      return;
-    } else if (endCheck === '모집마감') {
-      await memberFullSwitch(party_id);
-      setMessage('마감된 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
+      const isMember = await isMemberExist(party_id, user_Id);
+      if (isMember) {
+        if (!path.includes('/party')) {
+          router.replace(`/party/${party_id}`);
+        }
+        return;
       }
-
-      return;
-    } else if (endCheck === '종료') {
-      setMessage('종료된 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
+      await skipParticipation(data?.nickname, data?.profile_img, party_id, setMessage, deleteInviteMutation, invite_id);
+      if (!path.includes('/party')) {
+        console.log('페이지 이동');
+        router.replace(`/party/${party_id}`);
       }
-
-      return;
-    } else if (memberCheck && endCheck !== '모집마감') {
-      await memberFullSwitch(party_id);
-      setMessage('마감된 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
-      }
-      return;
+      setDisabled(false);
+    },
+    onSuccess: async () => {
+      const user_Id = await getLoginUserIdOnClient();
+      queryClient.invalidateQueries({ queryKey: ['partyOwnerInfo', party_id] });
+      queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
+      queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
+      queryClient.invalidateQueries({ queryKey: ['memberCount', party_id] });
     }
-
-    // 참가하기
-    const { error: participationError } = await browserClient.from('team_user_profile').insert({
-      nickname,
-      profile_image:
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
-      party_id
-    });
-
-    if (participationError) {
-      setMessage('파티에 참가할 수 없습니다');
-      return;
-    }
-    // 선택된 이미지 selectImg에 선언
-    if (selectImg) {
-      const newProfileImgURL = await partyProfileImageUploader(selectImg, party_id, user_Id); // 선택된 이미지가있다면 선택된 이미지를 스토리지에 올리고 newProfileImgURL에 선언
-
-      if (newProfileImgURL) {
-        upload_profile_img = newProfileImgURL;
-      } else if (newProfileImgURL === '') {
-        alert('이미지업로드에 실패했습니다');
-        upload_profile_img =
-          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
-      }
-    }
-    // 멤버 프로필이미지 업데이트
-    const { error } = await browserClient
-      .from('team_user_profile')
-      .update({ profile_image: upload_profile_img })
-      .eq('user_id', user_Id)
-      .eq('party_id', party_id);
-    if (error) {
-      setMessage('이미지 업로드에 실패하셨습니다');
-    }
-    // 이 참가하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
-    // 인원이 가득찼는지 확인
-    const fullCheck = await memberFullChecker(party_id);
-    if (fullCheck) {
-      // 모집 마감 상태로 전환
-      await memberFullSwitch(party_id);
-    }
-    // 멤버가 변동하면 바뀌어야 하는 값들
-    queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
-    queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
-    queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
-    queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
-    setMessage('파티에 참가하신 걸 환영합니다!');
-
-    // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-    if (invite_id) {
-      deleteInviteMutation.mutate(invite_id);
-    }
-
-    if (path.includes('/party')) {
-      closeHandler(false);
-    } else {
-      router.replace(`/party/${party_id}`);
-    }
-
-    setDisabled(false);
-  };
-
-  // 넘어가기
-  const skipHandler = async () => {
-    setDisabled(true);
-    const user_Id = await getLoginUserIdOnClient();
-
-    if (!user_Id) {
-      setMessage('먼저 로그인해주세요');
-      router.push('/login');
-
-      return;
-    }
-
-    const isMember = await isMemberExist(party_id, user_Id);
-    if (isMember) {
-      router.replace(`/party/${party_id}`);
-
-      return;
-    }
-
-    // 파티 상태 확인하기
-    const endCheck = await partySituationChecker(party_id);
-    if (endCheck === '알수없음') {
-      setMessage('존재하지 않는 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
-      }
-
-      return;
-    } else if (endCheck === '모집마감') {
-      setMessage('마감된 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
-      }
-
-      return;
-    } else if (endCheck === '종료') {
-      setMessage('종료된 파티입니다');
-      // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-      if (invite_id) {
-        deleteInviteMutation.mutate(invite_id);
-      }
-
-      return;
-    }
-
-    const { error: participationError } = await browserClient.from('team_user_profile').insert({
-      nickname: '익명',
-      profile_image:
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
-      party_id
-    });
-
-    if (participationError) {
-      setMessage('파티에 참가할 수 없습니다');
-      return;
-    }
-    // 멤버가 변동하면 바뀌어야 하는 값들
-    queryClient.invalidateQueries({ queryKey: ['partyMember', party_id] });
-    queryClient.invalidateQueries({ queryKey: ['isMember', party_id, user_Id] });
-    queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
-    queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
-    setMessage('파티에 참가하신 걸 환영합니다!');
-
-    // 초대된 상태면 초대 목록에서 해당 초대를 삭제
-    if (invite_id) {
-      deleteInviteMutation.mutate(invite_id);
-    }
-
-    if (path.includes('/party')) {
-      closeHandler(false);
-    } else {
-      router.replace(`/party/${party_id}`);
-    }
-    setDisabled(false);
-  };
+  });
 
   // 이미지 파일 선택
   const buttonClickHandler = () => {
     if (!imgRef.current) return;
     imgRef.current.click();
   };
+
   return (
-    <>
+    <div className={display ? 'flex flex-col' : 'hidden'}>
       <div className="flex flex-col">
         <div className="flex flex-col py-4 items-center gap-4 self-stretch">
           <button type="button" className="relative" onClick={buttonClickHandler}>
@@ -313,6 +180,7 @@ const ParticipationForm = ({
         </div>
         <div className="flex flex-col items-start px-4 self-stretch">
           <input
+            value={nickname}
             className="commonInput px-4 text-center"
             onChange={(e) => setNickname(e.target.value)}
             placeholder="닉네임을 입력해주세요."
@@ -320,14 +188,18 @@ const ParticipationForm = ({
         </div>
       </div>
       <div className="flex flex-col p-4 items-start self-stretch body-m-bold">
-        <button onClick={submitHandler} className="btn-l w-full" disabled={disabled}>
+        <button onClick={() => submitHandlerMutation.mutate()} className="btn-l w-full" disabled={disabled}>
           저장
         </button>
-        <button className="px-5 py-3 h-12 text-Grey-400 w-full" onClick={skipHandler} disabled={disabled}>
+        <button
+          className="px-5 py-3 h-12 text-Grey-400 w-full"
+          onClick={() => skipHandlerMutation.mutate()}
+          disabled={disabled}
+        >
           넘어가기
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,47 +1,16 @@
 'use client';
-import Link from 'next/link';
 import Image from 'next/image';
-import ParticipationButton from '@/components/button/ParticipationButton';
 import { partyInfo } from '@/types/partyInfo';
-import { useQuery } from '@tanstack/react-query';
-import { isMemberExist, member } from '@/utils/memberCheck';
-import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useMemberCount } from '@/utils/useMemberCount';
-import { chatOpenClose } from '@/utils/chatOpenClose';
 import { startTimeString } from '@/utils/startTimeString';
-import { useState } from 'react';
+import { useOwnerInfo } from '@/utils/useOwnerInfo';
+import HeaderButtons from './HeaderButtons';
 
 const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean }) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const { data: userId, isLoading: userLoading } = useQuery({
-    queryKey: ['loginUser'],
-    queryFn: () => getLoginUserIdOnClient()
-  });
-
-  const { data: isMember, isLoading: isMemberLoading } = useQuery({
-    queryKey: ['isMember', partyData.party_id, userId],
-    queryFn: async () => {
-      const isMember = await isMemberExist(partyData.party_id, userId);
-      return isMember;
-    }
-  });
-
   const { data: memberCount, isLoading: isMemberCounting } = useMemberCount(partyData.party_id);
-  const { data: ownerInfo, isLoading } = useQuery({
-    queryKey: ['partyOwnerInfo', partyData.party_id],
-    queryFn: async () => {
-      const response: PostgrestSingleResponse<member[]> = await browserClient
-        .from('team_user_profile')
-        .select('*')
-        .eq('user_id', partyData.owner_id)
-        .eq('party_id', partyData.party_id);
+  const { data: ownerInfo, isLoading } = useOwnerInfo(partyData);
 
-      return response.data;
-    }
-  });
-
-  if (isLoading || userLoading || isMemberLoading || isMemberCounting) {
+  if (isLoading || isMemberCounting) {
     return <div>Loading...</div>;
   }
 
@@ -67,14 +36,14 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
         {/* 중간 */}
         <div className="flex flex-row gap-1 items-center">
           <p className="label-l-bold">주최자</p>
-          {ownerInfo && ownerInfo.length > 0 ? (
+          {ownerInfo ? (
             <div className="flex flex-row gap-1">
               <Image
                 className="rounded-full"
-                src={ownerInfo[0].profile_image}
+                src={ownerInfo.profile_image}
                 width={16}
                 height={16}
-                alt={`${ownerInfo[0].nickname} 님의 프로필 사진`}
+                alt={`${ownerInfo.nickname} 님의 프로필 사진`}
                 style={{
                   objectFit: 'cover',
                   width: '16px',
@@ -82,7 +51,7 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
                   borderRadius: '50%'
                 }}
               />
-              <p className="label-l">{ownerInfo[0].nickname}</p>
+              <p className="label-l">{ownerInfo.nickname}</p>
             </div>
           ) : (
             <></>
@@ -93,43 +62,7 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
           <p className="label-l">참여 예정 {`(${memberCount || 0}/${partyData.limited_member})명`}</p>
         </div>
         {/* 하단 */}
-        <div className="flex w-[164px] justify-center items-center text-center">
-          {end ? (
-            <button className="disabled-btn-m w-full" disabled={true}>
-              채팅 종료
-            </button>
-          ) : isMember ? (
-            <Link
-              className={
-                chatOpenClose(partyData) === '시청중'
-                  ? 'flex btn-m w-full justify-center items-center'
-                  : 'flex disabled-btn-m w-full justify-center items-center'
-              }
-              href={`/chat/${partyData.party_id}`}
-              onClick={(e) => {
-                if (chatOpenClose(partyData) !== '시청중') {
-                  e.preventDefault();
-                  alert('시청시간 10분 전부터 입장하실 수 있습니다.');
-                }
-              }}
-            >
-              채팅하기
-            </Link>
-          ) : (
-            <>
-              <button onClick={() => setOpen(true)} className="btn-m w-full">
-                참여하기
-              </button>
-              <ParticipationButton
-                party_id={partyData.party_id}
-                party_situation={partyData.situation}
-                openControl={open}
-                setOpenControl={setOpen}
-                isLogin={!!userId}
-              />
-            </>
-          )}
-        </div>
+        <HeaderButtons end={end} partyData={partyData} />
       </div>
     </div>
   );

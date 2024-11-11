@@ -1,16 +1,13 @@
 import { partyInfo, platform } from '@/types/partyInfo';
-import { member } from '@/utils/memberCheck';
 import { startTimeString } from '@/utils/startTimeString';
-import browserClient from '@/utils/supabase/client';
 import { useMemberCount } from '@/utils/useMemberCount';
 import { getViewStatus } from '@/utils/viewStatus';
-import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import PlatformImageCard from '../styleComponents/PlatformImage';
 import WatchingLabel from '../styleComponents/WatchingLabel';
+import { useOwnerInfo } from '@/utils/useOwnerInfo';
 
 const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   const platformArr: platform[] = JSON.parse(data.video_platform);
@@ -18,17 +15,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
 
   const { data: memberCount, isLoading: isCountLoading } = useMemberCount(data.party_id);
 
-  const { data: ownerInfo, isLoading } = useQuery({
-    queryKey: ['partyOwnerInfo', data.party_id],
-    queryFn: async () => {
-      const response: PostgrestSingleResponse<member[]> = await browserClient
-        .from('team_user_profile')
-        .select('*')
-        .eq('user_id', data.owner_id)
-        .eq('party_id', data.party_id);
-      return response.data;
-    }
-  });
+  const { data: ownerInfo, isLoading } = useOwnerInfo(data);
   if (isLoading || isCountLoading) <div>Loading...</div>;
 
   return (
@@ -75,7 +62,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           {ownerInfo ? (
             <div className="flex flex-row max-w-[74px] items-center gap-[6px]">
               <Image
-                src={ownerInfo[0].profile_image}
+                src={ownerInfo.profile_image}
                 width={16}
                 height={16}
                 style={{
@@ -84,9 +71,9 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
                   height: '16px',
                   borderRadius: '50%'
                 }}
-                alt={`${ownerInfo[0].nickname}의 프로필`}
+                alt={`${ownerInfo.nickname}의 프로필`}
               />
-              <p className="text-Grey-900 label-m text-overflow-hidden">{ownerInfo[0].nickname}</p>
+              <p className="text-Grey-900 label-m text-overflow-hidden">{ownerInfo.nickname}</p>
             </div>
           ) : (
             <></>
