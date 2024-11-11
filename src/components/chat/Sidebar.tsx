@@ -174,16 +174,16 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
                 파티를 나가시겠습니까?
               </DialogDescription>
               <div className="flex justify-center items-center mt-4 gap-4">
-                <button
+                <div
                   onClick={() => leavePartyMutation.mutate(userId)}
-                  className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
+                  className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
                 >
                   나가기
-                </button>
+                </div>
                 <DialogClose>
-                  <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                  <div className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
                     취소
-                  </button>
+                  </div>
                 </DialogClose>
               </div>
             </DialogContent>
