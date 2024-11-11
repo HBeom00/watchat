@@ -34,12 +34,16 @@ const RecruitFirstPage = () => {
     setPartyInfo
   } = useRecruitStore();
 
+  // 검색 결과 표시 여부
   const [showResults, setShowResults] = useState(false);
+  // 최종 검색어
   const [debouncedVideoName, setDebouncedVideoName] = useState(video_name);
+  // 디바운싱 타이머
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null); // duration_time 에관한 오류
 
+  // 최신 검색어만 보여주기 위해
   useEffect(() => {
     //상태 초기화
     setPartyInfo({
@@ -79,6 +83,7 @@ const RecruitFirstPage = () => {
     setSearchTimeout(timeout);
   };
 
+  // 검색 Multisearch
   const { data: searchResults } = useQuery<SearchResponse>({
     queryKey: ['searchVideo', debouncedVideoName],
     queryFn: () => fetchMultiSearch(debouncedVideoName),
@@ -105,12 +110,17 @@ const RecruitFirstPage = () => {
 
     //영화/TV 상세 정보 불러오기
     let duration = 0;
+    let genres: string[] = [];
+
     if (media_type === 'movie') {
       const movieDetail = await fetchMoviesDetail(video_id);
       duration = movieDetail?.detail.runtime || 0; // 영화 런타임
+      genres = movieDetail?.detail.genres?.map((genre) => genre.name) || []; // 영화 장르
     } else if (media_type === 'tv') {
       const tvDetail = await fetchTvDetail(video_id);
       duration = tvDetail?.detail.episode_run_time[0] || 0; // TV 에피소드 런타임
+      genres = tvDetail?.detail.genres?.map((genre) => genre.name) || []; // TV 장르
+      console.log(genres);
     }
     setPartyInfo({
       video_name: result.title || result.name || '',
@@ -121,7 +131,8 @@ const RecruitFirstPage = () => {
       popularity: result.popularity,
       backdrop_image: result.backdrop_path,
       duration_time: duration,
-      season_number
+      season_number,
+      genres: genres
     });
     setShowResults(false);
     queryClient.invalidateQueries({ queryKey: ['searchVideo'] });

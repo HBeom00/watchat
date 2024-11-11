@@ -5,7 +5,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import browserClient from '../../../../../utils/supabase/client';
-// import { useRouter } from 'next/navigation';
 import ParticipationButton from '@/components/button/ParticipationButton';
 import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
@@ -17,7 +16,6 @@ const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  // const router = useRouter();
   const { limited_member, setRecruitDetails } = useRecruitStore();
   const queryClient = useQueryClient();
 
@@ -48,7 +46,8 @@ const RecruitNextPage = () => {
         start_time,
         popularity,
         video_platform,
-        season_number
+        season_number,
+        genres
       } = useRecruitStore.getState();
 
       const plusWatchDate = watch_date ? new Date(watch_date.getTime() + 9 * 60 * 60 * 1000) : null;
@@ -88,7 +87,8 @@ const RecruitNextPage = () => {
               owner_id: userId,
               popularity,
               write_time: new Date(),
-              season_number
+              season_number,
+              genres
             }
           ])
           .select();
@@ -127,7 +127,7 @@ const RecruitNextPage = () => {
       setErrorMessage(''); // 오류 메시지 초기화
     } else {
       setErrorMessage('1에서 10 사이의 숫자를 입력하세요.');
-      e.target.value = ''; // 잘못된 입력값을 지움
+      // e.target.value = ''; // 잘못된 입력값을 지움
     }
   };
 
