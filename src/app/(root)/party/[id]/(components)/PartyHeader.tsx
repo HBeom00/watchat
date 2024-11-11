@@ -95,7 +95,9 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
         {/* 하단 */}
         <div className="flex w-[164px] justify-center items-center text-center">
           {end ? (
-            <button className="disabled-btn-m w-full">채팅 종료</button>
+            <button className="disabled-btn-m w-full" disabled={true}>
+              채팅 종료
+            </button>
           ) : isMember ? (
             <Link
               className={
