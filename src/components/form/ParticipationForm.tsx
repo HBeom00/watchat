@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import partyProfileImageUploader from '@/utils/partyProfileImageUploader';
 import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
+import uploadImage from '@/utils/fileUploader/uploadImage';
 
 const ParticipationForm = ({
   party_id,
@@ -35,22 +36,6 @@ const ParticipationForm = ({
   const path = usePathname();
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  // 이미지 업로드 onChange
-  const uploadImage = () => {
-    const file = imgRef.current?.files?.[0]; // 선택한 파일을 file에 저장
-    if (file) {
-      // 파일이 있다면
-      const reader = new FileReader(); // 1. 사용할 FileReader를 reader에 선언
-      reader.readAsDataURL(file); // 2. .readAsDataURL메서드를 사용해 파일을 데이터 URL형식으로 변환
-      reader.onloadend = () => {
-        // 3. FileReader가 파일을 다 읽고 난 뒤 실행되는 함수
-        if (typeof reader.result === 'string') {
-          setProfile_image(reader.result); // 4. reader.result는 3에서 읽은 데이터를 담고있음. 이걸 ImgFile에 담아줌
-        }
-      };
-    }
-  };
 
   // 참가하기 함수
   const submitHandler = async () => {
@@ -321,7 +306,7 @@ const ParticipationForm = ({
               type="file"
               ref={imgRef}
               accept="image/*"
-              onChange={uploadImage}
+              onChange={() => uploadImage(imgRef, setProfile_image)}
             />
           </button>
           <p className="self-stretch text-static-black text-center body-m">파티의 프로필을 설정할 수 있어요</p>
