@@ -94,6 +94,7 @@ const RecruitNextPage = () => {
           .select();
       if (error) throw new Error('데이터 삽입 실패');
       alert('모집이 업로드 되었습니다.');
+
       if (insertPartyData !== null) {
         console.log('파티아이디', insertPartyData[0].party_id);
         const { error: ownerInsertError } = await browserClient.from('team_user_profile').insert({
