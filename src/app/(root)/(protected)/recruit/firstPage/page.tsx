@@ -334,5 +334,3 @@ const RecruitFirstPage = () => {
 };
 
 export default RecruitFirstPage;
-
-// 버튼 컴포넌트 만들기 ***** 컬러. 크기 . 등등 프롭스로 받아서 변경이 쉽게
