@@ -259,8 +259,8 @@ const FirstLoginForm = () => {
                 onClick={() => onClickPlatform({ platform: platform.name, setPlatforms })}
                 className={
                   platforms.includes(platform.name)
-                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold text-xs border cursor-pointer border-primary-400'
-                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold text-xs border cursor-pointer'
+                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold body-xs border cursor-pointer border-primary-400'
+                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold body-xs border cursor-pointer'
                 }
               >
                 <div className="flex items-center space-x-2">
@@ -283,8 +283,8 @@ const FirstLoginForm = () => {
                 onClick={() => genreClickHandler(genre)}
                 className={
                   genres.includes(genre)
-                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold text-xs border cursor-pointer border-primary-400'
-                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold text-xs border cursor-pointer'
+                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold body-xs border cursor-pointer border-primary-400'
+                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold body-xs border cursor-pointer'
                 }
               >
                 {genre}

@@ -68,9 +68,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
             {data.episode_number ? ' ' + data.episode_number + '화' : null}
           </p>
         </div>
-        <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
-          {data.party_name}
-        </p>
+        <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch ">{data.party_name}</p>
         <div className="flex flex-row items-end gap-1 self-stretch">
           {ownerInfo ? (
             <div className="flex flex-row max-w-[74px] items-center gap-[6px]">

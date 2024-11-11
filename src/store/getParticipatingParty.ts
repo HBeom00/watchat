@@ -23,10 +23,10 @@ type PartyInfo = {
 };
 
 // 작성자 정보 타입
-interface OwnerProfile {
+type OwnerProfile = {
   profile_image: string;
   nickname: string;
-}
+};
 
 // partyWithDetails (통틀어서 반환되는 값) 타입
 export interface ParticipatingParty extends PartyInfo {
@@ -36,7 +36,7 @@ export interface ParticipatingParty extends PartyInfo {
 }
 
 // 참여한 파티 불러오기
-export const getParticipatingParty = async (): Promise<ParticipatingParty[]> => {
+export const getParticipatingParty = async () => {
   const userId = await getLoginUserIdOnClient();
 
   // 파티 목록 가져오기

@@ -1,11 +1,11 @@
 'use client';
 
-import { useParticipatingParty } from '@/store/useParticipatingParty';
 import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import '@/customCSS/label.css';
 import doesntExist from '../../../../../../public/closeEyeCat.svg';
+import { useRecommendParty } from '@/store/useRecommendParty';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
@@ -15,7 +15,7 @@ export type platform = {
   name: string;
 };
 
-const ParticipatingParty = () => {
+const RecommendedParty = () => {
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
   const userId = userData?.user_id;
@@ -28,27 +28,27 @@ const ParticipatingParty = () => {
 
   // 참여중인 파티 가져오기
   const {
-    data: enjoyingParty,
-    isPending: pendingEnjoyingParty,
-    isError: errorEnjoyingParty
-  } = useParticipatingParty(userId as string);
+    data: recommendParty,
+    isPending: pendingRecommendParty,
+    isError: errorRecommendParty
+  } = useRecommendParty(userId as string);
 
   // 페이지 수 불러오기
-  const pageCount = enjoyingParty ? Math.ceil(enjoyingParty.length / pageSlice) : 1;
+  const pageCount = recommendParty ? Math.ceil(recommendParty.length / pageSlice) : 1;
 
-  if (isPending || pendingEnjoyingParty) {
+  if (isPending || pendingRecommendParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || errorEnjoyingParty) {
+  if (isError || errorRecommendParty) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
   return (
     <section className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m mt-8 mb-4">참여한 파티</h3>
+      <h3 className="title-m mt-8 mb-4">이런 파티는 어떠세요?</h3>
       <ul className="flex flex-row gap-5 flex-wrap">
-        {enjoyingParty && enjoyingParty.length > 0 ? (
-          enjoyingParty.slice(start, end).map((party) => {
+        {recommendParty && recommendParty.length > 0 ? (
+          recommendParty.slice(start, end).map((party) => {
             // 길이가 8자 이상이면 잘라서 말줄임표 추가
             const cutPartyName =
               party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
@@ -83,4 +83,4 @@ const ParticipatingParty = () => {
   );
 };
 
-export default ParticipatingParty;
+export default RecommendedParty;

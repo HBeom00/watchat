@@ -1,12 +1,12 @@
 'use client';
 
-import { useParticipatingParty } from '@/store/useParticipatingParty';
 import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import '@/customCSS/label.css';
-import doesntExist from '../../../public/closeEyeCat.svg';
+import doesntExist from '../../../public/openEyeCat.svg';
+import { useRecommendParty } from '@/store/useRecommendParty';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 
@@ -15,42 +15,42 @@ export type platform = {
   name: string;
 };
 
-const MyParticipatingParty = () => {
+const MyRecommendParty = () => {
+  // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
   const userId = userData?.user_id;
 
-  // 참여중인 파티 가져오기
+  // 추천파티 가져오기
   const {
-    data: enjoyingParty,
-    isPending: pendingEnjoyingParty,
-    isError: errorEnjoyingParty
-  } = useParticipatingParty(userId as string);
+    data: recommendParty,
+    isPending: pandingRecommendParty,
+    isError: errorRecommendParty
+  } = useRecommendParty(userId as string);
 
-  if (isPending || pendingEnjoyingParty) {
+  if (isPending || pandingRecommendParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || errorEnjoyingParty) {
+  if (isError || errorRecommendParty) {
+    console.log('추천 파티', errorRecommendParty);
+    console.log('useRecommendParty에서 받은 데이터:', recommendParty);
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
   return (
     <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between mb-4">
-        <h3 className="title-m">참여한 파티</h3>
-        {enjoyingParty && enjoyingParty.length > 0 ? (
-          <Link href={'/myPage/participating-party'} className="body-s text-[#c2c2c2]">
+        <h3 className="title-m">이런 파티는 어떠세요?</h3>
+        {recommendParty && recommendParty.length > 0 ? (
+          <Link href={'/myPage/recommended-party'} className="body-s text-[#c2c2c2]">
             더보기
           </Link>
         ) : (
           <></>
         )}
       </div>
-
-      {/* 카드 리스트 */}
-
       <ul className="flex flex-row gap-5">
-        {enjoyingParty && enjoyingParty.length > 0 ? (
-          enjoyingParty.slice(0, 5).map((party) => {
+        {recommendParty && recommendParty.length > 0 ? (
+          recommendParty.slice(0, 5).map((party) => {
             const cutPartyName =
               party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
 
@@ -72,8 +72,8 @@ const MyParticipatingParty = () => {
           })
         ) : (
           <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
-            <Image src={doesntExist} width={73} height={73} alt="참여한 파티가 없습니다" />
-            <p className="body-m text-Grey-600">참여한 파티가 없습니다.</p>
+            <Image src={doesntExist} width={73} height={73} alt="주최한 파티가 없습니다" />
+            <p className="body-m text-Grey-600">주최한 파티가 없습니다.</p>
           </li>
         )}
       </ul>
@@ -81,4 +81,4 @@ const MyParticipatingParty = () => {
   );
 };
 
-export default MyParticipatingParty;
+export default MyRecommendParty;
