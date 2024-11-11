@@ -15,7 +15,6 @@ export default function Chat({ roomId }: { roomId: string }) {
   const queryClient = useQueryClient();
   const refetchRef = useRef<(() => void) | null>(null);
 
-
   useEffect(() => {
     // 로그인 유저 아이디 가져오기
     const fetchUserId = async () => {
@@ -28,25 +27,24 @@ export default function Chat({ roomId }: { roomId: string }) {
   }, []);
 
   // 실시간 메시지 구독 설정
- useEffect(() => {
+  useEffect(() => {
     const messageSubscription = browserClient
       .channel(`chat-${roomId}`)
       .on(
         'postgres_changes',
         {
-          event: '*', 
+          event: '*',
           schema: 'public',
           table: 'chat',
           filter: `room_id=eq.${roomId}`
         },
-        async (payload) => {
+        async () => {
           // 캐시 업데이트
-          await queryClient.invalidateQueries(['messages', roomId]);
+          await queryClient.invalidateQueries({ queryKey: ['messages', roomId] });
           // 실제 데이터 리페치
           if (refetchRef.current) {
             refetchRef.current();
           }
-          
         }
       )
       .subscribe();
@@ -88,7 +86,7 @@ export default function Chat({ roomId }: { roomId: string }) {
     }
   });
 
-    useEffect(() => {
+  useEffect(() => {
     refetchRef.current = refetch;
   }, [refetch]);
 
@@ -110,15 +108,15 @@ export default function Chat({ roomId }: { roomId: string }) {
   });
 
   // 새 메시지를 캐시에 추가하고 자동으로 스크롤 이동
-const displayNewMessage = (message: ChatInfo) => {
-    queryClient.setQueryData<ChatInfo[]>(['messages', roomId], (oldMessages = []) => {
-      const messageExists = oldMessages.some((msg) => msg.id === message.id);
-      if (messageExists) {
-        return oldMessages;
-      }
-      return [...oldMessages, message];
-    });
-  };
+  // const displayNewMessage = (message: ChatInfo) => {
+  //     queryClient.setQueryData<ChatInfo[]>(['messages', roomId], (oldMessages = []) => {
+  //       const messageExists = oldMessages.some((msg) => msg.id === message.id);
+  //       if (messageExists) {
+  //         return oldMessages;
+  //       }
+  //       return [...oldMessages, message];
+  //     });
+  //   };
 
   // 화면 처음 로드될 때 스크롤을 하단으로 설정
   useEffect(() => {
