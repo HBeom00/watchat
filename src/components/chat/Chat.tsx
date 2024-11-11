@@ -13,6 +13,8 @@ export default function Chat({ roomId }: { roomId: string }) {
   const [userId, setUserId] = useState<string | null>(null);
   const messageListRef = useRef<HTMLDivElement | null>(null);
   const queryClient = useQueryClient();
+  const refetchRef = useRef<(() => void) | null>(null);
+
 
   useEffect(() => {
     // 로그인 유저 아이디 가져오기
@@ -26,14 +28,25 @@ export default function Chat({ roomId }: { roomId: string }) {
   }, []);
 
   // 실시간 메시지 구독 설정
-  useEffect(() => {
+ useEffect(() => {
     const messageSubscription = browserClient
       .channel(`chat-${roomId}`)
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'chat', filter: `room_id=eq.${roomId}` },
-        (payload) => {
-          displayNewMessage(payload.new as ChatInfo);
+        {
+          event: '*', 
+          schema: 'public',
+          table: 'chat',
+          filter: `room_id=eq.${roomId}`
+        },
+        async (payload) => {
+          // 캐시 업데이트
+          await queryClient.invalidateQueries(['messages', roomId]);
+          // 실제 데이터 리페치
+          if (refetchRef.current) {
+            refetchRef.current();
+          }
+          
         }
       )
       .subscribe();
@@ -58,7 +71,7 @@ export default function Chat({ roomId }: { roomId: string }) {
   });
 
   // 초기 메세지 불러오기
-  const { data: messages = [] } = useQuery<ChatInfo[], Error>({
+  const { data: messages = [], refetch } = useQuery<ChatInfo[], Error>({
     queryKey: ['messages', roomId],
     queryFn: async () => {
       const { data, error } = await browserClient
@@ -74,6 +87,10 @@ export default function Chat({ roomId }: { roomId: string }) {
       return data;
     }
   });
+
+    useEffect(() => {
+    refetchRef.current = refetch;
+  }, [refetch]);
 
   // 채팅방에 참여한 유저 정보 가져오기
   const { data: userData = [] } = useQuery<UserInfo[], Error>({
@@ -93,8 +110,14 @@ export default function Chat({ roomId }: { roomId: string }) {
   });
 
   // 새 메시지를 캐시에 추가하고 자동으로 스크롤 이동
-  const displayNewMessage = (message: ChatInfo) => {
-    queryClient.setQueryData<ChatInfo[]>(['messages', roomId], (oldMessages = []) => [...oldMessages, message]);
+const displayNewMessage = (message: ChatInfo) => {
+    queryClient.setQueryData<ChatInfo[]>(['messages', roomId], (oldMessages = []) => {
+      const messageExists = oldMessages.some((msg) => msg.id === message.id);
+      if (messageExists) {
+        return oldMessages;
+      }
+      return [...oldMessages, message];
+    });
   };
 
   // 화면 처음 로드될 때 스크롤을 하단으로 설정
