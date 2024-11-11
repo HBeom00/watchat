@@ -1,7 +1,6 @@
+import { member } from '@/types/partyMember';
 import browserClient from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-
-export type member = { profile_id: string; nickname: string; profile_image: string; user_id: string; party_id: string };
 
 // 파티 상태 확인
 export const partySituationChecker = async (party_id: string) => {
@@ -52,7 +51,10 @@ export const memberFullChecker = async (party_id: string) => {
 // 파티 상태를 모집마감으로 전환
 export const memberFullSwitch = async (party_id: string) => {
   const response = await browserClient.from('party_info').update({ situation: '모집마감' }).eq('party_id', party_id);
-  console.log(response);
+  // console.log(response);
+  if (response.error) {
+    console.log(response.error.message);
+  }
 };
 
 // 이미 참가한 멤버인지 확인

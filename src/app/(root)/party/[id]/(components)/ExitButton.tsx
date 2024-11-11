@@ -23,6 +23,8 @@ const ExitButton = ({ partyId, userId }: { partyId: string; userId: string }) =>
       queryClient.invalidateQueries({ queryKey: ['partyMember', partyId] });
       queryClient.invalidateQueries({ queryKey: ['isMember', partyId, userId] });
       queryClient.invalidateQueries({ queryKey: ['myParty', userId] });
+      queryClient.invalidateQueries({ queryKey: ['memberCount', partyId] });
+      setOpen(false);
     }
   });
   return (
