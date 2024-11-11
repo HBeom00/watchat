@@ -106,16 +106,16 @@ const MemberList = ({
                       정말 내보내시겠습니까?
                     </DialogDescription>
                     <div className="flex justify-center items-center mt-4 gap-4">
-                      <button
-                        className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
+                      <div
+                        className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
                         onClick={() => exitParty(el.user_id)}
                       >
                         내보내기
-                      </button>
+                      </div>
                       <DialogClose>
-                        <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                        <div className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
                           취소
-                        </button>
+                        </div>
                       </DialogClose>
                     </div>
                   </DialogContent>
