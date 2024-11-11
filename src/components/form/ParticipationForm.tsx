@@ -28,7 +28,7 @@ const ParticipationForm = ({
 
   // 보여주기 이미지
   const [profile_image, setProfile_image] = useState(
-    'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+    'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
   );
   const [nickname, setNickname] = useState('익명');
   const [disabled, setDisabled] = useState(false);
@@ -80,7 +80,7 @@ const ParticipationForm = ({
         } else if (newProfileImgURL === '') {
           alert('이미지업로드에 실패했습니다');
           upload_profile_img =
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png';
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
         }
       }
 
@@ -132,7 +132,7 @@ const ParticipationForm = ({
     const { error: participationError } = await browserClient.from('team_user_profile').insert({
       nickname,
       profile_image:
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
       party_id
     });
 
@@ -149,7 +149,7 @@ const ParticipationForm = ({
       } else if (newProfileImgURL === '') {
         alert('이미지업로드에 실패했습니다');
         upload_profile_img =
-          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png';
+          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
       }
     }
     // 멤버 프로필이미지 업데이트
@@ -227,7 +227,7 @@ const ParticipationForm = ({
     const { error: participationError } = await browserClient.from('team_user_profile').insert({
       nickname: '익명',
       profile_image:
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
       party_id
     });
 

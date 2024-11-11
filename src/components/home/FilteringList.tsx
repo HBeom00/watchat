@@ -17,7 +17,7 @@ import SelectDropBox from './SelectDropBox';
 import ListDiv from './ListDiv';
 import PageSelect from './PageSelect';
 
-const SearchList = () => {
+const FilteringList = () => {
   const params = useSearchParams();
 
   const [order, setOrder] = useState<string>('write_time');
@@ -67,7 +67,6 @@ const SearchList = () => {
     }
   });
   if (isLoading || isPageLoading) <div>Loading......</div>;
-  // console.log(data);
   return (
     <div className="mt-8 w-[1060px]">
       <SelectDropBox
@@ -83,4 +82,4 @@ const SearchList = () => {
   );
 };
 
-export default SearchList;
+export default FilteringList;
