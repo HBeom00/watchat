@@ -94,9 +94,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
   const exitPartyMutation = useMutation({
     mutationFn: async (id: string) => {
       await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
-      //     const { error } = await browserClient
-      // .from('ban_recommend')
-      // .insert({ id: 1, name: 'Denmark' })
+      await browserClient.from('party_ban_user').insert({ party_id: roomId, user_id: id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members', roomId] });
