@@ -1,12 +1,14 @@
 'use client';
 
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SendMessageForm({ roomId }: { roomId: string }) {
   const [content, setContent] = useState('');
   const route = useRouter();
+  const queryClient = useQueryClient();
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,8 +39,12 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
       }
     ]);
 
-    if (error) console.error('Error sending message:', error);
-    else setContent('');
+    if (error) {
+      console.error('Error sending message:', error);
+    } else {
+      setContent('');
+      queryClient.invalidateQueries({ queryKey: ['messages', roomId] }); // 메시지 쿼리 무효화하여 갱신
+    }
   };
 
   return (

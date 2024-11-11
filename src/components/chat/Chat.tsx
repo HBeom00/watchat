@@ -31,7 +31,7 @@ export default function Chat({ roomId }: { roomId: string }) {
       .channel(`chat-${roomId}`)
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'chat', filter: `room_id=eq.${roomId}` },
+        { event: 'UPDATE', schema: 'public', table: 'chat', filter: `room_id=eq.${roomId}` },
         (payload) => {
           displayNewMessage(payload.new as ChatInfo);
         }
