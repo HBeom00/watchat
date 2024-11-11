@@ -2,7 +2,7 @@
 
 import { banUser } from '@/store/banUser';
 import { follow } from '@/store/followUnfollow';
-import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
+import { usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { useRecommendedUsers } from '@/store/useRecommendedUser';
 import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +12,7 @@ import '@/customCSS/label.css';
 import closeBte from '../../../public/close.svg';
 import doesntExist from '../../../public/nobody.svg';
 import Link from 'next/link';
+import { MyCarousel } from './MyCarousel';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -109,34 +110,14 @@ const MyFollowRecommendation = () => {
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
         {recommendedUsers && recommendedUsers.length > 6 && (
-          <>
-            <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} className="absolute top-[50%] -left-10">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300">
-                <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    id="arrow_back_ios_new"
-                    d="M9.99916 19.3079L0.691406 10.0001L9.99916 0.692383L11.0627 1.75588L2.81841 10.0001L11.0627 18.2444L9.99916 19.3079Z"
-                    fill="#C2C2C2"
-                  />
-                </svg>
-              </div>
-            </PrevButton>
-            <NextButton
-              onClick={onNextButtonClick}
-              disabled={nextBtnDisabled}
-              className="absolute top-[50%] -right-10 rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300"
-            >
-              <div className="w-10 h-10 flex items-center justify-center">
-                <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    id="arrow_forward_ios"
-                    d="M2.00491 19.3079L0.941406 18.2444L9.18566 10.0001L0.941406 1.75588L2.00491 0.692383L11.3127 10.0001L2.00491 19.3079Z"
-                    fill="#757575"
-                  />
-                </svg>
-              </div>
-            </NextButton>
-          </>
+          // 캐러셀 버튼
+          <MyCarousel
+            emblaRef={emblaRef}
+            prevBtnDisabled={prevBtnDisabled}
+            nextBtnDisabled={nextBtnDisabled}
+            onPrevButtonClick={onPrevButtonClick}
+            onNextButtonClick={onNextButtonClick}
+          />
         )}
         <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px]">
           <ul className="carousel-container flex items-center">
