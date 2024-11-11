@@ -110,17 +110,17 @@ const RecruitFirstPage = () => {
 
     //영화/TV 상세 정보 불러오기
     let duration = 0;
-    let genres: string[] = [];
+    let genre: string[] = [];
 
     if (media_type === 'movie') {
       const movieDetail = await fetchMoviesDetail(video_id);
       duration = movieDetail?.detail.runtime || 0; // 영화 런타임
-      genres = movieDetail?.detail.genres?.map((genre) => genre.name) || []; // 영화 장르
+      genre = movieDetail?.detail.genres?.map((genre) => genre.name) || []; // 영화 장르
     } else if (media_type === 'tv') {
       const tvDetail = await fetchTvDetail(video_id);
       duration = tvDetail?.detail.episode_run_time[0] || 0; // TV 에피소드 런타임
-      genres = tvDetail?.detail.genres?.map((genre) => genre.name) || []; // TV 장르
-      console.log(genres);
+      genre = tvDetail?.detail.genres?.map((genre) => genre.name) || []; // TV 장르
+      console.log(genre);
     }
     setPartyInfo({
       video_name: result.title || result.name || '',
@@ -132,7 +132,7 @@ const RecruitFirstPage = () => {
       backdrop_image: result.backdrop_path,
       duration_time: duration,
       season_number,
-      genres: genres
+      genres: genre
     });
     setShowResults(false);
     queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
