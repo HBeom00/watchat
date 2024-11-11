@@ -7,22 +7,28 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import partyProfileImageUploader from '@/utils/partyProfileImageUploader';
+import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
 
 const ParticipationForm = ({
   party_id,
   closeHandler,
-  setMessage
+  setMessage,
+  invite_id
 }: {
   party_id: string;
   closeHandler: Dispatch<SetStateAction<boolean>>;
   setMessage: Dispatch<SetStateAction<string>>;
+  invite_id?: string;
 }) => {
+  // 초대 삭제 mutation 사용
+  const deleteInviteMutation = useDeleteInviteMutation();
+
   // 스토리지 업로드 이미지 파일
   const imgRef = useRef<HTMLInputElement>(null);
 
   // 보여주기 이미지
   const [profile_image, setProfile_image] = useState(
-    'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+    'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
   );
   const [nickname, setNickname] = useState('익명');
   const [disabled, setDisabled] = useState(false);
@@ -74,7 +80,7 @@ const ParticipationForm = ({
         } else if (newProfileImgURL === '') {
           alert('이미지업로드에 실패했습니다');
           upload_profile_img =
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png';
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
         }
       }
 
@@ -126,7 +132,7 @@ const ParticipationForm = ({
     const { error: participationError } = await browserClient.from('team_user_profile').insert({
       nickname,
       profile_image:
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
       party_id
     });
 
@@ -143,7 +149,7 @@ const ParticipationForm = ({
       } else if (newProfileImgURL === '') {
         alert('이미지업로드에 실패했습니다');
         upload_profile_img =
-          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png';
+          'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
       }
     }
     // 멤버 프로필이미지 업데이트
@@ -169,6 +175,11 @@ const ParticipationForm = ({
     queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
 
+    // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+    if (invite_id) {
+      deleteInviteMutation.mutate(invite_id);
+    }
+
     if (path.includes('/party')) {
       closeHandler(false);
     } else {
@@ -190,6 +201,13 @@ const ParticipationForm = ({
       return;
     }
 
+    const isMember = await isMemberExist(party_id, user_Id);
+    if (isMember) {
+      router.replace(`/party/${party_id}`);
+
+      return;
+    }
+
     // 파티 상태 확인하기
     const endCheck = await partySituationChecker(party_id);
     if (endCheck === '알수없음') {
@@ -206,16 +224,10 @@ const ParticipationForm = ({
       return;
     }
 
-    const isMember = await isMemberExist(party_id, user_Id);
-    if (isMember) {
-      router.replace(`/party/${party_id}`);
-
-      return;
-    }
     const { error: participationError } = await browserClient.from('team_user_profile').insert({
       nickname: '익명',
       profile_image:
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
       party_id
     });
 
@@ -229,6 +241,17 @@ const ParticipationForm = ({
     queryClient.invalidateQueries({ queryKey: ['myParty', user_Id] });
     queryClient.invalidateQueries({ queryKey: ['invitedParties', user_Id] });
     setMessage('파티에 참가하신 걸 환영합니다!');
+
+    // 초대된 상태면 초대 목록에서 해당 초대를 삭제
+    if (invite_id) {
+      deleteInviteMutation.mutate(invite_id);
+    }
+
+    if (path.includes('/party')) {
+      closeHandler(false);
+    } else {
+      router.replace(`/party/${party_id}`);
+    }
     setDisabled(false);
   };
 

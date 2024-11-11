@@ -371,28 +371,49 @@ body {
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-/* custom input */
+
+/* Input div */
 .inputDiv {
   @apply flex flex-col justify-center items-start self-stretch gap-2;
 }
 
+/* 라벨 */
 .commonLabel {
   @apply body-m-bold self-stretch text-Grey-800;
 }
 
+/* 필수사항 기호(*) */
 .commonEssential {
   @apply body-m-bold text-primary-400;
 }
 
+/* 이메일 Input */
 .commonEmailInput {
   @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
 }
-.commonEmailInput:focus {
-  outline: 1px solid #7f4af4;
-} /* 포커스 스타일 추가 */
 
+/* 이메일 Input placeholder */
+.commonEmailInput::placeholder {
+  @apply body-m text-Grey-300 flex-1;
+}
+
+/* 비밀번호 Input placeholder */
 .commonPasswordInput {
   @apply flex pl-4 pr-11 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
+}
+
+/* 비밀번호 Input placeholder */
+.commonPasswordInput::placeholder {
+  @apply body-m text-Grey-300 flex-1;
+}
+
+/* 포커스 스타일 추가 */
+.commonEmailInput:focus {
+  outline: 1px solid #7f4af4;
+}
+
+.commonPasswordInput:focus {
+  outline: 1px solid #7f4af4;
 }
 
 .commonInput::placeholder {
@@ -406,22 +427,19 @@ body {
   @apply label-l self-stretch text-[#FB6362];
 }
 
-.commonHelpText {
-  @apply label-l self-stretch text-warning-50;
-}
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* 셀렉트 클래스 */
 .selectBox {
-  @apply flex h-8 py-1 pl-3 pr-2 items-center gap-1 rounded-2xl border-solid border-Grey-200 border-[1px];
+  @apply flex h-8 py-1 pl-3 pr-2 items-center gap-1 text-Grey-600 rounded-2xl border-solid border-Grey-200 border-[1px];
 }
 
 .selectDropBox {
-  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-600 body-s;
+  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-500 body-s overflow-hidden;
 }
 
 .selectDropBoxIn {
-  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] text-Grey-600 transition duration-300;
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] transition duration-300;
 }
 
 .selectDropBoxIn:hover {
@@ -434,6 +452,14 @@ body {
 
 .selectDropBoxLast:hover {
   @apply bg-[#F5F5F5];
+}
+
+.selectingDropBoxIn {
+  @apply selectDropBoxIn text-primary-400 body-s-bold;
+}
+
+.selectingDropBoxLast {
+  @apply selectDropBoxLast text-primary-400 body-s-bold;
 }
 
 .selectPartyInfo {
@@ -477,6 +503,10 @@ select {
   text-overflow: ellipsis;
 }
 /* ---------------------------------------------------------------------------------------------------- */
+
+.box-shadow {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
+}
 
 /* 커스텀 스크롤바 스타일 */
 .custom-scrollbar::-webkit-scrollbar {
@@ -677,4 +707,8 @@ input[type='range']::-webkit-slider-thumb {
   background-color: #7f4af4; /* 핸들 색상 */
   border-radius: 50%; /* 핸들 모양: 원형 */
   margin-top: -7px; /* 핸들 위치 조정 (트랙에 맞춰) */
+}
+
+.chatting_height {
+  height: calc(100vh - 318px);
 }

@@ -94,6 +94,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
   const exitPartyMutation = useMutation({
     mutationFn: async (id: string) => {
       await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
+      await browserClient.from('party_ban_user').insert({ party_id: roomId, user_id: id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members', roomId] });
@@ -165,7 +166,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
             </DialogTrigger>
             <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
               <DialogTitle className="px-4 py-2"></DialogTitle>
-              <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m text-[#191919]">
+              <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m">
                 파티를 나가시겠습니까?
               </DialogDescription>
               <div className="flex justify-center items-center mt-4 gap-4">

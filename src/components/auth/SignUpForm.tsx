@@ -1,15 +1,17 @@
 'use client';
 
-import browserClient from '@/utils/supabase/client';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FieldValues, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { randomNickname } from '@/utils/randomName';
+import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';
 import visibility_off from '../../../public/visibility_off.svg';
 
+// 유효성 검사
 const signInSchema = z
   .object({
     email: z.string().email({ message: '이메일 형식을 확인해주세요.' }),
@@ -24,9 +26,9 @@ const signInSchema = z
   });
 
 const SignUpForm = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const router = useRouter();
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -37,10 +39,21 @@ const SignUpForm = () => {
     resolver: zodResolver(signInSchema)
   });
 
+  // 랜덤 닉네임 받아오기
+  const randomname = randomNickname();
+
+  // 가입 버튼 클릭 시
   const onSubmit = async (userInfo: FieldValues) => {
     const { error } = await browserClient.auth.signUp({
       email: userInfo.email,
-      password: userInfo.password
+      password: userInfo.password,
+      options: {
+        data: {
+          profile_img:
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png',
+          nickname: randomname
+        }
+      }
     });
 
     if (error) {
@@ -48,78 +61,74 @@ const SignUpForm = () => {
       return;
     }
 
+    // 회원가입 시, 들어오는 쿠키 값 삭제
     await browserClient.auth.signOut();
 
     alert('회원가입 되었습니다.');
     router.push('/login');
   };
 
+  // 비밀번호 type 속성 변경
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
   const onConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-      <div className="w-[340px] flex flex-col items-start gap-4 mb-32">
-        <div className="inputDiv">
-          <label className="commonLabel">
-            이메일<span className="commonEssential">*</span>
-          </label>
-          <input type="email" {...register('email')} placeholder="예) example@gmail.com" className="commonEmailInput" />
-          {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
-        </div>
-
-        <div className="inputDiv">
-          <label className="commonLabel">
-            비밀번호<span className="commonEssential">*</span>
-          </label>
-          <div className="w-full relative">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              {...register('password')}
-              placeholder="특수문자, 영문, 숫자 조합 8~16자"
-              className="w-full commonPasswordInput"
-            />
-            <button
-              type="button"
-              onClick={onPasswordVisibility}
-              className="absolute top-2/4 -translate-y-1/2 right-[5%]"
-            >
-              {showPassword ? (
-                <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
-              ) : (
-                <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-          {formState.errors.password && <p className="commonHelpText">{formState.errors.password.message}</p>}
-        </div>
-
-        <div className="inputDiv">
-          <div className="w-full relative">
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              {...register('confirmPassword')}
-              placeholder="비밀번호 재입력"
-              className="w-full commonPasswordInput"
-            />
-            <button
-              type="button"
-              onClick={onConfirmPasswordVisibility}
-              className="absolute top-2/4 -translate-y-1/2 right-[5%]"
-            >
-              {showConfirmPassword ? (
-                <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
-              ) : (
-                <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-          {formState.errors.confirmPassword && (
-            <p className="commonHelpText">{formState.errors.confirmPassword.message}</p>
-          )}
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start gap-4 self-stretch">
+      <div className="inputDiv">
+        <label className="commonLabel">
+          이메일<span className="commonEssential">*</span>
+        </label>
+        <input type="email" {...register('email')} placeholder="예) example@gmail.com" className="commonEmailInput" />
+        {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
       </div>
-      <button className="btn-xl w-[340px] flex justify-center items-center">가입하기</button>
+
+      <div className="inputDiv">
+        <label className="commonLabel">
+          비밀번호<span className="commonEssential">*</span>
+        </label>
+        <div className="w-full relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            placeholder="특수문자, 영문, 숫자 조합 8~16자"
+            className="w-full commonPasswordInput"
+          />
+          <button type="button" onClick={onPasswordVisibility} className="absolute top-2/4 -translate-y-1/2 right-[5%]">
+            {showPassword ? (
+              <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+            ) : (
+              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+        {formState.errors.password && <p className="commonHelpText">{formState.errors.password.message}</p>}
+      </div>
+
+      <div className="inputDiv">
+        <div className="w-full relative">
+          <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            {...register('confirmPassword')}
+            placeholder="비밀번호를 다시 한 번 입력해주세요."
+            className="w-full commonPasswordInput"
+          />
+          <button
+            type="button"
+            onClick={onConfirmPasswordVisibility}
+            className="absolute top-2/4 -translate-y-1/2 right-[5%]"
+          >
+            {showConfirmPassword ? (
+              <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+            ) : (
+              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+        {formState.errors.confirmPassword && (
+          <p className="commonHelpText">{formState.errors.confirmPassword.message}</p>
+        )}
+      </div>
+      <button className="btn-xl w-[340px] flex justify-center items-center gap-1 mt-[50px]">가입하기</button>
     </form>
   );
 };

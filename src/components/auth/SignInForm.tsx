@@ -1,17 +1,17 @@
 'use client';
 
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import browserClient from '@/utils/supabase/client';
-import { useRouter } from 'next/navigation';
-// import { useUserStore } from '@/providers/userStoreProvider';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';
 import visibility_off from '../../../public/visibility_off.svg';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+// 유효성 검사
 const signInSchema = z.object({
   email: z.string().email({ message: '이메일 형식을 확인해주세요' }),
   password: z.string().min(8, { message: '비밀번호를 입력해주세요' })
@@ -30,58 +30,37 @@ const SignInForm = () => {
     resolver: zodResolver(signInSchema)
   });
 
-  // 로그인 하기
+  // 로그인 버튼 클릭 시, 실행
   const { mutateAsync: loginBtn } = useMutation({
     mutationFn: async (userInfo: FieldValues) => {
-      const { data: session, error } = await browserClient.auth.signInWithPassword({
+      const { error } = await browserClient.auth.signInWithPassword({
         email: userInfo.email,
         password: userInfo.password
       });
 
       if (error) {
-        console.log(error.message);
         alert('아이디와 비밀번호를 다시 입력해주세요.');
         return;
       }
 
-      const userId = session?.user?.id;
-
-      if (userId) {
-        const { data: user, error: userFetchError } = await browserClient
-          .from('user')
-          .select('*')
-          .eq('user_id', userId);
-
-        if (userFetchError) {
-          console.error('유저 확인 오류:', userFetchError.message);
-          alert('사용자 확인 중 오류가 발생했습니다.');
-          return;
-        }
-
-        if (user.length !== 1) {
-          route.push('/firstLogin');
-        } else {
-          route.push('/');
-        }
-      } else {
-        alert('로그인 세션이 유효하지 않습니다.');
-      }
+      route.push('/');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userId'] });
     }
   });
 
-  // 로그인 버튼 클릭 시
+  // 로그인 버튼 클릭
   const onSubmit = async (userInfo: FieldValues) => {
     loginBtn(userInfo);
   };
 
+  // 비밀번호 type 속성 변경
   const onPasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-4">
-      <div className="w-[340px] flex flex-col items-start gap-4 mb-12">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col items-start gap-4 self-stretch">
         <div className="inputDiv">
           <label className="commonLabel">이메일</label>
           <input
@@ -121,8 +100,8 @@ const SignInForm = () => {
         disabled={!formState.isValid}
         className={
           !formState.isValid
-            ? 'disabled-btn-xl w-[340px] flex justify-center items-center'
-            : 'btn-xl w-[340px] flex justify-center items-center'
+            ? 'disabled-btn-xl w-[340px] flex justify-center items-center mt-12'
+            : 'btn-xl w-[340px] flex justify-center items-center mt-12'
         }
       >
         로그인

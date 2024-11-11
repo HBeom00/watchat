@@ -102,7 +102,7 @@ const MemberList = ({
                   </DialogTrigger>
                   <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
                     <DialogTitle className="px-4 py-2"></DialogTitle>
-                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m text-[#191919]">
+                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m">
                       정말 내보내시겠습니까?
                     </DialogDescription>
                     <div className="flex justify-center items-center mt-4 gap-4">
@@ -110,7 +110,7 @@ const MemberList = ({
                         className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition"
                         onClick={() => exitParty(el.user_id)}
                       >
-                        나가기
+                        내보내기
                       </button>
                       <DialogClose>
                         <button className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">

@@ -8,25 +8,23 @@ import { useAcceptMutation, useRefuseMutation } from '@/store/useInviteMutation'
 import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
-import { NextButton, PrevButton, usePrevNextButtons } from '@/store/useMypageCarouselButton';
+import { usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { getViewStatus } from '@/utils/viewStatus';
 import '@/customCSS/label.css';
 import doesntExist from '../../../public/inviteCat.svg';
 import checkBox from '../../../public/checkbox.svg';
 import checkBoxDisable from '../../../public/checkboxDisable.svg';
 import ParticipationButton from '../button/ParticipationButton';
+import { MyCarousel } from './MyCarousel';
 
 const MyInvitedParty = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedParties, setSelectedParties] = useState<string[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
-  const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
+  //const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
   const [open, setOpen] = useState<boolean>(false);
 
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
-    emblaApi,
-    visibleSlides
-  );
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
@@ -149,49 +147,35 @@ const MyInvitedParty = () => {
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
         {invitedParties && invitedParties.length > 4 && (
-          <>
-            <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} className="absolute top-[50%] -left-10">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300">
-                <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    id="arrow_back_ios_new"
-                    d="M9.99916 19.3079L0.691406 10.0001L9.99916 0.692383L11.0627 1.75588L2.81841 10.0001L11.0627 18.2444L9.99916 19.3079Z"
-                    fill="#C2C2C2"
-                  />
-                </svg>
-              </div>
-            </PrevButton>
-            <NextButton
-              onClick={onNextButtonClick}
-              disabled={nextBtnDisabled}
-              className="absolute top-[50%] -right-10 rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300"
-            >
-              <div className="w-10 h-10 flex items-center justify-center">
-                <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    id="arrow_forward_ios"
-                    d="M2.00491 19.3079L0.941406 18.2444L9.18566 10.0001L0.941406 1.75588L2.00491 0.692383L11.3127 10.0001L2.00491 19.3079Z"
-                    fill="#757575"
-                  />
-                </svg>
-              </div>
-            </NextButton>
-          </>
+          // 캐러셀 버튼
+          <MyCarousel
+            emblaRef={emblaRef}
+            prevBtnDisabled={prevBtnDisabled}
+            nextBtnDisabled={nextBtnDisabled}
+            onPrevButtonClick={onPrevButtonClick}
+            onNextButtonClick={onNextButtonClick}
+          />
         )}
-        <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px] ">
-          <ul className="carousel-container flex items-center gap-5 max-w-[1060px]">
+        <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px] embla__viewport">
+          <ul className="carousel-container flex items-center gap-5 max-w-[1060px] embla__container">
             {invitedParties && invitedParties.length > 0 ? (
               invitedParties.map((invite) => {
                 const viewingStatus = getViewStatus(invite.party_info);
 
+                const cutPartyName =
+                  invite.party_info.party_name.length > 16
+                    ? invite.party_info.party_name.slice(0, 16) + '...'
+                    : invite.party_info.party_name;
+
                 return (
                   <li
                     key={invite.invite_id}
-                    className="carousel-item min-w-[250px] group"
+                    className="carousel-item min-w-[250px] group embla__slide"
                     onClick={() => isSelectionMode && partySelectionHandler(invite.invite_id)}
                   >
                     {isSelectionMode ? (
                       // 선택모드일 때 Link태그를 div로
+
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
@@ -262,7 +246,7 @@ const MyInvitedParty = () => {
                             <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
                           )}
                           <p className="body-l-bold group-hover:text-primary-400 transition duration-300">
-                            {invite.party_info.party_name}
+                            {cutPartyName}
                           </p>
                         </div>
 
@@ -359,7 +343,7 @@ const MyInvitedParty = () => {
                               <p className="label-l text-[#757575]">{invite.party_info.video_name}</p>
                             )}
                             <p className="body-l-bold group-hover:text-primary-400 transition duration-300">
-                              {invite.party_info.party_name}
+                              {cutPartyName}
                             </p>
                           </div>
 
@@ -409,6 +393,7 @@ const MyInvitedParty = () => {
                         openControl={open}
                         setOpenControl={setOpen}
                         isLogin={!!userId}
+                        invite_id={invite.invite_id}
                       />
 
                       <Dialog>

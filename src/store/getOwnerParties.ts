@@ -24,7 +24,7 @@ type OwnerPartyInfo = {
 
 // 작성자 정보 타입
 interface OwnerProfile {
-  profile_img: string;
+  profile_image: string;
   nickname: string;
 }
 
@@ -38,7 +38,11 @@ interface OwnerParty extends OwnerPartyInfo {
 export const getOwnerParty = async (): Promise<OwnerParty[]> => {
   const userId = await getLoginUserIdOnClient();
 
-  const { data: ownerParties, error } = await browserClient.from('party_info').select('*').eq('owner_id', userId);
+  const { data: ownerParties, error } = await browserClient
+    .from('party_info')
+    .select('*')
+    .eq('owner_id', userId)
+    .order('write_time', { ascending: false }); // 내림차순 정렬;
 
   if (error) {
     console.error('주최한 파티 목록을 불러오는데 실패했습니다 => ', error);
@@ -54,9 +58,10 @@ export const getOwnerParty = async (): Promise<OwnerParty[]> => {
 
       // 작성자 정보 가져오기
       const { data: ownerData, error: ownerError } = await browserClient
-        .from('user')
-        .select('profile_img, nickname')
+        .from('team_user_profile')
+        .select('*')
         .eq('user_id', party.owner_id)
+        .eq('party_id', party.party_id)
         .single();
 
       if (ownerError) {
@@ -87,5 +92,6 @@ export const getOwnerParty = async (): Promise<OwnerParty[]> => {
     })
   );
 
+  console.log('내가 오너인 파티', ownerPartiesWithDetails);
   return ownerPartiesWithDetails;
 };
