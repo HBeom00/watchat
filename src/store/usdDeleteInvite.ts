@@ -1,3 +1,5 @@
+// 파티 초대 삭제
+
 import browserClient from '@/utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

@@ -5,7 +5,7 @@ import KakaoButton from '../button/KakaoButton';
 
 const SocialLogin = () => {
   return (
-    <div className="flex flex-col gap-4 mb-4">
+    <div className="flex flex-col gap-[16px] mb-[16px]">
       <GoogleButton />
       <KakaoButton />
     </div>

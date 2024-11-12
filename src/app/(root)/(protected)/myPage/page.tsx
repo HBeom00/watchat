@@ -3,6 +3,7 @@ import MyProfile from '@/components/mypage/MyProfile';
 import MyOwnerParty from '@/components/mypage/MyOwnerParty';
 import MyInvitedParty from '@/components/mypage/MyInvitedParty';
 import MyFollowRecommendation from '@/components/mypage/MyFollowRecommendation';
+import MyRecommendParty from '@/components/mypage/MyRecommendParty';
 
 const MyPage = () => {
   return (
@@ -17,6 +18,9 @@ const MyPage = () => {
 
         {/* 주최한 파티 */}
         <MyOwnerParty />
+
+        {/* 파티 추천 */}
+        <MyRecommendParty />
 
         {/* 초대받은 파티 */}
         <MyInvitedParty />

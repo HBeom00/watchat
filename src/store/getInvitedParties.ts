@@ -3,7 +3,7 @@
 import { startTimeString } from '@/utils/startTimeString';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
-interface InvitedParty {
+type InvitedParty = {
   invite_id: string;
   inviter: string;
   invitee: string;
@@ -43,7 +43,7 @@ interface InvitedParty {
   }>;
   currentPartyPeople: number;
   startString: string;
-}
+};
 
 // supabase에서 초대정보 불러오기
 export const getInvitedParties = async (): Promise<InvitedParty[] | null> => {

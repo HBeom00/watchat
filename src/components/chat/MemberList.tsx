@@ -65,12 +65,12 @@ const MemberList = ({
   };
 
   return (
-    <div className="w-[340px] px-5 py-2 flex flex-col items-start gap-4">
+    <div className="w-[340px] px-[20px] py-[8px] flex flex-col items-start gap-[16px]">
       {members.map((el) => {
         return (
-          <div key={el.profile_id} className="flex justify-between items-center self-stretch gap-2">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10">
+          <div key={el.profile_id} className="flex justify-between items-center self-stretch gap-[8px]">
+            <div className="flex items-center gap-[8px]">
+              <div className="w-[40px] h-[40px]">
                 <Image
                   src={el.profile_image}
                   alt={el.profile_image}
@@ -81,7 +81,7 @@ const MemberList = ({
               </div>
               <div>
                 {el.user_id === ownerId ? (
-                  <div className="flex justify-center items-center gap-1 body-s text-Grey-900">
+                  <div className="flex justify-center items-center gap-[4px] body-s text-Grey-900">
                     {el.nickname}
                     <Image src={award_image} alt="award_image" width={20} height={20} />
                   </div>
@@ -97,23 +97,23 @@ const MemberList = ({
                 </button>
               ) : (
                 <Dialog>
-                  <DialogTrigger className="flex justify-end items-center gap-1 text-Grey-400 font-bold text-xs">
+                  <DialogTrigger className="flex justify-end items-center gap-[4px] text-Grey-400 font-bold text-xs">
                     내보내기
                   </DialogTrigger>
-                  <DialogContent className="w-[350px] p-4 bg-white rounded-lg shadow-lg">
-                    <DialogTitle className="px-4 py-2"></DialogTitle>
-                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-4 body-m">
+                  <DialogContent className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg">
+                    <DialogTitle className="px-[16px] py-[8px]"></DialogTitle>
+                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-[16px] body-m">
                       정말 내보내시겠습니까?
                     </DialogDescription>
-                    <div className="flex justify-center items-center mt-4 gap-4">
+                    <div className="flex justify-center items-center mt-[16px] gap-[16px]">
                       <div
-                        className="w-[150px] py-2 px-4 bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
+                        className="w-[150px] py-[8px] px-[16px] bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
                         onClick={() => exitParty(el.user_id)}
                       >
                         내보내기
                       </div>
                       <DialogClose>
-                        <div className="w-[150px] py-2 px-4 bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                        <div className="w-[150px] py-[8px] px-[16px] bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
                           취소
                         </div>
                       </DialogClose>

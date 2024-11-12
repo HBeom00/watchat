@@ -3,7 +3,7 @@
 // (watch_date랑 start_time이 지났는데 duration_time만큼 시간이 지나지 않았을 때 : "시청중")
 // (watch_date랑 start_time에서 duration_time도 지났을 때: "시청완료")
 
-type Party = {
+export type Party = {
   watch_date: string;
   start_time: string;
   duration_time: number;
