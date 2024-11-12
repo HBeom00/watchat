@@ -16,6 +16,7 @@ const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [privacySetting, setPrivacySetting] = useState<string>('공개');
   const { limited_member, setRecruitDetails } = useRecruitStore();
   const queryClient = useQueryClient();
 
@@ -88,7 +89,8 @@ const RecruitNextPage = () => {
               popularity,
               write_time: new Date(),
               season_number,
-              genres
+              genres,
+              privacy_setting: privacySetting
             }
           ])
           .select();
@@ -132,6 +134,10 @@ const RecruitNextPage = () => {
     }
   };
 
+  const privacyhandle = (setting: string) => {
+    setPrivacySetting(setting);
+  };
+
   const isRecruitButtonDisabled =
     !limited_member || !useRecruitStore.getState().watch_date || !useRecruitStore.getState().start_time;
 
@@ -140,14 +146,53 @@ const RecruitNextPage = () => {
       {/* <button onClick={() => router.back()}>뒤로 가기</button> */}
       <h1 className="text-[28px] font-bold mt-[70px]">모집 조건</h1>
       <div className="space-y-[32px]">
-        <div className="mt-[94px] z-40">
+        <div>
+          <label htmlFor="open" className="block text-[15px] font-SemiBold text-Grey-800">
+            공개 설정
+          </label>
+          <div className="flex justify-between mt-[8px]">
+            <label className="flex items-center">
+              <input
+                type="radio"
+                value="공개"
+                checked={privacySetting === '공개'}
+                onChange={() => privacyhandle('공개')}
+                className="hidden"
+              />
+              <span
+                className={`outline-btn-l w-[250px] flex items-center justify-center ${
+                  privacySetting === '공개' ? 'bg-primary-400 text-white' : ''
+                }`}
+              >
+                공개
+              </span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                value="비공개"
+                checked={privacySetting === '비공개'}
+                onChange={() => privacyhandle('비공개')}
+                className="hidden"
+              />
+              <span
+                className={`outline-btn-l w-[250px]  flex items-center justify-center  ${
+                  privacySetting === '비공개' ? 'bg-primary-400 text-white' : ''
+                }`}
+              >
+                비공개
+              </span>
+            </label>
+          </div>
+        </div>
+        <div className="mt-[32px] z-40">
           <label htmlFor="member" className="block text-[15px] font-SemiBold text-Grey-800">
             모집 인원
           </label>
           {/* svg */}
           <div className="relative ">
             <Image
-              src="/group.svg" // public 폴더 경로 사용
+              src="/group.svg"
               alt="User Icon"
               width={24}
               height={24}
@@ -156,13 +201,13 @@ const RecruitNextPage = () => {
             <input
               id="member"
               type="text"
-              placeholder="0~10"
+              placeholder="1~10"
               value={limited_member !== 0 ? limited_member : ''}
               onChange={handleChange}
-              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center"
+              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none"
             />
             <Image
-              src="/persons.svg" // public 폴더 경로 사용
+              src="/persons.svg"
               alt="User Icon"
               width={24}
               height={24}
@@ -180,7 +225,7 @@ const RecruitNextPage = () => {
           </label>
           <div className="relative z-30">
             <Image
-              src="/calendar_month.svg" // public 폴더 경로 사용
+              src="/calendar_month.svg"
               alt="User Icon"
               width={24}
               height={24}
@@ -191,9 +236,9 @@ const RecruitNextPage = () => {
               locale={ko}
               selected={useRecruitStore.getState().watch_date}
               onChange={(date) => setRecruitDetails({ watch_date: date })}
-              dateFormat="yyyy.MM.dd" // 원하는 날짜 형식
+              dateFormat="yyyy.MM.dd"
               placeholderText="날짜를 선택해주세요"
-              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center z-10"
+              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400   text-center z-10 focus:border-primary-500 focus:outline-none"
               showPopperArrow={false}
               minDate={new Date()}
               popperClassName="custom-datepicker"
@@ -221,7 +266,7 @@ const RecruitNextPage = () => {
               showTimeSelectOnly
               timeIntervals={15}
               dateFormat="h:mm aa"
-              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  shadow-sm text-center  "
+              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none "
               placeholderText="00:00"
             />
           </div>

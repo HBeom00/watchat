@@ -9,6 +9,8 @@ export type videoTV = {
   popularity: number;
   poster_path: string;
   episode_run_time: number[];
+  number_of_seasons: number;
+  number_of_episodes: number;
 };
 
 export type creditTV = {
