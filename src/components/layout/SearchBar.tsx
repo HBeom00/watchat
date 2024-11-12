@@ -22,6 +22,7 @@ const SearchBar = () => {
     if (debounce !== '') {
       router.push('/?' + createQueryString('search', encodeURIComponent(debounce)));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   return (

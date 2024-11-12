@@ -5,7 +5,6 @@ import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import '@/customCSS/label.css';
 import doesntExist from '../../../public/openEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';

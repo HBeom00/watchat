@@ -73,7 +73,7 @@ const SignUpForm = () => {
   const onConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start gap-4 self-stretch">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start gap-[16px] self-stretch">
       <div className="inputDiv">
         <label className="commonLabel">
           이메일<span className="commonEssential">*</span>
@@ -95,9 +95,9 @@ const SignUpForm = () => {
           />
           <button type="button" onClick={onPasswordVisibility} className="absolute top-2/4 -translate-y-1/2 right-[5%]">
             {showPassword ? (
-              <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+              <Image src={visibility} alt={visibility} width={24} height={24} className="w-[24px] h-[24px]" />
             ) : (
-              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-[24px] h-[24px]" />
             )}
           </button>
         </div>
@@ -118,9 +118,9 @@ const SignUpForm = () => {
             className="absolute top-2/4 -translate-y-1/2 right-[5%]"
           >
             {showConfirmPassword ? (
-              <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+              <Image src={visibility} alt={visibility} width={24} height={24} className="w-[24px] h-[24px]" />
             ) : (
-              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-[24px] h-[24px]" />
             )}
           </button>
         </div>
@@ -128,7 +128,7 @@ const SignUpForm = () => {
           <p className="commonHelpText">{formState.errors.confirmPassword.message}</p>
         )}
       </div>
-      <button className="btn-xl w-[340px] flex justify-center items-center gap-1 mt-[50px]">가입하기</button>
+      <button className="btn-xl w-[340px] flex justify-center items-center gap-[4px] mt-[50px]">가입하기</button>
     </form>
   );
 };
