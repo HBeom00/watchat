@@ -5,19 +5,21 @@ import { Party } from '@/utils/viewStatus';
 import PlatformImageCard from '../styleComponents/PlatformImage';
 import { platform } from '@/types/partyInfo';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
-import { platformArr } from '@/utils/prefer';
 import { useRouter } from 'next/navigation';
+import { cutUserName, cutPartyName } from '@/utils/cutNameAndPartyName';
 
 type PartyItemProps = {
   party: MyPagePartyInfo; // party 타입 정의에 맞는 타입을 지정
   platform: platform[] | null;
-  cutPartyName: string;
+  partyName: string;
   getViewStatus: (party: Party) => string;
+  userName: string;
 };
 
-const MyVerticalCard = ({ party, platform, cutPartyName, getViewStatus }: PartyItemProps) => {
+const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }: PartyItemProps) => {
   const router = useRouter();
-
+  const cutUserNameValue = cutUserName(userName);
+  const cutPartyNameValue = cutPartyName(partyName);
   return (
     <div className="cursor-pointer" onClick={() => router.push(`/party/${party.party_id}`)}>
       <div className="relative h-[280px] rounded-[4px] overflow-hidden">
@@ -35,9 +37,13 @@ const MyVerticalCard = ({ party, platform, cutPartyName, getViewStatus }: PartyI
         <WatchingLabel partyData={party} />
 
         {/* 플랫폼 정보 */}
-        <div className="absolute top-0 right-0">
-          {platform ? <PlatformImageCard platform={platformArr[0]} /> : <></>}
-        </div>
+        {platform && platform[0]?.logoUrl === '알수없음' ? (
+          <></>
+        ) : (
+          <div className="absolute top-0 right-0">
+            {platform ? <PlatformImageCard platform={platform[0]} /> : <></>}
+          </div>
+        )}
 
         {getViewStatus(party) === '시청완료' ? (
           <>
@@ -69,7 +75,7 @@ const MyVerticalCard = ({ party, platform, cutPartyName, getViewStatus }: PartyI
           {party.video_name}
           {party.media_type === 'tv' && party.episode_number ? `  ${party.episode_number} 화` : ''}
         </p>
-        <h3 className="body-l-bold ">{cutPartyName}</h3>
+        <h3 className="body-l-bold ">{cutPartyNameValue}</h3>
       </div>
       <div>
         <div className="flex">
@@ -88,10 +94,10 @@ const MyVerticalCard = ({ party, platform, cutPartyName, getViewStatus }: PartyI
               borderRadius: '50%'
             }}
           />
-          <p className="label-m ml-[6px] after:content-['│'] after:text-[#c2c2c2]">{party.ownerProfile.nickname}</p>
+          <p className="label-m ml-[6px] after:content-['│'] after:text-[#c2c2c2]">{cutUserNameValue}</p>
           <p className="label-m">
-            <span className="text-primary-400">{party.currentPartyPeople}</span>명 참여 ({party.currentPartyPeople} /{' '}
-            {party.limited_member}명)
+            <span className="text-primary-400">{party.currentPartyPeople}</span>명 참여 ({party.currentPartyPeople}/
+            {party.limited_member})
           </p>
         </div>
       </div>

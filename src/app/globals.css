@@ -311,6 +311,9 @@ body {
 .outline-btn-l:hover {
   @apply bg-primary-50;
 }
+.outline-btn-l:focus {
+  @apply bg-primary-400 text-white;
+}
 
 /* Medium Outline Button */
 .outline-btn-m {

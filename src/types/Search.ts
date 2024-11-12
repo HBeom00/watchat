@@ -19,3 +19,9 @@ export type Genre = {
   id: number;
   name: string;
 };
+
+export interface SearchProps {
+  videoName: string;
+  setVideoName: (name: string) => void;
+  handleSearchResultClick: (result: SearchResult) => void;
+}

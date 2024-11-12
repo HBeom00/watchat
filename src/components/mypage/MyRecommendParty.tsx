@@ -8,6 +8,7 @@ import doesntExist from '../../../public/openEyeCat.svg';
 import { useRecommendParty } from '@/store/useRecommendParty';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
+import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 
 export type platform = {
   logoUrl: string;
@@ -49,10 +50,7 @@ const MyRecommendParty = () => {
       </div>
       <ul className="flex flex-row gap-5">
         {recommendParty && recommendParty.length > 0 ? (
-          recommendParty.slice(0, 5).map((party) => {
-            const cutPartyName =
-              party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
-
+          recommendParty.slice(0, 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
 
@@ -62,8 +60,9 @@ const MyRecommendParty = () => {
               <li key={party.party_id} className=" min-w-[196px] group">
                 <MyVerticalCard
                   party={party}
+                  userName={party.ownerProfile.nickname}
                   platform={platformArr}
-                  cutPartyName={cutPartyName}
+                  partyName={party.party_name}
                   getViewStatus={viewStatus}
                 />
               </li>
