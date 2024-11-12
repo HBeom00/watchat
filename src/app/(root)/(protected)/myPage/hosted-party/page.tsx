@@ -9,6 +9,7 @@ import doesntExist from '../../../../../../public/openEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
+import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 
 export type platform = {
   logoUrl: string;
@@ -52,11 +53,7 @@ const MyOwnerParty = () => {
       <h3 className="title-m  mt-8 mb-4">내가 오너인 파티</h3>
       <ul className="flex flex-row gap-5 flex-wrap">
         {ownerParty && ownerParty.length > 0 ? (
-          ownerParty.slice(start, end).map((party) => {
-            // 길이가 8자 이상이면 잘라서 말줄임표 추가
-            const cutPartyName =
-              party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
-
+          ownerParty.slice(start, end).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
 
@@ -66,8 +63,9 @@ const MyOwnerParty = () => {
               <li key={party.party_id} className=" min-w-[196px] group">
                 <MyVerticalCard
                   party={party}
+                  userName={party.ownerProfile.nickname}
                   platform={platformArr}
-                  cutPartyName={cutPartyName}
+                  partyName={party.party_name}
                   getViewStatus={viewStatus}
                 />
               </li>

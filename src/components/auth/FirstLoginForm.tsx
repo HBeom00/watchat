@@ -206,7 +206,7 @@ const FirstLoginForm = () => {
         <Image
           src={
             imgFile ||
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
           }
           alt="프로필 이미지"
           width={100}
