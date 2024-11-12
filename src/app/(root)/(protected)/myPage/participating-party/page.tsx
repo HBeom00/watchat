@@ -4,7 +4,6 @@ import { useParticipatingParty } from '@/store/useParticipatingParty';
 import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import '@/customCSS/label.css';
 import doesntExist from '../../../../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';

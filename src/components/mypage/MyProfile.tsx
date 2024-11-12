@@ -9,7 +9,6 @@ import { useFollowData } from '@/store/useFollowData';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { unfollow } from '@/store/followUnfollow';
 import browserClient from '@/utils/supabase/client';
-import '@/customCSS/label.css';
 import edit from '../../../public/edit.svg';
 import { platformArr } from '@/constants/prefer';
 

@@ -8,7 +8,6 @@ import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
-import '@/customCSS/label.css';
 import closeBte from '../../../public/close.svg';
 import doesntExist from '../../../public/nobody.svg';
 import Link from 'next/link';
