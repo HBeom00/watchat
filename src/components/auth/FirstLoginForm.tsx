@@ -1,7 +1,7 @@
 'use client';
 
 import { useFetchUserData } from '@/store/userStore';
-import { genreArr, platformArr } from '@/constants/prefer';
+import { genreArr, platformArr } from '@/utils/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
