@@ -20,13 +20,14 @@ type OwnerPartyInfo = {
   video_name: string;
   video_platform: string;
   watch_date: string;
+  start_date_time: string;
 };
 
 // 작성자 정보 타입
-interface OwnerProfile {
+type OwnerProfile = {
   profile_image: string;
   nickname: string;
-}
+};
 
 // ownerPartyInfo (통틀어서 반환되는 값) 타입
 interface OwnerParty extends OwnerPartyInfo {

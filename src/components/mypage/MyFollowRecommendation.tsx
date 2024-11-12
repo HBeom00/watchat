@@ -74,7 +74,7 @@ const MyFollowRecommendation = () => {
     }
   });
 
-  console.log('추천 사용자 데이터 =>', recommendedUsers);
+  // console.log('추천 사용자 데이터 =>', recommendedUsers);
 
   //  X 버튼을 누르면 해당 유저를 추천 목록에서 밴시킴
   const banMutation = useMutation({

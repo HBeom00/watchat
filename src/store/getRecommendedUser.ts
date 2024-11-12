@@ -4,14 +4,14 @@ import browserClient from '@/utils/supabase/client';
 import { getFollowerData } from './getFollowData';
 
 // 멤버 타입 정의
-interface Member {
+type Member = {
   nickname: string;
   profile_img: string;
   user_id: string;
-}
+};
 
 // 최근 파티원 목록 타입 정의
-interface RecentParticipantsData {
+type RecentParticipantsData = {
   party_id: string;
   video_name: string;
   party_name: string;
@@ -21,7 +21,7 @@ interface RecentParticipantsData {
   team_user_profile: {
     user: Member;
   }[];
-}
+};
 
 // 최근 함께했던 파티원 목록을 가져오기
 export const getRecommendedMembers = async (userId?: string) => {
