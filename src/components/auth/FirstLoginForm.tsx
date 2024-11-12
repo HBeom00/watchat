@@ -1,7 +1,7 @@
 'use client';
 
 import { useFetchUserData } from '@/store/userStore';
-import { genreArr, platformArr } from '@/utils/prefer';
+import { genreArr, platformArr } from '@/constants/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -202,7 +202,7 @@ const FirstLoginForm = () => {
       onSubmit={handleSubmit(onSuccessHandler)}
       className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] "
     >
-      <div className="w-[100px] h-[100px] relative m-auto mb-8">
+      <div className="w-[100px] h-[100px] relative m-auto mb-[32px]">
         <Image
           src={
             imgFile ||
@@ -221,7 +221,7 @@ const FirstLoginForm = () => {
         />
         <label
           htmlFor="selectImg"
-          className="absolute bottom-0 right-0 w-6 h-6 bg-[#c2c2c2] flex items-center justify-center rounded-[18px] cursor-pointer"
+          className="absolute bottom-0 right-0 w-[24px] h-[24px] bg-[#c2c2c2] flex items-center justify-center rounded-[18px] cursor-pointer"
         >
           <Image src={photoCameraIcon} width={16} height={16} alt="프로필 이미지 선택" style={{ width: '16px' }} />
         </label>
@@ -235,7 +235,7 @@ const FirstLoginForm = () => {
         />
       </div>
 
-      <div className="text-start inputDiv mb-8">
+      <div className="text-start inputDiv mb-[32px]">
         <p className=" body-m-bold">
           닉네임<span className="text-primary-400">*</span>
         </p>
@@ -244,14 +244,14 @@ const FirstLoginForm = () => {
           {...register('nickname')}
           placeholder="닉네임을 입력하세요"
           onChange={(e) => setNickname(e.target.value)}
-          className="border-2 commonEmailInput border-Grey-50"
+          className="border-[2px] commonEmailInput border-Grey-50"
         />
         {formState.errors.nickname && <span className="text-red-600">{formState.errors.nickname.message}</span>}
       </div>
 
-      <div className="mb-8">
-        <h3 className=" body-m-bold mb-2">플랫폼</h3>
-        <ul className="flex flex-wrap gap-2">
+      <div className="mb-[32px]">
+        <h3 className=" body-m-bold mb-[8px]">플랫폼</h3>
+        <ul className="flex flex-wrap gap-[8px]">
           {platformArr.map((platform, index) => {
             return (
               <li
@@ -259,8 +259,8 @@ const FirstLoginForm = () => {
                 onClick={() => onClickPlatform({ platform: platform.name, setPlatforms })}
                 className={
                   platforms.includes(platform.name)
-                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold body-xs border cursor-pointer border-primary-400'
-                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold body-xs border cursor-pointer'
+                    ? 'px-[12px] py-[6px] h-[32px] bg-primary-50 rounded-lg text-primary-400 font-semibold body-xs border cursor-pointer border-primary-400'
+                    : 'px-[12px] py-[6px] h-[32px] bg-white rounded-lg text-Grey-300 font-semibold body-xs border cursor-pointer'
                 }
               >
                 <div className="flex items-center space-x-2">
@@ -273,9 +273,9 @@ const FirstLoginForm = () => {
         </ul>
       </div>
 
-      <div className="mb-16">
-        <h3 className=" body-m-bold mb-2">장르</h3>
-        <ul className="flex flex-wrap gap-2">
+      <div className="mb-[64px]">
+        <h3 className=" body-m-bold mb-[8px]">장르</h3>
+        <ul className="flex flex-wrap gap-[8px]">
           {genreArr.map((genre, index) => {
             return (
               <li
@@ -283,8 +283,8 @@ const FirstLoginForm = () => {
                 onClick={() => genreClickHandler(genre)}
                 className={
                   genres.includes(genre)
-                    ? 'px-3 py-1.5 h-8 bg-primary-50 rounded-lg text-primary-400 font-semibold body-xs border cursor-pointer border-primary-400'
-                    : 'px-3 py-1.5 h-8 bg-white rounded-lg text-Grey-300 font-semibold body-xs border cursor-pointer'
+                    ? 'px-[12px] py-[6px] h-[32px] bg-primary-50 rounded-lg text-primary-400 font-semibold body-xs border cursor-pointer border-primary-400'
+                    : 'px-[12px] py-[6px] h-[32px] bg-white rounded-lg text-Grey-300 font-semibold body-xs border cursor-pointer'
                 }
               >
                 {genre}
@@ -294,10 +294,10 @@ const FirstLoginForm = () => {
         </ul>
       </div>
       {pathname === '/myPage/edit' ? (
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-[20px]">
           <button
             onClick={editCancelHandler}
-            className="px-6 py-4 bg-white rounded-lg text-Grey-300 font-semibold text-[15px] border cursor-pointer w-[157px]"
+            className="px-[24px] py-[16px] bg-white rounded-lg text-Grey-300 font-semibold text-[15px] border cursor-pointer w-[157px]"
           >
             취소
           </button>

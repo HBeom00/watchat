@@ -50,10 +50,10 @@ const Notify = ({ roomId }: { roomId: string }) => {
   return (
     <>
       {specialMessage && (
-        <div className="w-[700px] p-4 flex flex-col items-start bg-Grey-50">
-          <div className="flex py-4 justify-center items-center self-stretch rounded-lg bg-white box-shadow">
-            <div className="flex flex-col justify-center items-center gap-1">
-              <Image src="/schedule.svg" alt="schedule" width={24} height={24} className="w-6 h-6" />
+        <div className="w-[700px] p-[16px] flex flex-col items-start bg-Grey-50">
+          <div className="flex py-[16px] justify-center items-center self-stretch rounded-lg bg-white box-shadow">
+            <div className="flex flex-col justify-center items-center gap-[4px]">
+              <Image src="/schedule.svg" alt="schedule" width={24} height={24} className="w-[24px] h-[24px]" />
               <p className="body-xs text-center text-Grey-900">{specialMessage}</p>
             </div>
           </div>

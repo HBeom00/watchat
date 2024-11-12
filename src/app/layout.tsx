@@ -2,8 +2,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Providers from '@/providers/queryProvider';
-import { createClient } from '@/utils/supabase/server';
-import { UserStoreProvider } from '@/providers/userStoreProvider';
 import LayoutContent from '@/components/layout/LayoutContent';
 
 export const metadata: Metadata = {
@@ -27,23 +25,17 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const {
-    data: { user }
-  } = await createClient().auth.getUser();
-
   return (
     <html lang="ko">
       <body className={`antialiased`}>
-        <UserStoreProvider isUser={!!user}>
-          <Providers>
-            <LayoutContent>{children}</LayoutContent>
-          </Providers>
-        </UserStoreProvider>
+        <Providers>
+          <LayoutContent>{children}</LayoutContent>
+        </Providers>
       </body>
     </html>
   );

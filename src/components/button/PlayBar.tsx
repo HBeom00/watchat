@@ -3,26 +3,13 @@
 import { useState } from 'react';
 
 const PlayBar = ({ startTime, duration }: { startTime: string; duration: number }) => {
-  // 현재 날짜 구하기 yyyy-mm-dd 형식으로 반환
-  // const today = new Date();
-
-  // const year = today.getFullYear();
-  // const month = ('0' + (today.getMonth() + 1)).slice(-2);
-  // const day = ('0' + today.getDate()).slice(-2);
-
-  // const dateString = `${year}-${month}-${day}`;
-
-  // supabase에서 가져와야한다
-  // 시작 시간
   const startPlayTime = startTime;
 
-  // duration을 가져와서
-  // 끝나는 시간을 구함
-  // 분
-  const playEnd = [Math.floor(duration / 60), duration % 60 < 10 ? `0${duration % 60}` : duration % 60];
+  const movie_hour = duration / 60;
+  const movie_second = duration % 60;
 
-  // 플레이타임
-  // 초
+  const playEnd = [Math.floor(movie_hour), movie_second < 10 ? `0${movie_second}` : movie_second];
+
   const [playTime, setPlayTime] = useState<number>(0);
 
   if (duration * 60 > playTime) {
@@ -30,7 +17,6 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
   }
   return (
     <div className="pt-2 pb-4 px-4 flex flex-col items-start gap-2 self-stretch bg-white">
-      {/* 현재 진행 시간 */}
       <div className="flex justify-between items-center self-stretch">
         {playTime > 0 && duration * 60 > playTime ? (
           <p className="label-m text-Grey-700">{nowTimeDisplay(playTime)}</p>
@@ -78,14 +64,15 @@ const getPlayTime = (startTime: string) => {
 
 // 현재 영상진도
 const nowTimeDisplay = (playTime: number) => {
-  const hours =
-    Math.floor(playTime / 60 / 60) < 10 ? `0${Math.floor(playTime / 60 / 60)}` : String(Math.floor(playTime / 60 / 60));
+  const movie_now_hour = playTime / 60 / 60;
+  const movie_now_minute = playTime / 60;
+  const movie_now_second = playTime % 60;
+
+  const hours = Math.floor(movie_now_hour) < 10 ? `0${Math.floor(movie_now_hour)}` : String(Math.floor(movie_now_hour));
   const minutes =
-    Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60 < 10
-      ? `0${Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60}`
-      : String(Math.floor(playTime / 60) - Math.floor(playTime / 60 / 60) * 60);
-  const seconds = playTime % 60 < 10 ? `0${playTime % 60}` : String(playTime % 60);
+    Math.floor(movie_now_minute) - Math.floor(movie_now_hour) * 60 < 10
+      ? `0${Math.floor(movie_now_minute) - Math.floor(movie_now_hour) * 60}`
+      : String(Math.floor(movie_now_minute) - Math.floor(movie_now_hour) * 60);
+  const seconds = movie_now_second < 10 ? `0${movie_now_second}` : String(movie_now_second);
   return `${hours}:${minutes}:${seconds}`;
 };
-
-// const hourMultiply = 60*60

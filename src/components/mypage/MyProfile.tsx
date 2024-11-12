@@ -11,7 +11,7 @@ import { unfollow } from '@/store/followUnfollow';
 import browserClient from '@/utils/supabase/client';
 import '@/customCSS/label.css';
 import edit from '../../../public/edit.svg';
-import { platformArr } from '@/utils/prefer';
+import { platformArr } from '@/constants/prefer';
 
 const MyProfile = () => {
   // 사용자 데이터 가져오기

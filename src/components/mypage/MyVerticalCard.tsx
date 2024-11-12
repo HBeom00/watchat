@@ -5,7 +5,7 @@ import { Party } from '@/utils/viewStatus';
 import PlatformImageCard from '../styleComponents/PlatformImage';
 import { platform } from '@/types/partyInfo';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
-import { platformArr } from '@/utils/prefer';
+import { platformArr } from '@/constants/prefer';
 import { useRouter } from 'next/navigation';
 
 type PartyItemProps = {

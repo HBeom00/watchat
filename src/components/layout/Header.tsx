@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import MyProfileButton from './MyProfileButton';
 import GoRecruitButton from './GoRecruitButton';
-import { useQuery } from '@tanstack/react-query';
-import browserClient from '@/utils/supabase/client';
 import SearchBar from './SearchBar';
 import { useCallback } from 'react';
+import { useUserId } from '@/reactQuery/useQuery/chat/useUserId';
 
 const Header = () => {
   const searchParams = useSearchParams();
@@ -24,25 +23,7 @@ const Header = () => {
   );
 
   // 유저 ID 가져오기
-  const { data: isUser } = useQuery({
-    queryKey: ['userId'],
-    queryFn: async (): Promise<boolean> => {
-      try {
-        const { data, error } = await browserClient.auth.getSession();
-
-        if (error) {
-          console.error('Error fetching user ID:', error);
-          return false; // 에러 발생 시 false 반환
-        }
-
-        return data?.session !== null;
-      } catch (error) {
-        console.error('Unexpected error fetching user ID:', error);
-        return false; // 에러 발생 시 false 반환
-      }
-    },
-    initialData: false // 초기값을 false로 설정
-  });
+  const { data: isUser } = useUserId();
 
   const filter = searchParams.get('watch');
 

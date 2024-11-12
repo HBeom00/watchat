@@ -29,24 +29,16 @@ export const updateSession = async (request: NextRequest) => {
     );
 
     const { data } = await supabase.auth.getUser();
+    const redirect_home = ['/login','/signup']
+    const redirect_login = ['/chat','/myPage','/participation','/recruit','/firstLogin']
 
     // 로그인 한 상태라면 메인페이지로 리다이렉트
-    if (
-      data?.user &&
-      (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup'))
-    ) {
+    if (data?.user && redirect_home.some(path => request.nextUrl.pathname.startsWith(path))) {
       return NextResponse.redirect(new URL('/', request.url));
     }
 
     // 로그인을 하지 않았는데 접근한다면 로그인 페이지로 리다이렉트
-    if (
-      !data?.user &&
-      (request.nextUrl.pathname.startsWith('/chat') ||
-        request.nextUrl.pathname.startsWith('/myPage') ||
-        request.nextUrl.pathname.startsWith('/participation') ||
-        request.nextUrl.pathname.startsWith('/recruit') ||
-        request.nextUrl.pathname.startsWith('/firstLogin'))
-    ) {
+    if (!data?.user && redirect_login.some(path => request.nextUrl.pathname.startsWith(path))) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
