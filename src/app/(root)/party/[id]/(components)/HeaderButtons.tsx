@@ -2,7 +2,6 @@ import ParticipationButton from '@/components/button/ParticipationButton';
 import { partyInfo } from '@/types/partyInfo';
 import { chatOpenClose } from '@/utils/chatOpenClose';
 import { isMemberExist } from '@/utils/memberCheck';
-import getBanUsers from '@/utils/participation/BanUsers';
 import { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -15,11 +14,6 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
     queryFn: () => getLoginUserIdOnClient()
   });
 
-  const { data: banUsers, isLoading: banUsersLoading } = useQuery({
-    queryKey: ['banUsers', partyData.party_id],
-    queryFn: () => getBanUsers(partyData.party_id)
-  });
-
   const { data: isMember, isLoading: isMemberLoading } = useQuery({
     queryKey: ['isMember', partyData.party_id, userId],
     queryFn: async () => {
@@ -28,15 +22,13 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
       return isMember;
     }
   });
-  if (userLoading || isMemberLoading || banUsersLoading) <div>Loading......</div>;
+  if (userLoading || isMemberLoading) <div>Loading......</div>;
   return (
     <div className="flex w-[164px] justify-center items-center text-center">
       {end ? (
         <button className="disabled-btn-m w-full" disabled={true}>
           채팅 종료
         </button>
-      ) : banUsers && banUsers.some((n) => n.user_id === userId) ? (
-        <button className="disabled-btn-m w-full">참여불가</button>
       ) : (
         <>
           <Link
