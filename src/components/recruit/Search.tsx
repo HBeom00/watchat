@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMultiSearch } from '@/serverActions/TMDB';
-import { SearchProps, SearchResponse } from '@/types/Search';
+import { SearchProps, SearchResponse } from '@/types/search';
 import Image from 'next/image';
 
 export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName, handleSearchResultClick }) => {

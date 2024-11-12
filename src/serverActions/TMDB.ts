@@ -1,5 +1,5 @@
 import { creditMOVIE, creditTV, videoMOVIE, videoTV } from '@/types/video';
-import { SearchResponse } from '../types/Search';
+import { SearchResponse } from '../types/search';
 
 interface Provider {
   provider_name: string;

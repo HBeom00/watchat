@@ -10,7 +10,7 @@ import {
   fetchTvDetail,
   fetchTvEpisode
 } from '@/serverActions/TMDB';
-import { SearchResult } from '../../../../../types/Search';
+import { SearchResult } from '../../../../../types/search';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CustomSelect from '@/components/recruit/CustomSelect';
@@ -288,7 +288,6 @@ const RecruitFirstPage = () => {
               </div>
             </div>
           ) : (
-            video_image &&
             video_image && (
               <div>
                 <h2>영상 플랫폼</h2>
