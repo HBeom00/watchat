@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMultiSearch } from '@/serverActions/TMDB';
 import { SearchProps, SearchResponse } from '@/types/Search';
+import Image from 'next/image';
 
 export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName, handleSearchResultClick }) => {
   // 검색 결과 상태
@@ -31,6 +32,12 @@ export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName
     return () => clearTimeout(timer);
   }, [videoName]);
 
+  // 입력값 지우기
+  const clearInput = () => {
+    setVideoName('');
+    setShowResults(false);
+  };
+
   return (
     <div className="relative w-[519px] mt-[16px]">
       <input
@@ -40,6 +47,11 @@ export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName
         onChange={(e) => handleInputChange(e.target.value)}
         className="w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
       />
+      {videoName && (
+        <button onClick={clearInput} className="absolute right-4 top-1/2 transform -translate-y-1/2">
+          <Image src="/cancel.svg" alt="Clear input" width={24} height={24} />
+        </button>
+      )}
       {showResults && searchResults?.results?.length ? (
         <ul className="custom-scrollbar w-full h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
           {searchResults.results.map((result) => (

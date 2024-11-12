@@ -42,12 +42,8 @@ const RecruitFirstPage = () => {
     //상태 초기화
     if (!video_name) {
       setPartyInfo({
-        party_name: '',
         video_name: '',
-        party_detail: '',
         limited_member: 0,
-        watch_date: null,
-        start_time: null,
         duration_time: 0,
         video_platform: [],
         video_image: '',
@@ -70,7 +66,7 @@ const RecruitFirstPage = () => {
     }
   };
 
-  // 검색창 클릭
+  // 검색창 클릭시 정보 들어감
   const handleSearchResultClick = async (result: SearchResult) => {
     const video_id = result.id;
     const media_type = result.media_type;
