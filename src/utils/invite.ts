@@ -32,7 +32,7 @@ export const inviteHandler = async (
   }
 
   // 초대하기 전에 이미 초대를 받았는지 확인
-  const { data } = await browserClient.from('invite').select('*').eq('invitee', invitee).eq('party_id', party_id);
+  const { data } = await browserClient.from('invited').select('*').eq('invitee', invitee).eq('party_id', party_id);
   if (data !== null) {
     setMessage('이미 초대장을 보낸 멤버입니다.');
     return;
@@ -44,6 +44,6 @@ export const inviteHandler = async (
   if (error) {
     setMessage('초대장 보내기를 실패했습니다.');
   } else {
-    setMessage('초대장을 보냈습니다');
+    setMessage('초대하기를 완료했습니다');
   }
 };

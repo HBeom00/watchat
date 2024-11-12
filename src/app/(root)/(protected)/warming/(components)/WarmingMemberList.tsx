@@ -1,29 +1,53 @@
-import { getPartyMember } from '@/utils/memberCheck';
-import { useQuery } from '@tanstack/react-query';
+'use client';
+import { member } from '@/types/partyMember';
 import Image from 'next/image';
-import React from 'react';
+import { useState } from 'react';
+import WarmingComment from './WarmingComment';
 
-const WarmingMemberList = ({ partyId }: { partyId: string }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['partyMember', partyId],
-    queryFn: async () => await getPartyMember(partyId)
-  });
-  if (isLoading) <div>Loading...</div>;
+const WarmingMemberList = ({
+  userId,
+  partyId,
+  memberData
+}: {
+  partyId: string;
+  userId: string;
+  memberData: member[];
+}) => {
+  const [memberSelect, setMemberSelect] = useState<number>(0);
 
   return (
-    <div className="flex flex-col gap-10">
-      {data ? (
-        data.map((member) => {
-          return (
-            <div key={member.profile_id}>
-              <p>{member.nickname}</p>
-              <Image src={member.profile_image} alt={member.nickname} />
-              <button>식빵 데우기</button>
-            </div>
-          );
-        })
+    <div>
+      <div className="flex flex-row gap-10">
+        {memberData ? (
+          memberData
+            .filter((n) => n.user_id !== userId)
+            .map((member, i) => {
+              return (
+                <div
+                  key={member.profile_id}
+                  onClick={() => setMemberSelect(i)}
+                  className={memberSelect === i ? 'border-solid border-primary-500 border-b-2' : ''}
+                >
+                  <Image src={member.profile_image} width={50} height={50} alt={member.nickname} />
+                  <p>{member.nickname}</p>
+                </div>
+              );
+            })
+        ) : (
+          <p>데이터를 불러오지 못했습니다. </p>
+        )}
+      </div>
+      {memberSelect < memberData.length ? (
+        <WarmingComment
+          memberSelect={memberSelect}
+          setMemberSelect={setMemberSelect}
+          memberLength={memberData.length}
+          userId={userId}
+          partyId={partyId}
+          memberId={memberData[memberSelect].user_id}
+        />
       ) : (
-        <p>데이터를 불러오지 못했습니다. </p>
+        <></>
       )}
     </div>
   );
