@@ -21,6 +21,7 @@ const InvitedButton = ({
   userId: string;
   situation: string;
 }) => {
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>('');
   const [inviteeId, setInviteeId] = useState<string>('');
   const [display, setDisplay] = useState<boolean>(true);
@@ -33,7 +34,11 @@ const InvitedButton = ({
     if (situation === '모집마감') {
       setMessage('모집이 마감된 파티입니다.');
     }
-  }, [message, situation]);
+    if (!open) {
+      setMessage('');
+      setDisplay(true);
+    }
+  }, [message, situation, open]);
 
   if (pending) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
@@ -45,7 +50,7 @@ const InvitedButton = ({
   const { followerData } = followerDataResult || { followerCount: 0, followerData: [] };
   return (
     <>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="flex w-[94px] py-[6px] px-3 justify-center items-center rounded-lg border-solid border-Grey-300 border-[1px] text-Grey-400 body-xs-bold">
           초대하기
         </DialogTrigger>
@@ -53,7 +58,7 @@ const InvitedButton = ({
           <DialogHeader className="flex py-6">
             <DialogTitle className={display ? '' : 'hidden'}>초대하기</DialogTitle>
           </DialogHeader>
-          {message === '' ? (
+          {display ? (
             <ul className="flex flex-col justify-center items-center">
               {followerData && followerData.length > 0 ? (
                 <div className="flex flex-col w-full">
@@ -103,15 +108,25 @@ const InvitedButton = ({
               )}
             </ul>
           ) : (
-            <div className="flex flex-col w-full mb-12 gap-2 justify-center self-stretch items-center body-m text-Grey-900">
-              {message === '이미 초대장을 보낸 멤버입니다.' ? (
-                <Image src={'/inviteCat.svg'} width={73} height={64} alt={message} />
-              ) : message === '이미 참여중인 멤버입니다.' ? (
-                <Image src={'/smileCat.svg'} width={73} height={64} alt={message} />
-              ) : (
-                <Image src={'/cryingCat.svg'} width={73} height={64} alt={message} />
-              )}
-              <p>{message}</p>
+            <div className={display ? 'hidden' : 'flex w-full flex-col'}>
+              <div className="flex flex-col w-full pb-[16px] gap-2 justify-center self-stretch items-center body-m text-Grey-900 border-solid border-Grey-200 border-b-[1px]">
+                {message === '이미 초대장을 보낸 멤버입니다.' ? (
+                  <Image src={'/inviteCat.svg'} width={73} height={64} alt={message} />
+                ) : message === '이미 참여중인 멤버입니다.' ? (
+                  <Image src={'/smileCat.svg'} width={73} height={64} alt={message} />
+                ) : message === '초대하기를 완료했습니다' ? (
+                  <></>
+                ) : (
+                  <Image src={'/cryingCat.svg'} width={73} height={64} alt={message} />
+                )}
+                <p>{message}</p>
+              </div>
+              <button
+                onClick={() => setOpen(false)}
+                className="outline-btn-l flex py-[12px] px-[20px] justify-center items-center gap-[4px] self-stretch rounded-[8px] border-none text-primary-400 body-m-bold"
+              >
+                확인
+              </button>
             </div>
           )}
           <DialogDescription></DialogDescription>

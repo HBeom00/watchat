@@ -1,22 +1,16 @@
 import { partyInfo, platform } from '@/types/partyInfo';
 import { startTimeString } from '@/utils/startTimeString';
-import { useMemberCount } from '@/utils/useMemberCount';
 import { getViewStatus } from '@/utils/viewStatus';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import PlatformImageCard from '../styleComponents/PlatformImage';
 import WatchingLabel from '../styleComponents/WatchingLabel';
-import { useOwnerInfo } from '@/utils/useOwnerInfo';
+import RecruitCardBottom from './RecruitCardBottom';
 
 const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   const platformArr: platform[] = JSON.parse(data.video_platform);
   const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
-
-  const { data: memberCount, isLoading: isCountLoading } = useMemberCount(data.party_id);
-
-  const { data: ownerInfo, isLoading } = useOwnerInfo(data);
-  if (isLoading || isCountLoading) <div>Loading...</div>;
 
   return (
     <Link
@@ -47,45 +41,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           </div>
         )}
       </div>
-      <div className="flex flex-col items-center gap-1 self-stretch">
-        <div className="flex flex-row items-start gap-1 self-stretch">
-          <p className="text-Grey-600 label-l text-overflow-hidden self-stretch">{data.video_name}</p>
-          <p className="text-Grey-600 label-l self-stretch">
-            {data.season_number ? ' ' + data.season_number + '화' : null}
-            {data.episode_number ? ' ' + data.episode_number + '화' : null}
-          </p>
-        </div>
-        <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
-          {data.party_name}
-        </p>
-        <div className="flex flex-row items-end gap-1 self-stretch">
-          {ownerInfo ? (
-            <div className="flex flex-row max-w-[74px] items-center gap-[6px]">
-              <Image
-                src={ownerInfo.profile_image}
-                width={16}
-                height={16}
-                style={{
-                  objectFit: 'cover',
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%'
-                }}
-                alt={`${ownerInfo.nickname}의 프로필`}
-              />
-              <p className="text-Grey-900 label-m text-overflow-hidden">{ownerInfo.nickname}</p>
-            </div>
-          ) : (
-            <></>
-          )}
-          <p className="text-Grey-300 body-xs">|</p>
-          <div className="flex flex-row text-Grey-900 label-m">
-            <p className="text-primary-400">{memberCount ? memberCount : 0}</p>
-            <p>명 {getViewStatus(data) === '시청중' ? '시청중' : '참여'}</p>
-            <p>{`❨${memberCount ? memberCount : 0}/${data.limited_member})명`}</p>
-          </div>
-        </div>
-      </div>
+      <RecruitCardBottom data={data} />
     </Link>
   );
 };

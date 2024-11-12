@@ -14,6 +14,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
     pathname.startsWith('/signup') ||
     pathname.startsWith('/recruit') ||
     pathname.startsWith('/myPage/edit') ||
+    pathname.startsWith('/warming') ||
     hideHeaderFooter;
   // className="flex-grow pt-[80px]"
   return (
