@@ -9,6 +9,7 @@ import '@/customCSS/label.css';
 import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
+import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 
 export type platform = {
   logoUrl: string;
@@ -37,7 +38,7 @@ const MyParticipatingParty = () => {
     <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between mb-4">
         <h3 className="title-m">참여한 파티</h3>
-        {enjoyingParty && enjoyingParty.length > 0 ? (
+        {enjoyingParty && enjoyingParty.length > 5 ? (
           <Link href={'/myPage/participating-party'} className="body-s text-[#c2c2c2]">
             더보기
           </Link>
@@ -50,21 +51,19 @@ const MyParticipatingParty = () => {
 
       <ul className="flex flex-row gap-5">
         {enjoyingParty && enjoyingParty.length > 0 ? (
-          enjoyingParty.slice(0, 5).map((party) => {
-            const cutPartyName =
-              party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
-
+          enjoyingParty.slice(0, 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
-
+            console.log('platformArr', platformArr);
             const viewStatus = getViewStatus;
 
             return (
               <li key={party.party_id} className=" min-w-[196px] group">
                 <MyVerticalCard
                   party={party}
+                  userName={party.ownerProfile.nickname}
                   platform={platformArr}
-                  cutPartyName={cutPartyName}
+                  partyName={party.party_name}
                   getViewStatus={viewStatus}
                 />
               </li>
