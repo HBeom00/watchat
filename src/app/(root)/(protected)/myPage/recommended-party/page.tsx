@@ -3,7 +3,6 @@
 import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import '@/customCSS/label.css';
 import doesntExist from '../../../../../../public/closeEyeCat.svg';
 import { useRecommendParty } from '@/store/useRecommendParty';
 import { getViewStatus } from '@/utils/viewStatus';

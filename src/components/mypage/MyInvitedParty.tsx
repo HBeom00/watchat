@@ -10,7 +10,6 @@ import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
 import { usePrevNextButtons } from '@/store/useMypageCarouselButton';
 import { getViewStatus } from '@/utils/viewStatus';
-import '@/customCSS/label.css';
 import doesntExist from '../../../public/inviteCat.svg';
 import checkBox from '../../../public/checkbox.svg';
 import checkBoxDisable from '../../../public/checkboxDisable.svg';

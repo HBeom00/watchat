@@ -60,7 +60,7 @@ const SignInForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col items-start gap-4 self-stretch">
+      <div className="flex flex-col items-start gap-[16px] self-stretch">
         <div className="inputDiv">
           <label className="commonLabel">이메일</label>
           <input
@@ -100,8 +100,8 @@ const SignInForm = () => {
         disabled={!formState.isValid}
         className={
           !formState.isValid
-            ? 'disabled-btn-xl w-[340px] flex justify-center items-center mt-12'
-            : 'btn-xl w-[340px] flex justify-center items-center mt-12'
+            ? 'disabled-btn-xl w-[340px] flex justify-center items-center mt-[48px]'
+            : 'btn-xl w-[340px] flex justify-center items-center mt-[48px]'
         }
       >
         로그인

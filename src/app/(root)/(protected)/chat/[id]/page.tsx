@@ -27,10 +27,19 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
     <div className="h-[100vh] flex justify-center items-center">
       <div className="w-[700px] bg-Grey-50">
         {/* 뒤로가기, 프로그램 정보, 사이드바 */}
-        <div className="flex pt-4 justify-between items-center self-stretch bg-white">
+        <div className="flex pt-[16px] justify-between items-center self-stretch bg-white">
           <div className="flex items-center">
-            <Link href={`/party/${roomId}`} className="w-10 p-2 flex justify-between items-center text-Grey-900">
-              <Image src={arrow_back} alt="back_img" width={24} height={24} className="w-6 h-6 flex shrink-0" />
+            <Link
+              href={`/party/${roomId}`}
+              className="w-[40px] p-[8px] flex justify-between items-center text-Grey-900"
+            >
+              <Image
+                src={arrow_back}
+                alt="back_img"
+                width={24}
+                height={24}
+                className="w-[24px] h-[24px] flex shrink-0"
+              />
             </Link>
             <div className="w-[545px] flex flex-col justify-center items-start">
               <p className="body-l-bold text-center text-Grey-900">{data?.[0].party_name}</p>
