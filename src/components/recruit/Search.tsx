@@ -40,20 +40,31 @@ export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName
 
   return (
     <div className="relative w-[519px] mt-[16px]">
-      <input
-        type="text"
-        placeholder="선택하세요."
-        value={videoName}
-        onChange={(e) => handleInputChange(e.target.value)}
-        className="w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
-      />
-      {videoName && (
-        <button onClick={clearInput} className="absolute right-4 top-1/2 transform -translate-y-1/2">
-          <Image src="/cancel.svg" alt="Clear input" width={24} height={24} />
-        </button>
-      )}
+      <div className="relative">
+        <input
+          type="text"
+          placeholder="선택하세요."
+          value={videoName}
+          onChange={(e) => handleInputChange(e.target.value)}
+          className="w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
+        />
+        {!videoName && (
+          <Image
+            src="/arrow_down.svg"
+            alt="Clear input"
+            width={24}
+            height={24}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2"
+          />
+        )}
+        {videoName && (
+          <button onClick={clearInput} className="absolute right-4 top-1/2 transform -translate-y-1/2 ">
+            <Image src="/cancel.svg" alt="Clear input" width={24} height={24} />
+          </button>
+        )}
+      </div>
       {showResults && searchResults?.results?.length ? (
-        <ul className="custom-scrollbar w-full h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
+        <ul className="custom-scrollbar w-full max-h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
           {searchResults.results.map((result) => (
             <li
               key={result.id}
