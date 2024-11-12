@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 const LoginPage = () => {
   return (
     <div className="mt-[100px] flex justify-center items-center">
-      <div className="w-[340px] flex flex-col items-start gap-4">
-        <div className="flex flex-col items-start gap-8 self-stretch">
-          <p className=" px-2 py-4 flex justify-center items-center gap-2 self-stretch title-m text-center text-Grey-900">
+      <div className="w-[340px] flex flex-col items-start gap-[16px]">
+        <div className="flex flex-col items-start gap-[32px] self-stretch">
+          <p className=" px-[8px] py-[16px] flex justify-center items-center gap-[8px] self-stretch title-m text-center text-Grey-900">
             로그인
           </p>
           <SignInForm />
@@ -22,7 +22,7 @@ const LoginPage = () => {
           <SocialLogin />
           <Link
             href={'/signup'}
-            className="flex px-2 py-4 justify-center items-center self-stretch gap-2 body-m-bold text-Grey-400"
+            className="flex px-[8px] py-[16px] justify-center items-center self-stretch gap-[8px] body-m-bold text-Grey-400"
           >
             회원가입
           </Link>

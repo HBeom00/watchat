@@ -11,6 +11,7 @@ const useDebounce = (value: string, delay: number) => {
     return () => {
       clearTimeout(timer);
     }; //value 변경 시점에 clearTimeout을 해줘야함.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return debouncedValue;
