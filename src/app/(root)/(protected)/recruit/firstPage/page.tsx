@@ -1,26 +1,30 @@
 'use client';
 
 import { useRecruitStore } from '../recruitStore';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import {
-  fetchMultiSearch,
+  // fetchMultiSearch,
   fetchMovieWatchProvider,
   fetchTvWatchProvider,
   fetchMoviesDetail,
   fetchTvDetail,
   fetchTvEpisode
 } from '@/serverActions/TMDB';
-import { SearchResult, SearchResponse } from '../../../../../types/Search';
+import { SearchResult } from '../../../../../types/Search';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CustomSelect from '@/components/recruit/CustomSelect';
 import Image from 'next/image';
+import SearchComponent from '@/components/recruit/Search';
 
 const RecruitFirstPage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
   const nextPageHandle = () => {
     router.push('/recruit/nextPage');
   };
+
   const {
     party_name,
     video_name,
@@ -34,61 +38,27 @@ const RecruitFirstPage = () => {
     setPartyInfo
   } = useRecruitStore();
 
-  // 검색 결과 표시 여부
-  const [showResults, setShowResults] = useState(false);
-  // 최종 검색어
-  const [debouncedVideoName, setDebouncedVideoName] = useState(video_name);
-  // 디바운싱 타이머
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
-  const queryClient = useQueryClient();
-  const [error, setError] = useState<string | null>(null); // duration_time 에관한 오류
-
-  // 최신 검색어만 보여주기 위해
   useEffect(() => {
     //상태 초기화
-    setPartyInfo({
-      party_name: '',
-      video_name: '',
-      party_detail: '',
-      limited_member: 0,
-      watch_date: null,
-      start_time: null,
-      duration_time: 0,
-      video_platform: [],
-      video_image: '',
-      episode_number: 0,
-      season_number: 0
-    });
+    if (!video_name) {
+      setPartyInfo({
+        party_name: '',
+        video_name: '',
+        party_detail: '',
+        limited_member: 0,
+        watch_date: null,
+        start_time: null,
+        duration_time: 0,
+        video_platform: [],
+        video_image: '',
+        episode_number: 0,
+        season_number: 0
+      });
 
-    // 캐시 초기화 재렌더링
-    queryClient.refetchQueries({ queryKey: ['searchVideo'] as const });
-  }, [queryClient, setPartyInfo]);
-
-  const InputChangehandle = (value: string) => {
-    setPartyInfo({ video_name: value });
-    setShowResults(true);
-
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
+      // 캐시 초기화 재렌더링
+      queryClient.refetchQueries({ queryKey: ['searchVideo'] as const });
     }
-
-    if (!value) {
-      setPartyInfo({ video_image: '' });
-    }
-
-    const timeout = setTimeout(() => {
-      setDebouncedVideoName(value);
-    }, 300); // 디바운싱
-
-    setSearchTimeout(timeout);
-  };
-
-  // 검색 Multisearch
-  const { data: searchResults } = useQuery<SearchResponse>({
-    queryKey: ['searchVideo', debouncedVideoName],
-    queryFn: () => fetchMultiSearch(debouncedVideoName),
-    enabled: !!debouncedVideoName
-  });
+  }, [video_name, queryClient, setPartyInfo]);
 
   const fetchProviders = async (id: number, media_type: string) => {
     try {
@@ -134,7 +104,7 @@ const RecruitFirstPage = () => {
       season_number,
       genres: genre
     });
-    setShowResults(false);
+    // setShowResults(false);
     queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
   };
 
@@ -195,38 +165,15 @@ const RecruitFirstPage = () => {
         onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
         className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[112px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
-      <div className="flex w-[520px]  align-item gap-1 mt-[32px] ">
-        <h2 className="text-gray-800 font-pretendard text-[15px] font-semibold leading-[24px]">
-          시청할 영상을 선택해 주세요.
-        </h2>
-        <h2 className="text-purple-600 font-[15px] ">*</h2>
-      </div>
-      <div className="relative w-[519px]  mt-[16px]">
-        <input
-          type="text"
-          placeholder="선택하세요."
-          value={video_name}
-          onChange={(e) => InputChangehandle(e.target.value)}
-          className=" w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
-        />
-        {showResults && searchResults?.results?.length ? (
-          <ul className=" custom-scrollbar   w-full h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
-            {searchResults.results.map((result) => (
-              <li
-                key={result.id}
-                onClick={() => handleSearchResultClick(result)}
-                className="px-4 py-3 text-[15px] text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg"
-              >
-                {result.title || result.name}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
+      <SearchComponent
+        videoName={video_name}
+        setVideoName={(name: string) => setPartyInfo({ video_name: name })}
+        handleSearchResultClick={handleSearchResultClick}
+      />
       <div className="flex space-x-[20px] mt-[16px]">
         {/* 포스터 */}
         {video_name && video_image && (
-          <img src={video_image} alt="선택된 포스터" className="w-[250px] h-[360px] rounded-md" />
+          <Image src={video_image} alt="선택된 포스터" width={250} height={360} className="rounded-md" />
         )}
 
         <div className="space-y-[15px]">
@@ -305,7 +252,13 @@ const RecruitFirstPage = () => {
                 {video_platform.map((platform) => (
                   <div key={platform.name} className="text-center ">
                     <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
-                      <img src={platform.logoUrl} alt={platform.name} className="w-9 rounded-full " />
+                      <Image
+                        src={platform.logoUrl}
+                        alt={platform.name}
+                        width={36}
+                        height={36}
+                        className=" rounded-full "
+                      />
                     </div>
                   </div>
                 ))}
