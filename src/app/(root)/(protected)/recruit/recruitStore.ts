@@ -19,6 +19,7 @@ interface RecruitState {
   date_recruitment: Date | null;
   season_number: number | null;
   genres: string[] | null;
+  number_of_seasons: number;
 
   setPartyInfo: (info: Partial<Omit<RecruitState, 'setPartyInfo' | 'setRecruitDetails'>>) => void;
   setRecruitDetails: (details: Partial<Omit<RecruitState, 'setPartyInfo' | 'setRecruitDetails'>>) => void;
@@ -43,6 +44,7 @@ export const useRecruitStore = create<RecruitState>((set) => ({
   date_recruitment: null,
   season_number: null,
   genres: [],
+  number_of_seasons: 0,
 
   // 아래 애들이 요청에 들어감
   setPartyInfo: (info) => set((state) => ({ ...state, ...info })),

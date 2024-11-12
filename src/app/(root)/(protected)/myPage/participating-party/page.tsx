@@ -48,10 +48,6 @@ const ParticipatingParty = () => {
       <ul className="flex flex-row gap-5 flex-wrap">
         {enjoyingParty && enjoyingParty.length > 0 ? (
           enjoyingParty.slice(start, end).map((party) => {
-            // 길이가 8자 이상이면 잘라서 말줄임표 추가
-            const cutPartyName =
-              party.party_name.length > 13 ? party.party_name.slice(0, 13) + '...' : party.party_name;
-
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
 
@@ -61,8 +57,9 @@ const ParticipatingParty = () => {
               <li key={party.party_id} className=" min-w-[196px]  group">
                 <MyVerticalCard
                   party={party}
+                  userName={party.ownerProfile.nickname}
                   platform={platformArr}
-                  cutPartyName={cutPartyName}
+                  partyName={party.party_name}
                   getViewStatus={viewStatus}
                 />
               </li>
