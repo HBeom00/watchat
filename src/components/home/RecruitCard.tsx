@@ -20,7 +20,11 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
       <div className="relative flex w-[196px] h-[280px] py-5 items-start gap-8 self-stretch rounded-sm overflow-hidden">
         <WatchingLabel partyData={data} />
         {platform ? <PlatformImageCard platform={platform} /> : <></>}
-
+        {data.privacy_setting === '비공개' && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 ">
+            <Image src="/lock.svg" alt="비공개" width={20} height={27} />
+          </div>
+        )}
         <Image
           className={
             end

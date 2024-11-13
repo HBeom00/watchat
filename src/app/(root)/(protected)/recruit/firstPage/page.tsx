@@ -3,24 +3,30 @@
 import { useRecruitStore } from '../../../../../store/recruitStore';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  // fetchMultiSearch,
   fetchMovieWatchProvider,
   fetchTvWatchProvider,
   fetchMoviesDetail,
   fetchTvDetail,
   fetchTvEpisode
 } from '@/serverActions/TMDB';
-import { SearchResult } from '../../../../../types/search';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import CustomSelect from '@/components/recruit/CustomSelect';
+
 import Image from 'next/image';
+
+//------컴포넌트------------------------------------------------------------------------------
 import SearchComponent from '@/components/recruit/Search';
+import Modal from '@/components/recruit/Modal';
+import CustomSelect from '@/components/recruit/CustomSelect';
+//------타입------------------------------------------------------------------------------
+import { SearchResult } from '../../../../../types/search';
 
 const RecruitFirstPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const nextPageHandle = () => {
     router.push('/recruit/nextPage');
   };
@@ -92,6 +98,17 @@ const RecruitFirstPage = () => {
     const video_id = result.id;
     const media_type = result.media_type;
 
+    // 날짜값 불러오기
+    const releaseDate = result.release_date || result.first_air_date;
+
+    if (releaseDate) {
+      const releaseDateObject = new Date(releaseDate);
+      const today = new Date();
+
+      if (releaseDateObject > today) {
+        setIsModalOpen(true);
+      }
+    }
     //플렛폼 정보 불러오기
     const providerData = await fetchProviders(video_id, media_type);
 
@@ -110,6 +127,7 @@ const RecruitFirstPage = () => {
       genre = tvDetail?.detail.genres?.map((genre) => genre.name) || []; // TV 장르
       numberOfSeasons = tvDetail?.detail.number_of_seasons || 0;
     }
+
     setPartyInfo({
       video_name: result.title || result.name || '',
       video_image: result.poster_path ? `https://image.tmdb.org/t/p/w500${result.poster_path}` : '',
@@ -166,7 +184,6 @@ const RecruitFirstPage = () => {
     }
   };
 
-
   // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
     !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
@@ -186,13 +203,14 @@ const RecruitFirstPage = () => {
         placeholder="파티에 대해서 소개해주세요."
         value={party_detail}
         onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
-        className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[112px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
+        className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[156px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
       <SearchComponent
         videoName={video_name}
         setVideoName={(name: string) => setPartyInfo({ video_name: name })}
         handleSearchResultClick={handleSearchResultClick}
       />
+      {isModalOpen && <Modal message="아직 개봉전인 작품입니다." onClose={() => setIsModalOpen(false)} />}
       <div className="flex space-x-[20px] mt-[16px] max-h-[360px]">
         {/* 포스터 */}
         {video_name && video_image && (
@@ -224,12 +242,11 @@ const RecruitFirstPage = () => {
                   className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
                 />
                 {episode_number !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-                {/* 부정연산자 */}
               </div>
             </div>
           )}
 
-          {episode_number !== 0 && video_image && (
+          {((media_type === 'movie' && video_image) || (episode_number !== 0 && video_image)) && (
             <div>
               <div className="flex">
                 <h2>러닝타임</h2>

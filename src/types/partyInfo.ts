@@ -20,6 +20,7 @@ export type partyInfo = {
   start_date_time: string;
   end_time: string;
   date_recruitment: string | null;
+  privacy_setting: '공개' | '비공개';
 };
 export type platform = { logoUrl: string; name: string };
 

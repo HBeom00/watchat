@@ -1,16 +1,24 @@
 'use client';
 
 import { useRecruitStore } from '../../../../../store/recruitStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+//------컴퍼넌트------------------------------------------------------------------------------
+import ParticipationButton from '@/components/button/ParticipationButton';
+
+//------수파베이스------------------------------------------------------------------------------
+import browserClient from '../../../../../utils/supabase/client';
+import { PostgrestError } from '@supabase/supabase-js';
+
+//------타입------------------------------------------------------------------------------
+import { partyInfo } from '@/types/partyInfo';
+
+//------라이브러리------------------------------------------------------------------------------
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import browserClient from '../../../../../utils/supabase/client';
-import ParticipationButton from '@/components/button/ParticipationButton';
-import { PostgrestError } from '@supabase/supabase-js';
-import { partyInfo } from '@/types/partyInfo';
-import { useEffect, useState } from 'react';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
-import Image from 'next/image';
 
 const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -132,7 +140,6 @@ const RecruitNextPage = () => {
       setErrorMessage(''); // 오류 메시지 초기화
     } else {
       setErrorMessage('1에서 10 사이의 숫자를 입력하세요.');
-      // e.target.value = ''; // 잘못된 입력값을 지움
     }
   };
 
@@ -193,6 +200,16 @@ const RecruitNextPage = () => {
               <label htmlFor="member" className="block text-[14px] font-SemiBold text-Grey-800">
                 모집 인원
               </label>
+              {/* <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/info_line.svg" width={24} height={24} alt="툴팁" className="cursor-pointer" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>모집 인원은 자신을 포함한 인원입니다.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider> */}
               <div
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
