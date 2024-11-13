@@ -17,6 +17,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
 
   useEffect(() => {
     updateSliderBackground();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playTime]);
 
   if (duration * 60 > playTime) {
