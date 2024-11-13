@@ -1,42 +1,10 @@
 // 주최한 파티 목록 가져오기
 
+import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { startTimeString } from '@/utils/startTimeString';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 
-// 파티 정보 타입
-type OwnerPartyInfo = {
-  duration_time: number;
-  episode_number?: number | null;
-  limited_member: number;
-  media_type: string;
-  owner_id: string;
-  party_detail: string;
-  party_id: string;
-  party_name: string;
-  situation: string;
-  start_time: string;
-  video_id: number;
-  video_image: string;
-  video_name: string;
-  video_platform: string;
-  watch_date: string;
-  start_date_time: string;
-};
-
-// 작성자 정보 타입
-type OwnerProfile = {
-  profile_image: string;
-  nickname: string;
-};
-
-// ownerPartyInfo (통틀어서 반환되는 값) 타입
-interface OwnerParty extends OwnerPartyInfo {
-  ownerProfile: OwnerProfile;
-  currentPartyPeople: number | undefined; // 참여 인원수
-  startString: string;
-}
-
-export const getOwnerParty = async (): Promise<OwnerParty[]> => {
+export const getOwnerParty = async (): Promise<MyPagePartyInfo[]> => {
   const userId = await getLoginUserIdOnClient();
 
   const { data: ownerParties, error } = await browserClient
