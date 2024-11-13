@@ -613,11 +613,8 @@ select {
 }
 
 /* --------------------------------------------------------------------------------------------- */
-.react-datepicker-time_header {
-  width: 0;
-  height: 0;
-  margin: 0;
-  overflow: hidden;
+.react-datepicker-time__header {
+  display: none !important;
 }
 
 .react-datepicker--time-only {
@@ -644,14 +641,14 @@ select {
 .react-datepicker__time-list-item {
   width: 100% !important;
   padding: 25px !important;
-  font-size: 25px !important;
+  font-size: 14px !important;
   text-align: center !important;
   transition: 0.3s;
 }
 
 .react-datepicker__time-list-item:hover {
   background-color: #f5f5f5 !important;
-  border-radius: 4px !important;
+  border-radius: 5px !important;
 }
 
 /* 선택된 시간 항목 */
@@ -661,6 +658,20 @@ select {
   border-radius: 4px !important;
 }
 
+/* 커스텀 스크롤바 스타일 */
+.custom-scrollbar .react-datepicker__time-list::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+  height: 64px;
+}
+
+.custom-scrollbar .react-datepicker__time-list::-webkit-scrollbar-thumb {
+  background-color: #c2c2c2; /* 스크롤바 색상 */
+  border-radius: 3px; /* 스크롤바 모서리 둥글게 */
+  width: 8px; /* 스크롤바 너비 */
+  height: 64px;
+}
+
+/* --------------------------------------------------------------------------------------------- */
 /* 재생바의 기본 색상 */
 input[type='range']::-webkit-slider-runnable-track {
   background: #dcdcdc;

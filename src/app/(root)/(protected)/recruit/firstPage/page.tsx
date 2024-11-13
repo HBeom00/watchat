@@ -1,6 +1,6 @@
 'use client';
 
-import { useRecruitStore } from '../recruitStore';
+import { useRecruitStore } from '../../../../../store/recruitStore';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   // fetchMultiSearch,
@@ -165,6 +165,7 @@ const RecruitFirstPage = () => {
       }
     }
   };
+
 
   // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
