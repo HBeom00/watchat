@@ -1,17 +1,8 @@
 import RecruitCardBottom from '@/components/home/RecruitCardBottom';
 import { partyInfo } from '@/types/partyInfo';
-import { createClient } from '@/utils/supabase/server';
-import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import Image from 'next/image';
 
-const WarmingPartyInfo = async ({ party_id }: { party_id: string }) => {
-  const client = createClient();
-  const response: PostgrestSingleResponse<partyInfo> = await client
-    .from('party_info')
-    .select('*')
-    .eq('party_id', party_id)
-    .single();
-  const partyData = response.data;
+const WarmingPartyInfo = async ({ partyData }: { partyData: partyInfo | null }) => {
   return (
     <div className="flex p-[16px] items-center gap-[16px] self-stretch bg-Grey-50 rounded-[4px]">
       {partyData ? (

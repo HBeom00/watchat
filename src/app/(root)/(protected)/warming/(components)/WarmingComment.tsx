@@ -1,80 +1,42 @@
-import browserClient from '@/utils/supabase/client';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import SubmitDialog from './SubmitDialog';
+import { submit } from './WarmingMemberList';
+import ScoreCard from './ScoreCard';
 
 type Props = {
   memberSelect: number;
-  setMemberSelect: Dispatch<SetStateAction<number>>;
   userId: string;
   partyId: string;
-  memberLength: number;
   memberId: string;
+  submitArr: submit[];
+  setSubmitArr: Dispatch<SetStateAction<submit[]>>;
 };
-const WarmingComment = ({ memberSelect, userId, partyId, setMemberSelect, memberLength, memberId }: Props) => {
-  const [score, setScore] = useState<number>(0);
-  const [commentArr, setCommentArr] = useState<string[]>([]);
+
+const WarmingComment = ({ memberSelect, userId, partyId, memberId, submitArr, setSubmitArr }: Props) => {
+  const thisSubmitData = submitArr.filter((n) => n.warming_user_id === memberId)[0];
+  const [score, setScore] = useState<number>(thisSubmitData.temperature);
+  const [commentArr, setCommentArr] = useState<string[]>(thisSubmitData.comment);
 
   useEffect(() => {
-    setScore(0);
-    setCommentArr([]);
+    setScore(thisSubmitData.temperature);
+    setCommentArr(thisSubmitData.comment);
   }, [memberSelect]);
 
-  const submitWarmingHandler = async () => {
-    const { error } = await browserClient.from('warming').upsert(
-      {
-        warming_id: `${userId}/${memberId}/${partyId}`,
-        warmer_id: userId,
-        warming_user_id: memberId,
-        party_id: partyId,
-        temperature: score,
-        comment: commentArr
-      },
-      { onConflict: 'warming_id' }
-    );
-    if (error) {
-      console.log('평가에 실패했습니다.');
-      return;
-    }
-    if (memberSelect < memberLength - 1) {
-      setMemberSelect((current) => current + 1);
-    }
-  };
   return (
-    <div className="flex flex-col gap-10">
-      <p>함께 시청한 멤버의 후기를 남겨보세요.</p>
-      <div className="flex flex-row gap-10">
-        <p
-          onClick={() => {
-            setScore(-1);
-            setCommentArr([]);
-          }}
-        >
-          노쇼
-        </p>
-        <p
-          onClick={() => {
-            setScore(-2);
-            setCommentArr([]);
-          }}
-        >
-          나쁨
-        </p>
-        <p
-          onClick={() => {
-            setScore(1);
-            setCommentArr([]);
-          }}
-        >
-          굿
-        </p>
-        <p
-          onClick={() => {
-            setScore(2);
-            setCommentArr([]);
-          }}
-        >
-          그뤠잇
-        </p>
+    <>
+      <div className="flex flex-row py-[8px] justify-between items-center self-stretch">
+        {scoreArr.map((n) => {
+          return (
+            <ScoreCard
+              key={n.scoreMessage}
+              score={n.score}
+              scoreMessage={n.scoreMessage}
+              image_src={n.image_src}
+              selectScore={score}
+              setScore={setScore}
+              setCommentArr={setCommentArr}
+            />
+          );
+        })}
       </div>
       <div>
         {getCommentArr(score).length > 0 ? (
@@ -83,7 +45,25 @@ const WarmingComment = ({ memberSelect, userId, partyId, setMemberSelect, member
               <div key={comment}>
                 <p
                   className={commentArr.some((n) => comment === n) ? 'text-primary-500' : ''}
-                  onClick={() => setCommentArr((current) => [...current, comment])}
+                  onClick={() => {
+                    setCommentArr((current) => [...current, comment]);
+                    setSubmitArr((current) => {
+                      const data = current.map((n) => {
+                        if (n.warming_user_id === memberId) {
+                          return {
+                            warmer_id: userId,
+                            warming_user_id: memberId,
+                            party_id: partyId,
+                            temperature: score,
+                            comment: [...commentArr, comment]
+                          };
+                        }
+                        return n;
+                      });
+
+                      return data;
+                    });
+                  }}
                 >
                   {comment}
                 </p>
@@ -94,13 +74,22 @@ const WarmingComment = ({ memberSelect, userId, partyId, setMemberSelect, member
           <></>
         )}
       </div>
-      <button onClick={() => submitWarmingHandler()}>{memberSelect === memberLength - 1 ? '완료' : '다음'}</button>
-      <SubmitDialog />
-    </div>
+    </>
   );
 };
 
 export default WarmingComment;
+
+const scoreArr: {
+  score: number;
+  scoreMessage: string;
+  image_src: string[];
+}[] = [
+  { score: -1, scoreMessage: 'No Show', image_src: ['noShowCat', 'noShowCat_select'] },
+  { score: -2, scoreMessage: 'Bad', image_src: ['badCat', 'badCat_select'] },
+  { score: 1, scoreMessage: 'Good', image_src: ['goodCat', 'goodCat_select'] },
+  { score: 2, scoreMessage: 'Great!', image_src: ['greatCat', 'greatCat_select'] }
+];
 
 const greatCommentArr = ['매너있게 관람했어요.', '시간 약속을 잘 지켜요.', '다음에 같이 시청하고 싶어요.'];
 const goodCommentArr = ['시청 매너가 좋아요.', '시간 약속을 잘 지켜요.', '즐겁게 관람했어요.'];
