@@ -10,6 +10,7 @@ type PartyInfo = {
   party_name: string;
   situation: string;
   start_time: string;
+  end_time: string;
   video_id: number;
   video_image: string;
   video_name: string;

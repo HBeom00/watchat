@@ -49,7 +49,7 @@ const MyRecommendParty = () => {
         )}
       </div>
       <ul className="flex flex-row gap-5">
-        {recommendParty && recommendParty.length > 0 ? (
+        {recommendParty && recommendParty.length > 5 ? (
           recommendParty.slice(0, 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
