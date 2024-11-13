@@ -19,7 +19,7 @@ import SearchComponent from '@/components/recruit/Search';
 import Modal from '@/components/recruit/Modal';
 import CustomSelect from '@/components/recruit/CustomSelect';
 //------타입------------------------------------------------------------------------------
-import { SearchResult } from '../../../../../types/search';
+import { SearchResult } from '@/types/search';
 
 const RecruitFirstPage = () => {
   const router = useRouter();
