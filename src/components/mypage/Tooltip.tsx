@@ -1,5 +1,4 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Button } from '../ui/Button';
 import infoIcon from '../../../public/info.svg';
 import Image from 'next/image';
 
