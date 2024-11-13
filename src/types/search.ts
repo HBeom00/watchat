@@ -1,4 +1,4 @@
-export interface SearchResult {
+export type SearchResult = {
   id: number;
   title?: string; // 영화 제목
   name?: string; // TV 프로그램 제목 또는 사람 이름
@@ -9,19 +9,21 @@ export interface SearchResult {
   platform: { name: string; logoUrl: string }[];
   popularity: number;
   genres: { name: string }[];
-}
+  release_date: Date;
+  first_air_date: Date;
+};
 
-export interface SearchResponse {
+export type SearchResponse = {
   results: SearchResult[];
-}
+};
 
 export type Genre = {
   id: number;
   name: string;
 };
 
-export interface SearchProps {
+export type SearchProps = {
   videoName: string;
   setVideoName: (name: string) => void;
   handleSearchResultClick: (result: SearchResult) => void;
-}
+};

@@ -1,23 +1,33 @@
 'use client';
 
-import { useRecruitStore } from '../recruitStore';
+import { useRecruitStore } from '../../../../../store/recruitStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+//------컴퍼넌트------------------------------------------------------------------------------
+import ParticipationButton from '@/components/button/ParticipationButton';
+
+//------수파베이스------------------------------------------------------------------------------
+import browserClient from '../../../../../utils/supabase/client';
+import { PostgrestError } from '@supabase/supabase-js';
+
+//------타입------------------------------------------------------------------------------
+import { partyInfo } from '@/types/partyInfo';
+
+//------라이브러리------------------------------------------------------------------------------
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import browserClient from '../../../../../utils/supabase/client';
-import ParticipationButton from '@/components/button/ParticipationButton';
-import { PostgrestError } from '@supabase/supabase-js';
-import { partyInfo } from '@/types/partyInfo';
-import { useEffect, useState } from 'react';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
-import Image from 'next/image';
 
 const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [privacySetting, setPrivacySetting] = useState<string>('공개');
+  const [privacySetting, setPrivacySetting] = useState<'공개' | '비공개'>('공개');
+  // boolean 값으로 관리하기
   const { limited_member, setRecruitDetails } = useRecruitStore();
+  const [isHovered, setIsHovered] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -130,11 +140,10 @@ const RecruitNextPage = () => {
       setErrorMessage(''); // 오류 메시지 초기화
     } else {
       setErrorMessage('1에서 10 사이의 숫자를 입력하세요.');
-      // e.target.value = ''; // 잘못된 입력값을 지움
     }
   };
 
-  const privacyhandle = (setting: string) => {
+  const privacyhandle = (setting: '공개' | '비공개') => {
     setPrivacySetting(setting);
   };
 
@@ -145,9 +154,9 @@ const RecruitNextPage = () => {
     <div className="grid place-items-center">
       {/* <button onClick={() => router.back()}>뒤로 가기</button> */}
       <h1 className="text-[28px] font-bold mt-[70px]">모집 조건</h1>
-      <div className="space-y-[32px]">
+      <div>
         <div>
-          <label htmlFor="open" className="block text-[15px] font-SemiBold text-Grey-800">
+          <label htmlFor="open" className="block text-[14px] font-SemiBold text-Grey-800">
             공개 설정
           </label>
           <div className="flex justify-between mt-[8px]">
@@ -160,7 +169,7 @@ const RecruitNextPage = () => {
                 className="hidden"
               />
               <span
-                className={`outline-btn-l w-[250px] flex items-center justify-center ${
+                className={`outline-disabled-btn-l w-[250px] flex items-center justify-center ${
                   privacySetting === '공개' ? 'bg-primary-400 text-white' : ''
                 }`}
               >
@@ -176,7 +185,7 @@ const RecruitNextPage = () => {
                 className="hidden"
               />
               <span
-                className={`outline-btn-l w-[250px]  flex items-center justify-center  ${
+                className={`outline-disabled-btn-l w-[250px]  flex items-center justify-center  ${
                   privacySetting === '비공개' ? 'bg-primary-400 text-white' : ''
                 }`}
               >
@@ -185,95 +194,122 @@ const RecruitNextPage = () => {
             </label>
           </div>
         </div>
-        <div className="mt-[32px] z-40">
-          <label htmlFor="member" className="block text-[15px] font-SemiBold text-Grey-800">
-            모집 인원
-          </label>
-          {/* svg */}
-          <div className="relative ">
-            <Image
-              src="/group.svg"
-              alt="User Icon"
-              width={24}
-              height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-            />
-            <input
-              id="member"
-              type="text"
-              placeholder="1~10"
-              value={limited_member !== 0 ? limited_member : ''}
-              onChange={handleChange}
-              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none"
-            />
-            <Image
-              src="/persons.svg"
-              alt="User Icon"
-              width={24}
-              height={24}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-            />
+        <div className="space-y-[32px] mt-[8px]">
+          <div className="z-40">
+            <div className="flex space-x-[4px] relative group">
+              <label htmlFor="member" className="block text-[14px] font-SemiBold text-Grey-800">
+                모집 인원
+              </label>
+              {/* <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/info_line.svg" width={24} height={24} alt="툴팁" className="cursor-pointer" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>모집 인원은 자신을 포함한 인원입니다.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider> */}
+              <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="relative"
+              >
+                <Image src="/info_line.svg" alt="info_line" width={24} height={24} className="cursor-pointer" />
+                {isHovered && (
+                  <div className="absolute bottom-[-45px] left-1/2 transform -translate-x-1/2 mb-1 py-2 px-4 w-max bg-black text-white text-sm rounded-md  z-30">
+                    모집 인원은 자신을 포함한 인원입니다.
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* svg */}
+            <div className="relative ">
+              <Image
+                src="/group.svg"
+                alt="User Icon"
+                width={24}
+                height={24}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+              />
+              <input
+                id="member"
+                type="text"
+                placeholder="1~10"
+                value={limited_member !== 0 ? limited_member : ''}
+                onChange={handleChange}
+                className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none"
+              />
+              <Image
+                src="/persons.svg"
+                alt="User Icon"
+                width={24}
+                height={24}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+              />
+            </div>
+            {errorMessage && (
+              <p className="text-red-500">{errorMessage}</p> // 오류 메시지 표시
+            )}
+            <p className="text-[13px] text-Grey-400">최대 인원은 10명입니다.</p>
           </div>
-          {errorMessage && (
-            <p className="text-red-500">{errorMessage}</p> // 오류 메시지 표시
-          )}
-          <p className="text-[13px] text-Grey-400">최대 인원은 10명입니다.</p>
-        </div>
-        <div>
-          <label htmlFor="watchDate" className="block text-[15px] font-SemiBold text-Grey-800">
-            시청 날짜
-          </label>
-          <div className="relative z-30">
-            <Image
-              src="/calendar_month.svg"
-              alt="User Icon"
-              width={24}
-              height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-20"
-            />
-            <DatePicker
-              id="watchDate"
-              locale={ko}
-              selected={useRecruitStore.getState().watch_date}
-              onChange={(date) => setRecruitDetails({ watch_date: date })}
-              dateFormat="yyyy.MM.dd"
-              placeholderText="날짜를 선택해주세요"
-              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400   text-center z-10 focus:border-primary-500 focus:outline-none"
-              showPopperArrow={false}
-              minDate={new Date()}
-              popperClassName="custom-datepicker"
-            />
+          <div>
+            <label htmlFor="watchDate" className="block text-[14px] font-SemiBold text-Grey-800">
+              시청 날짜
+            </label>
+            <div className="relative z-30">
+              <Image
+                src="/calendar_month.svg"
+                alt="User Icon"
+                width={24}
+                height={24}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-20"
+              />
+              <DatePicker
+                id="watchDate"
+                locale={ko}
+                selected={useRecruitStore.getState().watch_date}
+                onChange={(date) => setRecruitDetails({ watch_date: date })}
+                dateFormat="yyyy.MM.dd"
+                placeholderText="날짜를 선택해주세요"
+                className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400   text-center z-10 focus:border-primary-500 focus:outline-none"
+                showPopperArrow={false}
+                minDate={new Date()}
+                popperClassName="custom-datepicker"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label htmlFor="startTime" className="block text-[15px] font-SemiBold text-Grey-800">
-            시작 시간
-          </label>
-          <div className="relative ">
-            <Image
-              src="/schedule.svg"
-              alt="User Icon"
-              width={24}
-              height={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
-            />
-            <DatePicker
-              id="startTime"
-              locale={ko}
-              selected={useRecruitStore.getState().start_time}
-              onChange={(time) => setRecruitDetails({ start_time: time })}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={15}
-              dateFormat="h:mm aa"
-              className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none "
-              placeholderText="00:00"
-            />
+          <div>
+            <label htmlFor="startTime" className="block text-[14px] font-SemiBold text-Grey-800">
+              시작 시간
+            </label>
+            <div className="relative ">
+              <Image
+                src="/schedule.svg"
+                alt="User Icon"
+                width={24}
+                height={24}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none z-10"
+              />
+              <DatePicker
+                id="startTime"
+                locale={ko}
+                selected={useRecruitStore.getState().start_time}
+                onChange={(time) => setRecruitDetails({ start_time: time })}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                dateFormat="h:mm aa"
+                className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none "
+                placeholderText="00:00"
+                popperClassName="custom-scrollbar"
+              />
+            </div>
           </div>
         </div>
       </div>
       <button
-        className={`mt-[200px] px-[24px] py-[16px] w-[520px] h-[56px] ${
+        className={`mt-[207px] px-[24px] py-[16px] w-[520px] h-[56px] ${
           isRecruitButtonDisabled ? 'bg-Grey-100 text-Grey-400' : 'bg-primary-400 hover:bg-primary-500 text-white'
         } rounded-md font-semibold text-[15px]`}
         onClick={() => {
