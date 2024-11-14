@@ -46,7 +46,7 @@ const SubmitDialog = ({ submitArr, userId, party_id }: { submitArr: submit[]; us
       <DialogTrigger className={`rounded-[8px] w-full ${notDone ? 'disabled-btn-xl' : 'btn-xl'}`} disabled={notDone}>
         작성 완료
       </DialogTrigger>
-      <DialogContent className="w-[340px] p-0 gap-0">
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] p-0 gap-0">
         <DialogHeader className="flex py-6">
           <DialogTitle></DialogTitle>
         </DialogHeader>

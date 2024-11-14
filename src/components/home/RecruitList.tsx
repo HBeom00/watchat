@@ -29,6 +29,7 @@ const RecruitList = () => {
   // 플랫폼 필터
   const bull = filter === '전체' ? 'name' : filter;
 
+  // 검색 필터
   const searchWord = decodeURIComponent(params.get('search') + '');
   let wordConversion = searchWord
     .split(' ')

@@ -137,7 +137,10 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
             <DialogTrigger className="w-[300px] fixed bottom-[20px] outline-disabled-btn-l flex justify-center items-center gap-[4px] self-stretch">
               파티 탈퇴
             </DialogTrigger>
-            <DialogContent className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg">
+            <DialogContent
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg"
+            >
               <DialogTitle className="px-[16px] py-[8px"></DialogTitle>
               <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-[16px] body-m">
                 파티를 나가시겠습니까?
