@@ -16,6 +16,7 @@ export const useLiveSubscribe = (roomId: string) => {
     const channel: RealtimeChannel = browserClient
       .channel(`chat-${roomId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'team_user_profile' }, (payload) => {
+        console.log(payload, 'payload');
         queryClient.setQueryData<UserInfo[]>(['members', roomId], (oldMembers = []) => [
           ...oldMembers,
           payload.new as UserInfo
@@ -24,8 +25,6 @@ export const useLiveSubscribe = (roomId: string) => {
         // 새로운 멤버 입장 메시지 생성
         const joinMessage = {
           sender_id: payload.new.user_id,
-          nickname: payload.new.nickname,
-          profile_image: payload.new.profile_image,
           room_id: roomId,
           content: `${payload.new.nickname}님이 입장하셨습니다.`,
           created_at: new Date().toISOString(),

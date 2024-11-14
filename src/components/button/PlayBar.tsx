@@ -42,7 +42,7 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
         step={1}
         value={playTime}
         onChange={() => {}}
-        className="custom-scrollbar w-full h-1 flex flex-col gap-2 self-stretch bg-Grey-200"
+        className=" w-full h-1 flex flex-col gap-2 self-stretch bg-Grey-200"
       />
     </div>
   );

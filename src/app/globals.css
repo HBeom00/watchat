@@ -676,11 +676,6 @@ select {
 }
 /* --------------------------------------------------------------------------------------------- */
 /* 재생바의 기본 색상 */
-input[type='range']::-webkit-slider-runnable-track {
-  background: #dcdcdc;
-  height: 4px;
-  border-radius: 4px; /* 모서리 둥글게 */
-}
 
 /* 채팅창 세로 스크롤바 -> 커스텀 */
 .custom-chat-scrollbar {
