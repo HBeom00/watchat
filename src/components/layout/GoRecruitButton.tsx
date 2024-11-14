@@ -22,7 +22,7 @@ const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
       >
         모집하기
       </DialogTrigger>
-      <DialogContent className="w-[340px] p-0 gap-0">
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] p-0 gap-0">
         <DialogHeader className="flex py-6">
           <DialogTitle></DialogTitle>
         </DialogHeader>

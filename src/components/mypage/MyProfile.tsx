@@ -108,7 +108,7 @@ const MyProfile = () => {
                   팔로잉 <span className="text-primary-400">{followerCount}</span>
                 </p>
               </DialogTrigger>
-              <DialogContent className="w-[340px] pl-5 pr-2">
+              <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] pl-5 pr-2">
                 <DialogHeader>
                   <DialogTitle>팔로우</DialogTitle>
                 </DialogHeader>

@@ -14,13 +14,13 @@ const RecruitCardBottom = ({ data }: { data: partyInfo }) => {
   return (
     <div className="flex flex-col items-center gap-1 self-stretch">
       <div className="flex flex-row items-start gap-1 self-stretch">
-        <p className="text-Grey-600 label-l text-overflow-hidden self-stretch">{data.video_name}</p>
-        <p className="text-Grey-600 label-l self-stretch">
+        <p className="max-w-[123px] text-Grey-600 label-l text-overflow-hidden">{data.video_name}</p>
+        <p className="text-Grey-600 label-l">
           {data.season_number ? ' 시즌' + data.season_number : null}
           {data.episode_number ? ' ' + data.episode_number + '화' : null}
         </p>
       </div>
-      <p className=" text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
+      <p className="text-static-black body-l-bold text-overflow-hidden self-stretch group-hover:text-primary-400 transition duration-300">
         {data.party_name}
       </p>
       <div className="flex flex-row items-end gap-1 self-stretch">

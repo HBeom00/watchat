@@ -55,7 +55,7 @@ const InvitedButton = ({
         <DialogTrigger className="flex w-[94px] py-[6px] px-3 justify-center items-center rounded-lg border-solid border-Grey-300 border-[1px] text-Grey-400 body-xs-bold">
           초대하기
         </DialogTrigger>
-        <DialogContent className="w-[340px] p-0 gap-0">
+        <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] p-0 gap-0">
           <DialogHeader className="flex py-6">
             <DialogTitle className={display ? '' : 'hidden'}>초대하기</DialogTitle>
           </DialogHeader>
