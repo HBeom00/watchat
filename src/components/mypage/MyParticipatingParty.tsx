@@ -1,7 +1,7 @@
 'use client';
 
 import { useParticipatingParty } from '@/store/useParticipatingParty';
-import { useFetchUserData } from '@/store/userStore';
+import { useFetchUserData, useFetchUserId } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -9,15 +9,22 @@ import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
-
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
+import { usePathname, useSearchParams } from 'next/navigation';
+import { platform } from '@/types/partyInfo';
 
 const MyParticipatingParty = () => {
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const userParam = params.get('user');
+
   const { data: userData, isPending, isError } = useFetchUserData();
-  const userId = userData?.user_id;
+
+  const fetchedUserId = useFetchUserId();
+
+  const userId = pathname === '/my-page' ? userData?.user_id || '' : fetchedUserId || '';
+
+  const viewMoreHref =
+    pathname === '/my-page' ? '/my-page/participating-party' : `/profile/participating-party?user=${userParam}`;
 
   // 참여중인 파티 가져오기
   const {
@@ -36,9 +43,9 @@ const MyParticipatingParty = () => {
   return (
     <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between mb-4">
-        <h3 className="title-m">참여한 파티</h3>
+        <h3 className="title-m">{pathname === '/my-page' ? '참여한 파티' : `${userParam}님이 참여한 파티`}</h3>
         {enjoyingParty && enjoyingParty.length > 5 ? (
-          <Link href={'/myPage/participating-party'} className="body-s text-[#c2c2c2]">
+          <Link href={viewMoreHref} className="body-s text-[#c2c2c2]">
             더보기
           </Link>
         ) : (
@@ -53,7 +60,6 @@ const MyParticipatingParty = () => {
           enjoyingParty.slice(0, 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
-            console.log('platformArr', platformArr);
             const viewStatus = getViewStatus;
 
             return (

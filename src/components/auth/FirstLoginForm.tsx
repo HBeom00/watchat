@@ -7,15 +7,28 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
 import { genreArr, platformArr } from '@/constants/prefer';
 
-const nicknameSchema = z.object({
-  nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' }).max(7, { message: '7글자 이하로 입력해주세요' })
-});
+const checkNickname = async (nickname: string, currentUserNickname: string) => {
+  // 만약 닉네임이 현재 사용자의 닉네임과 같으면 중복 체크를 하지 않게
+  if (nickname === currentUserNickname) {
+    return false; // 중복 체크 없이 유효한 값으로 처리
+  }
+
+  // 닉네임이 이미 사용 중인지 확인
+  const { data, error } = await browserClient.from('user').select('nickname').eq('nickname', nickname).maybeSingle(); // maybeSingle로 수정하여 결과가 없을 경우 null을 반환
+
+  if (error) {
+    console.error('닉네임 중복 확인 오류:', error);
+    return true; // 오류 발생 시 중복으로 처리
+  }
+
+  return data !== null; // 이미 사용 중인 닉네임이면 true, 아니면 false
+};
 
 const FirstLoginForm = () => {
   const { imgFile, imgRef, uploadImage } = useImageUpload();
@@ -27,6 +40,30 @@ const FirstLoginForm = () => {
   const queryClient = useQueryClient();
 
   const { data: userData, isPending, isError } = useFetchUserData();
+
+  // useEffect를 사용하여 userData가 로드된 후 장르랑 플랫폼을 설정
+  useEffect(() => {
+    if (userData?.genre) {
+      setGenres(userData.genre);
+      setPlatforms(userData.platform);
+    }
+  }, [userData]);
+
+  const nicknameSchema = z.object({
+    nickname: z
+      .string()
+      .min(2, { message: '2글자 이상 입력해주세요' })
+      .max(7, { message: '7글자 이하로 입력해주세요' })
+      .refine(
+        async (nickname) => {
+          const isDuplicate = await checkNickname(nickname, userData?.nickname || ''); // Supabase를 통해 중복 체크
+          return !isDuplicate; // 중복이 아니면 유효한 값
+        },
+        {
+          message: '이미 사용 중인 닉네임입니다.'
+        }
+      )
+  });
 
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
@@ -49,8 +86,9 @@ const FirstLoginForm = () => {
 
       const profile_image_name = `${user?.id}/${new Date().getTime()}`;
       const defaultProfileImgUrl =
-        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png';
+        'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
 
+      // 파일이 있는 경우에만 업로드
       if (file) {
         await browserClient.storage.from('profile_image').upload(profile_image_name, file, {
           cacheControl: 'no-store',
@@ -59,10 +97,10 @@ const FirstLoginForm = () => {
       }
       const profileImgUrl = file
         ? browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl
-        : defaultProfileImgUrl;
+        : userData?.profile_img || defaultProfileImgUrl;
 
       // 회원가입 또는 수정 로직
-      if (pathname === '/myPage/edit' && !!user) {
+      if (pathname === '/my-page/edit' && !!user) {
         await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제
         await browserClient
           .from('user')
@@ -74,7 +112,7 @@ const FirstLoginForm = () => {
           })
           .eq('user_id', user.id);
 
-        route.push('/myPage');
+        route.push('/my-page');
       } else if (!!user) {
         await browserClient.from('user').insert({
           user_id: user.id,
@@ -89,8 +127,8 @@ const FirstLoginForm = () => {
       }
     },
     onSuccess: () => {
-      alert(pathname === '/myPage/edit' ? '수정이 완료되었습니다.' : '회원가입이 완료되었습니다');
-      route.push(pathname === '/myPage/edit' ? '/myPage' : '/');
+      alert(pathname === '/my-page/edit' ? '수정이 완료되었습니다.' : '회원가입이 완료되었습니다');
+      route.push(pathname === '/my-page/edit' ? '/my-page' : '/');
     },
     onError: (error) => {
       console.error('Mutation error:', error);
@@ -112,8 +150,6 @@ const FirstLoginForm = () => {
     genres: string[];
     deleteOldImages: (userId: string, currentImageName: string) => Promise<void>;
   };
-
-  uploadImage();
 
   // 이전 이미지 삭제 로직
   const deleteOldImages = async (userId: string, currentImageName: string) => {
@@ -145,6 +181,11 @@ const FirstLoginForm = () => {
     }
     console.log('현재 이미지 =>', currentImageName);
   };
+
+  //const defaultProfileImgUrl ='https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
+
+  // 이미지를 변경하지 않고 수정 시 이전 이미지 사용
+  //const profileImageUrl = userData?.profile_img || defaultProfileImgUrl;
 
   // 완료 버튼 클릭 시
   const onSuccessHandler: SubmitHandler<{ nickname: string }> = async ({ nickname }) => {
@@ -185,6 +226,26 @@ const FirstLoginForm = () => {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+
+      // 선택된 파일의 MIME 타입이 유효한지 확인
+      if (!validImageTypes.includes(file.type)) {
+        alert('허용되지 않는 파일 확장자입니다! PNG, JPEG, JPG, GIF 파일만 업로드 가능합니다.');
+
+        // 파일 선택 초기화
+        e.target.value = ''; // 파일 초기화하여 다시 선택할 수 있도록 함
+        return;
+      }
+
+      // 파일 타입이 유효한 경우 업로드 처리
+      uploadImage(); // 파일을 전달하지 않고, 내부에서 파일을 처리하도록 변경
+    }
+  };
+
   // 장르선택 핸들러
   const genreClickHandler = (genre: string) => {
     // 장르를 6개 이상 선택하려하면 alert (genres안에 선택하려는 장르가 포함되지 않은 경우)
@@ -206,6 +267,7 @@ const FirstLoginForm = () => {
         <Image
           src={
             imgFile ||
+            userData?.profile_img ||
             'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
           }
           alt="프로필 이미지"
@@ -230,7 +292,7 @@ const FirstLoginForm = () => {
           type="file"
           ref={imgRef}
           accept="image/png, image/jpeg, image/jpg, image/gif"
-          onChange={uploadImage}
+          onChange={handleFileChange}
           className="hidden"
         />
       </div>
@@ -293,7 +355,7 @@ const FirstLoginForm = () => {
           })}
         </ul>
       </div>
-      {pathname === '/myPage/edit' ? (
+      {pathname === '/my-page/edit' ? (
         <div className="flex flex-row gap-[20px]">
           <button
             onClick={editCancelHandler}

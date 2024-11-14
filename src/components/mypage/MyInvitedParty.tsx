@@ -40,8 +40,6 @@ const MyInvitedParty = () => {
   const refuseInvite = useRefuseMutation(userId as string);
   const acceptInvite = useAcceptMutation();
 
-  console.log('초대된 파티 리스트 => ', invitedParties);
-
   // 선택 모드 전환 핸들러
   const selectModeToggleHandler = () => {
     setIsSelectionMode(!isSelectionMode);
