@@ -21,7 +21,7 @@ const MemberList = ({
   ownerId: string;
   userId: string;
   roomId: string;
-  exitParty: (id: string) => void;
+  exitParty: ({ id, nickname }: { id: string; nickname: string }) => void;
 }) => {
   const [followStatus, setFollowStatus] = useState<{ [key: string]: boolean }>({});
 
@@ -111,7 +111,7 @@ const MemberList = ({
                     <div className="flex justify-center items-center mt-[16px] gap-[16px]">
                       <div
                         className="w-[150px] py-[8px] px-[16px] bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
-                        onClick={() => exitParty(el.user_id)}
+                        onClick={() => exitParty({ id: el.user_id, nickname: el.nickname })}
                       >
                         내보내기
                       </div>

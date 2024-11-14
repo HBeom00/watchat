@@ -19,6 +19,7 @@ import { partyInfo } from '@/types/partyInfo';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { memberFullSwitch } from '@/utils/memberCheck';
 import { defaultImage } from '@/constants/image';
 
@@ -26,10 +27,9 @@ const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [privacySetting, setPrivacySetting] = useState<'공개' | '비공개'>('공개');
+  const [privacySetting, setPrivacySetting] = useState<boolean>(true);
   // boolean 값으로 관리하기
   const { limited_member, setRecruitDetails } = useRecruitStore();
-  const [isHovered, setIsHovered] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const RecruitNextPage = () => {
               write_time: new Date(),
               season_number,
               genres,
-              privacy_setting: privacySetting
+              privacy_setting: privacySetting ? 'true' : 'false'
             }
           ])
           .select();
@@ -147,7 +147,7 @@ const RecruitNextPage = () => {
     }
   };
 
-  const privacyhandle = (setting: '공개' | '비공개') => {
+  const privacyhandle = (setting: boolean) => {
     setPrivacySetting(setting);
   };
 
@@ -168,13 +168,13 @@ const RecruitNextPage = () => {
               <input
                 type="radio"
                 value="공개"
-                checked={privacySetting === '공개'}
-                onChange={() => privacyhandle('공개')}
+                checked={privacySetting === true}
+                onChange={() => privacyhandle(true)}
                 className="hidden"
               />
               <span
                 className={`outline-disabled-btn-l w-[250px] flex items-center justify-center ${
-                  privacySetting === '공개' ? 'bg-primary-400 text-white' : ''
+                  privacySetting === true ? 'bg-primary-400 !text-white' : ''
                 }`}
               >
                 공개
@@ -184,13 +184,13 @@ const RecruitNextPage = () => {
               <input
                 type="radio"
                 value="비공개"
-                checked={privacySetting === '비공개'}
-                onChange={() => privacyhandle('비공개')}
+                checked={privacySetting === false}
+                onChange={() => privacyhandle(false)}
                 className="hidden"
               />
               <span
                 className={`outline-disabled-btn-l w-[250px]  flex items-center justify-center  ${
-                  privacySetting === '비공개' ? 'bg-primary-400 text-white' : ''
+                  privacySetting === false ? 'bg-primary-400 !text-white' : ''
                 }`}
               >
                 비공개
@@ -204,7 +204,7 @@ const RecruitNextPage = () => {
               <label htmlFor="member" className="block text-[14px] font-SemiBold text-Grey-800">
                 모집 인원
               </label>
-              {/* <TooltipProvider>
+              <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Image src="/info_line.svg" width={24} height={24} alt="툴팁" className="cursor-pointer" />
@@ -213,19 +213,7 @@ const RecruitNextPage = () => {
                     <p>모집 인원은 자신을 포함한 인원입니다.</p>
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider> */}
-              <div
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                className="relative"
-              >
-                <Image src="/info_line.svg" alt="info_line" width={24} height={24} className="cursor-pointer" />
-                {isHovered && (
-                  <div className="absolute bottom-[-45px] left-1/2 transform -translate-x-1/2 mb-1 py-2 px-4 w-max bg-black text-white text-sm rounded-md  z-30">
-                    모집 인원은 자신을 포함한 인원입니다.
-                  </div>
-                )}
-              </div>
+              </TooltipProvider>
             </div>
             {/* svg */}
             <div className="relative ">

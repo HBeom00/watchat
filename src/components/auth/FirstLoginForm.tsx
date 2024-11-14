@@ -1,7 +1,6 @@
 'use client';
 
 import { useFetchUserData } from '@/store/userStore';
-import { genreArr, platformArr } from '@/constants/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +11,7 @@ import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
+import { genreArr, platformArr } from '@/constants/prefer';
 
 const nicknameSchema = z.object({
   nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' }).max(7, { message: '7글자 이하로 입력해주세요' })
