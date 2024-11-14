@@ -11,6 +11,8 @@ import { unfollow } from '@/store/followUnfollow';
 import browserClient from '@/utils/supabase/client';
 import edit from '../../../public/edit.svg';
 import { platformArr } from '@/constants/prefer';
+import { WarmingProgress } from './WarmingProgress';
+import { MyTooltip } from './Tooltip';
 
 const MyProfile = () => {
   // 사용자 데이터 가져오기
@@ -84,13 +86,22 @@ const MyProfile = () => {
           }}
         />
         <article>
+          {/* 닉네임영역 */}
           <div className="flex gap-2">
             <h3 className="body-l-bold">{userData?.nickname}</h3>
             <Link href={'/myPage/edit'}>
               <Image src={edit} width={20} height={20} alt="프로필 편집" />
             </Link>
           </div>
+
+          {/* 상세정보 영역 */}
           <div className="flex flex-row gap-8">
+            <div className="flex flex-row gap-[8px] items-center w-[268px]">
+              <p className="body-xs">식빵온도</p>
+              <MyTooltip />
+              <WarmingProgress />
+              <p className="body-xs-bold text-primary-400">℃</p>
+            </div>
             <Dialog>
               <DialogTrigger>
                 <p className="flex flex-row items-center gap-2 body-xs">
@@ -169,7 +180,10 @@ const MyProfile = () => {
               <span>장르</span>
               <ul className="flex flex-row items-center gap-2">
                 {userData?.genre.map((genre, index) => (
-                  <li key={index} className="label-outline">
+                  <li
+                    key={index}
+                    className="rounded-[8px] py-[6px] px-[12px]  border border-grey-300 text-gray-400 body-xs"
+                  >
                     {genre}
                   </li>
                 ))}

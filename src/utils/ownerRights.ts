@@ -1,4 +1,4 @@
-import { partySituationChecker } from './memberCheck';
+import { memberScarceSwitch } from './memberCheck';
 import browserClient from './supabase/client';
 
 // 강퇴하기
@@ -15,16 +15,7 @@ export const memberExpulsion = async (party_id: string, member_Id: string) => {
     return;
   }
   // 모집 상태 변경
-  const situationResponse = await partySituationChecker(party_id);
-  if (situationResponse === '모집완료') {
-    const { error: updateError } = await browserClient
-      .from('party_info')
-      .update({ situation: '모집중' })
-      .eq('party_id', party_id);
-    if (updateError) {
-      console.log(updateError.message);
-    }
-  }
+  await memberScarceSwitch(party_id);
 
   //이미지 삭제
   const { error: deleteError } = await browserClient.storage
