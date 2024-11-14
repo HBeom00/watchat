@@ -1,7 +1,6 @@
 'use client';
 
 import { useFetchUserData } from '@/store/userStore';
-import { genreArr, platformArr } from '@/constants/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
+import { genreArr, platformArr } from '@/constants/prefer';
 
 const checkNickname = async (nickname: string, currentUserNickname: string) => {
   // 만약 닉네임이 현재 사용자의 닉네임과 같으면 중복 체크를 하지 않게

@@ -117,7 +117,7 @@ const MyInvitedParty = () => {
                   거절하기
                 </button>
               </DialogTrigger>
-              <DialogContent className="w-[340px]">
+              <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px]">
                 <DialogHeader>
                   <DialogTitle>
                     <h2 className="pt-16 pb-4">정말 거절하시겠습니까?</h2>
