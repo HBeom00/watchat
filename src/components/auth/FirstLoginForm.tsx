@@ -182,11 +182,10 @@ const FirstLoginForm = () => {
     console.log('현재 이미지 =>', currentImageName);
   };
 
-  const defaultProfileImgUrl =
-    'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
+  //const defaultProfileImgUrl ='https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
 
   // 이미지를 변경하지 않고 수정 시 이전 이미지 사용
-  const profileImageUrl = userData?.profile_img || defaultProfileImgUrl;
+  //const profileImageUrl = userData?.profile_img || defaultProfileImgUrl;
 
   // 완료 버튼 클릭 시
   const onSuccessHandler: SubmitHandler<{ nickname: string }> = async ({ nickname }) => {
