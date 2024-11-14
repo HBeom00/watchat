@@ -7,14 +7,13 @@ import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
-
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
+import { platform } from '@/types/partyInfo';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
-  // 사용자 데이터 가져오기
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const userParam = params.get('user');
 
   // 페이지네이션 설정
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -41,7 +40,9 @@ export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
 
   return (
     <section className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m mt-8 mb-4">참여한 파티</h3>
+      <h3 className="title-m mt-8 mb-4">
+        {pathname === '/my-page/participating-party' ? '참여한 파티' : `${userParam}님이 참여한 파티`}
+      </h3>
       <ul className="flex flex-row gap-5 flex-wrap">
         {enjoyingParty && enjoyingParty.length > 0 ? (
           enjoyingParty.slice(start, end).map((party) => {

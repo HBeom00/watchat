@@ -1,7 +1,7 @@
 'use client';
 
 import { useParticipatingParty } from '@/store/useParticipatingParty';
-import { useFetchUserData } from '@/store/userStore';
+import { useFetchUserData, useFetchUserId } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -9,23 +9,22 @@ import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
-import { usePathname } from 'next/navigation';
-
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
+import { usePathname, useSearchParams } from 'next/navigation';
+import { platform } from '@/types/partyInfo';
 
 const MyParticipatingParty = () => {
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const userParam = params.get('user');
+
   const { data: userData, isPending, isError } = useFetchUserData();
 
-  const pathname = usePathname();
-  const pathSegments = pathname.split('/');
+  const fetchedUserId = useFetchUserId();
 
-  const userId = pathname === '/my-page' ? userData?.user_id : pathSegments[pathSegments.indexOf('profile') + 1];
+  const userId = pathname === '/my-page' ? userData?.user_id || '' : fetchedUserId || '';
 
   const viewMoreHref =
-    pathname === '/my-page' ? '/my-page/participating-party' : `/profile/${userId}/participating-party`;
+    pathname === '/my-page' ? '/my-page/participating-party' : `/profile/participating-party?user=${userParam}`;
 
   // 참여중인 파티 가져오기
   const {
@@ -44,7 +43,7 @@ const MyParticipatingParty = () => {
   return (
     <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between mb-4">
-        <h3 className="title-m">참여한 파티</h3>
+        <h3 className="title-m">{pathname === '/my-page' ? '참여한 파티' : `${userParam}님이 참여한 파티`}</h3>
         {enjoyingParty && enjoyingParty.length > 5 ? (
           <Link href={viewMoreHref} className="body-s text-[#c2c2c2]">
             더보기

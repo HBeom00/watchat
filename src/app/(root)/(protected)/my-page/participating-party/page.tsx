@@ -4,11 +4,6 @@ import { useFetchUserData } from '@/store/userStore';
 import React from 'react';
 import { ViewMoreParticipatingParty } from '@/components/mypage/ViewMoreParticipatingParty';
 
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
-
 const ParticipatingParty = () => {
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();

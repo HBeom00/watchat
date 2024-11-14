@@ -47,8 +47,24 @@ export const fetchUserIdByNickname = async (nickname: string) => {
   if (error) {
     console.error('이에러 뭐죠', error.message);
   }
-  console.log('dddddddddddd', data);
   return data?.user_id;
+};
+
+// params로 userId가져오기
+export const useFetchUserId = () => {
+  const params = useSearchParams();
+  const userParams = params.get('user');
+  const { data: fetchedUserId } = useQuery<string>({
+    queryKey: ['userId', userParams],
+    queryFn: () => {
+      if (userParams) {
+        return fetchUserIdByNickname(userParams);
+      }
+      return '';
+    },
+    enabled: !!userParams
+  });
+  return fetchedUserId || '';
 };
 
 // 페이지별로 정보를 가져오는 방법을 구분
@@ -56,50 +72,42 @@ export const fetchUserIdByNickname = async (nickname: string) => {
 // 이외 페이지(프로필펭이지) => 닉네임으로 가져온user_id로 데이터를 가져옴
 export const useMypageUserData = () => {
   const pathname = usePathname();
-  const { data: userData } = useFetchUserData();
-  const params = useSearchParams();
+  const { data: userData } = useFetchUserData(); // 현재 로그인된 사용자의 데이터
+  const fetchedUserId = useFetchUserId();
 
-  // nickname을 쿼리 스트링에서 가져오기
-  const userNickname = params.get('user');
+  // pathname과 현재 로그인 상태로 사용자의 user_id 구분
+  const userId = pathname === '/my-page' && userData ? userData.user_id : fetchedUserId;
 
-  // 마이페이지인 경우 userData에서 user_id 가져오기 아닌경우 nickname을 가져옴
-  const userId = pathname === '/my-page' && userData ? userData?.user_id : userNickname;
-
-  console.log('유저아이ㅇ디', userId);
-
-  // 다른 사용자의 프로필 페이지인 경우 nickname으로 user_id를 가져옴
   const {
     data: myPageUserData,
-    isLoading: userLoading,
-    isError: userError
-  } = useQuery({
+    isLoading,
+    isError
+  } = useQuery<UserData>({
     queryKey: ['user', userId],
     queryFn: async () => {
-      // userId가 nickname일 경우
-      if (typeof userId === 'string' && !userData?.user_id) {
-        const fetchedUserId = await fetchUserIdByNickname(userId); // nickname으로 user_id를 먼저 가져옵니다.
-        if (fetchedUserId) {
-          return await browserClient.from('user').select('*').eq('user_id', fetchedUserId).single(); // 해당 user_id로 사용자 데이터 가져오기
+      if (typeof userId === 'string') {
+        if (!userData?.user_id) {
+          // userId가 닉네임일 경우 user_id를 조회
+          //const fetchedUserId = await fetchUserIdByNickname(userId);
+          if (userData) {
+            const { data, error } = await browserClient.from('user').select('*').eq('user_id', userId).single();
+            if (error) throw new Error(`Failed to fetch user data: ${error.message}`);
+            return data;
+          }
+        } else {
+          // userId가 user_id일 경우 그대로 데이터를 조회
+          const { data, error } = await browserClient.from('user').select('*').eq('user_id', userId).single();
+          if (error) throw new Error(`Failed to fetch user data: ${error.message}`);
+          return data;
         }
-        return null; // user_id가 없으면 null 반환
       }
-
-      // userId가 user_id일 경우
-      const { data, error } = await browserClient.from('user').select('*').eq('user_id', userId).single(); // user_id로 사용자 데이터 가져오기
-
-      if (error) {
-        console.error('사용자 정보를 불러오는데 실패했습니다. => ', error);
-      }
-
-      return data;
+      return null;
     },
-    enabled: !!userId // userId가 있을 때만 쿼리를 실행
+    enabled: !!userId // userId가 존재할 때만 실행
   });
-  console.log('ddddgggggggggg', myPageUserData);
-
   return {
-    otheruserData: myPageUserData,
-    userLoading,
-    userError
+    otherUserData: myPageUserData,
+    isLoading,
+    isError
   };
 };

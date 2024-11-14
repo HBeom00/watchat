@@ -61,6 +61,5 @@ export const getOwnerParty = async (userId: string): Promise<MyPagePartyInfo[]> 
     })
   );
 
-  console.log('내가 오너인 파티', ownerPartiesWithDetails);
   return ownerPartiesWithDetails;
 };

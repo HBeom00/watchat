@@ -4,13 +4,20 @@ import { MyTooltip } from './Tooltip';
 import { WarmingProgress } from './WarmingProgress';
 import Image from 'next/image';
 import group from '../../../public/primaryGroup.svg';
-import { useWarming } from '@/store/useWarming';
+import { useFetchUserData, useFetchUserId } from '@/store/userStore';
+import { useTotalTemperature } from '@/store/getWarming';
+import { usePathname } from 'next/navigation';
 
-const WarmingModal = (userId: string | undefined) => {
-  // if (!userId) {
-  //   return null;
-  // }
-  const { data: totalTemperature } = useWarming(userId);
+const WarmingModal = () => {
+  const pathname = usePathname();
+  const { data: userData } = useFetchUserData();
+  const fetchedUserId = useFetchUserId();
+
+  //pathname에 따라 유저아이디 다르게 가져오기
+  const userId = pathname === '/my-page' ? userData?.user_id || '' : fetchedUserId || '';
+
+  // 온도 가져오기
+  const { data: totalTemperature } = useTotalTemperature(userId);
 
   return (
     <Dialog>

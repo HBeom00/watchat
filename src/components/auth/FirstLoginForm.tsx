@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
@@ -39,6 +39,14 @@ const FirstLoginForm = () => {
   const queryClient = useQueryClient();
 
   const { data: userData, isPending, isError } = useFetchUserData();
+
+  // useEffect를 사용하여 userData가 로드된 후 genres를 설정합니다.
+  useEffect(() => {
+    if (userData?.genre) {
+      setGenres(userData.genre);
+      setPlatforms(userData.platform);
+    }
+  }, [userData]);
 
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
@@ -218,6 +226,7 @@ const FirstLoginForm = () => {
         <Image
           src={
             imgFile ||
+            userData?.profile_img ||
             'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
           }
           alt="프로필 이미지"

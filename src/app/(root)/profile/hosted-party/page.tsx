@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
-import { ViewMoreParticipatingParty } from '@/components/mypage/ViewMoreParticipatingParty';
-import { usePathname } from 'next/navigation';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import { ViewHostedParty } from '@/components/mypage/ViewMoreOwnerParty';
 
-const ParticipatingParty = () => {
+const MyOwnerParty = () => {
   const pathname = usePathname();
   // 사용자 데이터 가져오기
 
@@ -21,7 +21,8 @@ const ParticipatingParty = () => {
   if (!userId) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
-  return <ViewMoreParticipatingParty userId={userId} />;
+
+  return <ViewHostedParty userId={userId} />;
 };
 
-export default ParticipatingParty;
+export default MyOwnerParty;

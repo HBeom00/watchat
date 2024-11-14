@@ -116,6 +116,5 @@ export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
       };
     })
   );
-  console.log('추천파티 =>', partyWithDetails);
   return partyWithDetails;
 };
