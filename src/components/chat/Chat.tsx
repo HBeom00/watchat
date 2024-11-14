@@ -6,10 +6,9 @@ import Image from 'next/image';
 import { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import award_image from '../../../public/award_star.svg';
 import { useOwnerId } from '@/reactQuery/useQuery/chat/useOwnerId';
-import { useLiveMessage } from '@/utils/hooks/useLiveMessage';
 import { usePartyMemberList } from '@/reactQuery/useQuery/chat/usePartyMemberList';
 import { useChatMessage } from '@/reactQuery/useQuery/chat/useChatMessage';
-import { useLiveSubscribe } from '@/utils/hooks/useLiveSubscribe';
+import { useLiveMessage } from '@/utils/hooks/useLiveMessage';
 
 export default function Chat({ roomId }: { roomId: string }) {
   const [userId, setUserId] = useState<string | null>(null);
@@ -29,10 +28,7 @@ export default function Chat({ roomId }: { roomId: string }) {
   // 실시간 메시지 구독 설정
   useLiveMessage(roomId);
 
-  // 실시간 구독 설정 -> team_user_info 테이블
-  useLiveSubscribe(roomId);
-
-  // 파티 오너 ID 가져오기
+  // 파티 소유자 ID 가져오기
   const { data: ownerId } = useOwnerId(roomId);
 
   // 초기 메세지 불러오기
