@@ -85,7 +85,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
       }
 
       // 모집 마감 시 모집중으로 변환
-      // await memberScarceSwitch(roomId);
+      await memberScarceSwitch(roomId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKey.chat.members(roomId) });
