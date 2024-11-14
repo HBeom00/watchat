@@ -50,10 +50,23 @@ export const memberFullChecker = async (party_id: string) => {
 
 // 파티 상태를 모집마감으로 전환
 export const memberFullSwitch = async (party_id: string) => {
-  const response = await browserClient.from('party_info').update({ situation: '모집마감' }).eq('party_id', party_id);
-  // console.log(response);
-  if (response.error) {
-    console.log(response.error.message);
+  const isFull = await memberFullChecker(party_id);
+  if (isFull) {
+    const response = await browserClient.from('party_info').update({ situation: '모집마감' }).eq('party_id', party_id);
+    if (response.error) {
+      console.log(response.error.message);
+    }
+  }
+};
+
+// 파티 상태를 모집중으로 전환
+export const memberScarceSwitch = async (party_id: string) => {
+  const isFull = await memberFullChecker(party_id);
+  if (!isFull) {
+    const response = await browserClient.from('party_info').update({ situation: '모집중' }).eq('party_id', party_id);
+    if (response.error) {
+      console.log(response.error.message);
+    }
   }
 };
 

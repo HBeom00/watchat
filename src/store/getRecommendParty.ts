@@ -1,38 +1,7 @@
+import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { startTimeString } from '@/utils/startTimeString';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { getViewStatus } from '@/utils/viewStatus';
-
-// 파티 정보 타입
-type PartyInfo = {
-  duration_time: number;
-  episode_number?: number | null;
-  limited_member: number;
-  media_type: string;
-  owner_id: string;
-  party_detail: string;
-  party_id: string;
-  party_name: string;
-  situation: string;
-  start_time: string;
-  video_id: number;
-  video_image: string;
-  video_name: string;
-  video_platform: string;
-  watch_date: string;
-  genres: string[]; // 장르(배열)
-};
-
-// 작성자 정보 타입
-type OwnerProfile = {
-  profile_image: string;
-  nickname: string;
-};
-
-export interface RecommendParty extends PartyInfo {
-  ownerProfile: OwnerProfile; // 파티 오너정보
-  currentPartyPeople: number | undefined; // 참여 인원수
-  startString: string;
-}
 
 // 장르 변환
 const transformGenre = (genres: string[]): string[] => {
@@ -49,7 +18,7 @@ const transformGenre = (genres: string[]): string[] => {
 };
 
 // 로그인한 사용자 정보 가져옴
-export const getRecommendParty = async () => {
+export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
   const userId = await getLoginUserIdOnClient();
 
   if (!userId) {
@@ -75,7 +44,10 @@ export const getRecommendParty = async () => {
   const userGenre = userData.genre;
   console.log('유저 장르 정보:', userGenre);
 
-  const { data: partyData, error: partyDataError } = await browserClient.from('party_info').select('*');
+  const { data: partyData, error: partyDataError } = await browserClient
+    .from('party_info')
+    .select('*')
+    .order('write_time', { ascending: false }); // 내림차순 정렬;
 
   if (partyData) {
     console.log('파티 정보도 불러왔음', partyData);

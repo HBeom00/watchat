@@ -7,6 +7,7 @@ import { platform } from '@/types/partyInfo';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { useRouter } from 'next/navigation';
 import { cutUserName, cutPartyName } from '@/utils/cutNameAndPartyName';
+import editReview from '../../../public/editReview.svg';
 
 type PartyItemProps = {
   party: MyPagePartyInfo; // party 타입 정의에 맞는 타입을 지정
@@ -20,6 +21,13 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
   const router = useRouter();
   const cutUserNameValue = cutUserName(userName);
   const cutPartyNameValue = cutPartyName(partyName);
+  const sevenDaysAfterEndTime = (endTime: string) => {
+    const endDate = new Date(endTime);
+    endDate.setDate(endDate.getDate() + 7);
+    return endDate;
+  };
+  const currentDate = new Date();
+
   return (
     <div className="cursor-pointer" onClick={() => router.push(`/party/${party.party_id}`)}>
       <div className="relative h-[280px] rounded-[4px] overflow-hidden">
@@ -46,18 +54,29 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
         )}
 
         {getViewStatus(party) === '시청완료' ? (
-          <>
-            <div className="absolute  bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
-            <div
-              className="absolute bottom-0 text-white label-l bg-primary-400 w-full h-7 flex justify-center items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-                router.push('/recruit/firstPage');
-              }}
-            >
-              <span>후기 작성하기</span>
-            </div>
-          </> // 시청완료 : 배경 어둡게 + 후기작성 활성화 (후기작성 페이지 링크 수정해야함)
+          sevenDaysAfterEndTime(party.end_time) < currentDate ? (
+            <>
+              <div className="absolute  bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
+              <div className="absolute bottom-0 text-white label-l bg-gray-500 w-full h-7 flex justify-center items-center gap-1">
+                <Image src={editReview} width={16} height={16} alt="후기 작성하기" />
+                <span>후기 작성일 만료</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="absolute  bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
+              <div
+                className="absolute bottom-0 text-white label-l bg-primary-400 w-full h-7 flex justify-center items-center gap-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push('/recruit/firstPage');
+                }}
+              >
+                <Image src={editReview} width={16} height={16} alt="후기 작성하기" />
+                <span>후기 작성하기</span>
+              </div>
+            </>
+          ) // 시청완료 : 배경 어둡게 + 후기작성 활성화 (후기작성 페이지 링크 수정해야함)
         ) : getViewStatus(party) === '시청중' ? (
           <></> // 시청중일 때는 아무것도 X
         ) : (

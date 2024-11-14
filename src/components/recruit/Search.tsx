@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMultiSearch } from '@/serverActions/TMDB';
-import { SearchProps, SearchResponse } from '@/types/Search';
+import { SearchProps, SearchResponse } from '@/types/search';
 import Image from 'next/image';
 
 export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName, handleSearchResultClick }) => {
@@ -39,14 +39,18 @@ export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName
   };
 
   return (
-    <div className="relative w-[519px] mt-[16px]">
+    <div className="relative w-[519px] mt-[32px]">
+      <div className="flex ">
+        <h2>시청할 영상을 검색해 주세요.</h2>
+        <h2 className="text-purple-600">*</h2>
+      </div>
       <div className="relative">
         <input
           type="text"
-          placeholder="선택하세요."
+          placeholder="영상을 검색해주세요."
           value={videoName}
           onChange={(e) => handleInputChange(e.target.value)}
-          className="w-full h-[48px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
+          className="w-full h-[48px] mt-[16px] px-4 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
         />
         {!videoName && (
           <Image
@@ -54,11 +58,11 @@ export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName
             alt="Clear input"
             width={24}
             height={24}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2"
+            className="absolute right-4 top-1/2 transform -translate-y-1 "
           />
         )}
         {videoName && (
-          <button onClick={clearInput} className="absolute right-4 top-1/2 transform -translate-y-1/2 ">
+          <button onClick={clearInput} className="absolute right-4 top-1/2 transform -translate-y-1 ">
             <Image src="/cancel.svg" alt="Clear input" width={24} height={24} />
           </button>
         )}

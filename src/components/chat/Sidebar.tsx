@@ -13,6 +13,7 @@ import { DialogDescription } from '@radix-ui/react-dialog';
 import { useLiveSubscribe } from '@/utils/hooks/useLiveSubscribe';
 import { useOwnerId } from '@/reactQuery/useQuery/chat/useOwnerId';
 import { usePartyMemberList } from '@/reactQuery/useQuery/chat/usePartyMemberList';
+import { memberScarceSwitch } from '@/utils/memberCheck';
 
 const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: () => void; roomId: string }) => {
   const [isSelect, setIsSelect] = useState<'members' | 'party'>('members');
@@ -53,6 +54,9 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
       });
 
       await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
+
+      // 모집 마감 시 모집중으로 변환
+      await memberScarceSwitch(roomId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members', roomId] });
@@ -78,6 +82,9 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
       if (error) {
         console.log('error', error.message);
       }
+
+      // 모집 마감 시 모집중으로 변환
+      await memberScarceSwitch(roomId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members', roomId] });

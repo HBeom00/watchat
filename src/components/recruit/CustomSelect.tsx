@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CustomSelectProps } from '@/types/CustomSelect';
+import { CustomSelectProps } from '@/types/custom';
 
 const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
