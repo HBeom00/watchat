@@ -37,14 +37,14 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
   };
 
   return (
-    <form onSubmit={sendMessage} className="w-[700px] px-[16px] pb-[16px] flex flex-col items-start bg-Grey-50">
-      <div className="flex px-[16px] py-[12px] items-center self-stretch gap-[8px] rounded-lg bg-white">
+    <form onSubmit={sendMessage} className="w-[700px] px-4 pb-4 flex flex-col items-start bg-Grey-50">
+      <div className="flex px-4 py-3 items-center self-stretch gap-2 rounded-lg bg-white">
         <input
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="메시지를 입력하세요"
-          className="body-m text-Grey-800 flex-1 px-[16px] py-[12px]"
+          className="body-m text-Grey-800 flex-1 px-4 py-3"
         />
         <button
           type="submit"

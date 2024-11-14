@@ -14,6 +14,7 @@ import { useLiveSubscribe } from '@/utils/hooks/useLiveSubscribe';
 import { useOwnerId } from '@/reactQuery/useQuery/chat/useOwnerId';
 import { usePartyMemberList } from '@/reactQuery/useQuery/chat/usePartyMemberList';
 import { memberScarceSwitch } from '@/utils/memberCheck';
+import { queryKey } from '@/reactQuery/queryKeys';
 
 const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: () => void; roomId: string }) => {
   const [isSelect, setIsSelect] = useState<'members' | 'party'>('members');
@@ -29,7 +30,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
   const { data: members = [] } = usePartyMemberList(roomId);
 
   // 실시간 구독 설정 -> team_user_info 테이블
-  useLiveSubscribe(roomId);
+  useLiveSubscribe(roomId, queryClient);
 
   // 로그인 유저 아이디 가져오기
   useEffect(() => {
@@ -84,10 +85,10 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
       }
 
       // 모집 마감 시 모집중으로 변환
-      await memberScarceSwitch(roomId);
+      // await memberScarceSwitch(roomId);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['members', roomId] });
+      queryClient.invalidateQueries({ queryKey: queryKey.chat.members(roomId) });
       queryClient.invalidateQueries({ queryKey: ['isMember', roomId, userId] });
     }
   });
