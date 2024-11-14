@@ -54,6 +54,8 @@ const MyFollowRecommendation = () => {
     isError: errorRecommenedUsers
   } = useRecommendedUsers(userId as string);
 
+  const emptyRecommendedUsers = recommendedUsers && recommendedUsers.length > 0;
+
   // 팔로우 하기
   const followMutation = useMutation({
     mutationFn: (followId: string) => follow(userId as string, followId),
@@ -62,14 +64,22 @@ const MyFollowRecommendation = () => {
       queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
         if (!oldData) return [];
 
-        return oldData.map((party) => ({
+        const updatedData = oldData.map((party) => ({
           ...party,
           team_user_profile: party.team_user_profile.filter((profile) => profile.user.user_id !== followId)
         }));
+
+        // 팔로우한 유저가 모두 삭제되었을 경우 추천 목록을 빈 배열로 처리
+        if (updatedData.every((party) => party.team_user_profile.length === 0)) {
+          queryClient.setQueryData(['recommendedUser', userId], []);
+        }
+
+        return updatedData;
       });
 
       // 팔로잉 유저 목록 새로고침
       queryClient.invalidateQueries({ queryKey: ['followingUsers', userId] });
+      queryClient.invalidateQueries({ queryKey: ['recommendedUser', userId] });
     }
   });
 
@@ -82,10 +92,18 @@ const MyFollowRecommendation = () => {
       // 차단 후 추천 목록 업데이트
       queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
         if (!oldData) return [];
-        return oldData.map((party) => ({
+        const updatedData = oldData.map((party) => ({
           ...party,
           team_user_profile: party.team_user_profile.filter((profile) => profile.user.user_id !== bannedUserId)
         }));
+
+        // 차단 후 추천 목록이 비었을 경우 빈 배열로 처리
+        if (updatedData.every((party) => party.team_user_profile.length === 0)) {
+          queryClient.setQueryData(['recommendedUser', userId], []);
+          queryClient.invalidateQueries({ queryKey: ['recommendedUser', userId] });
+        }
+
+        return updatedData;
       });
     },
     onError: (error) => {

@@ -34,7 +34,11 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
   return (
     <div
       className="cursor-pointer"
-      onClick={party.privacy_setting === false ? () => {} : () => router.push(`/party/${party.party_id}`)}
+      onClick={
+        party.privacy_setting === false && pathname !== '/my-page'
+          ? () => {}
+          : () => router.push(`/party/${party.party_id}`)
+      }
     >
       <div className="relative h-[280px] rounded-[4px] overflow-hidden">
         <Image
