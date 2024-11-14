@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useInvitedParties } from '@/utils/myPage/useInvitedParties';
-import { useAcceptMutation, useRefuseMutation } from '@/store/useInviteMutation';
+import { useAcceptMutation, useRefuseMutation } from '@/utils/myPage/useInviteMutation';
 import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';

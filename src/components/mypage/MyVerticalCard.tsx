@@ -8,6 +8,7 @@ import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { usePathname, useRouter } from 'next/navigation';
 import { cutUserName, cutPartyName } from '@/utils/cutNameAndPartyName';
 import editReview from '../../../public/editReview.svg';
+import lock from '../../../public/lock.svg';
 
 type PartyItemProps = {
   party: MyPagePartyInfo; // party 타입 정의에 맞는 타입을 지정
@@ -31,7 +32,10 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
   const currentDate = new Date();
 
   return (
-    <div className="cursor-pointer" onClick={() => router.push(`/party/${party.party_id}`)}>
+    <div
+      className="cursor-pointer"
+      onClick={party.privacy_setting === false ? () => {} : () => router.push(`/party/${party.party_id}`)}
+    >
       <div className="relative h-[280px] rounded-[4px] overflow-hidden">
         <Image
           src={
@@ -42,10 +46,8 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
           fill
           className="z-0  group-hover:scale-105 transition duration-300"
         />
-
         {/* 파티 상태 정보 */}
         <WatchingLabel partyData={party} />
-
         {/* 플랫폼 정보 */}
         {platform && platform[0]?.logoUrl === '알수없음' ? (
           <></>
@@ -54,7 +56,6 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
             {platform ? <PlatformImageCard platform={platform[0]} /> : <></>}
           </div>
         )}
-
         {getViewStatus(party) === '시청완료' &&
         (pathname === '/my-page' ||
           pathname === '/my-page/participating-party' ||
@@ -93,6 +94,12 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
           // 시청 완료 & 다른 페이지인 경우
           <>
             <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
+            {!party.privacy_setting && (
+              // 비공개 설정인 경우 잠금 아이콘 표시
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <Image src="/lock.svg" alt="비공개" width={20} height={27} />
+              </div>
+            )}
           </>
         ) : (
           // 시청 완료 전

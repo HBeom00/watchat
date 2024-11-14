@@ -1,7 +1,7 @@
 // useUserMutation.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateUserProfile, registerUser } from './getUserProfile';
-import { User } from './getUserProfile';
+import { updateUserProfile, registerUser } from '../utils/myPage/getUserProfile';
+import { User } from '../utils/myPage/getUserProfile';
 
 type MutatedUser = {
   user: User | null;
