@@ -18,6 +18,7 @@ import { memberScarceSwitch } from '@/utils/memberCheck';
 const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: () => void; roomId: string }) => {
   const [isSelect, setIsSelect] = useState<'members' | 'party'>('members');
   const [userId, setUserId] = useState<string>('');
+  const [userNickname, setUserNickname] = useState<string>('');
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -27,7 +28,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
   // 파티 참여 멤버 가져오기
   const { data: members = [] } = usePartyMemberList(roomId);
 
-  // 실시간 구독 설정
+  // 실시간 구독 설정 -> team_user_info 테이블
   useLiveSubscribe(roomId);
 
   // 로그인 유저 아이디 가져오기
@@ -43,7 +44,15 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
 
   // 파티 나가기 기능
   const leavePartyMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async ({ id, nickname }: { id: string; nickname: string }) => {
+      await browserClient.from('chat').insert({
+        sender_id: id,
+        room_id: roomId,
+        content: `${nickname}님이 나가셨습니다.`,
+        created_at: new Date().toISOString(),
+        system_message: true
+      });
+
       await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
 
       // 모집 마감 시 모집중으로 변환
@@ -58,7 +67,15 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
 
   // 멤버 내보내기 기능
   const exitPartyMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async ({ id, nickname }: { id: string; nickname: string }) => {
+      await browserClient.from('chat').insert({
+        sender_id: id,
+        room_id: roomId,
+        content: `${nickname}님이 퇴장당하셨습니다.`,
+        created_at: new Date().toISOString(),
+        system_message: true
+      });
+
       await browserClient.from('team_user_profile').delete().eq('party_id', roomId).eq('user_id', id);
       const { error } = await browserClient.from('party_ban_user').insert({ party_id: roomId, user_id: id });
 
@@ -74,6 +91,10 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
       queryClient.invalidateQueries({ queryKey: ['isMember', roomId, userId] });
     }
   });
+
+  useEffect(() => {
+    setUserNickname(members.filter((el) => el.user_id === userId)[0]?.nickname || '익명');
+  }, []);
 
   return (
     <div
@@ -129,7 +150,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
         ownerId={ownerId}
         roomId={roomId}
         userId={userId}
-        exitParty={(id: string) => exitPartyMutation.mutate(id)}
+        exitParty={({ id, nickname }: { id: string; nickname: string }) => exitPartyMutation.mutate({ id, nickname })}
       />
       {ownerId !== userId ? (
         <div className="p-[20px] w-[340px] flex flex-col items-start">
@@ -144,7 +165,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
               </DialogDescription>
               <div className="flex justify-center items-center mt-[16px] gap-[16px]">
                 <div
-                  onClick={() => leavePartyMutation.mutate(userId)}
+                  onClick={() => leavePartyMutation.mutate({ id: userId, nickname: userNickname })}
                   className="w-[150px] py-[8px] px-[16px] bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
                 >
                   나가기

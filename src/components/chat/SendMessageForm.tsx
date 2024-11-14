@@ -11,11 +11,6 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (content === '') {
-      alert('내용을 입력하세요.');
-      return;
-    }
-
     const userId = await getLoginUserIdOnClient();
     const { data } = await browserClient
       .from('team_user_profile')
