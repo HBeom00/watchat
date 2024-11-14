@@ -11,6 +11,7 @@ import { inviteHandler } from '@/utils/invite';
 import { useFollowData } from '@/store/useFollowData';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { defaultImage } from '@/constants/image';
 
 const InvitedButton = ({
   partyNumber,
@@ -68,10 +69,7 @@ const InvitedButton = ({
                         <label className="flex flex-row w-full px-4 justify-between items-center self-stretch">
                           <div className="flex flex-row items-center gap-2 flex-1">
                             <Image
-                              src={
-                                follower.profile_img ||
-                                'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/avatar.png'
-                              }
+                              src={follower.profile_img || defaultImage}
                               alt={`${follower.nickname} 님의 프로필 사진`}
                               width={40}
                               height={40}
