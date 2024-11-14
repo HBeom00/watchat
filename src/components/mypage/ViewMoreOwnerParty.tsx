@@ -1,6 +1,6 @@
 'use client';
 
-import { useOwnerParty } from '@/store/useOwnerParties';
+import { useOwnerParty } from '@/utils/myPage/useOwnerParties';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import doesntExist from '../../../public/openEyeCat.svg';

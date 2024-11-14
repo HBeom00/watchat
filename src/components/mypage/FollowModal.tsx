@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { FollowingUser } from '@/types/followingUser';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { unfollow } from '@/store/followUnfollow';
+import { unfollow } from '@/utils/myPage/followUnfollow';
 import browserClient from '@/utils/supabase/client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';

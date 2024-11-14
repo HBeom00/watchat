@@ -17,6 +17,7 @@ type PartyInfo = {
   video_platform: string;
   watch_date: string;
   genres?: string[]; // 장르(배열)
+  privacy_setting: boolean;
 };
 
 // 작성자 정보 타입

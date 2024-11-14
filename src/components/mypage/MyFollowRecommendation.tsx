@@ -1,9 +1,9 @@
 'use client';
 
-import { banUser } from '@/store/banUser';
-import { follow } from '@/store/followUnfollow';
-import { usePrevNextButtons } from '@/store/useMypageCarouselButton';
-import { useRecommendedUsers } from '@/store/useRecommendedUser';
+import { banUser } from '@/utils/myPage/banUser';
+import { follow } from '@/utils/myPage/followUnfollow';
+import { usePrevNextButtons } from '@/utils/myPage/useMypageCarouselButton';
+import { useRecommendedUsers } from '@/utils/myPage/useRecommendedUser';
 import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';

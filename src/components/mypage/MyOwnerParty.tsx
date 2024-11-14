@@ -1,6 +1,6 @@
 'use client';
 
-import { useOwnerParty } from '@/store/useOwnerParties';
+import { useOwnerParty } from '@/utils/myPage/useOwnerParties';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';

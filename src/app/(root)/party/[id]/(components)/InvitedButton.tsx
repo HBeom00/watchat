@@ -8,7 +8,7 @@ import {
   DialogTrigger
 } from '@/components/ui/Dialog';
 import { inviteHandler } from '@/utils/invite';
-import { useFollowData } from '@/store/useFollowData';
+import { useFollowData } from '@/utils/myPage/useFollowData';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { defaultImage } from '@/constants/image';

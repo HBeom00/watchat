@@ -3,12 +3,12 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
-import { useInvitedParties } from '@/store/useInvitedParties';
+import { useInvitedParties } from '@/utils/myPage/useInvitedParties';
 import { useAcceptMutation, useRefuseMutation } from '@/store/useInviteMutation';
 import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
-import { usePrevNextButtons } from '@/store/useMypageCarouselButton';
+import { usePrevNextButtons } from '@/utils/myPage/useMypageCarouselButton';
 import { getViewStatus } from '@/utils/viewStatus';
 import doesntExist from '../../../public/inviteCat.svg';
 import checkBox from '../../../public/checkbox.svg';
