@@ -671,6 +671,9 @@ select {
   height: 64px;
 }
 
+.banner {
+  @apply flex flex-none w-full min-w-0 justify-around cursor-pointer;
+}
 /* --------------------------------------------------------------------------------------------- */
 /* 재생바의 기본 색상 */
 input[type='range']::-webkit-slider-runnable-track {
