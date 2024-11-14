@@ -3,3 +3,5 @@ export const cutPartyName = (partyName: string) => (partyName.length > 13 ? part
 
 // 유저 이름 7자 제한
 export const cutUserName = (userName: string) => (userName.length > 7 ? userName.slice(0, 7) + '...' : userName);
+
+export const cutVideoName = (userName: string) => (userName.length > 15 ? userName.slice(0, 15) + '...' : userName);

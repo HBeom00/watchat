@@ -60,6 +60,7 @@ const MyRecommendParty = () => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

@@ -59,6 +59,7 @@ export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

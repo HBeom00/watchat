@@ -1,13 +1,14 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import WatchingLabel from '../styleComponents/WatchingLabel';
 import { Party } from '@/utils/viewStatus';
 import PlatformImageCard from '../styleComponents/PlatformImage';
 import { platform } from '@/types/partyInfo';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { usePathname, useRouter } from 'next/navigation';
-import { cutUserName, cutPartyName } from '@/utils/cutNameAndPartyName';
+import { cutUserName, cutPartyName, cutVideoName } from '@/utils/cutNameAndPartyName';
 import editReview from '../../../public/editReview.svg';
+import PrivateModal from '../home/PrivateModal';
 
 type PartyItemProps = {
   party: MyPagePartyInfo; // party 타입 정의에 맞는 타입을 지정
@@ -15,14 +16,17 @@ type PartyItemProps = {
   partyName: string;
   getViewStatus: (party: Party) => string;
   userName: string;
+  videoName: string;
 };
 
-const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }: PartyItemProps) => {
+const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, userName }: PartyItemProps) => {
   const pathname = usePathname();
 
   const router = useRouter();
   const cutUserNameValue = cutUserName(userName);
   const cutPartyNameValue = cutPartyName(partyName);
+  const cutVideoNameValue = cutVideoName(videoName);
+  const [open, setOpen] = useState<boolean>(false);
   const sevenDaysAfterEndTime = (endTime: string) => {
     const endDate = new Date(endTime);
     endDate.setDate(endDate.getDate() + 7);
@@ -32,7 +36,7 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
 
   return (
     <div
-      className="cursor-pointer"
+      className="cursor-pointer max-w-[196px]"
       onClick={
         party.privacy_setting === false && pathname !== '/my-page'
           ? () => {}
@@ -100,6 +104,7 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
             {!party.privacy_setting && (
               // 비공개 설정인 경우 잠금 아이콘 표시
               <div className="absolute inset-0 flex items-center justify-center z-10">
+                <PrivateModal open={open} setOpen={setOpen} />
                 <Image src="/lock.svg" alt="비공개" width={20} height={27} />
               </div>
             )}
@@ -117,7 +122,7 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
       <div className="my-2">
         {/* 정보 */}
         <p className="label-l text-[#757575]">
-          {party.video_name}
+          {cutVideoNameValue}
           {party.media_type === 'tv' && party.episode_number ? `  ${party.episode_number} 화` : ''}
         </p>
         <h3 className="body-l-bold ">{cutPartyNameValue}</h3>
