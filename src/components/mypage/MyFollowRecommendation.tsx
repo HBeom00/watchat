@@ -54,8 +54,6 @@ const MyFollowRecommendation = () => {
     isError: errorRecommenedUsers
   } = useRecommendedUsers(userId as string);
 
-  const emptyRecommendedUsers = recommendedUsers && recommendedUsers.length > 0;
-
   // 팔로우 하기
   const followMutation = useMutation({
     mutationFn: (followId: string) => follow(userId as string, followId),
@@ -83,8 +81,6 @@ const MyFollowRecommendation = () => {
     }
   });
 
-  // console.log('추천 사용자 데이터 =>', recommendedUsers);
-
   //  X 버튼을 누르면 해당 유저를 추천 목록에서 밴시킴
   const banMutation = useMutation({
     mutationFn: (bannedUserId: string) => banUser(userId as string, bannedUserId),
@@ -100,11 +96,11 @@ const MyFollowRecommendation = () => {
         // 차단 후 추천 목록이 비었을 경우 빈 배열로 처리
         if (updatedData.every((party) => party.team_user_profile.length === 0)) {
           queryClient.setQueryData(['recommendedUser', userId], []);
-          queryClient.invalidateQueries({ queryKey: ['recommendedUser', userId] });
         }
 
         return updatedData;
       });
+      queryClient.invalidateQueries({ queryKey: ['recommendedUser', userId] });
     },
     onError: (error) => {
       console.error('차단에 실패했습니다:', error);

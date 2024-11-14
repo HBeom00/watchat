@@ -8,7 +8,6 @@ import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { usePathname, useRouter } from 'next/navigation';
 import { cutUserName, cutPartyName } from '@/utils/cutNameAndPartyName';
 import editReview from '../../../public/editReview.svg';
-import lock from '../../../public/lock.svg';
 
 type PartyItemProps = {
   party: MyPagePartyInfo; // party 타입 정의에 맞는 타입을 지정
