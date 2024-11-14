@@ -11,6 +11,7 @@ import uploadImage from '@/utils/fileUploader/uploadImage';
 import submitParticipation from '@/utils/participation/submitParticipation';
 import { useFetchUserData } from '@/store/userStore';
 import skipParticipation from '@/utils/participation/skipParticipation';
+import { defaultImage } from '@/constants/image';
 
 const ParticipationForm = ({
   party_id,
@@ -30,9 +31,7 @@ const ParticipationForm = ({
   const imgRef = useRef<HTMLInputElement>(null);
 
   // 보여주기 이미지
-  const [profile_image, setProfile_image] = useState(
-    'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png'
-  );
+  const [profile_image, setProfile_image] = useState(defaultImage);
   const [nickname, setNickname] = useState('익명');
   const [disabled, setDisabled] = useState(false);
   const path = usePathname();

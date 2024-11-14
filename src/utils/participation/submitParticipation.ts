@@ -52,12 +52,9 @@ const submitParticipation = async (
   }
 
   // 이 참가하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
-  // 인원이 가득찼는지 확인
-  const fullCheck = await memberFullChecker(party_id);
-  if (fullCheck) {
-    // 모집 마감 상태로 전환
-    await memberFullSwitch(party_id);
-  }
+  // 모집 마감 상태로 전환
+  await memberFullSwitch(party_id);
+
   // 초대된 상태면 초대 목록에서 해당 초대를 삭제
   if (invite_id) {
     deleteInviteMutation.mutate(invite_id);

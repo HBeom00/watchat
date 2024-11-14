@@ -1,4 +1,5 @@
 // import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { defaultImage } from '@/constants/image';
 import browserClient from './supabase/client';
 
 // supabase storage에 이미지 저장
@@ -23,14 +24,13 @@ const partyProfileImageUploader = async (file: File, party_id: string, user_id: 
   });
 
   if (data) {
-    // console.log('supabase에 이미지를 업로드 하는데 성공했습니다.');
     const newImageUrl = browserClient.storage.from('team_user_profile_image').getPublicUrl(profile_image_name)
       .data.publicUrl;
 
     return newImageUrl;
   }
 
-  return 'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
+  return defaultImage;
 };
 
 export default partyProfileImageUploader;

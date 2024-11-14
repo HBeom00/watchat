@@ -19,6 +19,8 @@ import { partyInfo } from '@/types/partyInfo';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
+import { memberFullSwitch } from '@/utils/memberCheck';
+import { defaultImage } from '@/constants/image';
 
 const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -108,14 +110,16 @@ const RecruitNextPage = () => {
       alert('모집이 업로드 되었습니다.');
 
       if (insertPartyData !== null) {
-        console.log('파티아이디', insertPartyData[0].party_id);
         const { error: ownerInsertError } = await browserClient.from('team_user_profile').insert({
           nickname: '익명',
-          profile_image:
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png',
+          profile_image: defaultImage,
           user_id: userId,
           party_id: insertPartyData[0].party_id
         });
+
+        // 이 참가하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
+        // 모집 마감 상태로 전환
+        await memberFullSwitch(insertPartyData[0].party_id);
 
         if (ownerInsertError) {
           alert('프로필 업로드에 실패하셨습니다.');
