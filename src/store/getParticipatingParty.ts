@@ -2,11 +2,11 @@
 
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { startTimeString } from '@/utils/startTimeString';
-import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import browserClient from '@/utils/supabase/client';
 
 // 참여한 파티 불러오기
-export const getParticipatingParty = async (): Promise<MyPagePartyInfo[]> => {
-  const userId = await getLoginUserIdOnClient();
+export const getParticipatingParty = async (userId: string): Promise<MyPagePartyInfo[]> => {
+  //const userId = await getLoginUserIdOnClient();
 
   // 파티 목록 가져오기
   const { data: partyId, error: partyIdError } = await browserClient
@@ -75,6 +75,5 @@ export const getParticipatingParty = async (): Promise<MyPagePartyInfo[]> => {
     })
   );
 
-  console.log('참여파티', partyWithDetails);
   return partyWithDetails;
 };

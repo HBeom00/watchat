@@ -1,6 +1,6 @@
 'use client';
 
-import { useFetchUserData } from '@/store/userStore';
+import { checkNickname, useFetchUserData } from '@/store/userStore';
 import { genreArr, platformArr } from '@/constants/prefer';
 import browserClient from '@/utils/supabase/client';
 import { onClickGenre, onClickPlatform, useImageUpload } from '@/utils/userProfile';
@@ -14,7 +14,19 @@ import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
 
 const nicknameSchema = z.object({
-  nickname: z.string().min(2, { message: '2글자 이상 입력해주세요' }).max(7, { message: '7글자 이하로 입력해주세요' })
+  nickname: z
+    .string()
+    .min(2, { message: '2글자 이상 입력해주세요' })
+    .max(7, { message: '7글자 이하로 입력해주세요' })
+    .refine(
+      async (nickname) => {
+        const isDuplicate = await checkNickname(nickname); // Supabase를 통해 중복 체크
+        return !isDuplicate; // 중복이 아니면 유효한 값
+      },
+      {
+        message: '이미 사용 중인 닉네임입니다.'
+      }
+    )
 });
 
 const FirstLoginForm = () => {
@@ -62,7 +74,7 @@ const FirstLoginForm = () => {
         : defaultProfileImgUrl;
 
       // 회원가입 또는 수정 로직
-      if (pathname === '/myPage/edit' && !!user) {
+      if (pathname === '/my-page/edit' && !!user) {
         await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제
         await browserClient
           .from('user')
@@ -74,7 +86,7 @@ const FirstLoginForm = () => {
           })
           .eq('user_id', user.id);
 
-        route.push('/myPage');
+        route.push('/my-page');
       } else if (!!user) {
         await browserClient.from('user').insert({
           user_id: user.id,
@@ -89,8 +101,8 @@ const FirstLoginForm = () => {
       }
     },
     onSuccess: () => {
-      alert(pathname === '/myPage/edit' ? '수정이 완료되었습니다.' : '회원가입이 완료되었습니다');
-      route.push(pathname === '/myPage/edit' ? '/myPage' : '/');
+      alert(pathname === '/my-page/edit' ? '수정이 완료되었습니다.' : '회원가입이 완료되었습니다');
+      route.push(pathname === '/my-page/edit' ? '/my-page' : '/');
     },
     onError: (error) => {
       console.error('Mutation error:', error);
@@ -293,7 +305,7 @@ const FirstLoginForm = () => {
           })}
         </ul>
       </div>
-      {pathname === '/myPage/edit' ? (
+      {pathname === '/my-page/edit' ? (
         <div className="flex flex-row gap-[20px]">
           <button
             onClick={editCancelHandler}

@@ -33,7 +33,6 @@ export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
     .single();
 
   if (userData) {
-    console.log('유저데이터를 잘 가져옴', userData);
   }
   if (userError) {
     console.error('사용자의 장르정보를 가져오는데 실패했습니다. => ', userError.message);
@@ -42,7 +41,6 @@ export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
 
   // 유저 장르를 배열로 변환
   const userGenre = userData.genre;
-  console.log('유저 장르 정보:', userGenre);
 
   const { data: partyData, error: partyDataError } = await browserClient
     .from('party_info')
@@ -50,7 +48,6 @@ export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
     .order('write_time', { ascending: false }); // 내림차순 정렬;
 
   if (partyData) {
-    console.log('파티 정보도 불러왔음', partyData);
   }
   if (partyDataError) {
     console.error('추천파티 정보를 가져오는데 실패했습니다. => ', partyDataError.message);
@@ -62,29 +59,20 @@ export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
       return false;
     }
 
-    console.log('파티 장르가 어떻게 찍히나 보자고', party.genres);
-    console.log(typeof party.genres);
-
     // 장르를 문자열에서 배열로
     const genreFromStringToArray = JSON.parse(party.genres);
 
     const transformedGenres = transformGenre(genreFromStringToArray);
-    console.log('변환된 장르:', party, transformedGenres); // 변환된 장르 확인
 
     // 유저 장르와 일치하는지 확인
     const isMatch = transformedGenres.some((partyGenre: string) => userGenre.includes(partyGenre));
-    console.log('유저와 일치하는 장르 있는지:', isMatch); // 유저 장르 일치 여부 확인
     return isMatch;
   });
-
-  console.log('장르만 필터링 한 목록을 가져오고', filterGenre);
 
   const filterActiveParty = filterGenre?.filter((party) => {
     const status = getViewStatus(party);
     return status === '시청중' || status === '모집중';
   });
-
-  console.log('모집중이거나 시청중인거만 또 필터링을 해', filterActiveParty);
 
   const partyWithDetails = await Promise.all(
     filterActiveParty.map(async (party) => {

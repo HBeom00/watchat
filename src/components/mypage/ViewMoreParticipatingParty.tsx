@@ -1,10 +1,9 @@
 'use client';
 
 import { useParticipatingParty } from '@/store/useParticipatingParty';
-import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import doesntExist from '../../../../../../public/closeEyeCat.svg';
+import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
@@ -14,10 +13,8 @@ export type platform = {
   name: string;
 };
 
-const ParticipatingParty = () => {
+export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
   // 사용자 데이터 가져오기
-  const { data: userData, isPending, isError } = useFetchUserData();
-  const userId = userData?.user_id;
 
   // 페이지네이션 설정
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -35,10 +32,10 @@ const ParticipatingParty = () => {
   // 페이지 수 불러오기
   const pageCount = enjoyingParty ? Math.ceil(enjoyingParty.length / pageSlice) : 1;
 
-  if (isPending || pendingEnjoyingParty) {
+  if (pendingEnjoyingParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || errorEnjoyingParty) {
+  if (errorEnjoyingParty) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
@@ -78,5 +75,3 @@ const ParticipatingParty = () => {
     </section>
   );
 };
-
-export default ParticipatingParty;

@@ -9,6 +9,7 @@ import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
+import { usePathname } from 'next/navigation';
 
 export type platform = {
   logoUrl: string;
@@ -17,7 +18,14 @@ export type platform = {
 
 const MyParticipatingParty = () => {
   const { data: userData, isPending, isError } = useFetchUserData();
-  const userId = userData?.user_id;
+
+  const pathname = usePathname();
+  const pathSegments = pathname.split('/');
+
+  const userId = pathname === '/my-page' ? userData?.user_id : pathSegments[pathSegments.indexOf('profile') + 1];
+
+  const viewMoreHref =
+    pathname === '/my-page' ? '/my-page/participating-party' : `/profile/${userId}/participating-party`;
 
   // 참여중인 파티 가져오기
   const {
@@ -38,7 +46,7 @@ const MyParticipatingParty = () => {
       <div className="flex justify-between mb-4">
         <h3 className="title-m">참여한 파티</h3>
         {enjoyingParty && enjoyingParty.length > 5 ? (
-          <Link href={'/myPage/participating-party'} className="body-s text-[#c2c2c2]">
+          <Link href={viewMoreHref} className="body-s text-[#c2c2c2]">
             더보기
           </Link>
         ) : (
@@ -53,7 +61,6 @@ const MyParticipatingParty = () => {
           enjoyingParty.slice(0, 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
             const platformArr: platform[] = party.video_platform ? JSON.parse(party.video_platform) : [];
-            console.log('platformArr', platformArr);
             const viewStatus = getViewStatus;
 
             return (

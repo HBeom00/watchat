@@ -9,6 +9,7 @@ import doesntExist from '../../../public/openEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
+import { useParams, usePathname } from 'next/navigation';
 
 export type platform = {
   logoUrl: string;
@@ -18,7 +19,11 @@ export type platform = {
 const MyOwnerParty = () => {
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
-  const userId = userData?.user_id;
+
+  const pathname = usePathname();
+  const { id } = useParams();
+
+  const userId = pathname === '/my-page' ? userData?.user_id : Array.isArray(id) ? id[0] : id;
 
   // 주최중인 파티 가져오기
   const { data: ownerParty, isPending: pandingOwnerParty, isError: errorOwnerParty } = useOwnerParty(userId as string);
@@ -33,9 +38,9 @@ const MyOwnerParty = () => {
   return (
     <article className="m-auto mb-8 w-[1060px]">
       <div className="flex justify-between mb-4">
-        <h3 className="title-m">내가 오너인 파티</h3>
+        <h3 className="title-m">주최한 파티</h3>
         {ownerParty && ownerParty.length > 5 ? (
-          <Link href={'/myPage/hosted-party'} className="body-s text-[#c2c2c2]">
+          <Link href={'/my-page/hosted-party'} className="body-s text-[#c2c2c2]">
             더보기
           </Link>
         ) : (
