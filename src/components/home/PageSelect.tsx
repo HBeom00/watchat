@@ -13,7 +13,7 @@ const PageSelect = ({
   return (
     <>
       {pageData ? (
-        <div className="flex w-full mt-[31.5px] mb-[29.5px] justify-center items-center">
+        <div className="flex w-full my-[48px] justify-center items-center">
           <div className="flex flex-row gap-1 justify-center items-center text-static-black body-xs ">
             <button onClick={() => setPageNumber(1)} className="p-[10px]" disabled={pageNumber === 1}>
               <Image

@@ -3,7 +3,7 @@
 import { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { isMemberExist } from '@/utils/memberCheck';
 import { usePathname, useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
@@ -12,6 +12,7 @@ import submitParticipation from '@/utils/participation/submitParticipation';
 import { useFetchUserData } from '@/store/userStore';
 import skipParticipation from '@/utils/participation/skipParticipation';
 import { defaultImage } from '@/constants/image';
+import updateProfile from '@/utils/participation/updateProfile';
 
 const ParticipationForm = ({
   party_id,
@@ -42,13 +43,6 @@ const ParticipationForm = ({
   const upload_profile_img: string = profile_image; // imgFile( uploadImage에서 저장한 이미지정보 )을 profile_img에 선언
 
   const { data } = useFetchUserData();
-
-  useEffect(() => {
-    if (data) {
-      setNickname(data.nickname);
-      setProfile_image(data.profile_img);
-    }
-  }, [data]);
 
   // 저장하기 함수
   const submitHandlerMutation = useMutation({
@@ -92,7 +86,7 @@ const ParticipationForm = ({
     }
   });
 
-  // 넘어가기 함수
+  // 기본 프로필 사용 함수
   const skipHandlerMutation = useMutation({
     mutationFn: async () => {
       setDisabled(true);
@@ -102,17 +96,23 @@ const ParticipationForm = ({
         router.push('/login');
         return;
       }
+
       const isMember = await isMemberExist(party_id, user_Id);
-      if (isMember) {
+      if (isMember && data) {
+        await updateProfile(data.nickname, undefined, data.profile_img, party_id, user_Id);
         if (!path.includes('/party')) {
           router.replace(`/party/${party_id}`);
         }
+        setDisabled(false);
         return;
       }
+
       await skipParticipation(data?.nickname, data?.profile_img, party_id, setMessage, deleteInviteMutation, invite_id);
+
       if (!path.includes('/party')) {
         router.replace(`/party/${party_id}`);
       }
+
       setDisabled(false);
     },
     onSuccess: async () => {
@@ -161,11 +161,10 @@ const ParticipationForm = ({
               onChange={() => uploadImage(imgRef, setProfile_image)}
             />
           </button>
-          <p className="self-stretch text-static-black text-center body-m">파티의 프로필을 설정할 수 있어요</p>
+          <p className="self-stretch text-static-black text-center body-m">멀티 프로필을 설정할 수 있어요</p>
         </div>
         <div className="flex flex-col items-start px-4 self-stretch text-static-black">
           <input
-            value={nickname}
             className="commonInput px-4 text-center"
             onChange={(e) => setNickname(e.target.value)}
             placeholder="닉네임을 입력해주세요."
@@ -191,7 +190,7 @@ const ParticipationForm = ({
           onClick={() => skipHandlerMutation.mutate()}
           disabled={disabled}
         >
-          넘어가기
+          기본 프로필 사용
         </button>
       </div>
     </div>

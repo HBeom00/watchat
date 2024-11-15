@@ -44,12 +44,12 @@ const NormalList = ({ partySituation }: { partySituation: string | null }) => {
   // 페이지 리셋
   useEffect(() => {
     setPageNumber(1);
-  }, [filter, partySituation, queryClient]);
+  }, [partySituation, queryClient]);
 
   if (isLoading || isPageLoading) <div>Loading...</div>;
 
   return (
-    <div className="mt-8 w-[1060px]">
+    <div>
       <SelectDropBox
         order={order}
         setOrder={setOrder}

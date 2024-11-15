@@ -10,7 +10,10 @@ import PrivateModal from './PrivateModal';
 const ListDiv = ({ data }: { data: partyInfo[] }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <div className="grid grid-cols-5 gap-x-5 gap-y-8 mt-8">
+    <div
+      className={`grid grid-cols-5 gap-x-[20px] gap-y-[32px]
+    mobile:grid-cols-2 mobile:gap-x-[16px] mobile:gap-y-[32px]`}
+    >
       {
         <>
           {data
