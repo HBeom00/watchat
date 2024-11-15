@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 //------컴퍼넌트------------------------------------------------------------------------------
 import ParticipationButton from '@/components/button/ParticipationButton';
-
+import { defaultImage } from '@/constants/image';
+import { memberFullSwitch } from '@/utils/memberCheck';
 //------수파베이스------------------------------------------------------------------------------
 import browserClient from '../../../../../utils/supabase/client';
 import { PostgrestError } from '@supabase/supabase-js';
@@ -15,20 +16,17 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 
 //------라이브러리------------------------------------------------------------------------------
-// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { memberFullSwitch } from '@/utils/memberCheck';
-import { defaultImage } from '@/constants/image';
 
 const RecruitNextPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [privacySetting, setPrivacySetting] = useState<boolean>(true);
-  // boolean 값으로 관리하기
+  const [todaySelected, setTodaySelected] = useState(false);
   const { limited_member, setRecruitDetails } = useRecruitStore();
   const queryClient = useQueryClient();
 
@@ -107,7 +105,7 @@ const RecruitNextPage = () => {
           ])
           .select();
       if (error) throw new Error('데이터 삽입 실패');
-      alert('모집이 업로드 되었습니다.');
+      // alert('모집이 완료 되었습니다.');
 
       if (insertPartyData !== null) {
         const { error: ownerInsertError } = await browserClient.from('team_user_profile').insert({
@@ -147,6 +145,20 @@ const RecruitNextPage = () => {
     }
   };
 
+  const watchDateChangeHandle = (date: Date | null) => {
+    const today = new Date();
+    setRecruitDetails({ watch_date: date });
+    setTodaySelected(
+      date?.getDate() === today.getDate() &&
+        date?.getMonth() === today.getMonth() &&
+        date?.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const startTimeChangeHandle = (time: Date | null) => {
+    setRecruitDetails({ start_time: time });
+  };
+
   const privacyhandle = (setting: boolean) => {
     setPrivacySetting(setting);
   };
@@ -164,13 +176,13 @@ const RecruitNextPage = () => {
             공개 설정
           </label>
           <div className="flex justify-between mt-[8px]">
-            <label className="flex items-center">
+            <label className="flex items-center cursor-pointer">
               <input
                 type="radio"
                 value="공개"
                 checked={privacySetting === true}
                 onChange={() => privacyhandle(true)}
-                className="hidden"
+                className="hidden "
               />
               <span
                 className={`outline-disabled-btn-l w-[250px] flex items-center justify-center ${
@@ -180,16 +192,16 @@ const RecruitNextPage = () => {
                 공개
               </span>
             </label>
-            <label className="flex items-center">
+            <label className="flex items-center cursor-pointer">
               <input
                 type="radio"
                 value="비공개"
                 checked={privacySetting === false}
                 onChange={() => privacyhandle(false)}
-                className="hidden"
+                className="hidden "
               />
               <span
-                className={`outline-disabled-btn-l w-[250px]  flex items-center justify-center  ${
+                className={`outline-disabled-btn-l w-[250px]  flex items-center justify-center cursor-pointe ${
                   privacySetting === false ? 'bg-primary-400 !text-white' : ''
                 }`}
               >
@@ -197,8 +209,13 @@ const RecruitNextPage = () => {
               </span>
             </label>
           </div>
+          {privacySetting === false && (
+            <p className="mt-[8px] text-[13px] text-Grey-600">
+              비공개 모드는 초대하기를 통해 맴버를 모집할 수 있습니다.
+            </p>
+          )}
         </div>
-        <div className="space-y-[32px] mt-[8px]">
+        <div className="space-y-[32px] mt-[32px]">
           <div className="z-40">
             <div className="flex space-x-[4px] relative group">
               <label htmlFor="member" className="block text-[14px] font-SemiBold text-Grey-800">
@@ -261,7 +278,7 @@ const RecruitNextPage = () => {
                 id="watchDate"
                 locale={ko}
                 selected={useRecruitStore.getState().watch_date}
-                onChange={(date) => setRecruitDetails({ watch_date: date })}
+                onChange={watchDateChangeHandle}
                 dateFormat="yyyy.MM.dd"
                 placeholderText="날짜를 선택해주세요"
                 className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400   text-center z-10 focus:border-primary-500 focus:outline-none"
@@ -287,14 +304,16 @@ const RecruitNextPage = () => {
                 id="startTime"
                 locale={ko}
                 selected={useRecruitStore.getState().start_time}
-                onChange={(time) => setRecruitDetails({ start_time: time })}
+                onChange={startTimeChangeHandle}
                 showTimeSelect
                 showTimeSelectOnly
-                timeIntervals={15}
+                timeIntervals={30}
                 dateFormat="h:mm aa"
                 className="w-[520px] h-[48px] border-b-[1px] border-b-Grey-400  text-center focus:border-primary-500 focus:outline-none "
                 placeholderText="00:00"
                 popperClassName="custom-scrollbar"
+                minTime={todaySelected ? new Date() : new Date(0, 0, 0, 0, 0, 0)}
+                maxTime={new Date(0, 0, 0, 23, 59, 59)}
               />
             </div>
           </div>
