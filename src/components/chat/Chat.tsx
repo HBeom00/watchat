@@ -44,6 +44,15 @@ export default function Chat({ roomId }: { roomId: string }) {
     }
   }, [messages]);
 
+  const [expandedMessages, setExpandedMessages] = useState<{ [key: string]: boolean }>({});
+
+  const toggleExpand = (msgId: string) => {
+    setExpandedMessages((prev) => ({
+      ...prev,
+      [msgId]: !prev[msgId]
+    }));
+  };
+
   return (
     <div>
       <div ref={messageListRef} className="chatting_height custom-chat-scrollbar overflow-x-hidden">
@@ -55,6 +64,9 @@ export default function Chat({ roomId }: { roomId: string }) {
             messages[index - 1].system_message === true;
           const createdAt = new Date(msg.created_at);
           createdAt.setHours(createdAt.getHours() + 9);
+
+          const isExpanded = expandedMessages[msg.created_at] || false;
+          const shouldShowMoreButton = msg.content.split('\n').length > 6 || msg.content.length > 300;
 
           return (
             <div key={msg.created_at} className={`message mt-[4px] mb-[3px] ${isMyself ? 'text-right' : 'text-left'}`}>
@@ -98,14 +110,86 @@ export default function Chat({ roomId }: { roomId: string }) {
                       <span className="text-Grey-600 text-center caption-m">
                         {createdAt.toISOString().slice(11, 16).split('T').join(' ')}
                       </span>
-                      <div className="max-w-[262px] text-start break-keep break-words px-[16px] py-[8px] justify-center items-center rounded-[19px] bg-primary-400 body-s text-white">
-                        {msg.content}
+                      <div
+                        className={`max-w-[262px] text-start break-keep break-words px-[16px] py-[8px] relative rounded-[19px] bg-primary-400 body-s text-white`}
+                      >
+                        <div className={!isExpanded && shouldShowMoreButton ? 'line-clamp' : ''}>{msg.content}</div>
+                        {!isExpanded && shouldShowMoreButton && (
+                          <div className="text-right mt-2 flex justify-end">
+                            <button
+                              onClick={() => toggleExpand(msg.created_at)}
+                              className="flex items-center py-[1px] rounded-[8px]"
+                            >
+                              <p className="body-s text-primary-200">더보기</p>
+                              <Image
+                                src="/pageArrow/right_arrow_disabled_chat.svg"
+                                alt="right_arrow"
+                                width={12}
+                                height={12}
+                                className="w-[12px] h-[12px] text-primary-200"
+                              />
+                            </button>
+                          </div>
+                        )}
+                        {isExpanded && (
+                          <div className="text-right mt-2 flex justify-end">
+                            <button
+                              onClick={() => toggleExpand(msg.created_at)}
+                              className="flex items-center py-[1px] rounded-[8px]"
+                            >
+                              <p className="body-s text-primary-200">접기</p>
+                              <Image
+                                src="/pageArrow/right_arrow_disabled_chat.svg"
+                                alt="right_arrow"
+                                width={12}
+                                height={12}
+                                className="w-[12px] h-[12px] text-primary-200"
+                              />
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (
                     <div className="flex justify-start items-end px-[54px] gap-[4px]">
-                      <div className="max-w-[262px] text-start break-keep break-words px-[16px] py-[8px] justify-center items-center rounded-[19px] bg-white body-s text-Grey-500">
-                        {msg.content}
+                      <div
+                        className={`max-w-[262px] text-start break-keep break-words px-[16px] py-[8px] relative rounded-[19px] bg-white body-s text-Grey-500`}
+                      >
+                        <div className={!isExpanded && shouldShowMoreButton ? 'line-clamp' : ''}>{msg.content}</div>
+                        {!isExpanded && shouldShowMoreButton && (
+                          <div className="text-right mt-2 flex justify-end">
+                            <button
+                              onClick={() => toggleExpand(msg.created_at)}
+                              className="flex items-center py-[1px] rounded-[8px]"
+                            >
+                              <p className="body-s text-Grey-300">더보기</p>
+                              <Image
+                                src="/pageArrow/right_arrow_disabled.svg"
+                                alt="right_arrow"
+                                width={12}
+                                height={12}
+                                className="w-[12px] h-[12px] text-primary-200"
+                              />
+                            </button>
+                          </div>
+                        )}
+                        {isExpanded && (
+                          <div className="text-right mt-2 flex justify-end">
+                            <button
+                              onClick={() => toggleExpand(msg.created_at)}
+                              className="flex items-center py-[1px] rounded-[8px]"
+                            >
+                              <p className="body-s text-Grey-300">접기</p>
+                              <Image
+                                src="/pageArrow/right_arrow_disabled.svg"
+                                alt="right_arrow"
+                                width={12}
+                                height={12}
+                                className="w-[12px] h-[12px] text-primary-200"
+                              />
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <span className="text-Grey-600 text-center caption-m">
                         {createdAt.toISOString().slice(11, 16).split('T').join(' ')}
