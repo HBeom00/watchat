@@ -95,7 +95,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
 
   useEffect(() => {
     setUserNickname(members.filter((el) => el.user_id === userId)[0]?.nickname || '익명');
-  }, []);
+  }, [members, userId]);
 
   return (
     <div
