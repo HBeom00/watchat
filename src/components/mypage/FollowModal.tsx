@@ -41,11 +41,7 @@ export const FollowModal: React.FC<FollowerProps> = ({ followerCount, followerDa
         </DialogHeader>
         <div>
           <p className="pb-2 label-s text-Grey-600">팔로우 {followerCount}명</p>
-          {isMyPage ? (
-            <IsMypageFollowList userId={userId} followerList={followerList} />
-          ) : (
-            <IsOtherUserFollowList followerList={followerList} userId={userId} />
-          )}
+          {isMyPage ? <IsMypageFollowList userId={userId} followerList={followerList} /> : <IsOtherUserFollowList />}
         </div>
         <DialogDescription></DialogDescription>
       </DialogContent>

@@ -1,5 +1,5 @@
 import { useFetchUserData } from '@/store/userStore';
-import { FollowingUser, OtherUserFollow } from '@/types/followingUser';
+import { FollowingUser } from '@/types/followingUser';
 import { useFollowMutation, useUunfollowMutation } from '@/utils/myPage/followUnfollow';
 import { useOtherUserFollowData } from '@/utils/myPage/getOtherUserFollowList';
 import { useFollowData } from '@/utils/myPage/useFollowData';
@@ -8,13 +8,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 
-const IsOtherUserFollowList = ({
-  followerList,
-  userId
-}: {
-  followerList: FollowingUser[] | null;
-  userId: string | undefined;
-}) => {
+const IsOtherUserFollowList = () => {
   const { data: userData } = useFetchUserData();
   const searchParams = useSearchParams();
   const userParam = searchParams.get('user');
@@ -23,7 +17,7 @@ const IsOtherUserFollowList = ({
   const loginUser = userData?.user_id;
 
   // 로그인 유저의 팔로잉 데이터 가져오기
-  const { data: followerDataResult, isPending: pending, isError: error } = useFollowData(loginUser);
+  const { data: followerDataResult } = useFollowData(loginUser);
 
   // "/my-page"일 때만 다른 유저의 팔로우 목록을 가져오기
   const { data: otherUserFollow } = useOtherUserFollowData(userParam);

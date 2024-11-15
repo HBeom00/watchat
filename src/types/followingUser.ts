@@ -2,10 +2,10 @@ export type FollowingUser = {
   user_id: string;
   nickname: string;
   profile_img: string;
-  user_email: string;
-  genre: string[];
-  platform: string[];
-  user_temp: number;
+  user_email?: string;
+  genre?: string[];
+  platform?: string[];
+  user_temp?: number;
 };
 
 export type followingUserData =

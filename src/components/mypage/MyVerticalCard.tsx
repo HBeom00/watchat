@@ -43,7 +43,10 @@ const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, 
           : () => router.push(`/party/${party.party_id}`)
       }
     >
-      <div className="relative h-[280px] rounded-[4px] overflow-hidden " onClick={() => setOpen(true)}>
+      <div
+        className="relative h-[280px] rounded-[4px] overflow-hidden "
+        onClick={() => (party.privacy_setting === false && pathname !== '/my-page' ? setOpen(true) : () => {})}
+      >
         <Image
           src={
             party?.video_image ||
