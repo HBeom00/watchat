@@ -729,3 +729,10 @@ input[type='range']::-webkit-slider-thumb {
 .chatting_height {
   height: calc(100vh - 318px);
 }
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 6; /* 최대 6줄로 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
