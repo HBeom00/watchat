@@ -30,7 +30,7 @@ export const updateSession = async (request: NextRequest) => {
 
     const { data } = await supabase.auth.getUser();
     const redirect_home = ['/login', '/signup'];
-    const redirect_login = ['/chat', '/myPage', '/participation', '/recruit'];
+    const redirect_login = ['/chat', '/my-page', '/participation', '/recruit'];
 
     // 로그인 한 상태라면 메인페이지로 리다이렉트
     if (data?.user && redirect_home.some((path) => request.nextUrl.pathname.startsWith(path))) {

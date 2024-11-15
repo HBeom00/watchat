@@ -21,7 +21,7 @@ const MemberList = ({
   ownerId: string;
   userId: string;
   roomId: string;
-  exitParty: (id: string) => void;
+  exitParty: ({ id, nickname }: { id: string; nickname: string }) => void;
 }) => {
   const [followStatus, setFollowStatus] = useState<{ [key: string]: boolean }>({});
 
@@ -100,7 +100,10 @@ const MemberList = ({
                   <DialogTrigger className="flex justify-end items-center gap-[4px] text-Grey-400 font-bold text-xs">
                     내보내기
                   </DialogTrigger>
-                  <DialogContent className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg">
+                  <DialogContent
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                    className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg"
+                  >
                     <DialogTitle className="px-[16px] py-[8px]"></DialogTitle>
                     <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-[16px] body-m">
                       정말 내보내시겠습니까?
@@ -108,7 +111,7 @@ const MemberList = ({
                     <div className="flex justify-center items-center mt-[16px] gap-[16px]">
                       <div
                         className="w-[150px] py-[8px] px-[16px] bg-primary-500 text-white font-bold rounded-md hover:bg-primary-600 transition cursor-pointer text-center"
-                        onClick={() => exitParty(el.user_id)}
+                        onClick={() => exitParty({ id: el.user_id, nickname: el.nickname })}
                       >
                         내보내기
                       </div>

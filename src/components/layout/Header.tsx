@@ -29,7 +29,7 @@ const Header = () => {
   const filter = searchParams.get('watch');
 
   return (
-    <div className=" fixed z-50 w-full h-[80px]  flex items-center justify-center  flex-shrink-0 border-solid border-b-[1px] border-gray-200 bg-white">
+    <div className=" mobile:h-[58px] fixed z-50 w-full h-[80px]  flex items-center justify-center  flex-shrink-0 border-solid border-b-[1px] border-gray-200 bg-white">
       <div className="flex py-4 justify-between items-center flex-[1_0_0] max-w-[1060px] ">
         <div className="flex flex-row items-center gap-6">
           <Link className="flex flex-col py-3 items-start" href={'/'}>

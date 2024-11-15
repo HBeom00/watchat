@@ -40,8 +40,6 @@ const MyInvitedParty = () => {
   const refuseInvite = useRefuseMutation(userId as string);
   const acceptInvite = useAcceptMutation();
 
-  console.log('초대된 파티 리스트 => ', invitedParties);
-
   // 선택 모드 전환 핸들러
   const selectModeToggleHandler = () => {
     setIsSelectionMode(!isSelectionMode);
@@ -119,7 +117,7 @@ const MyInvitedParty = () => {
                   거절하기
                 </button>
               </DialogTrigger>
-              <DialogContent className="w-[340px]">
+              <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px]">
                 <DialogHeader>
                   <DialogTitle>
                     <h2 className="pt-16 pb-4">정말 거절하시겠습니까?</h2>

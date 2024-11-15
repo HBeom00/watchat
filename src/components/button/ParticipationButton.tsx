@@ -70,7 +70,10 @@ const ParticipationButton = ({
         }}
       >
         <DialogTrigger className="hidden">참가하기</DialogTrigger>
-        <DialogContent className={display ? 'w-[380px] p-0 gap-0' : 'w-[340px] p-0 gap-0'}>
+        <DialogContent
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          className={display ? 'w-[380px] p-0 gap-0' : 'w-[340px] p-0 gap-0'}
+        >
           <DialogHeader className="flex w-full py-6">
             <DialogTitle className={display ? '' : 'hidden'}>파티 프로필</DialogTitle>
           </DialogHeader>

@@ -46,17 +46,23 @@ const SubmitDialog = ({ submitArr, userId, party_id }: { submitArr: submit[]; us
       <DialogTrigger className={`rounded-[8px] w-full ${notDone ? 'disabled-btn-xl' : 'btn-xl'}`} disabled={notDone}>
         작성 완료
       </DialogTrigger>
-      <DialogContent className="w-[340px] p-0 gap-0">
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] p-0 gap-0">
         <DialogHeader className="flex py-6">
           <DialogTitle></DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-4 w-full items-start">
-          <p className="self-stretch text-center body-m text-static-black">{done.length}명의 후기를 작성하셨습니다.</p>
-          <p className="self-stretch text-center body-m text-static-black">제출하면 다시 후기를 작성할 수 없습니다.</p>
-          <p className="self-stretch text-center body-m text-static-black">
-            신뢰할 수 있는 후기를 위해 자세하게 평가해주세요.
+        <div className="flex flex-col gap-4 w-full items-start pt-[16px]">
+          <p className="self-stretch text-center body-m-bold text-static-black">
+            {done.length}명의 후기를 작성하셨습니다.
           </p>
-          <div className="flex flex-row p-4 items-center gap-2 self-stretch w-full">
+          <div className="flex flex-col w-full justify-center items-center">
+            <p className="self-stretch text-center body-m text-static-black">
+              제출하면 다시 후기를 작성할 수 없습니다.
+            </p>
+            <p className="self-stretch text-center body-m text-static-black">
+              신뢰할 수 있는 후기를 위해 자세하게 평가해주세요.
+            </p>
+          </div>
+          <div className="flex flex-row p-[16px] items-center gap-[8px] self-stretch w-full">
             <button className="outline-disabled-btn-l w-full" onClick={() => setOpen(false)}>
               취소
             </button>

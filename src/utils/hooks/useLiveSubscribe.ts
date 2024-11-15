@@ -3,24 +3,24 @@
 import { useEffect } from 'react';
 import browserClient from '../supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { UserInfo } from '@/types/teamUserProfile';
+import { queryKey } from '@/reactQuery/queryKeys';
 
-export const useLiveSubscribe = (roomId: string) => {
-  const queryClient = useQueryClient();
-
+export const useLiveSubscribe = (roomId: string, queryClient: QueryClient) => {
   // 실시간 구독 설정
   useEffect(() => {
     const channel: RealtimeChannel = browserClient
       .channel(`team_user_profile`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'team_user_profile' }, (payload) => {
+        console.log(payload, 'payload');
         queryClient.setQueryData<UserInfo[]>(['members', roomId], (oldMembers = []) => [
           ...oldMembers,
           payload.new as UserInfo
         ]);
       })
       .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'team_user_profile' }, (payload) => {
-        queryClient.setQueryData<UserInfo[]>(['members', roomId], (oldMembers = []) =>
+        queryClient.setQueryData<UserInfo[]>(queryKey.chat.members(roomId), (oldMembers = []) =>
           oldMembers.filter((member) => member.profile_id !== payload.old.profile_id)
         );
       })

@@ -5,7 +5,7 @@ import { Party } from '@/utils/viewStatus';
 import PlatformImageCard from '../styleComponents/PlatformImage';
 import { platform } from '@/types/partyInfo';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cutUserName, cutPartyName } from '@/utils/cutNameAndPartyName';
 import editReview from '../../../public/editReview.svg';
 
@@ -18,6 +18,8 @@ type PartyItemProps = {
 };
 
 const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }: PartyItemProps) => {
+  const pathname = usePathname();
+
   const router = useRouter();
   const cutUserNameValue = cutUserName(userName);
   const cutPartyNameValue = cutPartyName(partyName);
@@ -53,18 +55,23 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
           </div>
         )}
 
-        {getViewStatus(party) === '시청완료' ? (
+        {getViewStatus(party) === '시청완료' &&
+        (pathname === '/my-page' ||
+          pathname === '/my-page/participating-party' ||
+          pathname === '/my-page/hosted-party') ? (
           sevenDaysAfterEndTime(party.end_time) < currentDate ? (
+            // 시청 완료 & '/my-page' 중 하나 & 7일 지나지 않음
             <>
-              <div className="absolute  bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
+              <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
               <div className="absolute bottom-0 text-white label-l bg-gray-500 w-full h-7 flex justify-center items-center gap-1">
                 <Image src={editReview} width={16} height={16} alt="후기 작성하기" />
                 <span>후기 작성일 만료</span>
               </div>
             </>
           ) : (
+            // 시청 완료 & '/my-page' 중 하나 & 7일 지남
             <>
-              <div className="absolute  bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
+              <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
               <div
                 className="absolute bottom-0 text-white label-l bg-primary-400 w-full h-7 flex justify-center items-center gap-1"
                 onClick={(e) => {
@@ -76,13 +83,22 @@ const MyVerticalCard = ({ party, platform, partyName, getViewStatus, userName }:
                 <span>후기 작성하기</span>
               </div>
             </>
-          ) // 시청완료 : 배경 어둡게 + 후기작성 활성화 (후기작성 페이지 링크 수정해야함)
-        ) : getViewStatus(party) === '시청중' ? (
-          <></> // 시청중일 때는 아무것도 X
+          )
+        ) : getViewStatus(party) === '시청완료' &&
+          !(
+            pathname === '/my-page' ||
+            pathname === '/my-page/participating-party' ||
+            pathname === '/my-page/hosted-party'
+          ) ? (
+          // 시청 완료 & 다른 페이지인 경우
+          <>
+            <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-full flex items-center"></div>
+          </>
         ) : (
+          // 시청 완료 전
           <div className="absolute bottom-0 text-white label-l pl-3 bg-[rgba(0,0,0,0.5)] w-full h-7 flex items-center">
             <span>{party.startString}</span>
-          </div> // 나머지 : 시작시간 표시
+          </div>
         )}
       </div>
 

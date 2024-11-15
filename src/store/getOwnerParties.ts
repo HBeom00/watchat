@@ -2,10 +2,10 @@
 
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { startTimeString } from '@/utils/startTimeString';
-import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import browserClient from '@/utils/supabase/client';
 
-export const getOwnerParty = async (): Promise<MyPagePartyInfo[]> => {
-  const userId = await getLoginUserIdOnClient();
+export const getOwnerParty = async (userId: string): Promise<MyPagePartyInfo[]> => {
+  // const userId = await getLoginUserIdOnClient();
 
   const { data: ownerParties, error } = await browserClient
     .from('party_info')
@@ -61,6 +61,5 @@ export const getOwnerParty = async (): Promise<MyPagePartyInfo[]> => {
     })
   );
 
-  console.log('내가 오너인 파티', ownerPartiesWithDetails);
   return ownerPartiesWithDetails;
 };
