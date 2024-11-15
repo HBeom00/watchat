@@ -10,9 +10,13 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
   const hideFooter = ['/login', '/signup', '/recruit', '/my-page/edit', '/chat', '/warming'];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen">
       {!hideHeader && <Header />}
-      <main className={!hideHeader ? ' mt-[80px] overflow-auto mobile:mt-[58px]' : '  px-10 mx-auto overflow-auto'}>
+      <main
+        className={
+          !hideHeader ? 'flex-1 mt-[80px] overflow-auto mobile:mt-[58px]' : 'flex-1  px-10 mx-auto overflow-auto'
+        }
+      >
         {children}
       </main>
       {!hideFooter.some((path) => pathname.startsWith(path)) && <Footer />}
