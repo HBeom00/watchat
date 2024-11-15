@@ -91,6 +91,9 @@ const config: Config = {
       font: {
         headingL: 'font-pretendard text-black font-bold text-2xl leading-11 tracking-tight'
       }
+    },
+    screens: {
+      mobile: { max: '375px' }
     }
   }
 };

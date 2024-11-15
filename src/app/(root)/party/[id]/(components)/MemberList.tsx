@@ -42,7 +42,7 @@ const MemberList = ({
             <p className="text-Grey-900 body-l-bold">참여 멤버</p>
             <p className="text-Grey-600 label-l">참여자 {data ? data.length : 0}명</p>
           </div>
-          {userId && isMember ? (
+          {userId && isMember && !end ? (
             <InvitedButton partyNumber={partyData.party_id} userId={userId} situation={partyData.situation} />
           ) : (
             <></>
@@ -50,9 +50,12 @@ const MemberList = ({
         </div>
         <div className="flex flex-col items-start gap-4 text-static-black body-s">
           {data && data.length > 0 ? (
-            data.map((mem) => {
-              return <MemberProfileCard key={mem.profile_id} memberInfo={mem} ownerId={partyData.owner_id} />;
-            })
+            data
+              .filter((n) => n.user_id === partyData.owner_id)
+              .concat(data.filter((n) => n.user_id !== partyData.owner_id))
+              .map((mem) => {
+                return <MemberProfileCard key={mem.profile_id} memberInfo={mem} ownerId={partyData.owner_id} />;
+              })
           ) : (
             <>
               <p>멤버가 없습니다</p>

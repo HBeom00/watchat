@@ -24,11 +24,11 @@ const SearchBar = () => {
     if (debounce !== '') {
       router.push('/?' + createQueryString('search', encodeURIComponent(debounce)));
     }
-    if (debounce === '' && searchParams.get('search') !== '' && searchParams.get('search') !== null) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('search');
-      router.push('/?' + params);
-    }
+    // if (debounce === '' && searchParams.get('search') !== '' && searchParams.get('search') !== null) {
+    //   const params = new URLSearchParams(searchParams.toString());
+    //   params.delete('search');
+    //   router.push('/?' + params);
+    // }
   }, [debounce]);
 
   return (

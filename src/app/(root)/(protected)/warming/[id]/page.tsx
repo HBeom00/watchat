@@ -23,8 +23,10 @@ const page = async ({ params }: { params: { id: string } }) => {
     .select('*')
     .eq('party_id', params.id);
   const myProfile = memberDataResponse.data && memberDataResponse.data.filter((n) => n.user_id === userId);
-  console.log(myProfile);
-  const memberData = memberDataResponse.data && memberDataResponse.data.filter((n) => n.user_id !== userId);
+  const memberDataArr = memberDataResponse.data && memberDataResponse.data.filter((n) => n.user_id !== userId);
+  const memberData = memberDataArr
+    ?.filter((n) => n.user_id === partyData?.owner_id)
+    .concat(memberDataArr?.filter((n) => n.user_id !== partyData?.owner_id));
   return (
     <div className="flex flex-col w-[340px] gap-[16px] mx-auto justify-center items-center mt-[70px] mb-[142px]">
       <div className="flex flex-col items-start gap-[16px] self-stretch">
@@ -40,7 +42,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           userId={userId}
           memberData={memberData}
           ownerId={partyData?.owner_id}
-          isComplete={(myProfile && myProfile[0].warming_end) || false}
+          isComplete={myProfile === null || myProfile.length === 0 || (myProfile && myProfile[0].warming_end)}
         />
       ) : (
         <></>

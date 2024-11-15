@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { submit } from './WarmingMemberList';
 import ScoreCard from './ScoreCard';
+import Image from 'next/image';
 
 type Props = {
   memberSelect: number;
@@ -21,6 +22,26 @@ const WarmingComment = ({ memberSelect, userId, partyId, memberId, submitArr, se
     setCommentArr(thisSubmitData.comment);
   }, [memberSelect]);
 
+  const setSubmit = (comment: string) => {
+    setCommentArr((current) => [...current, comment]);
+    setSubmitArr((current) => {
+      const data = current.map((n) => {
+        if (n.warming_user_id === memberId) {
+          return {
+            warmer_id: userId,
+            warming_user_id: memberId,
+            party_id: partyId,
+            temperature: score,
+            comment: [...commentArr, comment]
+          };
+        }
+        return n;
+      });
+
+      return data;
+    });
+  };
+
   return (
     <>
       <div className="flex flex-row py-[8px] justify-between items-center self-stretch">
@@ -38,35 +59,24 @@ const WarmingComment = ({ memberSelect, userId, partyId, memberId, submitArr, se
           );
         })}
       </div>
-      <div>
+      <div className="flex flex-col w-full items-start gap-[8px] rounded-[4px]">
         {getCommentArr(score).length > 0 ? (
           getCommentArr(score).map((comment) => {
             return (
-              <div key={comment}>
-                <p
-                  className={commentArr.some((n) => comment === n) ? 'text-primary-500' : ''}
-                  onClick={() => {
-                    setCommentArr((current) => [...current, comment]);
-                    setSubmitArr((current) => {
-                      const data = current.map((n) => {
-                        if (n.warming_user_id === memberId) {
-                          return {
-                            warmer_id: userId,
-                            warming_user_id: memberId,
-                            party_id: partyId,
-                            temperature: score,
-                            comment: [...commentArr, comment]
-                          };
-                        }
-                        return n;
-                      });
-
-                      return data;
-                    });
-                  }}
-                >
-                  {comment}
-                </p>
+              <div
+                key={comment}
+                onClick={() => setSubmit(comment)}
+                className="flex w-full py-[4px] px-[8px] items-center gap-[8px] self-stretch rounded-[4px] bg-Grey-50"
+              >
+                <div className="flex p-[4px]">
+                  <Image
+                    src={`/checkBox/check_${commentArr.some((n) => n === comment) ? 'ok' : 'not'}.svg`}
+                    width={16}
+                    height={16}
+                    alt="체크박스"
+                  />
+                </div>
+                <p className="body-s text-static-black">{comment}</p>
               </div>
             );
           })
