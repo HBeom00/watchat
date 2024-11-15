@@ -13,7 +13,6 @@ export const useLiveSubscribe = (roomId: string, queryClient: QueryClient) => {
     const channel: RealtimeChannel = browserClient
       .channel(`team_user_profile`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'team_user_profile' }, (payload) => {
-        console.log(payload, 'payload');
         queryClient.setQueryData<UserInfo[]>(['members', roomId], (oldMembers = []) => [
           ...oldMembers,
           payload.new as UserInfo
