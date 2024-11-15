@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -18,9 +19,16 @@ const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
           }
           setOpen(true);
         }}
-        className="font-semibold text-[15px] leading-6"
       >
-        모집하기
+        <div className="flex flex-col items-center">
+          <Image src={'/headerIcon/recruit.svg'} className="hidden mobile:flex" width={24} height={24} alt="모집하기" />
+          <p
+            className={`body-m-bold text-Grey-900 text-center
+          mobile:text-Grey-300 mobile:body-xs-bold`}
+          >
+            모집하기
+          </p>
+        </div>
       </DialogTrigger>
       <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] p-0 gap-0">
         <DialogHeader className="flex py-6">

@@ -1,5 +1,6 @@
 // 팔로잉 목록 가져오기
 
+import { FollowingUser } from '@/types/followingUser';
 import browserClient from '@/utils/supabase/client';
 
 // 팔로잉 중인 유저 데이터를 가져옴
@@ -27,20 +28,6 @@ export const getFollowerData = async (userId: string | undefined) => {
   if (followerCount > 0) {
   }
   const followIds = data?.map((f) => f.follow_id as string);
-
-  type followingUserData =
-    | {
-        user_id: string;
-        nickname: string;
-        profile_img: string;
-      }[]
-    | null;
-
-  type FollowingUser = {
-    user_id: string;
-    nickname: string;
-    profile_img: string;
-  };
 
   const { data: followingUserData, error: followingUserError } = await browserClient
     .from('user')

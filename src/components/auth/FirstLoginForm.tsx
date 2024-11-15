@@ -226,13 +226,13 @@ const FirstLoginForm = () => {
     }
   };
 
+  // 이미지파일 유효성 검사
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
       const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
 
-      // 선택된 파일의 MIME 타입이 유효한지 확인
       if (!validImageTypes.includes(file.type)) {
         alert('허용되지 않는 파일 확장자입니다! PNG, JPEG, JPG, GIF 파일만 업로드 가능합니다.');
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useParticipatingParty } from '@/store/useParticipatingParty';
+import { useParticipatingParty } from '@/utils/myPage/useParticipatingParty';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -70,6 +70,7 @@ const MyParticipatingParty = () => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

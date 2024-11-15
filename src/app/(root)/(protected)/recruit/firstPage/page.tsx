@@ -186,24 +186,26 @@ const RecruitFirstPage = () => {
 
   // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
-    !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
+    !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || duration_time > 480;
 
   return (
     <div className="grid place-items-center ">
       <h1 className="text-[28px] font-bold mt-[70px]">파티 모집하기</h1>
-      <input
-        type="text"
+      <textarea
+        name="파티이름"
         placeholder="파티 이름"
+        maxLength={20}
         value={party_name}
         onChange={(e) => setPartyInfo({ party_name: e.target.value })}
-        className="bg-Grey-50 px-[16px] py-[12px] w-[519px] h-[48px] rounded-lg mt-[24px] border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
+        className="bg-Grey-50 px-[16px] py-[12px] w-[519px] h-[48px] resize-none overflow-hidden appearance-none rounded-lg mt-[24px] border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
-      <input
-        type="text"
+      <textarea
+        name="파티소개"
         placeholder="파티에 대해서 소개해주세요."
+        maxLength={1000}
         value={party_detail}
         onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
-        className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[156px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
+        className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[156px] resize-none overflow-hidden appearance-none rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
       />
       <SearchComponent
         videoName={video_name}
@@ -214,7 +216,7 @@ const RecruitFirstPage = () => {
       <div className="flex space-x-[20px] mt-[16px] max-h-[360px]">
         {/* 포스터 */}
         {video_name && video_image && (
-          <Image src={video_image} alt="선택된 포스터" width={250} height={360} className="rounded-md" />
+          <Image src={video_image} alt="선택된 포스터" width={250} height={360} loading="lazy" className="rounded-md" />
         )}
 
         <div className="space-y-[15px]">
@@ -266,6 +268,7 @@ const RecruitFirstPage = () => {
                   value={duration_time || ''}
                   onChange={(e) => {
                     const value = Number(e.target.value);
+
                     if (value <= 480) {
                       setPartyInfo({ duration_time: value });
                       setError(null); // 오류 메시지 초기화
@@ -278,6 +281,7 @@ const RecruitFirstPage = () => {
                       setError('러닝타임은 최소 10분까지 입력 가능합니다');
                     }
                   }}
+                  disabled={!!duration_time}
                   className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
                 />
                 {duration_time !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}

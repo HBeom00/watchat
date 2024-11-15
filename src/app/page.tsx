@@ -4,7 +4,7 @@ import RecruitList from '@/components/home/RecruitList';
 
 const Main = async () => {
   return (
-    <div className="font-Pretendard w-[1060px] m-auto">
+    <div className="w-[1060px] m-auto mobile:w-[375px] mobile:px-[20px]">
       <Banner />
       <MyParty />
       <RecruitList />

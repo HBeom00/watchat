@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Progress } from '@/components/ui/progress';
 import { usePathname } from 'next/navigation';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
-import { useTotalTemperature } from '@/store/getWarming';
+import { useTotalTemperature } from '@/utils/myPage/getWarming';
 
 export const WarmingProgress = () => {
   const pathname = usePathname();
