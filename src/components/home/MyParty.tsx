@@ -8,6 +8,7 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { partyInfo } from '@/types/partyInfo';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const MyParty = () => {
   const params = useSearchParams();
@@ -58,15 +59,14 @@ const MyParty = () => {
           {data && data.length > 0 ? (
             <div className="grid grid-cols-5 gap-x-5 gap-y-8 text-Grey-900">
               {data
-                .filter((n) => !(n?.situation === '종료'))
+                .filter((n) => n && getViewStatus(n) === '시청중')
+                .concat(data.filter((n) => n && getViewStatus(n) !== '시청중'))
                 .map((party) => {
                   if (party) {
                     return (
-                      <RecruitCard
-                        key={party.party_id}
-                        data={party}
-                        end={party.situation === '종료' || getViewStatus(party) === '시청완료'}
-                      />
+                      <Link key={party.party_id} href={`/party/${party.party_id}`}>
+                        <RecruitCard data={party} end={getViewStatus(party) === '시청완료'} />
+                      </Link>
                     );
                   }
                 })}

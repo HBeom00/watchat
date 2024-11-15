@@ -41,7 +41,7 @@ const MyRecommendParty = () => {
       <div className="flex justify-between mb-4">
         <h3 className="title-m">이런 파티는 어떠세요?</h3>
         {recommendParty && recommendParty.length > 0 ? (
-          <Link href={'/myPage/recommended-party'} className="body-s text-[#c2c2c2]">
+          <Link href={'/my-page/recommended-party'} className="body-s text-[#c2c2c2]">
             더보기
           </Link>
         ) : (
@@ -70,8 +70,8 @@ const MyRecommendParty = () => {
           })
         ) : (
           <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
-            <Image src={doesntExist} width={73} height={73} alt="주최한 파티가 없습니다" />
-            <p className="body-m text-Grey-600">주최한 파티가 없습니다.</p>
+            <Image src={doesntExist} width={73} height={73} alt="추천 파티가 없습니다" />
+            <p className="body-m text-Grey-600">추천 파티가 없습니다.</p>
           </li>
         )}
       </ul>

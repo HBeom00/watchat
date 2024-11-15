@@ -1,24 +1,20 @@
 'use client';
 
 import { useOwnerParty } from '@/store/useOwnerParties';
-import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import doesntExist from '../../../../../../public/openEyeCat.svg';
+import doesntExist from '../../../public/openEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
+import { platform } from '@/types/partyInfo';
+import { usePathname, useSearchParams } from 'next/navigation';
 
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
-
-const MyOwnerParty = () => {
-  // 사용자 데이터 가져오기
-  const { data: userData, isPending, isError } = useFetchUserData();
-  const userId = userData?.user_id;
+export const ViewHostedParty = ({ userId }: { userId: string }) => {
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const userParam = params.get('user');
 
   // 페이지네이션 설정
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -40,16 +36,18 @@ const MyOwnerParty = () => {
 
   console.log(platform);
 
-  if (isPending || pendingOwnerParty) {
+  if (pendingOwnerParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || errorOwnerParty) {
+  if (errorOwnerParty) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
   return (
     <article className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m  mt-8 mb-4">내가 오너인 파티</h3>
+      <h3 className="title-m  mt-8 mb-4">
+        {pathname === '/my-page/hosted-party' ? '주최한 파티' : `${userParam}님이 주최한 파티`}
+      </h3>
       <ul className="flex flex-row gap-5 flex-wrap">
         {ownerParty && ownerParty.length > 0 ? (
           ownerParty.slice(start, end).map((party: MyPagePartyInfo) => {
@@ -83,5 +81,3 @@ const MyOwnerParty = () => {
     </article>
   );
 };
-
-export default MyOwnerParty;

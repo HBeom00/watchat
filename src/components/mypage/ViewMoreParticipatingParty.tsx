@@ -1,23 +1,19 @@
 'use client';
 
 import { useParticipatingParty } from '@/store/useParticipatingParty';
-import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import doesntExist from '../../../../../../public/closeEyeCat.svg';
+import doesntExist from '../../../public/closeEyeCat.svg';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
+import { platform } from '@/types/partyInfo';
+import { usePathname, useSearchParams } from 'next/navigation';
 
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
-
-const ParticipatingParty = () => {
-  // 사용자 데이터 가져오기
-  const { data: userData, isPending, isError } = useFetchUserData();
-  const userId = userData?.user_id;
+export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const userParam = params.get('user');
 
   // 페이지네이션 설정
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -35,16 +31,18 @@ const ParticipatingParty = () => {
   // 페이지 수 불러오기
   const pageCount = enjoyingParty ? Math.ceil(enjoyingParty.length / pageSlice) : 1;
 
-  if (isPending || pendingEnjoyingParty) {
+  if (pendingEnjoyingParty) {
     return <div>사용자 정보를 불러오는 중 입니다...</div>;
   }
-  if (isError || errorEnjoyingParty) {
+  if (errorEnjoyingParty) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
   return (
     <section className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m mt-8 mb-4">참여한 파티</h3>
+      <h3 className="title-m mt-8 mb-4">
+        {pathname === '/my-page/participating-party' ? '참여한 파티' : `${userParam}님이 참여한 파티`}
+      </h3>
       <ul className="flex flex-row gap-5 flex-wrap">
         {enjoyingParty && enjoyingParty.length > 0 ? (
           enjoyingParty.slice(start, end).map((party) => {
@@ -78,5 +76,3 @@ const ParticipatingParty = () => {
     </section>
   );
 };
-
-export default ParticipatingParty;

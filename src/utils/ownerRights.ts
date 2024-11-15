@@ -34,7 +34,6 @@ export const partyEnd = async (party_id: string) => {
   }
   if (!error) {
     const { error: invitedError } = await browserClient.from('invited').delete().eq('party_id', party_id);
-    console.log(invitedError?.message);
     if (!invitedError) {
       alert('파티가 종료되었습니다.');
       return true;

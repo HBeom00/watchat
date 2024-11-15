@@ -42,11 +42,9 @@ const PageSelect = ({
               .map((page) => {
                 return (
                   <button
-                    className={
-                      page === pageNumber
-                        ? 'flex w-8 h-8 bg-primary-400 rounded-full justify-center items-center self-stretch text-static-white text-center'
-                        : 'flex w-8 h-8 justify-center items-center self-stretch text-center'
-                    }
+                    className={`flex w-8 h-8 justify-center items-center self-stretch text-center rounded-full ${
+                      page === pageNumber ? 'bg-primary-400  text-static-white' : 'hover:bg-Grey-50'
+                    }`}
                     key={page}
                     onClick={() => setPageNumber(page)}
                   >
