@@ -4,8 +4,6 @@ import browserClient from '@/utils/supabase/client';
 
 // 팔로잉 중인 유저 데이터를 가져옴
 export const getFollowerData = async (userId: string | undefined) => {
-  console.log('userId => ', userId);
-
   if (!userId) {
     return { followerCount: 0, followerData: [] }; // userId가 없으면 빈 값 반환
   }

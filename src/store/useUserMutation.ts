@@ -21,7 +21,7 @@ const useUserMutation = () => {
     mutationFn: async (MutatedUser: MutatedUser) => {
       const { user, file, profile_image_name, nickname, pathname, platforms, genres, deleteOldImages } = MutatedUser;
 
-      if (pathname === '/mypage/edit' && user) {
+      if (pathname === '/my-page/edit' && user) {
         await updateUserProfile(user, file, profile_image_name, nickname, platforms, genres, deleteOldImages);
       } else if (user) {
         await registerUser(user, file, profile_image_name, nickname, platforms, genres);
@@ -30,7 +30,7 @@ const useUserMutation = () => {
     onSuccess: (data, MutatedUser) => {
       const { pathname } = MutatedUser;
 
-      if (pathname === '/mypage/edit') {
+      if (pathname === '/my-page/edit') {
         alert('수정이 완료되었습니다.');
       } else {
         alert('등록되었습니다.');

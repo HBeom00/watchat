@@ -51,7 +51,8 @@ const PlayBar = ({ startTime, duration }: { startTime: string; duration: number 
 export default PlayBar;
 
 const getPlayTime = (startTime: string) => {
-  const startTimeArr = startTime.split('.')[0].split('T')[1].split(':').map(Number);
+  const temp = startTime.includes('.') ? '.' : '+';
+  const startTimeArr = startTime.split(temp)[0].split('T')[1].split(':').map(Number);
   const startPlayTime = startTimeArr[0] * 60 * 60 + startTimeArr[1] * 60 + startTimeArr[2];
 
   const myTime = new Date();
