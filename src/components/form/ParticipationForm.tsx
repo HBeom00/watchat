@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
+import { useDeleteInviteMutation } from '@/utils/myPage/usdDeleteInvite';
 import uploadImage from '@/utils/fileUploader/uploadImage';
 import submitParticipation from '@/utils/participation/submitParticipation';
 import { useFetchUserData } from '@/store/userStore';

@@ -56,6 +56,20 @@ export const getRecommendedMembers = async (userId?: string) => {
   // 팔로잉된 사용자 목록에서 user_id만 추출
   const followedUserIds = followerData?.map((user) => user.user_id) || [];
 
+  // 사용자가 참여한 파티를 가져오기
+  const { data: userParties, error: userPartiesError } = await browserClient
+    .from('team_user_profile')
+    .select('party_id')
+    .eq('user_id', userId);
+
+  if (userPartiesError) {
+    console.error('사용자가 참여한 파티 목록을 가져오지 못했습니다 => ', userPartiesError.message);
+    return [];
+  }
+
+  const userPartyIds = userParties.map((party) => party.party_id);
+
+  // 같은 파티였던 다른 유저들 찾기 (7일 전까지)
   const { data, error } = await browserClient
     .from('party_info')
     .select(
@@ -76,6 +90,7 @@ export const getRecommendedMembers = async (userId?: string) => {
       )
         `
     )
+    .in('party_id', userPartyIds)
     .gte('watch_date', oneWeekAgo.toISOString().split('T')[0]) // 7일 전까지의 데이터만 가져온다
     .returns<RecentParticipantsData[]>();
 

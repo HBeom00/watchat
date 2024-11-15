@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFetchUserData, useFetchUserId, useMypageUserData } from '@/store/userStore';
-import { useFollowData } from '@/store/useFollowData';
+import { useFollowData } from '@/utils/myPage/useFollowData';
 import edit from '../../../public/edit.svg';
 import { platformArr } from '@/constants/prefer';
 import { FollowModal } from './FollowModal';

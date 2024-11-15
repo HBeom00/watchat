@@ -1,4 +1,4 @@
-import { NextButton, PrevButton } from '@/store/useMypageCarouselButton';
+import { NextButton, PrevButton } from '@/utils/myPage/useMypageCarouselButton';
 import Image from 'next/image';
 import arrow_forward_ios from '../../../public/arrow_forward_ios.svg';
 import arrow_back_ios from '../../../public/arrow_back_ios.svg';
