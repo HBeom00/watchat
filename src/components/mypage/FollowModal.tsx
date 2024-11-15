@@ -26,7 +26,7 @@ export const FollowModal: React.FC<FollowerProps> = ({ followerCount, followerDa
   console.log(otherUserFollow);
 
   // 팔로우 목록 상태 설정: "/my-page"일 경우 다른 유저의 팔로우 목록을 사용
-  const followerList = isMyPage ? followerData : otherUserFollow?.followerData;
+  const followerList = isMyPage ? followerData : otherUserFollow?.followerData ?? [];
 
   return (
     <Dialog>
@@ -41,7 +41,11 @@ export const FollowModal: React.FC<FollowerProps> = ({ followerCount, followerDa
         </DialogHeader>
         <div>
           <p className="pb-2 label-s text-Grey-600">팔로우 {followerCount}명</p>
-          {isMyPage ? <IsMypageFollowList userId={userId} followerList={followerList} /> : <IsOtherUserFollowList />}
+          {isMyPage ? (
+            <IsMypageFollowList userId={userId} followerList={followerList} />
+          ) : (
+            <IsOtherUserFollowList followerList={followerList} userId={userId} />
+          )}
         </div>
         <DialogDescription></DialogDescription>
       </DialogContent>

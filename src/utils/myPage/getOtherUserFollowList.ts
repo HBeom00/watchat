@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import browserClient from '../supabase/client';
+import { FollowingUser } from '@/types/followingUser';
 
 export const getOtherUserFollowList = async (nickname: string | undefined) => {
   if (!nickname) {
-    return { followerCount: 0, followerData: [] };
+    return { followerCount: 0, followerData: [] as FollowingUser[] };
   }
 
   // 닉네임을 기반으로 유저 정보를 가져옴
@@ -54,6 +55,12 @@ export const getOtherUserFollowList = async (nickname: string | undefined) => {
 export const useOtherUserFollowData = (userId: string | null | undefined) => {
   return useQuery({
     queryKey: ['otherUserFollowData', userId],
-    queryFn: () => getOtherUserFollowList(userId || undefined)
+    queryFn: () => getOtherUserFollowList(userId || undefined),
+    select: (data) => {
+      return {
+        followerCount: data.followerCount,
+        followerData: data.followerData as FollowingUser[] // 데이터가 FollowingUser[] 타입임을 명시
+      };
+    }
   });
 };
