@@ -57,7 +57,8 @@ const config: Config = {
           1000: '#0F0F0F'
         },
         boxShadow: {
-          'custom-light': '0px 4px 4px 0px rgba(0, 0, 0, 0.05)'
+          'custom-light': '0px 4px 4px 0px rgba(0, 0, 0, 0.05)',
+          headerShadow: '0 -4px -4px rgba(0, 0, 0, 0.10)'
         },
         static: { black: '#000', white: '#FFF' },
         muted: {
