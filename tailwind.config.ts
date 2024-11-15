@@ -93,7 +93,10 @@ const config: Config = {
       }
     },
     screens: {
-      mobile: { max: '375px' }
+      mobile: { max: '480px' },
+      mobile_row: { max: '768px' },
+      tablet: { max: '1024px' },
+      desktop: { max: '1280px' }
     }
   }
 };
