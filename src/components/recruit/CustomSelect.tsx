@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CustomSelectProps } from '@/types/custom';
+import { motion } from 'framer-motion';
 
 const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,13 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange })
         </svg>
       </div>
       {isOpen && (
-        <ul className="absolute left-0 right-0 mt-1 bg-white border border-Grey-300 rounded-md shadow-lg z-30 h-[152px] overflow-y-auto">
+        <motion.ul
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+          className="absolute left-0 right-0 mt-1 bg-white border border-Grey-300 rounded-md shadow-lg z-30 overflow-y-auto"
+        >
           {options.map((option) => (
             <li
               key={option.value}
@@ -37,7 +44,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange })
               {option.label}
             </li>
           ))}
-        </ul>
+        </motion.ul>
       )}
     </div>
   );

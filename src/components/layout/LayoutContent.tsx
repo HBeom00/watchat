@@ -23,3 +23,5 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
     </div>
   );
 }
+
+// flex로 중간 컨텐츠 길이 채우기
