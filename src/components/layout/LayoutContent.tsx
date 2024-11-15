@@ -12,7 +12,9 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
   return (
     <div className="flex flex-col">
       {!hideHeader && <Header />}
-      <main className={!hideHeader ? ' mt-[80px] overflow-auto' : '  px-10 mx-auto overflow-auto'}>{children}</main>
+      <main className={!hideHeader ? ' mt-[80px] overflow-auto mobile:mt-[58px]' : '  px-10 mx-auto overflow-auto'}>
+        {children}
+      </main>
       {!hideFooter.some((path) => pathname.startsWith(path)) && <Footer />}
     </div>
   );
