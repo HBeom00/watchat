@@ -82,7 +82,7 @@ const WarmingMemberList = ({
           disabled={!done || memberSelect === memberData.length - 1}
           onClick={() => setMemberSelect((current) => current + 1)}
         >
-          다음
+          {memberSelect === memberData.length - 1 ? '완료' : '다음'}
         </button>
         <SubmitDialog submitArr={submitArr} userId={userId} party_id={partyId} />
       </div>

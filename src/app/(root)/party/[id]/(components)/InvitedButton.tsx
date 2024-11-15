@@ -93,7 +93,11 @@ const InvitedButton = ({
                     ))}
                   </div>
                   <div className="p-4 w-full">
-                    <button className="btn-l w-full" onClick={() => inviteHandler(partyNumber, inviteeId, setMessage)}>
+                    <button
+                      className={inviteeId === '' ? 'disabled-btn-l w-full' : 'btn-l w-full'}
+                      disabled={inviteeId === ''}
+                      onClick={() => inviteHandler(partyNumber, inviteeId, setMessage)}
+                    >
                       초대하기
                     </button>
                   </div>
