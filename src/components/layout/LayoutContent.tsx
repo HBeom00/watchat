@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const hideHeader = pathname.startsWith('/chat');
-  const hideFooter = ['/login', '/signup', '/recruit', '/myPage/edit', '/chat', '/warming'];
+  const hideFooter = ['/login', '/signup', '/recruit', '/my-page/edit', '/chat', '/warming'];
 
   return (
     <div className="flex flex-col">
