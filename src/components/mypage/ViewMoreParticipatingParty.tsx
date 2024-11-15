@@ -1,6 +1,6 @@
 'use client';
 
-import { useParticipatingParty } from '@/store/useParticipatingParty';
+import { useParticipatingParty } from '@/utils/myPage/useParticipatingParty';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import doesntExist from '../../../public/closeEyeCat.svg';
@@ -59,6 +59,7 @@ export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

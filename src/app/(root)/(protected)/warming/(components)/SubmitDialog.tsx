@@ -37,7 +37,7 @@ const SubmitDialog = ({ submitArr, userId, party_id }: { submitArr: submit[]; us
     if (error) {
       console.log(error.message);
     }
-    router.replace('/myPage');
+    router.replace('/my-page');
     setDisabled(false);
   };
 

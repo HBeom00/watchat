@@ -6,7 +6,7 @@ import { UserInfo } from '@/types/teamUserProfile';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../ui/Dialog';
-import { follow, unfollow } from '@/store/followUnfollow';
+import { follow, unfollow } from '@/utils/myPage/followUnfollow';
 import award_image from '../../../public/award_star.svg';
 
 const MemberList = ({
@@ -24,6 +24,15 @@ const MemberList = ({
   exitParty: ({ id, nickname }: { id: string; nickname: string }) => void;
 }) => {
   const [followStatus, setFollowStatus] = useState<{ [key: string]: boolean }>({});
+
+  // 이름순으로 정렬한 후 자기 자신과 방장 순서를 조정
+  const sortedData = members.sort((a, b) => a.nickname.localeCompare(b.nickname));
+
+  // 자기 자신, 방장, 그 외 사용자 순서로 배열 재배치
+  const sortedByRole = sortedData
+    .filter((user) => user.user_id === userId) // 자기 자신
+    .concat(sortedData.filter((user) => user.user_id === ownerId && user.user_id !== userId)) // 방장 (자기 자신이 방장이 아닌 경우)
+    .concat(sortedData.filter((user) => user.user_id !== userId && user.user_id !== ownerId)); // 그 외 사용자들
 
   // 팔로우 상태 가져오기
   useQuery({
@@ -66,7 +75,7 @@ const MemberList = ({
 
   return (
     <div className="w-[340px] px-[20px] py-[8px] flex flex-col items-start gap-[16px]">
-      {members.map((el) => {
+      {sortedByRole.map((el) => {
         return (
           <div key={el.profile_id} className="flex justify-between items-center self-stretch gap-[8px]">
             <div className="flex items-center gap-[8px]">

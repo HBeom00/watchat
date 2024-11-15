@@ -4,15 +4,11 @@ import { useFetchUserData } from '@/store/userStore';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import doesntExist from '../../../../../../public/closeEyeCat.svg';
-import { useRecommendParty } from '@/store/useRecommendParty';
+import { useRecommendParty } from '@/utils/myPage/useRecommendParty';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from '@/components/mypage/MyVerticalCard';
 import PageSelect from '@/components/home/PageSelect';
-
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
+import { platform } from '@/types/partyInfo';
 
 const RecommendedParty = () => {
   // 사용자 데이터 가져오기
@@ -61,6 +57,7 @@ const RecommendedParty = () => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

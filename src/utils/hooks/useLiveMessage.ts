@@ -24,7 +24,6 @@ export const useLiveMessage = (roomId: string) => {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'team_user_profile', filter: `party_id=eq.${roomId}` },
         (payload) => {
-          console.log(payload, 'payload');
           addNewUserInfo(payload.new as UserInfo);
 
           // 새로운 멤버 입장 메시지 생성

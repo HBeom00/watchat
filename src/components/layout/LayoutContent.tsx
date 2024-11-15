@@ -7,14 +7,14 @@ import Footer from '@/components/layout/Footer';
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const hideHeader = pathname.startsWith('/chat');
-  const hideFooter = ['/login', '/signup', '/recruit', '/myPage/edit', '/chat', '/warming'];
+  const hideFooter = ['/login', '/signup', '/recruit', '/my-page/edit', '/chat', '/warming'];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen">
       {!hideHeader && <Header />}
       <main
         className={
-          !hideHeader ? ' mt-[80px] overflow-auto mobile:mt-[58px]' : ' px-10 mx-auto overflow-auto'
+          !hideHeader ? 'flex-1 mt-[80px] overflow-auto mobile:mt-[58px]' : 'flex-1  px-10 mx-auto overflow-auto'
         }
       >
         {children}

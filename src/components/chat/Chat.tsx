@@ -98,13 +98,13 @@ export default function Chat({ roomId }: { roomId: string }) {
                       <span className="text-Grey-600 text-center caption-m">
                         {createdAt.toISOString().slice(11, 16).split('T').join(' ')}
                       </span>
-                      <div className="px-[16px] py-[8px] justify-center items-center rounded-[19px] bg-primary-400 body-s text-white">
+                      <div className="max-w-[262px] text-start break-keep break-words px-[16px] py-[8px] justify-center items-center rounded-[19px] bg-primary-400 body-s text-white">
                         {msg.content}
                       </div>
                     </div>
                   ) : (
                     <div className="flex justify-start items-end px-[54px] gap-[4px]">
-                      <div className="px-[16px] py-[8px] justify-center items-center rounded-[19px] bg-white body-s text-Grey-500">
+                      <div className="max-w-[262px] text-start break-keep break-words px-[16px] py-[8px] justify-center items-center rounded-[19px] bg-white body-s text-Grey-500">
                         {msg.content}
                       </div>
                       <span className="text-Grey-600 text-center caption-m">
