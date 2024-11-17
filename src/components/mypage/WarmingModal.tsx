@@ -7,6 +7,7 @@ import group from '../../../public/primaryGroup.svg';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
 import { useTotalComments, useTotalTemperature } from '@/utils/myPage/getWarming';
 import { usePathname } from 'next/navigation';
+import doesntExist from '../../../public/nobody.svg';
 
 const WarmingModal = () => {
   const pathname = usePathname();
@@ -76,7 +77,8 @@ const WarmingModal = () => {
             ))}
           </ul>
         ) : (
-          <div className="flex flex-col items-center mt-[16px]">
+          <div className="flex flex-col items-center mt-[32px] mb-[40px]">
+            <Image src={doesntExist} width={21} height={24} alt="최근 함께한 파티원이 없습니다." />
             <p className="body-s text-Grey-600">받은 후기가 아직 없습니다</p>
           </div>
         )}

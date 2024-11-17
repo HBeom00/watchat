@@ -44,7 +44,8 @@ const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, 
       }
     >
       <div
-        className="relative h-[280px] rounded-[4px] overflow-hidden "
+        className={`relative h-[280px] rounded-[4px] overflow-hidden 
+          mobile:h-[220px]`}
         onClick={() => (party.privacy_setting === false && pathname !== '/my-page' ? setOpen(true) : () => {})}
       >
         <Image
@@ -78,7 +79,7 @@ const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, 
                 pathname === '/my-page/participating-party' ||
                 pathname === '/my-page/hosted-party') &&
               sevenDaysAfterEndTime(party.end_time) < currentDate ? (
-                <div className="absolute bottom-0 text-white label-l bg-gray-400 w-full h-7 flex justify-center items-center gap-1">
+                <div className="absolute bottom-0 text-white label-l bg-Grey-400 w-full h-7 flex justify-center items-center gap-1">
                   <Image src={editReview} width={16} height={16} alt="후기 작성불가" />
                   <span>후기 작성하기</span>
                 </div>
@@ -176,8 +177,10 @@ const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, 
           />
           <p className="label-m ml-[6px] after:content-['│'] after:text-[#c2c2c2]">{cutUserNameValue}</p>
           <p className="label-m">
-            <span className="text-primary-400">{party.currentPartyPeople}</span>명 참여 ({party.currentPartyPeople}/
-            {party.limited_member})
+            <span className="text-primary-400">{party.currentPartyPeople}</span>명 참여{' '}
+            <span className="mobile:hidden">
+              ({party.currentPartyPeople}/{party.limited_member})
+            </span>
           </p>
         </div>
       </div>

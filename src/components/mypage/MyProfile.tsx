@@ -38,26 +38,39 @@ const MyProfile = () => {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
   return (
-    <section className="bg-[#f5f5f5] py-8  w-full">
-      <div className=" gap-4 m-auto w-[1060px] flex flex-row items-center">
-        <Image
-          src={
-            otherUserData?.profile_img ||
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
-          }
-          alt="프로필 이미지"
-          width={100}
-          height={100}
-          style={{
-            objectFit: 'cover',
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%'
-          }}
-        />
+    <section className="bg-[#f5f5f5] py-8  w-full mobile:overflow-hidden">
+      <div
+        className={`
+          gap-4 m-auto w-[1060px] flex flex-row items-center 
+          mobile:flex-col mobile:justify-start mobile:mx-[20px] mobile:w-full mobile:items-start
+          `}
+      >
+        <div className="flex items-center mobile:gap-[16px]">
+          <div className="relative w-[100px] h-[100px] mobile:w-[80px] mobile:h-[80px] rounded-full overflow-hidden">
+            <Image
+              src={
+                otherUserData?.profile_img ||
+                'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
+              }
+              alt="프로필 이미지"
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          {/* 모바일 닉네임영역 */}
+          <div className="flex-row gap-2 hidden mobile:flex ">
+            <h3 className="body-l-bold">{otherUserData?.nickname}</h3>
+            {pathname === '/my-page' ? (
+              <Link href={'/my-page/edit'}>
+                <Image src={edit} width={20} height={20} alt="프로필 편집" />
+              </Link>
+            ) : null}
+          </div>
+        </div>
         <article>
           {/* 닉네임영역 */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 mobile:hidden">
             <h3 className="body-l-bold">{otherUserData?.nickname}</h3>
             {pathname === '/my-page' ? (
               <Link href={'/my-page/edit'}>
@@ -67,7 +80,12 @@ const MyProfile = () => {
           </div>
 
           {/* 상세정보 영역 */}
-          <div className="flex flex-row gap-8">
+          <div
+            className={`
+            flex flex-row gap-8
+            mobile:flex-col mobile:gap-[16px]
+            `}
+          >
             {/* 식빵온도 */}
             <WarmingModal />
 
@@ -101,14 +119,22 @@ const MyProfile = () => {
             </div>
 
             {/* 장르 */}
-            <div className="flex flex-row items-center gap-2  body-xs">
-              <span>장르</span>
-              <ul className="flex flex-row items-center gap-2">
+            <div
+              className={`flex flex-row items-center gap-2  body-xs
+              mobile:items-start`}
+            >
+              <span className="mobile:whitespace-nowrap mobile:mt-[6px]">장르</span>
+              <ul
+                className={`
+                flex flex-row items-center gap-2
+                mobile:flex-wrap
+                `}
+              >
                 {Array.isArray(otherUserData?.platform) &&
                   otherUserData?.genre.map((genre, index) => (
                     <li
                       key={index}
-                      className="rounded-[8px] py-[6px] px-[12px]  border border-grey-300 text-gray-400 body-xs"
+                      className="rounded-[8px] py-[6px] px-[12px]  border border-grey-300 text-Grey-400 body-xs"
                     >
                       {genre}
                     </li>
