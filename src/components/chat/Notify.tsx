@@ -50,7 +50,12 @@ const Notify = ({ roomId }: { roomId: string }) => {
   return (
     <>
       {specialMessage && (
-        <div className="w-[700px] p-[16px] flex flex-col items-start bg-Grey-50">
+        <div
+          className={`
+        w-[700px] p-[16px] flex flex-col items-start bg-Grey-50
+        mobile:w-[375px]
+        `}
+        >
           <div className="flex py-[16px] justify-center items-center self-stretch rounded-lg bg-white box-shadow">
             <div className="flex flex-col justify-center items-center gap-[4px]">
               <Image src="/schedule.svg" alt="schedule" width={24} height={24} className="w-[24px] h-[24px]" />

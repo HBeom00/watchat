@@ -1,6 +1,7 @@
 'use client';
 
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -37,23 +38,31 @@ export default function SendMessageForm({ roomId }: { roomId: string }) {
   };
 
   return (
-    <form onSubmit={sendMessage} className="w-[700px] px-4 pb-4 flex flex-col items-start bg-Grey-50">
-      <div className="flex px-4 py-3 items-center self-stretch gap-2 rounded-lg bg-white">
+    <form
+      onSubmit={sendMessage}
+      className={`
+    w-[700px] flex flex-col items-start bg-Grey-50
+    mobile:w-[375px]
+    `}
+    >
+      <div className="flex px-[20px] items-center self-stretch gap-2 bg-white">
         <input
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="메시지를 입력하세요"
-          className="body-m text-Grey-800 flex-1 px-4 py-3"
+          placeholder="메시지를 입력하세요."
+          className="body-m text-Grey-800 flex-1 px-4 py-3 outline-none focus:outline-none"
         />
         <button
           type="submit"
           disabled={content === ''}
-          className={`w-[124px] ${
-            content === '' ? 'disabled-btn-m text-gray-400 cursor-not-allowed' : 'btn-m text-black cursor-pointer'
-          }`}
+          className={`${content === '' ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         >
-          전송
+          {content === '' ? (
+            <Image src="/arrow_circle_off.svg" alt="arrow_circle_off" width={24} height={24} />
+          ) : (
+            <Image src="/arrow_circle_on.svg" alt="arrow_circle_on" width={24} height={24} />
+          )}
         </button>
       </div>
     </form>

@@ -25,7 +25,12 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="h-[100vh] flex justify-center items-center">
-      <div className="w-[700px] bg-Grey-50">
+      <div
+        className={`
+        w-[700px] bg-Grey-50
+        mobile:w-[375px]
+        `}
+      >
         {/* 뒤로가기, 프로그램 정보, 사이드바 */}
         <div className="flex pt-[16px] justify-between items-center self-stretch bg-white">
           <div className="flex items-center">
@@ -41,7 +46,7 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
                 className="w-[24px] h-[24px] flex shrink-0"
               />
             </Link>
-            <div className="w-[545px] flex flex-col justify-center items-start">
+            <div className="flex flex-col justify-center items-start">
               <p className="body-l-bold text-center text-Grey-900">{data?.[0].party_name}</p>
               <p className="label-m text-Grey-700">{data?.[0].video_name}</p>
             </div>

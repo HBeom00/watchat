@@ -66,7 +66,7 @@ export default function Chat({ roomId }: { roomId: string }) {
           createdAt.setHours(createdAt.getHours() + 9);
 
           const isExpanded = expandedMessages[msg.created_at] || false;
-          const shouldShowMoreButton = msg.content.split('\n').length > 6 || msg.content.length > 300;
+          const shouldShowMoreButton = msg.content.split('\n').length > 6 || msg.content.length > 114;
 
           return (
             <div key={msg.created_at} className={`message mt-[4px] mb-[3px] ${isMyself ? 'text-right' : 'text-left'}`}>
