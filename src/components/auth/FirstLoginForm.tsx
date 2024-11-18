@@ -261,7 +261,7 @@ const FirstLoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSuccessHandler)}
-      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] "
+      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] mobile:px-[20px]"
     >
       <div className="w-[100px] h-[100px] relative m-auto mb-[32px]">
         <Image
@@ -313,6 +313,7 @@ const FirstLoginForm = () => {
 
       <div className="mb-[32px]">
         <h3 className=" body-m-bold mb-[8px]">플랫폼</h3>
+        <h5 className="body-xs  mb-[8px] text-Grey-600">플랫폼과 장르를 선택해주시면 파티를 추천해드려요.</h5>
         <ul className="flex flex-wrap gap-[8px]">
           {platformArr.map((platform, index) => {
             return (
@@ -336,7 +337,8 @@ const FirstLoginForm = () => {
       </div>
 
       <div className="mb-[64px]">
-        <h3 className=" body-m-bold mb-[8px]">장르</h3>
+        <h3 className=" body-m-bold">장르</h3>
+        <h5 className="body-xs  mb-[8px] text-Grey-600">최대 5개까지 선택이 가능합니다.</h5>
         <ul className="flex flex-wrap gap-[8px]">
           {genreArr.map((genre, index) => {
             return (
