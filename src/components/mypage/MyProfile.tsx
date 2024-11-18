@@ -10,6 +10,7 @@ import { platformArr } from '@/constants/prefer';
 import { FollowModal } from './FollowModal';
 import WarmingModal from './WarmingModal';
 import { usePathname } from 'next/navigation';
+import { MyTooltip } from './Tooltip';
 
 const MyProfile = () => {
   const pathname = usePathname();
@@ -87,11 +88,17 @@ const MyProfile = () => {
             `}
           >
             {/* 식빵온도 */}
-            <WarmingModal />
+            <div className="flex flex-row gap-[8px] items-center">
+              <p className="body-xs">식빵온도</p>
+              <MyTooltip />
+              <WarmingModal />
+            </div>
 
             {/* 팔로잉목록 */}
-            <FollowModal followerCount={followerCount} followerData={followerData} userId={userId} />
-
+            <p className="flex flex-row items-center gap-2 body-xs">
+              팔로잉
+              <FollowModal followerCount={followerCount} followerData={followerData} userId={userId} />
+            </p>
             {/* 플랫폼 */}
             <div className="flex flex-row items-center gap-2  body-xs">
               <span>플랫폼</span>

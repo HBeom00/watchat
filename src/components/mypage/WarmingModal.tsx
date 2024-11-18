@@ -1,6 +1,5 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
-import { MyTooltip } from './Tooltip';
 import { WarmingProgress } from './WarmingProgress';
 import Image from 'next/image';
 import group from '../../../public/primaryGroup.svg';
@@ -49,11 +48,7 @@ const WarmingModal = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="flex flex-row gap-[8px] items-center">
-          <p className="body-xs">식빵온도</p>
-          <MyTooltip />
-          <p className="body-xs-bold text-primary-400">{totalTemperature}℃</p>
-        </div>
+        <p className="body-xs-bold text-primary-400">{totalTemperature}℃</p>
       </DialogTrigger>
       <DialogContent className="w-[340px] gap-0 rounded-[8px]">
         <DialogHeader>

@@ -261,7 +261,7 @@ const FirstLoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSuccessHandler)}
-      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] mobile:px-[20px]"
+      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] mobile:mx-[20px] mobile:max-w-[355px]"
     >
       <div className="w-[100px] h-[100px] relative m-auto mb-[32px]">
         <Image
