@@ -62,31 +62,94 @@ const Banner = () => {
   return (
     <>
       {(searchText === '' || searchText === null) && (filter === '' || filter === null) ? (
-        <div className="embla w-full h-full relative mt-[16px] overflow-hidden" ref={emblaRef}>
+        <div className="embla  relative mt-[16px] overflow-hidden" ref={emblaRef}>
           <div className="embla_container flex">
-            <div className="embla_slide banner">
-              <Image src="/banner_1.jpg" alt="Slide1" width={1060} height={360} onClick={howToJoin} />
+            <div className="embla_slide banner ">
+              <Image
+                src="/banner/banner_1.jpg"
+                alt="Slide1"
+                width={1060}
+                height={360}
+                onClick={howToJoin}
+                className="block mobile:hidden"
+              />
+              <Image
+                src="/banner/mobile_banner_1.jpg"
+                alt="Slide1"
+                width={335}
+                height={360}
+                onClick={howToJoin}
+                className="hidden mobile:block"
+              />
             </div>
-            <div className="embla_slide banner">
-              <Image src="/banner_2.jpg" alt="Slide2" width={1060} height={360} onClick={howToRecuit} />
+
+            <div className="embla_slide banner block mobile:hidden">
+              <Image
+                src="/banner/banner_2.jpg"
+                alt="Slide2"
+                width={1060}
+                height={360}
+                onClick={howToRecuit}
+                className="block mobile:hidden"
+              />
+              <Image
+                src="/banner/mobile_banner_2.jpg"
+                alt="Slide2"
+                width={335}
+                height={360}
+                onClick={howToRecuit}
+                className="hidden mobile:block"
+              />
             </div>
-            <div className="embla_slide banner">
-              <Image src="/banner_3.jpg" alt="Slide3" width={1060} height={360} onClick={howToFollow} />
+
+            <div className="embla_slide banner block mobile:hidden">
+              <Image
+                src="/banner/banner_3.jpg"
+                alt="Slide3"
+                width={1060}
+                height={360}
+                onClick={howToFollow}
+                className="block mobile:hidden"
+              />
+              <Image
+                src="/banner/mobile_banner_3.jpg"
+                alt="Slide3"
+                width={335}
+                height={360}
+                onClick={howToFollow}
+                className="hidden mobile:block"
+              />
             </div>
-            <div className="embla_slide banner">
-              <Image src="/banner_4.jpg" alt="Slide4" width={1060} height={360} onClick={howToUse} />
+
+            <div className="embla_slide banner block mobile:hidden">
+              <Image
+                src="/banner/banner_4.jpg"
+                alt="Slide4"
+                width={1060}
+                height={360}
+                onClick={howToUse}
+                className="block mobile:hidden"
+              />
+              <Image
+                src="/banner/mobile_banner_4.jpg"
+                alt="Slide4"
+                width={335}
+                height={360}
+                onClick={howToUse}
+                className="hidden mobile:block"
+              />
             </div>
           </div>
 
           {/* 좌우 화살표 버튼 */}
           <button
-            className="absolute left-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px] flex justify-center items-center"
+            className="absolute left-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px] flex justify-center items-center mobile:hidden"
             onClick={scrollPrev}
           >
             <Image src="/arrow_left_2.svg" alt="User Icon" width={24} height={24} />
           </button>
           <button
-            className="absolute right-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px] flex justify-center items-center"
+            className="absolute right-[16px] top-1/2 transform -translate-y-1/2 z-10 hover:bg-white rounded-full w-[40px] h-[40px] flex justify-center items-center mobile:hidden"
             onClick={scrollNext}
           >
             <Image src="/arrow_right_2.svg" alt="User Icon" width={24} height={24} className="ml-[5px]" />
