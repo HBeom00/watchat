@@ -24,7 +24,7 @@ const submitParticipation = async (
       alert('프로필 업데이트를 실패했습니다');
     }
 
-    return;
+    return true;
   }
 
   // 파티 상태 확인하기
@@ -36,19 +36,20 @@ const submitParticipation = async (
       // 모집 마감으로 전환
       await memberFullSwitch(party_id);
     }
-    setMessage('마감된 파티입니다');
     // 초대된 상태면 초대 목록에서 해당 초대를 삭제
     if (invite_id) {
       deleteInviteMutation.mutate(invite_id);
     }
-    return;
+
+    setMessage('마감된 파티입니다');
+    return false;
   }
 
   // 참가하기
   const saveSuccess = await saveProfile(nickname, selectImg, upload_profile_img, party_id, user_Id);
   if (!saveSuccess) {
     alert('파티에 참가할 수 없습니다');
-    return;
+    return false;
   }
 
   // 이 참가하기로 인해 인원이 가득 찼다면 파티 상태를 모집 마감으로 전환
@@ -60,6 +61,7 @@ const submitParticipation = async (
     deleteInviteMutation.mutate(invite_id);
   }
   setMessage('파티에 참가하신 걸 환영합니다!');
+  return true;
 };
 
 export default submitParticipation;

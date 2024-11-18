@@ -3,19 +3,23 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import SelectDropBox from './SelectDropBox';
-import ListDiv from './ListDiv';
-import PageSelect from './PageSelect';
+
 import getSearchListPage from '@/reactQuery/queryFunc/Home/getSearchListPage';
 import getSearchList from '@/reactQuery/queryFunc/Home/getSearchList';
+
 import Image from 'next/image';
+import SelectDropBox from '../home/SelectDropBox';
+import ListDiv from '../home/ListDiv';
+import PageSelect from '../home/PageSelect';
+
+import type { filter, order } from '@/types/filter';
 
 const SearchList = ({ search }: { search: string }) => {
   const queryClient = useQueryClient();
   const params = useSearchParams();
 
-  const [order, setOrder] = useState<string>('write_time');
-  const [filter, setFilter] = useState<string>('전체');
+  const [order, setOrder] = useState<order>('write_time');
+  const [filter, setFilter] = useState<filter>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   // 모집 필터
@@ -61,16 +65,19 @@ const SearchList = ({ search }: { search: string }) => {
 
   if (isLoading || isPageLoading) <div>Loading......</div>;
   return (
-    <div className="mt-8 w-[1060px]">
-      <SelectDropBox
-        order={order}
-        setOrder={setOrder}
-        filter={filter}
-        setFilter={setFilter}
-        setPageNumber={setPageNumber}
-      />
+    <div className={`w-full`}>
       {data && data.length > 0 ? (
-        <ListDiv data={data} />
+        <div>
+          <SelectDropBox
+            order={order}
+            setOrder={setOrder}
+            filter={filter}
+            setFilter={setFilter}
+            setPageNumber={setPageNumber}
+          />
+          <ListDiv data={data} />
+          <PageSelect pageData={pageData} pageNumber={pageNumber} setPageNumber={setPageNumber} />
+        </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-2 pt-12 pb-[100px] h-[510px]">
           <Image src={'/searchCat.svg'} width={116} height={100} alt="검색 결과가 없습니다" />
@@ -83,7 +90,6 @@ const SearchList = ({ search }: { search: string }) => {
           </div>
         </div>
       )}
-      <PageSelect pageData={pageData} pageNumber={pageNumber} setPageNumber={setPageNumber} />
     </div>
   );
 };

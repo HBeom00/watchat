@@ -15,14 +15,22 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
   }
 
   return (
-    <div className="inline-flex w-full items-center pt-8 pl-8 pb-10 relative text-static-white">
-      <Image
-        src={`https://image.tmdb.org/t/p/original${partyData.backdrop_image}`}
-        className="relative brightness-50 -z-10"
-        layout="fill"
-        style={{ objectFit: 'cover' }}
-        alt={partyData.video_name}
-      />
+    <div
+      className={`inline-flex w-full items-center pt-8 pl-8 pb-10 relative text-static-white ${
+        partyData.backdrop_image === null && 'bg-Grey-500'
+      }`}
+    >
+      {partyData.backdrop_image !== null ? (
+        <Image
+          src={`https://image.tmdb.org/t/p/original${partyData.backdrop_image}`}
+          className="relative brightness-50 -z-10"
+          layout="fill"
+          style={{ objectFit: 'cover' }}
+          alt={partyData.video_name}
+        />
+      ) : (
+        <></>
+      )}
       <div className="flex flex-col gap-4 items-start">
         {/* 상단 */}
         <div className="flex flex-col items-start gap-2 self-stretch">

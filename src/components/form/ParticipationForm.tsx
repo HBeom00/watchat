@@ -57,7 +57,7 @@ const ParticipationForm = ({
         return;
       }
 
-      await submitParticipation(
+      const isSuccess = await submitParticipation(
         nickname,
         selectImg,
         upload_profile_img,
@@ -68,7 +68,7 @@ const ParticipationForm = ({
         invite_id
       );
 
-      if (!path.includes('/party')) {
+      if (!path.includes('/party') && isSuccess) {
         router.replace(`/party/${party_id}`);
       }
 
@@ -107,9 +107,16 @@ const ParticipationForm = ({
         return;
       }
 
-      await skipParticipation(data?.nickname, data?.profile_img, party_id, setMessage, deleteInviteMutation, invite_id);
+      const isSuccess = await skipParticipation(
+        data?.nickname,
+        data?.profile_img,
+        party_id,
+        setMessage,
+        deleteInviteMutation,
+        invite_id
+      );
 
-      if (!path.includes('/party')) {
+      if (!path.includes('/party') && isSuccess) {
         router.replace(`/party/${party_id}`);
       }
 

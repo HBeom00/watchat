@@ -29,16 +29,22 @@ const MemberList = ({
   const isMember = data?.some((n) => n.user_id === userId);
 
   return (
-    <div className="flex flex-col w-full gap-4 items-start">
-      <div className="flex flex-col w-[519px] items-start gap-2 text-Grey-900">
+    <div className="flex flex-col w-full gap-[32px] items-start">
+      <div
+        className={`flex flex-col w-full items-start gap-[8px] text-Grey-900
+        mobile:w-full`}
+      >
         <p className="self-stretch body-l-bold">파티 소개</p>
-        <div className="flex py-3 px-4 w-full items-center self-stretch rounded-lg bg-Grey-50">
+        <div className="flex py-[12px] px-[16px] w-[520px] items-center self-stretch rounded-[8px] bg-Grey-50">
           <p>{partyData.party_detail}</p>
         </div>
       </div>
-      <div className="flex flex-col w-[520px] items-start gap-4 mb-[71px]">
-        <div className="flex flex-row justify-between items-center self-stretch">
-          <div className="flex flex-col items-start w-[257px]">
+      <div
+        className={`flex flex-col items-start gap-[16px]
+        mobile:w-full`}
+      >
+        <div className="flex flex-row justify-between items-center self-stretch w-[520px]">
+          <div className="flex flex-col items-start">
             <p className="text-Grey-900 body-l-bold">참여 멤버</p>
             <p className="text-Grey-600 label-l">참여자 {data ? data.length : 0}명</p>
           </div>
@@ -48,7 +54,7 @@ const MemberList = ({
             <></>
           )}
         </div>
-        <div className="flex flex-col items-start gap-4 text-static-black body-s">
+        <div className="flex flex-col items-start gap-[16px] text-Grey-900 body-s">
           {data && data.length > 0 ? (
             data
               .filter((n) => n.user_id === partyData.owner_id)

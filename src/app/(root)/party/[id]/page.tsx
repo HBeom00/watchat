@@ -36,7 +36,10 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   const end = chatOpenClose(partyData) === '시청완료';
 
   return (
-    <div className="flex flex-col w-[1060px] m-auto">
+    <div
+      className={`flex flex-col w-[1060px] m-auto mb-[64px]
+    mobile:w-full mobile:px-[20px]`}
+    >
       <PartyHeader partyData={partyData} end={end} />
       <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />
     </div>
