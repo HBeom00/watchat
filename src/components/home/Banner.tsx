@@ -83,7 +83,7 @@ const Banner = () => {
               />
             </div>
 
-            <div className="embla_slide banner block mobile:hidden">
+            <div className="embla_slide banner">
               <Image
                 src="/banner/banner_2.jpg"
                 alt="Slide2"
@@ -102,7 +102,7 @@ const Banner = () => {
               />
             </div>
 
-            <div className="embla_slide banner block mobile:hidden">
+            <div className="embla_slide banner ">
               <Image
                 src="/banner/banner_3.jpg"
                 alt="Slide3"
@@ -121,7 +121,7 @@ const Banner = () => {
               />
             </div>
 
-            <div className="embla_slide banner block mobile:hidden">
+            <div className="embla_slide banner ">
               <Image
                 src="/banner/banner_4.jpg"
                 alt="Slide4"
