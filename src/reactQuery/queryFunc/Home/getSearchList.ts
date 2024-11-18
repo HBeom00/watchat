@@ -41,7 +41,6 @@ const getSearchList = async (
           .select('*')
           .range(startDataNumber(pageNumber), endDataNumber(pageNumber))
           .order(order, { ascending: false })
-          .gte('end_time', nowTime()) // 종료 시간이 지나지 않은 경우만
           .textSearch('video_platform', platformConversion(filter))
           .textSearch('video_name', wordConversion); // 검색어
 
