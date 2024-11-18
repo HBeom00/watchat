@@ -52,7 +52,7 @@ export const ViewHostedParty = ({ userId }: { userId: string }) => {
         {pathname === '/my-page/hosted-party' ? '주최한 파티' : `${userParam}님이 주최한 파티`}
       </h3>
       <ul
-        className={`flex flex-row gap-5
+        className={`flex flex-row gap-5 flex-wrap
          mobile:flex-wrap mobile:gap-x-[10px] mobile:gap-y-[16px] mobile:px-[20px]`}
       >
         {ownerParty && ownerParty.length > 0 ? (

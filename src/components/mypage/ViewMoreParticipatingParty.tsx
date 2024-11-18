@@ -47,7 +47,7 @@ export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
         {pathname === '/my-page/participating-party' ? '참여한 파티' : `${userParam}님이 참여한 파티`}
       </h3>
       <ul
-        className={`flex flex-row gap-5
+        className={`flex flex-row gap-5 flex-wrap
          mobile:flex-wrap mobile:gap-x-[10px] mobile:gap-y-[16px] mobile:px-[20px]`}
       >
         {enjoyingParty && enjoyingParty.length > 0 ? (
