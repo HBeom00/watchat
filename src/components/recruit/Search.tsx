@@ -39,9 +39,13 @@ export const SearchComponent: React.FC<SearchProps> = ({ videoName, setVideoName
   };
 
   return (
-    <div className="relative w-[519px] mt-[32px]">
+    <div
+      className={`relative w-[519px] mt-[32px]
+                     mobile:w-[335px]
+    `}
+    >
       <div className="flex ">
-        <h2>시청할 영상을 검색해 주세요.</h2>
+        <h2 className="font-semibold">시청할 영상을 검색해 주세요.</h2>
         <h2 className="text-purple-600">*</h2>
       </div>
       <div className="relative">

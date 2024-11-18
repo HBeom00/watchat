@@ -11,12 +11,13 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange })
   };
 
   return (
-    <div className="relative">
+    <div className={`relative mobile:w-[157px]`}>
       <div
-        className="px-4 py-2 h-12 w-[250px] border border-Grey-300 rounded-md cursor-pointer bg-white flex items-center justify-between"
+        className={`px-4 py-2 h-12 w-[250px] border border-Grey-300 rounded-md cursor-pointer bg-white flex items-center justify-between
+                    mobile:w-[157px]`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>{value || '시즌을 선택하세요'}</span>
+        <span className="text-Grey-300">{value || '시즌 선택'}</span>
         <svg
           className={`w-4 h-4 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           xmlns="http://www.w3.org/2000/svg"
