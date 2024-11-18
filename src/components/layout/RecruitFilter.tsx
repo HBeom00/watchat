@@ -27,19 +27,21 @@ const RecruitFilter = () => {
     >
       <Link
         href={pathname + '?' + createQueryString('watch', '')}
-        className={filter === '' || filter === null ? 'text-Grey-900' : 'text-Grey-400'}
+        className={
+          filter === '' || filter === null ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'
+        }
       >
         전체
       </Link>
       <Link
         href={pathname + '?' + createQueryString('watch', 'current')}
-        className={filter === 'current' ? 'text-Grey-900' : 'text-Grey-400'}
+        className={filter === 'current' ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'}
       >
         시청중
       </Link>
       <Link
         href={pathname + '?' + createQueryString('watch', 'recruiting')}
-        className={filter === 'recruiting' ? 'text-Grey-900' : 'text-Grey-400'}
+        className={filter === 'recruiting' ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'}
       >
         모집중
       </Link>

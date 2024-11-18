@@ -17,7 +17,7 @@ interface RecruitState {
   situation: string;
   popularity: number | null;
   date_recruitment: Date | null;
-  season_number: number | null;
+  season_number: number;
   genres: string[] | null;
   number_of_seasons: number;
 
@@ -42,7 +42,7 @@ export const useRecruitStore = create<RecruitState>((set) => ({
   situation: '모집중',
   popularity: null,
   date_recruitment: null,
-  season_number: null,
+  season_number: 1,
   genres: [],
   number_of_seasons: 0,
 
