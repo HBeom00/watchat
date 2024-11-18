@@ -74,7 +74,11 @@ const MemberList = ({
   };
 
   return (
-    <div className="w-[340px] px-[20px] py-[8px] flex flex-col items-start gap-[16px]">
+    <div
+      className={`w-[340px] px-[20px] py-[8px] flex flex-col items-start gap-[16px]
+    mobile:w-[375px]
+    `}
+    >
       {sortedByRole.map((el) => {
         return (
           <div key={el.profile_id} className="flex justify-between items-center self-stretch gap-[8px]">

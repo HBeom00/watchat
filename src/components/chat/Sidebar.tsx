@@ -101,16 +101,18 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
     <div
       className={`h-full w-[340px] bg-white fixed top-0 right-0 transform transition-transform duration-300 z-50 ${
         isVisible ? 'translate-x-0' : 'translate-x-full'
-      }`}
+      }
+      mobile:w-[375px]
+      `}
     >
-      <Image
-        src={close_img}
-        alt="close_img"
-        width={24}
-        height={24}
-        className="w-[24px] h-[24px] shrink-0 mt-[20px] ml-[20px] mb-[88px] cursor-pointer"
-        onClick={onClose}
-      />
+      <div
+        className={`
+        mt-[20px] mx-[20px] mb-[88px] cursor-pointer shrink-0
+        mobile:flex mobile:justify-end mobile:items-center
+        `}
+      >
+        <Image src={close_img} alt="close_img" width={24} height={24} className="w-[24px] h-[24px]" onClick={onClose} />
+      </div>
       {ownerId === userId ? (
         <div className="w-[340px] flex px-[20px] items-start">
           <button
@@ -154,9 +156,9 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
         exitParty={({ id, nickname }: { id: string; nickname: string }) => exitPartyMutation.mutate({ id, nickname })}
       />
       {ownerId !== userId ? (
-        <div className="p-[20px] w-[340px] flex flex-col items-start">
+        <div className="p-[20px] w-[340px] h-full mobile:w-[375px] flex flex-col items-start">
           <Dialog>
-            <DialogTrigger className="w-[300px] fixed bottom-[20px] outline-disabled-btn-l flex justify-center items-center gap-[4px] self-stretch">
+            <DialogTrigger className="w-[300px] fixed mobile:left-[50%] mobile:transform mobile:translate-x-[-50%] bottom-[20px] outline-disabled-btn-l flex justify-center items-center gap-[4px] self-stretch">
               파티 탈퇴
             </DialogTrigger>
             <DialogContent

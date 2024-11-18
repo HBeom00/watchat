@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import Notify from '@/components/chat/Notify';
+import MemberCount from '@/components/chat/MemberCount';
 
 export const metadata: Metadata = {
   title: '라이브 채팅방',
@@ -48,7 +49,10 @@ const ChatPage = async ({ params }: { params: { id: string } }) => {
             </Link>
             <div className="flex flex-col justify-center items-start">
               <p className="body-l-bold text-center text-Grey-900">{data?.[0].party_name}</p>
-              <p className="label-m text-Grey-700">{data?.[0].video_name}</p>
+              <div className="flex justify-center items-center">
+                <MemberCount roomId={roomId} />
+                <p className="label-m text-Grey-700">{data?.[0].video_name}</p>
+              </div>
             </div>
           </div>
           <SidebarToggle roomId={roomId} />

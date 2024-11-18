@@ -31,7 +31,7 @@ const Notify = ({ roomId }: { roomId: string }) => {
           const now = new Date();
 
           if (now >= eventDateTime) {
-            setSpecialMessage('다들 영상을 재생해주세요.');
+            setSpecialMessage('상단의 시간을 참고해서 함께 시청해요!');
             clearInterval(intervalId); // 이벤트 시간이 지나면 타이머 중지
           } else if (now >= tenMinutesBefore && now < eventDateTime) {
             setSpecialMessage('곧 영상이 시작합니다. 자리에 착석해 주세요.');
