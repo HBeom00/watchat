@@ -35,7 +35,7 @@ export const FollowModal: React.FC<FollowerProps> = ({ followerCount, followerDa
           팔로잉 <span className="body-xs-bold text-primary-400">{followerCount}</span>
         </p>
       </DialogTrigger>
-      <DialogContent className="w-[340px] pl-5 pr-2">
+      <DialogContent className="w-[340px] pl-5 pr-2 rounded-[8px]">
         <DialogHeader>
           <DialogTitle>팔로우</DialogTitle>
         </DialogHeader>

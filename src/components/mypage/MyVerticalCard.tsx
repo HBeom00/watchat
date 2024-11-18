@@ -55,6 +55,7 @@ const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, 
           }
           alt={`${party?.video_name} 영상 이미지`}
           fill
+          style={{ objectFit: 'cover' }}
           className="z-0  group-hover:scale-105 transition duration-300"
         />
         {/* 파티 상태 정보 */}

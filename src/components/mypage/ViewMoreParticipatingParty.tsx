@@ -39,11 +39,17 @@ export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
   }
 
   return (
-    <section className="max-w-[1060px] m-auto mb-8">
-      <h3 className="title-m mt-8 mb-4">
+    <section
+      className={`m-auto mb-8 w-[1060px]
+      mobile:w-full `}
+    >
+      <h3 className="title-m mt-8 mb-4 mobile:px-[20px]">
         {pathname === '/my-page/participating-party' ? '참여한 파티' : `${userParam}님이 참여한 파티`}
       </h3>
-      <ul className="flex flex-row gap-5 flex-wrap">
+      <ul
+        className={`flex flex-row gap-5
+         mobile:flex-wrap mobile:gap-x-[10px] mobile:gap-y-[16px] mobile:px-[20px]`}
+      >
         {enjoyingParty && enjoyingParty.length > 0 ? (
           enjoyingParty.slice(start, end).map((party) => {
             // 각 파티의 video_platform을 가져옴
@@ -52,7 +58,12 @@ export const ViewMoreParticipatingParty = ({ userId }: { userId: string }) => {
             const viewStatus = getViewStatus;
 
             return (
-              <li key={party.party_id} className=" min-w-[196px]  group">
+              <li
+                key={party.party_id}
+                className={`min-w-[196px] group
+                mobile:min-w-0 mobile:w-[calc(50%-5px)] mobile:flex-shrink-0
+                  `}
+              >
                 <MyVerticalCard
                   party={party}
                   userName={party.ownerProfile.nickname}
