@@ -27,7 +27,7 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
     <div
       className={`flex w-[164px] justify-center items-center text-center
     mobile:fixed mobile:bottom-0 mobile:left-0 mobile:right-0 mobile:z-40 mobile:w-full 
-    mobile:bg-static-white mobile: px-[20px] py-[8px]`}
+    mobile:bg-static-white mobile:px-[20px] mobile:py-[8px]`}
     >
       {end ? (
         <button className="disabled-btn-m w-full" disabled={true}>

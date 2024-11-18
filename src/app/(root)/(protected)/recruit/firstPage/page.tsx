@@ -27,10 +27,6 @@ const RecruitFirstPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const nextPageHandle = () => {
-    router.push('/recruit/nextPage');
-  };
-
   const {
     party_name,
     video_name,
@@ -184,144 +180,173 @@ const RecruitFirstPage = () => {
     }
   };
 
+  const nextPageHandle = () => {
+    router.push('/recruit/nextPage');
+  };
+
   // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
-    !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || !duration_time;
+    !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || duration_time > 480;
 
   return (
-    <div className="grid place-items-center ">
-      <h1 className="text-[28px] font-bold mt-[70px]">파티 모집하기</h1>
-      <input
-        type="text"
-        placeholder="파티 이름"
-        value={party_name}
-        onChange={(e) => setPartyInfo({ party_name: e.target.value })}
-        className="bg-Grey-50 px-[16px] py-[12px] w-[519px] h-[48px] rounded-lg mt-[24px] border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
-      />
-      <input
-        type="text"
-        placeholder="파티에 대해서 소개해주세요."
-        value={party_detail}
-        onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
-        className="mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[156px] rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none"
-      />
-      <SearchComponent
-        videoName={video_name}
-        setVideoName={(name: string) => setPartyInfo({ video_name: name })}
-        handleSearchResultClick={handleSearchResultClick}
-      />
-      {isModalOpen && <Modal message="아직 개봉전인 작품입니다." onClose={() => setIsModalOpen(false)} />}
-      <div className="flex space-x-[20px] mt-[16px] max-h-[360px]">
-        {/* 포스터 */}
-        {video_name && video_image && (
-          <Image src={video_image} alt="선택된 포스터" width={250} height={360} className="rounded-md" />
-        )}
-
-        <div className="space-y-[15px]">
-          {video_image && media_type === 'tv' && number_of_seasons > 1 && (
-            <div>
-              <div className="flex">
-                <h2>시즌</h2>
-                <h2 className="text-purple-600">*</h2>
-              </div>
-              <CustomSelect options={seasonOptions} value={season_number || ''} onChange={seasonHandle} />
-            </div>
+    <div>
+      <div className={`grid place-items-center `}>
+        <h1 className="text-[28px] font-bold mt-[70px]">파티 모집하기</h1>
+        <textarea
+          name="파티이름"
+          placeholder="파티 이름"
+          maxLength={20}
+          value={party_name}
+          onChange={(e) => setPartyInfo({ party_name: e.target.value })}
+          className={`bg-Grey-50 px-[16px] py-[12px] w-[519px] h-[48px] resize-none overflow-hidden appearance-none rounded-lg mt-[24px] border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none
+                    mobile:w-[335px]`}
+        />
+        <textarea
+          name="파티소개"
+          placeholder="파티에 대해서 소개해주세요."
+          maxLength={1000}
+          value={party_detail}
+          onChange={(e) => setPartyInfo({ party_detail: e.target.value })}
+          className={`mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[156px] resize-none overflow-hidden appearance-none rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none
+                    mobile:w-[335px] mobile:h-[112px]`}
+        />
+        <SearchComponent
+          videoName={video_name}
+          setVideoName={(name: string) => setPartyInfo({ video_name: name })}
+          handleSearchResultClick={handleSearchResultClick}
+        />
+        {isModalOpen && <Modal message="아직 개봉전인 작품입니다." onClose={() => setIsModalOpen(false)} />}
+        <div
+          className={`flex space-x-[20px] mt-[16px] max-h-[360px]
+                       mobile:grid mobile:justify-items-center`}
+        >
+          {/* 포스터 */}
+          {video_name && video_image && (
+            <Image
+              src={video_image}
+              alt="선택된 포스터"
+              width={250}
+              height={360}
+              loading="lazy"
+              className={`rounded-md 
+            mobile:w-[158px] mobile:h-[225px] mobile:ml-[50px]`}
+            />
           )}
-          {video_image && media_type === 'tv' && (
-            <div className="space-y-[20px]">
-              <div className="relative">
+
+          <div className="space-y-[15px]">
+            <div className={`mobile:flex mobile:space-x-[20px] mobile:w-[375px] `}>
+              {video_image && media_type === 'tv' && number_of_seasons > 1 && (
+                <div>
+                  <div className="flex">
+                    <h2>시즌</h2>
+                    <h2 className="text-purple-600">*</h2>
+                  </div>
+                  <CustomSelect options={seasonOptions} value={season_number || ''} onChange={seasonHandle} />
+                </div>
+              )}
+              {video_image && media_type === 'tv' && (
+                <div className={`space-y-[20px]`}>
+                  <div className="relative">
+                    <div className="flex">
+                      <h2>회차</h2>
+                      <h2 className="text-purple-600">*</h2>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="시청할 회차를 입력하세요"
+                      value={episode_number || ''}
+                      onChange={(e) => episodeHandle(e.target.value)}
+                      className={`px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none
+                                mobile:${season_number > 1 ? 'w-[335px]' : 'w-[157px]'}`}
+                    />
+                    {episode_number !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {((media_type === 'movie' && video_image) || (episode_number !== 0 && video_image)) && (
+              <div>
                 <div className="flex">
-                  <h2>회차</h2>
+                  <h2>러닝타임</h2>
                   <h2 className="text-purple-600">*</h2>
                 </div>
-                <input
-                  type="text"
-                  placeholder="시청할 회차를 입력하세요"
-                  value={episode_number || ''}
-                  onChange={(e) => episodeHandle(e.target.value)}
-                  className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
-                />
-                {episode_number !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-              </div>
-            </div>
-          )}
+                <div className="relative">
+                  <Image
+                    src="/second.svg"
+                    alt="User Icon"
+                    width={24}
+                    height={24}
+                    className={`absolute right-[10px] top-[30px] transform -translate-y-1/2 pointer-events-none z-10
+                              mobile:mr-[30px]`}
+                  />
+                  <input
+                    type="text"
+                    placeholder="분단위로 입력하세요"
+                    value={duration_time || ''}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
 
-          {((media_type === 'movie' && video_image) || (episode_number !== 0 && video_image)) && (
-            <div>
-              <div className="flex">
-                <h2>러닝타임</h2>
-                <h2 className="text-purple-600">*</h2>
+                      if (value <= 480) {
+                        setPartyInfo({ duration_time: value });
+                        setError(null); // 오류 메시지 초기화
+                      } else {
+                        setError('러닝타임은 최대 480분까지 입력 가능합니다');
+                      }
+                      if (value >= 10) {
+                        setError(null);
+                      } else {
+                        setError('러닝타임은 최소 10분까지 입력 가능합니다');
+                      }
+                    }}
+                    disabled={!!duration_time}
+                    className={`px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none
+                              mobile:w-[335px]`}
+                  />
+                  {duration_time !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                </div>
               </div>
-              <div className="relative">
-                <Image
-                  src="/second.svg"
-                  alt="User Icon"
-                  width={24}
-                  height={24}
-                  className="absolute right-[10px] top-[30px] transform -translate-y-1/2 pointer-events-none z-10"
-                />
-                <input
-                  type="text"
-                  placeholder="분단위로 입력하세요"
-                  value={duration_time || ''}
-                  onChange={(e) => {
-                    const value = Number(e.target.value);
-                    if (value <= 480) {
-                      setPartyInfo({ duration_time: value });
-                      setError(null); // 오류 메시지 초기화
-                    } else {
-                      setError('러닝타임은 최대 480분까지 입력 가능합니다');
-                    }
-                    if (value >= 10) {
-                      setError(null);
-                    } else {
-                      setError('러닝타임은 최소 10분까지 입력 가능합니다');
-                    }
-                  }}
-                  className="px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none"
-                />
-                {duration_time !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-              </div>
-            </div>
-          )}
-          {/* 플랫폼 */}
+            )}
+            {/* 플랫폼 */}
 
-          {video_image && video_platform && video_platform.length > 0 ? (
-            <div>
-              <h2>영상 플랫폼</h2>
-              <div className="flex space-x-[4px] mt-2">
-                {video_platform.map((platform) => (
-                  <div key={platform.name} className="text-center ">
-                    <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
-                      <Image
-                        src={platform.logoUrl}
-                        alt={platform.name}
-                        width={30}
-                        height={30}
-                        className=" rounded-full "
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            video_image && (
+            {video_image && video_platform && video_platform.length > 0 ? (
               <div>
-                <h2>영상 플랫폼</h2>
-                <p>제공 플랫폼이 존재하지 않습니다.</p>
+                <h2 className="font-semibold">영상 플랫폼</h2>
+                <div className="flex space-x-[4px] mt-2">
+                  {video_platform.map((platform) => (
+                    <div key={platform.name} className="text-center ">
+                      <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">
+                        <Image
+                          src={platform.logoUrl}
+                          alt={platform.name}
+                          width={30}
+                          height={30}
+                          className=" rounded-full "
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            )
-          )}
+            ) : (
+              video_image && (
+                <div>
+                  <h2 className="font-semibold">영상 플랫폼</h2>
+                  <p className="text-Grey-500 mt-[8px]">제공 플랫폼이 존재하지 않습니다.</p>
+                </div>
+              )
+            )}
+          </div>
         </div>
+        <button
+          className={`mt-[32px] w-[520px] ${isNextButtonDisabled ? 'disabled-btn-xl' : 'btn-xl'}
+                    mobile:mt-[130px] mobile:w-[335px] mobile:fixed bottom-0`}
+          onClick={nextPageHandle}
+          disabled={isNextButtonDisabled}
+        >
+          다음
+        </button>
       </div>
-      <button
-        className={`mt-[32px] w-[520px] ${isNextButtonDisabled ? 'disabled-btn-xl' : 'btn-xl'}`}
-        onClick={nextPageHandle}
-        disabled={isNextButtonDisabled}
-      >
-        다음
-      </button>
     </div>
   );
 };

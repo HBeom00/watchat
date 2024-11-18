@@ -1,6 +1,6 @@
 'use client';
 
-import { useOwnerParty } from '@/store/useOwnerParties';
+import { useOwnerParty } from '@/utils/myPage/useOwnerParties';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -63,6 +63,7 @@ const MyOwnerParty = () => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

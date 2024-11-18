@@ -57,7 +57,10 @@ const MyParty = () => {
         <div className="flex flex-col pt-4 pb-8 border-solid border-Grey-100 border-b-[1px]">
           <p className="py-4 text-Grey-900 title-m">MY 파티</p>
           {data && data.length > 0 ? (
-            <div className="grid grid-cols-5 gap-x-5 gap-y-8 text-Grey-900">
+            <div
+              className={`grid grid-cols-5 gap-x-5 gap-y-8 text-Grey-900
+            mobile:grid-cols-2`}
+            >
               {data
                 .filter((n) => n && getViewStatus(n) === '시청중')
                 .concat(data.filter((n) => n && getViewStatus(n) !== '시청중'))

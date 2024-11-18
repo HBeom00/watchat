@@ -533,6 +533,12 @@ select {
   width: 520px;
   height: 348px;
 }
+@media (max-width: 375px) {
+  .react-datepicker {
+    width: 335px;
+    height: 288px;
+  }
+}
 .react-datepicker__header {
   background-color: #ffffff !important;
   border-bottom: none !important;
@@ -548,24 +554,37 @@ select {
   padding-top: 5px !important;
   text-align: center !important;
 }
+@media (max-width: 375px) {
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    margin-left: 3px !important;
+    padding-top: 3px !important;
+  }
+}
 
 .react-datepicker__day {
   padding-top: 5px !important;
   transition: 0.3s;
+}
+@media (max-width: 375px) {
+  .react-datepicker__day {
+    padding-top: 1px !important;
+    transition: 0.3s;
+  }
 }
 
 .react-datepicker__day:hover {
   background-color: #f5f5f5 !important;
   border-radius: 50% !important;
 
-  /* padding-top: 4px !important; */
+  padding-top: 4px !important;
 }
 
 /* 헤더 부분 (월과 연도 표시) */
 .custom-datepicker .react-datepicker__header {
   font-size: 13px; /* 글꼴 크기 조정 */
   padding: 10px 0;
-  margin: 22px 0;
+  margin: 22px 0 0;
   margin-right: 20px;
 }
 
@@ -587,6 +606,12 @@ select {
   padding-left: 40px;
   gap: 32px;
 }
+@media (max-width: 375px) {
+  .custom-datepicker .react-datepicker__day-names {
+    padding-left: 10px;
+    gap: 7px;
+  }
+}
 
 /* 각 날짜의 스타일 */
 .custom-datepicker .react-datepicker__day {
@@ -595,6 +620,15 @@ select {
   font-size: 14px;
   margin-left: 22px;
   text-align: center;
+}
+@media (max-width: 375px) {
+  .custom-datepicker .react-datepicker__day {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    margin-left: 3px;
+    text-align: center;
+  }
 }
 
 /* 이전/다음 월 이동 화살표 */
@@ -617,6 +651,12 @@ select {
 .react-datepicker--time-only {
   width: 520px !important;
   height: 200px !important;
+}
+@media (max-width: 375px) {
+  .react-datepicker--time-only {
+    width: 335px !important;
+    height: 152px !important;
+  }
 }
 /* 시간 선택 드롭다운 */
 .react-datepicker__time-container {
@@ -725,4 +765,11 @@ input[type='range']::-webkit-slider-thumb {
 
 .chatting_height {
   height: calc(100vh - 318px);
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 6; /* 최대 6줄로 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

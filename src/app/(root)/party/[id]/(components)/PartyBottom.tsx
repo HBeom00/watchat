@@ -19,7 +19,10 @@ const PartyBottom = ({ partyData, end, partyOwner }: { partyData: partyInfo; end
   }
 
   return (
-    <div className="flex flex-col w-full items-start mt-[8px] gap-[32px]">
+    <div
+      className={`flex flex-col w-full items-start mt-[8px] gap-[32px]
+     mobile:px-[20px]`}
+    >
       <div className="flex flex-row w-full border-solid border-Grey-100 border-b-[1px] text-Grey-400 body-m-bold">
         <button
           className={tab === '파티 정보' ? 'selectPartyInfo' : 'notSelectPartyInfo'}

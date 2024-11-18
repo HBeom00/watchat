@@ -5,7 +5,7 @@ import { WarmingProgress } from './WarmingProgress';
 import Image from 'next/image';
 import group from '../../../public/primaryGroup.svg';
 import { useFetchUserData, useFetchUserId } from '@/store/userStore';
-import { useTotalTemperature } from '@/store/getWarming';
+import { useTotalTemperature } from '@/utils/myPage/getWarming';
 import { usePathname } from 'next/navigation';
 
 const WarmingModal = () => {

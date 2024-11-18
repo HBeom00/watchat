@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useDeleteInviteMutation } from '@/store/usdDeleteInvite';
+import { useDeleteInviteMutation } from '@/utils/myPage/usdDeleteInvite';
 import uploadImage from '@/utils/fileUploader/uploadImage';
 import submitParticipation from '@/utils/participation/submitParticipation';
 import { useFetchUserData } from '@/store/userStore';
@@ -140,9 +140,9 @@ const ParticipationForm = ({
   };
 
   return (
-    <div className={display ? 'flex flex-col' : 'hidden'}>
+    <div className={`${display ? 'flex flex-col' : 'hidden'}`}>
       <div className="flex flex-col">
-        <div className="flex flex-col py-4 items-center gap-4 self-stretch">
+        <div className="flex flex-col py-[16px] items-center gap-[16px] self-stretch">
           <button type="button" className="relative" onClick={buttonClickHandler}>
             <Image
               src={profile_image}

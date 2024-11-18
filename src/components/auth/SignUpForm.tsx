@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { randomNickname } from '@/utils/randomName';
+import { randomNickname } from '@/constants/randomName';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
 import visibility from '../../../public/visibility.svg';

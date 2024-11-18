@@ -38,7 +38,7 @@ const partyPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div
       className={`flex flex-col w-[1060px] m-auto mb-[64px]
-    mobile:w-full mobile:px-[20px]`}
+    mobile:w-full`}
     >
       <PartyHeader partyData={partyData} end={end} />
       <PartyBottom partyData={partyData} end={end} partyOwner={partyData.owner_id} />

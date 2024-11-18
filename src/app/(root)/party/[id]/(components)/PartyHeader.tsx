@@ -24,7 +24,7 @@ const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean })
         <Image
           src={`https://image.tmdb.org/t/p/original${partyData.backdrop_image}`}
           className="relative brightness-50 -z-10"
-          layout="fill"
+          fill
           style={{ objectFit: 'cover' }}
           alt={partyData.video_name}
         />

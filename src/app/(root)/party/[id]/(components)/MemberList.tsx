@@ -30,12 +30,12 @@ const MemberList = ({
 
   return (
     <div className="flex flex-col w-full gap-[32px] items-start">
-      <div
-        className={`flex flex-col w-full items-start gap-[8px] text-Grey-900
-        mobile:w-full`}
-      >
+      <div className={`flex flex-col w-full items-start gap-[8px] text-Grey-900`}>
         <p className="self-stretch body-l-bold">파티 소개</p>
-        <div className="flex py-[12px] px-[16px] w-[520px] items-center self-stretch rounded-[8px] bg-Grey-50">
+        <div
+          className={`flex py-[12px] px-[16px] w-[520px] items-center self-stretch rounded-[8px] bg-Grey-50
+          mobile:w-full`}
+        >
           <p>{partyData.party_detail}</p>
         </div>
       </div>
@@ -43,7 +43,10 @@ const MemberList = ({
         className={`flex flex-col items-start gap-[16px]
         mobile:w-full`}
       >
-        <div className="flex flex-row justify-between items-center self-stretch w-[520px]">
+        <div
+          className={`flex flex-row justify-between items-center self-stretch w-[520px]
+          mobile:w-full`}
+        >
           <div className="flex flex-col items-start">
             <p className="text-Grey-900 body-l-bold">참여 멤버</p>
             <p className="text-Grey-600 label-l">참여자 {data ? data.length : 0}명</p>

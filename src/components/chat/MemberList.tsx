@@ -6,7 +6,7 @@ import { UserInfo } from '@/types/teamUserProfile';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../ui/Dialog';
-import { follow, unfollow } from '@/store/followUnfollow';
+import { follow, unfollow } from '@/utils/myPage/followUnfollow';
 import award_image from '../../../public/award_star.svg';
 
 const MemberList = ({

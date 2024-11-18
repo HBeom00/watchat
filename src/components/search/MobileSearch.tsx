@@ -31,14 +31,16 @@ const MobileSearch = () => {
   });
 
   return (
-    <div className="flex flex-col">
+    <div
+      className={`hidden flex-col
+    mobile:flex`}
+    >
       <form
         onSubmit={(e) => {
           e.preventDefault();
           router.push('/search/' + encodeURIComponent(text) + '?' + searchParams.toString());
         }}
-        className={`hidden py-[4px] px-[16px] gap-[4px] flex-row justify-center items-center rounded-2xl bg-gray-50 relative
-      mobile:flex`}
+        className={`flex py-[4px] px-[16px] gap-[4px] flex-row justify-center items-center rounded-2xl bg-gray-50 relative`}
       >
         <Image src={'/search_icon.svg'} width={20} height={20} alt="검색아이콘" className="flex-shrink-0" />
         <input
@@ -49,6 +51,7 @@ const MobileSearch = () => {
             setText(e.target.value);
             setShowResults(!!e.target.value);
           }}
+          autoFocus
           placeholder="콘텐츠를 검색해보세요"
         />
         {text !== '' ? (

@@ -5,15 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import doesntExist from '../../../public/openEyeCat.svg';
-import { useRecommendParty } from '@/store/useRecommendParty';
+import { useRecommendParty } from '@/utils/myPage/useRecommendParty';
 import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
-
-export type platform = {
-  logoUrl: string;
-  name: string;
-};
+import { platform } from '@/types/partyInfo';
 
 const MyRecommendParty = () => {
   // 사용자 데이터 가져오기
@@ -64,6 +60,7 @@ const MyRecommendParty = () => {
                   platform={platformArr}
                   partyName={party.party_name}
                   getViewStatus={viewStatus}
+                  videoName={party.video_name}
                 />
               </li>
             );

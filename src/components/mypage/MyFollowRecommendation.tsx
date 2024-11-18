@@ -1,9 +1,9 @@
 'use client';
 
-import { banUser } from '@/store/banUser';
-import { follow } from '@/store/followUnfollow';
-import { usePrevNextButtons } from '@/store/useMypageCarouselButton';
-import { useRecommendedUsers } from '@/store/useRecommendedUser';
+import { banUser } from '@/utils/myPage/banUser';
+import { follow } from '@/utils/myPage/followUnfollow';
+import { usePrevNextButtons } from '@/utils/myPage/useMypageCarouselButton';
+import { useRecommendedUsers } from '@/utils/myPage/useRecommendedUser';
 import { useFetchUserData } from '@/store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -62,18 +62,24 @@ const MyFollowRecommendation = () => {
       queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
         if (!oldData) return [];
 
-        return oldData.map((party) => ({
+        const updatedData = oldData.map((party) => ({
           ...party,
           team_user_profile: party.team_user_profile.filter((profile) => profile.user.user_id !== followId)
         }));
+
+        // 팔로우한 유저가 모두 삭제되었을 경우 추천 목록을 빈 배열로 처리
+        if (updatedData.every((party) => party.team_user_profile.length === 0)) {
+          queryClient.setQueryData(['recommendedUser', userId], []);
+        }
+
+        return updatedData;
       });
 
       // 팔로잉 유저 목록 새로고침
       queryClient.invalidateQueries({ queryKey: ['followingUsers', userId] });
+      queryClient.invalidateQueries({ queryKey: ['recommendedUser', userId] });
     }
   });
-
-  // console.log('추천 사용자 데이터 =>', recommendedUsers);
 
   //  X 버튼을 누르면 해당 유저를 추천 목록에서 밴시킴
   const banMutation = useMutation({
@@ -82,11 +88,19 @@ const MyFollowRecommendation = () => {
       // 차단 후 추천 목록 업데이트
       queryClient.setQueryData<RecentParticipantsData[]>(['recommendedUser', userId], (oldData) => {
         if (!oldData) return [];
-        return oldData.map((party) => ({
+        const updatedData = oldData.map((party) => ({
           ...party,
           team_user_profile: party.team_user_profile.filter((profile) => profile.user.user_id !== bannedUserId)
         }));
+
+        // 차단 후 추천 목록이 비었을 경우 빈 배열로 처리
+        if (updatedData.every((party) => party.team_user_profile.length === 0)) {
+          queryClient.setQueryData(['recommendedUser', userId], []);
+        }
+
+        return updatedData;
       });
+      queryClient.invalidateQueries({ queryKey: ['recommendedUser', userId] });
     },
     onError: (error) => {
       console.error('차단에 실패했습니다:', error);
