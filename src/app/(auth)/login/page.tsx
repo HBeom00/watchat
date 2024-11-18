@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <div className="mt-[100px] mobile:mt-0 flex justify-center items-center">
+    <div
+      className={`flex justify-center items-center mt-[100px] 
+      mobile:mt-0
+    `}
+    >
       <div className="w-[340px] flex flex-col items-start gap-[16px]">
         <Link
           href={'/'}

@@ -5,15 +5,19 @@ import { useUserId } from '@/reactQuery/useQuery/chat/useUserId';
 import Image from 'next/image';
 import RecruitFilter from './RecruitFilter';
 import HeaderMobileBottom from './HeaderMobileBottom';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
   // 유저 ID 가져오기
   const { data: isUser } = useUserId();
+  const pathname = usePathname();
+  const hideHeader_Mobile = ['/login', '/signup', '/party', '/recruit', '/my-page/edit', '/chat', '/warming'];
+  const isHideHeader = hideHeader_Mobile.some((path) => pathname.startsWith(path));
 
   return (
     <div
       className={`fixed z-50 w-full h-[80px] flex items-center justify-center flex-shrink-0 border-solid border-b-[1px] border-Grey-200 bg-static-white
-    mobile:h-[58px]`}
+    mobile:h-[58px] ${isHideHeader ? 'mobile:hidden' : 'block'}`}
     >
       <div
         className={`flex flex-row py-4 justify-between items-center flex-[1_0_0] max-w-[1060px] 
