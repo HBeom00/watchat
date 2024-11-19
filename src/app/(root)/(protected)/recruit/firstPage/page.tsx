@@ -16,8 +16,9 @@ import Image from 'next/image';
 
 //------컴포넌트------------------------------------------------------------------------------
 import SearchComponent from '@/components/recruit/Search';
-import Modal from '@/components/recruit/Modal';
+import NotificationModal from '@/components/recruit/NotificationModal';
 import CustomSelect from '@/components/recruit/CustomSelect';
+import SearchModal from '@/components/recruit/SearchModal';
 //------타입------------------------------------------------------------------------------
 import { SearchResult } from '@/types/search';
 
@@ -26,6 +27,7 @@ const RecruitFirstPage = () => {
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   const {
     party_name,
@@ -138,6 +140,7 @@ const RecruitFirstPage = () => {
       number_of_seasons: numberOfSeasons
     });
     queryClient.invalidateQueries({ queryKey: ['searchVideo'] });
+    setIsSearchModalOpen(false);
   };
 
   const seasonOptions = Array.from({ length: number_of_seasons }, (_, i) => ({
@@ -184,7 +187,6 @@ const RecruitFirstPage = () => {
     router.push('/recruit/nextPage');
   };
 
-  // 인풋 값 입력시 버튼 활성화
   const isNextButtonDisabled =
     !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || duration_time > 480;
 
@@ -210,12 +212,49 @@ const RecruitFirstPage = () => {
           className={`mt-[16px] px-[16px] py-[12px] bg-Grey-50 w-[520px] h-[156px] resize-none overflow-hidden appearance-none rounded-lg border border-1 border-Grey-50 focus:border-primary-500 focus:outline-none
                     mobile:w-[335px] mobile:h-[112px]`}
         />
-        <SearchComponent
+
+        {/* 검색창 클릭 시 모달 열기 */}
+
+        <div
+          onClick={() => setIsSearchModalOpen(true)}
+          className="cursor-pointer mobile:block hidden mt-[32px] w-[335px] "
+        >
+          <div className="flex">
+            <h2 className="font-semibold">시청할 영상을 검색해 주세요.</h2>
+            <h2 className="text-purple-600">*</h2>
+          </div>
+          <div className="relative">
+            <input
+              value={video_name}
+              placeholder="검색할 영상을 입력하세요"
+              className="w-full h-[48px] mt-[16px] px-4 py-3 border border-Grey-300 rounded-md text-[15px] text-gray-800 focus:border-primary-500 focus:outline-none"
+            />
+            <Image
+              src="/arrow_down.svg"
+              alt="Clear input"
+              width={24}
+              height={24}
+              className="absolute right-4 top-1/2 transform -translate-y-1 "
+            />
+          </div>
+        </div>
+
+        {/* 검색 모달 */}
+        <SearchModal
+          isOpen={isSearchModalOpen}
+          onClose={() => setIsSearchModalOpen(false)}
+          onResultClick={handleSearchResultClick}
           videoName={video_name}
-          setVideoName={(name: string) => setPartyInfo({ video_name: name })}
-          handleSearchResultClick={handleSearchResultClick}
+          setVideoName={(name) => setPartyInfo({ video_name: name })}
         />
-        {isModalOpen && <Modal message="아직 개봉전인 작품입니다." onClose={() => setIsModalOpen(false)} />}
+        <div className="block mobile:hidden">
+          <SearchComponent
+            videoName={video_name}
+            setVideoName={(name: string) => setPartyInfo({ video_name: name })}
+            handleSearchResultClick={handleSearchResultClick}
+          />
+        </div>
+        {isModalOpen && <NotificationModal message="아직 개봉전인 작품입니다." onClose={() => setIsModalOpen(false)} />}
         <div
           className={`flex space-x-[20px] mt-[16px] max-h-[360px]
                        mobile:grid mobile:justify-items-center`}
@@ -229,15 +268,15 @@ const RecruitFirstPage = () => {
               height={360}
               loading="lazy"
               className={`rounded-md 
-            mobile:w-[158px] mobile:h-[225px] mobile:ml-[50px]`}
+            mobile:w-[158px] mobile:h-[225px] `}
             />
           )}
 
           <div className="space-y-[15px]">
-            <div className={`mobile:flex mobile:space-x-[20px] mobile:w-[375px] `}>
+            <div className={`mobile:flex mobile:space-x-[20px] mobile:w-[375px]`}>
               {video_image && media_type === 'tv' && number_of_seasons > 1 && (
-                <div>
-                  <div className="flex">
+                <div className="mobile:ml-[5px]">
+                  <div className="flex mobile:mt-[16px]">
                     <h2>시즌</h2>
                     <h2 className="text-purple-600">*</h2>
                   </div>
@@ -245,7 +284,7 @@ const RecruitFirstPage = () => {
                 </div>
               )}
               {video_image && media_type === 'tv' && (
-                <div className={`space-y-[20px]`}>
+                <div className={`space-y-[20px] mt-[16px]`}>
                   <div className="relative">
                     <div className="flex">
                       <h2>회차</h2>
@@ -257,7 +296,7 @@ const RecruitFirstPage = () => {
                       value={episode_number || ''}
                       onChange={(e) => episodeHandle(e.target.value)}
                       className={`px-[16px] py-[12px] h-[48px] w-[249px] rounded-md border-[1px] border-Grey-300 focus:border-primary-500 focus:outline-none
-                                mobile:${season_number > 1 ? 'w-[335px]' : 'w-[157px]'}`}
+                                mobile:${number_of_seasons > 1 ? 'w-[157px]' : 'w-[335px]'}`}
                     />
                     {episode_number !== 0 && error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                   </div>
@@ -310,9 +349,9 @@ const RecruitFirstPage = () => {
             {/* 플랫폼 */}
 
             {video_image && video_platform && video_platform.length > 0 ? (
-              <div>
+              <div className="mobile:mb-[]">
                 <h2 className="font-semibold">영상 플랫폼</h2>
-                <div className="flex space-x-[4px] mt-2">
+                <div className="flex space-x-[4px] mt-2 ">
                   {video_platform.map((platform) => (
                     <div key={platform.name} className="text-center ">
                       <div className="rounded-full border-[1px] border-Grey-200 bg-white p-[3px]">

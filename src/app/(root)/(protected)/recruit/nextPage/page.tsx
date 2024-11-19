@@ -20,11 +20,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 const RecruitNextPage = () => {
-  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -172,14 +169,6 @@ const RecruitNextPage = () => {
   return (
     <div>
       <div className={`grid place-items-center`}>
-        <div className={`flex justify-between space-x-[239px] p-x-[20px] p-y-[8px]`}>
-          <button onClick={() => router.back()}>
-            <Image src="/arrow_back_black.svg" alt="뒤로가기" width={24} height={24} />
-          </button>
-          <Link href={'/'}>
-            <Image src="/close.svg" alt="나가기" width={24} height={24} />
-          </Link>
-        </div>
         <h1
           className={`text-[28px] font-bold  mt-[70px]
                         mobile:mt-[9px] mobile:text-[20px]`}
