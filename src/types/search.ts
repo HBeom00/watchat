@@ -33,6 +33,10 @@ export type Search = {
   setVideoName: (name: string) => void;
 };
 
-export type MultiSearchProps = {
-  handleSearchResultClick: (result: SearchResult) => void;
+export type SearchModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onResultClick: (result: SearchResult) => void;
+  videoName: string;
+  setVideoName: (name: string) => void;
 };
