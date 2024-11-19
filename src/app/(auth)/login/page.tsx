@@ -10,7 +10,11 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <div className="mt-[100px] flex justify-center items-center">
+    <div
+      className={`flex justify-center items-center mt-[100px] 
+      mobile:mt-0
+    `}
+    >
       <div className="w-[340px] flex flex-col items-start gap-[16px]">
         <div className="flex flex-col items-start gap-[32px] self-stretch">
           <p className=" px-[8px] py-[16px] flex justify-center items-center gap-[8px] self-stretch title-m text-center text-Grey-900">
