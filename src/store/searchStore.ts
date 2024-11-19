@@ -12,11 +12,3 @@ export const createSearchStateStore = (initState: textProp = DEFAULT_PROPS) => {
     changeSearchWord: (text: string) => set(() => ({ searchText: text }))
   }));
 };
-
-export type SearchModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onResultClick: (result: SearchResult) => void;
-  videoName: string;
-  setVideoName: (name: string) => void;
-}

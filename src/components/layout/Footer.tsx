@@ -23,13 +23,6 @@ const Footer = () => {
   const hideFooter_Mobile = pathname.startsWith('/party');
 
   return (
-<<<<<<< HEAD
-    <div>
-      <div
-        className={` flex justify-between text-white items-start min-h-[20px]  bottom-0  w-full  bg-Grey-900 p-10 text-white,
-                      mobile:grid mobile:text-[13px] `}
-      >
-=======
     <div
       className={` flex justify-between items-start min-h-[20px]  bottom-0  w-full py-12 px-48 bg-Grey-900 p-10 text-white,
                       mobile:grid  text-white text-[13px] ${hideFooter_Mobile ? 'mobile:hidden' : 'block'}`}
@@ -55,7 +48,6 @@ const Footer = () => {
         <p className="mt-[16px]">@2024 watchat.All rights reserved</p>
       </div>
       <div className="mt-[18px]">
->>>>>>> bf1984cd5c0839ecb91a635e4b8520e2fc73e906
         <div>
           <Image src="/logo.svg" alt="Slide3" width={142} height={24} />
           <div
@@ -80,7 +72,9 @@ const Footer = () => {
           <div>
             <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">주식회사 OJOSAMA</p>
             <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">대표이사 김경혜</p>
-            <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">이메일 team.watchat@gmail.com</p>
+            <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">
+              이메일 team.watchat@gmail.com
+            </p>
           </div>
           <div className="flex space-x-4 mt-4 justify-end mobile:justify-start">
             <Image src="/instagram.svg" alt="Slide3" width={24} height={24} />
