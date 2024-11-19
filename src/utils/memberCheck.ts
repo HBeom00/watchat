@@ -71,7 +71,7 @@ export const memberScarceSwitch = async (party_id: string) => {
 };
 
 // 이미 참가한 멤버인지 확인
-export const isMemberExist = async (party_id: string, user_id: string | null | undefined) => {
+export const isMemberExist = async (party_id: string, user_id: string) => {
   const response = await browserClient
     .from('team_user_profile')
     .select('profile_id')

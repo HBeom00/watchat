@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/Dialog';
 import { useInvitedParties } from '@/utils/myPage/useInvitedParties';
-import { useAcceptMutation, useRefuseMutation } from '@/utils/myPage/useInviteMutation';
+import { useRefuseMutation } from '@/utils/myPage/useInviteMutation';
 import { useFetchUserData } from '@/store/userStore';
 import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -38,7 +38,6 @@ const MyInvitedParty = () => {
 
   // 초대 거절하기
   const refuseInvite = useRefuseMutation(userId as string);
-  const acceptInvite = useAcceptMutation();
 
   // 선택 모드 전환 핸들러
   const selectModeToggleHandler = () => {
@@ -120,7 +119,7 @@ const MyInvitedParty = () => {
                   거절하기
                 </button>
               </DialogTrigger>
-              <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] rounded-[8px]">
+              <DialogContent className="w-[340px] rounded-[8px]">
                 <DialogHeader>
                   <DialogTitle>
                     <h2 className="pt-16 pb-4">정말 거절하시겠습니까?</h2>
@@ -382,7 +381,6 @@ const MyInvitedParty = () => {
                       <button
                         className="btn-s w-[121px] body-xs-bold text-white"
                         onClick={() => {
-                          acceptInvite.mutate(invite.invite_id);
                           setOpen(true);
                         }}
                       >
@@ -399,7 +397,7 @@ const MyInvitedParty = () => {
 
                       <Dialog>
                         <DialogTrigger>
-                          <button className="disabled-btn-s w-[121px]">거절하기</button>
+                          <div className="disabled-btn-s w-[121px] cursor-pointer">거절하기</div>
                         </DialogTrigger>
                         <DialogContent className="w-[340px]">
                           <DialogHeader>

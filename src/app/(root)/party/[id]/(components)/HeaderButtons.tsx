@@ -1,14 +1,18 @@
-import ParticipationButton from '@/components/button/ParticipationButton';
+// import ParticipationButton from '@/components/button/ParticipationButton';
+import ParticipationModal from '@/components/CustomModal/ParticipationModal';
 import { partyInfo } from '@/types/partyInfo';
 import { chatOpenClose } from '@/utils/chatOpenClose';
+import { useDetectClose } from '@/utils/hooks/useDetectClose';
 import { isMemberExist } from '@/utils/memberCheck';
 import { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useRef } from 'react';
 
 const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo }) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const openRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useDetectClose(openRef, false);
+
   const { data: userId, isLoading: userLoading } = useQuery({
     queryKey: ['loginUser'],
     queryFn: () => getLoginUserIdOnClient()
@@ -18,6 +22,9 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
     queryKey: ['isMember', partyData.party_id, userId],
     queryFn: async () => {
       const userId = await getLoginUserIdOnClient();
+      if (userId === null) {
+        return false;
+      }
       const isMember = await isMemberExist(partyData.party_id, userId);
       return isMember;
     }
@@ -37,7 +44,7 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
         <>
           <Link
             className={
-              isMember
+              !((isMember && open) || !isMember)
                 ? chatOpenClose(partyData) === '시청중'
                   ? 'flex btn-m w-full justify-center items-center'
                   : 'flex disabled-btn-m w-full justify-center items-center'
@@ -53,16 +60,30 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
           >
             채팅하기
           </Link>
-          <button onClick={() => setOpen(true)} className={isMember ? 'hidden' : 'btn-m w-full'}>
-            참여하기
-          </button>
-          <ParticipationButton
+          <ParticipationModal
+            party_id={partyData.party_id}
+            party_situation={partyData.situation}
+            open={open}
+            setOpen={setOpen}
+            isLogin={!!userId}
+            isMember={isMember}
+            openRef={openRef}
+          >
+            <button
+              onClick={() => setOpen(true)}
+              className={`${(isMember && open) || !isMember ? 'btn-m w-full' : 'hidden'}`}
+            >
+              참여하기
+            </button>
+          </ParticipationModal>
+
+          {/* <ParticipationButton
             party_id={partyData.party_id}
             party_situation={partyData.situation}
             openControl={open}
             setOpenControl={setOpen}
             isLogin={!!userId}
-          />
+          /> */}
         </>
       )}
     </div>

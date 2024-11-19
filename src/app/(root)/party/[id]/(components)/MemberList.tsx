@@ -2,9 +2,11 @@
 import { getPartyMember } from '@/utils/memberCheck';
 import MemberProfileCard from './MemberProfile';
 import { useQuery } from '@tanstack/react-query';
-import InvitedButton from './InvitedButton';
 import { partyInfo } from '@/types/partyInfo';
 import ExitButton from './ExitButton';
+import InvitedModal from './InvitedModal';
+import { useRef } from 'react';
+import { useDetectClose } from '@/utils/hooks/useDetectClose';
 
 const MemberList = ({
   partyData,
@@ -17,6 +19,8 @@ const MemberList = ({
   end: boolean;
   partyOwner: string;
 }) => {
+  const openRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useDetectClose(openRef, false);
   // 파티 멤버 정보들을 불러오기
   const { data, isLoading } = useQuery({
     queryKey: ['partyMember', partyData.party_id],
@@ -26,7 +30,7 @@ const MemberList = ({
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  const isMember = data?.some((n) => n.user_id === userId);
+  const isMember = data?.some((n) => n.user_id === userId) || false;
 
   return (
     <div className="flex flex-col w-full gap-[32px] items-start">
@@ -52,7 +56,21 @@ const MemberList = ({
             <p className="text-Grey-600 label-l">참여자 {data ? data.length : 0}명</p>
           </div>
           {userId && isMember && !end ? (
-            <InvitedButton partyNumber={partyData.party_id} userId={userId} situation={partyData.situation} />
+            <InvitedModal
+              open={open}
+              setOpen={setOpen}
+              openRef={openRef}
+              partyNumber={partyData.party_id}
+              userId={userId}
+              situation={partyData.situation}
+            >
+              <button
+                onClick={() => setOpen(true)}
+                className="flex w-[94px] py-[6px] px-3 justify-center items-center rounded-lg border-solid border-Grey-300 border-[1px] text-Grey-400 body-xs-bold"
+              >
+                초대하기
+              </button>
+            </InvitedModal>
           ) : (
             <></>
           )}

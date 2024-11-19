@@ -25,7 +25,7 @@ const getSearchList = async (
           .gte('start_date_time', nowTime())
           .eq('situation', '모집중')
           .textSearch('video_platform', platformConversion(filter))
-          .textSearch('video_name', wordConversion) // 검색어
+          .ilike('video_name', wordConversion) // 검색어
       : partySituation === 'current'
       ? await browserClient
           .from('party_info')
@@ -35,14 +35,14 @@ const getSearchList = async (
           .lte('start_date_time', nowTime())
           .gte('end_time', nowTime())
           .textSearch('video_platform', platformConversion(filter))
-          .textSearch('video_name', wordConversion) // 검색어
+          .ilike('video_name', wordConversion) // 검색어
       : await browserClient
           .from('party_info')
           .select('*')
           .range(startDataNumber(pageNumber), endDataNumber(pageNumber))
           .order(order, { ascending: false })
           .textSearch('video_platform', platformConversion(filter))
-          .textSearch('video_name', wordConversion); // 검색어
+          .ilike('video_name', wordConversion); // 검색어
 
   if (response.error) {
     return [];
