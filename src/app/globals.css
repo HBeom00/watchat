@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-}
-
 @font-face {
   font-family: 'Pretendard';
   src: url('fonts/PretendardVariable.woff2');
@@ -438,11 +435,11 @@ body {
 }
 
 .selectDropBox {
-  @apply absolute bg-static-white flex flex-col w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-500 body-s overflow-hidden;
+  @apply absolute bg-static-white flex flex-col z-20 w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-500 body-s overflow-hidden;
 }
 
 .selectDropBoxIn {
-  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] transition duration-300;
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] transition duration-300 mobile:border-[1px] mobile:rounded-[8px];
 }
 
 .selectDropBoxIn:hover {
@@ -450,7 +447,7 @@ body {
 }
 
 .selectDropBoxLast {
-  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch transition duration-300;
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch transition duration-300 mobile:border-solid mobile:border-Grey-200 mobile:border-[1px] mobile:rounded-[8px];
 }
 
 .selectDropBoxLast:hover {
@@ -458,11 +455,11 @@ body {
 }
 
 .selectingDropBoxIn {
-  @apply selectDropBoxIn text-primary-400 body-s-bold;
+  @apply selectDropBoxIn text-primary-400 body-s-bold mobile:border-primary-400;
 }
 
 .selectingDropBoxLast {
-  @apply selectDropBoxLast text-primary-400 body-s-bold;
+  @apply selectDropBoxLast text-primary-400 body-s-bold mobile:border-primary-400;
 }
 
 .selectPartyInfo {

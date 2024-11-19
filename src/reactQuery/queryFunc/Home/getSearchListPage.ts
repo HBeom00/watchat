@@ -23,7 +23,6 @@ const getSearchListPage = async (wordConversion: string, partySituation: string 
       : await browserClient
           .from('party_info')
           .select('party_id')
-          .gte('end_time', nowTime()) // 종료 시간이 지나지 않은 경우만
           .textSearch('video_platform', platformConversion(filter))
           .textSearch('video_name', wordConversion, { type: 'plain' });
   if (response.error) {

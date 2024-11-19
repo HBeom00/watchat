@@ -13,7 +13,11 @@ const MyProfileButton = () => {
   const { data, isLoading } = useFetchUserData();
   if (isLoading) <div>Loading...</div>;
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className={`relative
+    mobile:hidden`}
+    >
       <button onClick={() => setIsOpen(!isOpen)} className="flex flex-row items-center justify-center">
         {data ? (
           <div className="flex flex-row gap-3 items-center justify-center">

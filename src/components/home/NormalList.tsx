@@ -8,12 +8,13 @@ import PageSelect from './PageSelect';
 import getRecruitList from '@/reactQuery/queryFunc/Home/getRecruitList';
 import getRecruitListPage from '@/reactQuery/queryFunc/Home/getRecruitListPage';
 import Image from 'next/image';
+import { filter, order } from '@/types/filter';
 
 const NormalList = ({ partySituation }: { partySituation: string | null }) => {
   const queryClient = useQueryClient();
 
-  const [order, setOrder] = useState<string>('write_time');
-  const [filter, setFilter] = useState<string>('전체');
+  const [order, setOrder] = useState<order>('write_time');
+  const [filter, setFilter] = useState<filter>('전체');
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   // 페이지 수 불러오기
