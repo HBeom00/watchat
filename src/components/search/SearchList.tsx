@@ -29,10 +29,10 @@ const SearchList = ({ search }: { search: string }) => {
   let wordConversion = searchWord
     .split(' ')
     .map((n) => {
-      return `${n}+`;
+      return `%${n}%`;
     })
     .join('');
-  wordConversion = wordConversion === 'null+' ? '+' : wordConversion;
+  wordConversion = wordConversion === '%null%' ? '+' : wordConversion;
 
   // 페이지 수 불러오기
   const { data: pageData, isLoading: isPageLoading } = useQuery({
