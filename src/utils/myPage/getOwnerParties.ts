@@ -7,6 +7,10 @@ import browserClient from '@/utils/supabase/client';
 export const getOwnerParty = async (userId: string): Promise<MyPagePartyInfo[]> => {
   // const userId = await getLoginUserIdOnClient();
 
+  if (!userId) {
+    return [];
+  }
+
   const { data: ownerParties, error } = await browserClient
     .from('party_info')
     .select('*')
