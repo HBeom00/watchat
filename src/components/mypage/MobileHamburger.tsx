@@ -47,7 +47,7 @@ const MobileHamburger: React.FC = () => {
       {/* 드롭다운 메뉴 */}
       {menuOpen && (
         <div
-          className={`selectDropBox w-full absolute top-4 transition-all duration-300 ease-in-out transform ${
+          className={`selectDropBox w-full absolute top-4 right-0 transition-all duration-300 ease-in-out transform ${
             menuOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
           }`}
         >

@@ -5,6 +5,7 @@ import MyInvitedParty from '@/components/mypage/MyInvitedParty';
 import MyFollowRecommendation from '@/components/mypage/MyFollowRecommendation';
 import MyRecommendParty from '@/components/mypage/MyRecommendParty';
 import MobileHamburger from '@/components/mypage/MobileHamburger';
+import MobileHeader from '@/components/layout/MobileHeader';
 
 const MyPage = () => {
   return (
