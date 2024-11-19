@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import MobileHeader from './MobileHeader';
 
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -12,8 +13,13 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
   return (
     <div className="flex flex-col min-h-screen">
       {!hideHeader && <Header />}
+      <MobileHeader />
       <main
-        className={!hideHeader ? 'flex-1 mt-[80px] overflow-auto mobile:mt-[58px]' : 'flex-1 px-[20px] overflow-auto'}
+        className={
+          !hideHeader
+            ? 'flex-1 mt-[80px] overflow-auto mobile:mt-[64px]'
+            : 'flex-1  px-10 mx-auto overflow-auto mobile:mt-[64px]'
+        }
       >
         {children}
       </main>

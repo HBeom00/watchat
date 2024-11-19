@@ -8,16 +8,15 @@ import HeaderMobileBottom from './HeaderMobileBottom';
 import { usePathname } from 'next/navigation';
 
 const Header = () => {
+  const pathname = usePathname();
   // 유저 ID 가져오기
   const { data: isUser } = useUserId();
-  const pathname = usePathname();
-  const hideHeader_Mobile = ['/login', '/signup', '/party', '/recruit', '/my-page/edit', '/chat', '/warming'];
-  const isHideHeader = hideHeader_Mobile.some((path) => pathname.startsWith(path));
 
   return (
     <div
-      className={`fixed z-50 w-full h-[80px] flex items-center justify-center flex-shrink-0 border-solid border-b-[1px] border-Grey-200 bg-static-white
-    mobile:h-[58px] ${isHideHeader ? 'mobile:hidden' : 'block'}`}
+      className={`fixed z-40 w-full h-[80px] flex items-center justify-center flex-shrink-0 border-solid border-b-[1px] border-Grey-200 bg-static-white
+    ${!(pathname === '/' || pathname.startsWith('/search') || pathname.startsWith('/my-page')) && 'mobile:hidden'}
+    mobile:h-[58px]`}
     >
       <div
         className={`flex flex-row py-4 justify-between items-center flex-[1_0_0] max-w-[1060px] 
@@ -25,7 +24,9 @@ const Header = () => {
       >
         <div
           className={`flex flex-row items-center gap-[24px]
-          mobile:px-[20px] mobile:w-[375px] mobile:justify-between mobile:self-stretch`}
+          mobile:px-[20px] mobile:w-full mobile:justify-between mobile:self-stretch  ${
+            pathname.startsWith('/my-page') && 'mobile:hidden'
+          }`}
         >
           <Link className="flex py-3 items-start" href={'/'}>
             <Image

@@ -29,7 +29,7 @@ const SearchBar = () => {
   return (
     <div
       className={`flex py-[4px] px-[16px] gap-[4px] justify-center items-center rounded-2xl bg-gray-50 relative
-    ${pathname.startsWith('/search') ? 'mobile:fixed' : 'mobile:hidden'}
+    mobile:hidden
     mobile:top-[108px] mobile:w-[303px]`}
     >
       <Image src={'/search_icon.svg'} width={20} height={20} alt="검색아이콘" className="flex-shrink-0" />
