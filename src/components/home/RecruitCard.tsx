@@ -12,8 +12,14 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
 
   return (
-    <div className="relative flex flex-col w-[196px] items-start pb-3 gap-2 flex-shrink-0 group">
-      <div className="relative flex w-[196px] h-[280px] py-5 items-start gap-8 self-stretch rounded-sm overflow-hidden">
+    <div
+      className={`flex flex-col w-[196px] items-start pb-[12px] gap-[8px] flex-shrink-0 group
+   mobile:w-[159.5px] mobile:pb-0`}
+    >
+      <div
+        className={`relative flex w-full h-[280px] py-5 items-start gap-8 self-stretch rounded-[4px] overflow-hidden
+        mobile:h-[220px]`}
+      >
         <WatchingLabel partyData={data} />
         {platform ? <PlatformImageCard platform={platform} /> : <></>}
         {!data.privacy_setting && (
@@ -30,7 +36,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           src={data.video_image}
           alt={data.video_name}
           style={{ objectFit: 'cover' }}
-          sizes="196px"
+          sizes="(max-width: 196px)"
           fill
         />
         {end || getViewStatus(data) === '시청중' ? (
