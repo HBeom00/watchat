@@ -38,7 +38,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body className={`antialiased`}>
+      <body className={`antialiased mobile:overflow-x-hidden`}>
         <UserStoreProvider isUser={!!user}>
           <Providers>
             <LayoutContent>{children}</LayoutContent>

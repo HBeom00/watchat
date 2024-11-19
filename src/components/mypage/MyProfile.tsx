@@ -39,10 +39,10 @@ const MyProfile = () => {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
   return (
-    <section className="bg-[#f5f5f5] py-8  w-full mobile:overflow-hidden">
+    <section className="bg-[#f5f5f5] py-8 w-full  mx-auto box-border mobile:overflow-hidden">
       <div
         className={`
-          gap-4 m-auto w-[1060px] flex flex-row items-center 
+          gap-4 m-auto w-[1060px] flex flex-row items-center flex-warp
           mobile:flex-col mobile:justify-start mobile:mx-[20px] mobile:w-full mobile:items-start
           `}
       >
