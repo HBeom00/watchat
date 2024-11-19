@@ -12,6 +12,7 @@ import { useLiveMessage } from '@/utils/hooks/useLiveMessage';
 
 export default function Chat({ roomId }: { roomId: string }) {
   const [userId, setUserId] = useState<string | null>(null);
+  const [expandedMessages, setExpandedMessages] = useState<{ [key: string]: boolean }>({});
   const messageListRef = useRef<HTMLDivElement | null>(null);
 
   // 로그인 유저 아이디 가져오기
@@ -44,8 +45,7 @@ export default function Chat({ roomId }: { roomId: string }) {
     }
   }, [messages]);
 
-  const [expandedMessages, setExpandedMessages] = useState<{ [key: string]: boolean }>({});
-
+  // 긴 메세지 관리
   const toggleExpand = (msgId: string) => {
     setExpandedMessages((prev) => ({
       ...prev,
