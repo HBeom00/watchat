@@ -76,7 +76,7 @@ const MemberList = ({
   return (
     <div
       className={`w-[340px] px-[20px] py-[8px] flex flex-col items-start gap-[16px]
-    mobile:w-[375px]
+    mobile:w-full
     `}
     >
       {sortedByRole.map((el) => {

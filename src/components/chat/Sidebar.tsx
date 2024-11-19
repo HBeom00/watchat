@@ -102,7 +102,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
       className={`h-full w-[340px] bg-white fixed top-0 right-0 transform transition-transform duration-300 z-50 ${
         isVisible ? 'translate-x-0' : 'translate-x-full'
       }
-      mobile:w-[375px]
+      mobile:w-full
       `}
     >
       <div
@@ -156,7 +156,7 @@ const Sidebar = ({ isVisible, onClose, roomId }: { isVisible: boolean; onClose: 
         exitParty={({ id, nickname }: { id: string; nickname: string }) => exitPartyMutation.mutate({ id, nickname })}
       />
       {ownerId !== userId ? (
-        <div className="p-[20px] w-[340px] h-full mobile:w-[375px] flex flex-col items-start">
+        <div className="p-[20px] w-[340px] h-full mobile:w-full flex flex-col items-start">
           <Dialog>
             <DialogTrigger className="w-[300px] fixed mobile:left-[50%] mobile:transform mobile:translate-x-[-50%] bottom-[20px] outline-disabled-btn-l flex justify-center items-center gap-[4px] self-stretch">
               파티 탈퇴
