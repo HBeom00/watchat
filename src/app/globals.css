@@ -7,6 +7,11 @@
   src: url('fonts/PretendardVariable.woff2');
 }
 
+html,
+body {
+  @apply mobile:overflow-x-hidden;
+}
+
 * {
   font-family: 'Pretendard';
 }
@@ -772,4 +777,20 @@ input[type='range']::-webkit-slider-thumb {
   -webkit-line-clamp: 6; /* 최대 6줄로 제한 */
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+input[type='radio'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type='radio']:checked {
+  border: 4px solid #7f4af4;
 }

@@ -12,7 +12,7 @@ const ListDiv = ({ data }: { data: partyInfo[] }) => {
   return (
     <div
       className={`grid grid-cols-5 gap-x-[20px] gap-y-[32px]
-    mobile:grid-cols-2 mobile:gap-x-[16px] mobile:gap-y-[32px]`}
+    mobile:grid-cols-2 mobile:gap-x-[16px]`}
     >
       {
         <>

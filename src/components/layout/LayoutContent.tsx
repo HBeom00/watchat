@@ -18,7 +18,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
         className={
           !hideHeader
             ? 'flex-1 mt-[80px] overflow-auto mobile:mt-[64px]'
-            : 'flex-1  px-10 mx-auto overflow-auto mobile:mt-[64px]'
+            : `flex-1 mx-auto overflow-auto ${hideHeader ? '' : 'mobile:mt-[64px]'}`
         }
       >
         {children}
