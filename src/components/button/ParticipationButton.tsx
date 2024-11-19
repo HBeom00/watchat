@@ -20,6 +20,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import getBanUsers from '@/utils/participation/BanUsers';
 import { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import { useDeleteInviteMutation } from '@/utils/myPage/usdDeleteInvite';
 
 import ParticipationForm from '../form/ParticipationForm';
 
@@ -44,6 +45,9 @@ const ParticipationButton = ({
   const [display, setDisplay] = useState<boolean>(true);
   const path = usePathname();
 
+  // 초대 취소
+  const { mutate: deleteInvite } = useDeleteInviteMutation();
+
   const { data: ban } = useQuery({
     queryKey: ['ban', party_id],
     queryFn: async () => {
@@ -59,9 +63,15 @@ const ParticipationButton = ({
       setMessage('로그인이 필요한 서비스입니다.');
     }
     if (ban) {
+      if (invite_id) {
+        deleteInvite(invite_id);
+      }
       setMessage('참가할 수 없는 파티입니다.');
     }
     if (party_situation === '모집마감') {
+      if (invite_id) {
+        deleteInvite(invite_id);
+      }
       setMessage('모집이 마감된 파티입니다.');
     }
     if (message !== '' && !path.includes('/recruit')) {
@@ -71,7 +81,7 @@ const ParticipationButton = ({
       setMessage('');
       setDisplay(true);
     }
-  }, [message, party_situation, isLogin, path, openControl, ban]);
+  }, [message, party_situation, isLogin, path, openControl, ban, invite_id, deleteInvite]);
 
   return (
     <>

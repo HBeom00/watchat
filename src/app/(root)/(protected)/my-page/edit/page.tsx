@@ -2,7 +2,11 @@ import React from 'react';
 import FirstLoginForm from '@/components/auth/FirstLoginForm';
 
 const EditProfilePage = () => {
-  return <FirstLoginForm />;
+  return (
+    <>
+      <FirstLoginForm />
+    </>
+  );
 };
 
 export default EditProfilePage;

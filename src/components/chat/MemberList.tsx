@@ -118,7 +118,7 @@ const MemberList = ({
                     className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg"
                   >
                     <DialogTitle className="px-[16px] py-[8px]"></DialogTitle>
-                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-gray-900 mt-[16px] body-m">
+                    <DialogDescription className="flex justify-center items-end text-lg font-semibold text-Grey-900 mt-[16px] body-m">
                       정말 내보내시겠습니까?
                     </DialogDescription>
                     <div className="flex justify-center items-center mt-[16px] gap-[16px]">
@@ -129,7 +129,7 @@ const MemberList = ({
                         내보내기
                       </div>
                       <DialogClose>
-                        <div className="w-[150px] py-[8px] px-[16px] bg-gray-200 text-Grey-400 font-bold rounded-md hover:bg-gray-300 transition">
+                        <div className="w-[150px] py-[8px] px-[16px] bg-Grey-200 text-Grey-400 font-bold rounded-md hover:bg-Grey-300 transition">
                           취소
                         </div>
                       </DialogClose>

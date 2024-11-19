@@ -4,14 +4,14 @@ import browserClient from '@/utils/supabase/client';
 import { getFollowerData } from './getFollowData';
 
 // 멤버 타입 정의
-type Member = {
+export type Member = {
   nickname: string;
   profile_img: string;
   user_id: string;
 };
 
 // 최근 파티원 목록 타입 정의
-type RecentParticipantsData = {
+export type RecentParticipantsData = {
   party_id: string;
   video_name: string;
   party_name: string;
@@ -19,6 +19,7 @@ type RecentParticipantsData = {
   media_type: string;
   end_time: string;
   team_user_profile: {
+    party_nickname: string;
     user: Member;
   }[];
 };
@@ -82,6 +83,7 @@ export const getRecommendedMembers = async (userId?: string) => {
       watch_date,
       end_time,
       team_user_profile (
+        party_nickname: nickname,
         user: user_id (
           nickname,
           profile_img,
