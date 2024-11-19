@@ -12,6 +12,8 @@ import closeBte from '../../../public/close.svg';
 import doesntExist from '../../../public/nobody.svg';
 import Link from 'next/link';
 import { MyCarousel } from './MyCarousel';
+import { RecentParticipantsData } from '@/utils/myPage/getRecommendedUser';
+import { cutVideoName } from '@/utils/cutNameAndPartyName';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -25,25 +27,6 @@ const MyFollowRecommendation = () => {
   // 사용자 데이터 가져오기
   const { data: userData, isPending, isError } = useFetchUserData();
   const userId = userData?.user_id;
-
-  // 멤버 타입 정의
-  interface Member {
-    nickname: string;
-    profile_img: string;
-    user_id: string;
-  }
-
-  // 최근 파티원 목록 타입 정의
-  interface RecentParticipantsData {
-    party_id: string;
-    video_name: string;
-    party_name: string;
-    episode_number?: number;
-    media_type: string;
-    team_user_profile: {
-      user: Member;
-    }[];
-  }
 
   const queryClient = useQueryClient();
 
@@ -115,13 +98,13 @@ const MyFollowRecommendation = () => {
   }
 
   return (
-    <article className=" m-auto mb-[85px] w-[1060px]">
-      <div className="flex justify-between m-auto mb-4">
+    <article className=" m-auto mb-[85px] w-[1060px] mobile:w-full">
+      <div className="flex justify-between m-auto mb-4  mobile:px-[20px]">
         <h3 className="title-m">팔로우 추천</h3>
       </div>
 
       {/* 캐러셀 컨테이너 */}
-      <div className="relative">
+      <div className="relative  mobile:pl-[20px]">
         {recommendedUsers && recommendedUsers.length > 6 && (
           // 캐러셀 버튼
           <MyCarousel
@@ -143,10 +126,6 @@ const MyFollowRecommendation = () => {
                     : ''
                 }`;
 
-                // 길이가 8자 이상이면 잘라서 말줄임표 추가
-                const cutVideoNameWithEpisode =
-                  videoNameWithEpisode.length > 8 ? videoNameWithEpisode.slice(0, 8) + '...' : videoNameWithEpisode;
-
                 // 파티로 이동하는 링크
                 const linkToParty = `${recommendedUser.party_id}`;
 
@@ -157,7 +136,8 @@ const MyFollowRecommendation = () => {
                   >
                     <div
                       key={`${recommendedUser.party_id}-${member.user.user_id}`}
-                      className="flex flex-col items-center text-center relative pt-10 pb-4 px-4 rounded-[8px] border min-w-[160px] mr-5 hover:border-primary-400 transition duration-300"
+                      className={`flex flex-col items-center text-center relative pt-10 pb-4 px-4 rounded-[8px] border min-w-[160px] mr-5 hover:border-primary-400 transition duration-300
+                        mobile:min-w-[156px] mobile:mr-[10px]`}
                     >
                       <button
                         onClick={() => banMutation.mutate(member.user.user_id)}
@@ -182,9 +162,10 @@ const MyFollowRecommendation = () => {
                         }}
                       />
                       <h3 className="body-m-bold">{member.user.nickname}</h3>
+                      <h5 className="caption-m text-Grey-600">{member.party_nickname}</h5>
                       <Link href={`/party/${linkToParty}`}>
                         <p className="body-s hover:text-primary-400 transition duration-300">
-                          {cutVideoNameWithEpisode}
+                          {cutVideoName(videoNameWithEpisode)}
                         </p>
                       </Link>
                       <p className="body-s text-Grey-600">함께 시청했습니다.</p>
@@ -200,7 +181,13 @@ const MyFollowRecommendation = () => {
               })
             ) : (
               <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
-                <Image src={doesntExist} width={73} height={73} alt="최근 함께한 파티원이 없습니다." />
+                <Image
+                  src={doesntExist}
+                  width={73}
+                  height={73}
+                  alt="최근 함께한 파티원이 없습니다."
+                  className="mobile:w-[58px] mobile:h-[51px]"
+                />
                 <p className="body-m text-Grey-600">최근 함께한 파티원이 없습니다.</p>
               </li>
             )}
