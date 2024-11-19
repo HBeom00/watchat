@@ -69,7 +69,7 @@ const ParticipationModal = ({
   }, [message, party_situation, isLogin, path, open, ban]);
 
   return (
-    <div>
+    <>
       <div className={`${open && 'flex fixed z-40 top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.50)]'}`}></div>
       <div ref={openRef} className={`relative w-full ${(isMember && open) || !isMember ? '' : 'hidden'}`}>
         {children}
@@ -129,7 +129,7 @@ const ParticipationModal = ({
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

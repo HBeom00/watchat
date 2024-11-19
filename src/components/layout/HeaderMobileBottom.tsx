@@ -48,13 +48,13 @@ const HeaderMobileBottom = ({ isUser }: { isUser: boolean }) => {
       <SearchBar />
       <div
         className={`flex py-[12px] px-[16px] justify-center items-center
-        mobile:p-[8px]`}
+        mobile:p-[8px] mobile:w-[72px]`}
       >
         <GoRecruitButton isLogin={isUser} />
       </div>
       <div
         className={`flex py-[12px] px-[16px] justify-center items-center
-        mobile:p-[8px]`}
+        mobile:p-[8px] mobile:w-[72px]`}
       >
         {isUser ? (
           <>
@@ -64,7 +64,7 @@ const HeaderMobileBottom = ({ isUser }: { isUser: boolean }) => {
               mobile:flex`}
               href={'/my-page'}
             >
-              <div className="flex flex-col w-[72px] items-center p-[8px]">
+              <div className="flex flex-col items-center">
                 <div
                   className={`flex flex-col p-[3px] w-[24px] h-[24px] gap-[1px] justify-center items-center flex-shrink-0`}
                 >
