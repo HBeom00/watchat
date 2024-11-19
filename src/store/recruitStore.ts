@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface RecruitState {
+type RecruitState = {
   party_name: string;
   video_name: string;
   party_detail: string;
@@ -23,7 +23,7 @@ interface RecruitState {
 
   setPartyInfo: (info: Partial<Omit<RecruitState, 'setPartyInfo' | 'setRecruitDetails'>>) => void;
   setRecruitDetails: (details: Partial<Omit<RecruitState, 'setPartyInfo' | 'setRecruitDetails'>>) => void;
-}
+};
 
 export const useRecruitStore = create<RecruitState>((set) => ({
   party_name: '',

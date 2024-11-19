@@ -49,13 +49,38 @@ const Footer = () => {
       </div>
       <div className="mt-[18px]">
         <div>
-          <p className="flex justify-end text-[12px] text-Grey-300">대표이사 김경혜</p>
-          <p className="flex justify-end text-[12px] text-Grey-300">이메일 team.watchat@gmail.com</p>
+          <Image src="/logo.svg" alt="Slide3" width={142} height={24} />
+          <div
+            className={`flex space-x-[8px] mt-[16px]
+                         mobile:`}
+          >
+            <p onClick={personalInformation} className="cursor-pointer hover:underline ">
+              서비스 이용약관
+            </p>
+            <p>|</p>
+            <p onClick={termsOfUse} className="cursor-pointer hover:underline">
+              개인정보 처리방침
+            </p>
+            <p>|</p>
+            <p onClick={howToUse} className="cursor-pointer hover:underline">
+              서비스 소개
+            </p>
+          </div>
+          <p className="mt-[16px]">@2024 watchat.All rights reserved</p>
         </div>
-        <div className="flex space-x-4 mt-4 justify-end">
-          <Image src="/instagram.svg" alt="Slide3" width={24} height={24} />
-          <Image src="/Vector.svg" alt="Slide3" width={24} height={24} />
-          <Image src="/blog.svg" alt="Slide3" width={24} height={24} />
+        <div className="mt-[18px] mobile:">
+          <div>
+            <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">주식회사 OJOSAMA</p>
+            <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">대표이사 김경혜</p>
+            <p className="flex justify-end mobile:justify-start text-[12px] text-Grey-300">
+              이메일 team.watchat@gmail.com
+            </p>
+          </div>
+          <div className="flex space-x-4 mt-4 justify-end mobile:justify-start">
+            <Image src="/instagram.svg" alt="Slide3" width={24} height={24} />
+            <Image src="/Vector.svg" alt="Slide3" width={24} height={24} />
+            <Image src="/blog.svg" alt="Slide3" width={24} height={24} />
+          </div>
         </div>
       </div>
     </div>

@@ -533,7 +533,7 @@ select {
   width: 520px;
   height: 348px;
 }
-@media (max-width: 375px) {
+@media (max-width: 480px) {
   .react-datepicker {
     width: 335px;
     height: 288px;
@@ -554,7 +554,7 @@ select {
   padding-top: 5px !important;
   text-align: center !important;
 }
-@media (max-width: 375px) {
+@media (max-width: 480px) {
   .react-datepicker__day--selected,
   .react-datepicker__day--keyboard-selected {
     margin-left: 3px !important;
@@ -566,7 +566,7 @@ select {
   padding-top: 5px !important;
   transition: 0.3s;
 }
-@media (max-width: 375px) {
+@media (max-width: 480px) {
   .react-datepicker__day {
     padding-top: 1px !important;
     transition: 0.3s;
@@ -591,7 +591,7 @@ select {
 /* 현재 월/연도 */
 .custom-datepicker .react-datepicker__current-month {
   font-size: 1.2em; /* 월/연도 크기 */
-  padding-left: 50px;
+  padding-left: 40px;
 }
 
 .custom-datepicker .react-datepicker__month-container {
@@ -603,10 +603,9 @@ select {
   display: flex;
   justify-content: space-around; /* 날짜 간격 균등 분배 */
   font-size: 13px;
-  padding-left: 40px;
-  gap: 32px;
+  padding-left: 70px;
 }
-@media (max-width: 375px) {
+@media (max-width: 480px) {
   .custom-datepicker .react-datepicker__day-names {
     padding-left: 10px;
     gap: 7px;
@@ -621,7 +620,7 @@ select {
   margin-left: 22px;
   text-align: center;
 }
-@media (max-width: 375px) {
+@media (max-width: 480px) {
   .custom-datepicker .react-datepicker__day {
     width: 32px;
     height: 32px;
@@ -652,7 +651,7 @@ select {
   width: 520px !important;
   height: 200px !important;
 }
-@media (max-width: 375px) {
+@media (max-width: 480px) {
   .react-datepicker--time-only {
     width: 335px !important;
     height: 152px !important;
