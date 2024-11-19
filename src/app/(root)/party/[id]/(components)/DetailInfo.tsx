@@ -55,14 +55,16 @@ const DetailInfo = ({
               .filter((n) => !!n.profile_path)
               .map((credit) => {
                 return (
-                  <div key={credit.id} className="flex flex-col w-[78.857px] h-[100px] items-start gap-1 flex-shrink-0">
-                    <Image
-                      className="self-stretch"
-                      src={`https://image.tmdb.org/t/p/w500${credit.profile_path}`}
-                      width={100}
-                      height={100}
-                      alt={credit.name}
-                    />
+                  <div key={credit.id} className="flex flex-col items-start gap-1 flex-shrink-0">
+                    <div className="relative w-[80px] h-[100px]">
+                      <Image
+                        className="self-stretch"
+                        src={`https://image.tmdb.org/t/p/w500${credit.profile_path}`}
+                        style={{ objectFit: 'cover' }}
+                        fill
+                        alt={credit.name}
+                      />
+                    </div>
                     <p className="self-stretch text-Grey-800 body-xs">{credit.original_name}</p>
                   </div>
                 );

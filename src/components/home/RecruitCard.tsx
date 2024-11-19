@@ -36,7 +36,6 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           src={data.video_image}
           alt={data.video_name}
           style={{ objectFit: 'cover' }}
-          sizes="(max-width: 196px)"
           fill
         />
         {end || getViewStatus(data) === '시청중' ? (
