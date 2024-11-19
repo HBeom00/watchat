@@ -190,7 +190,7 @@ const FirstLoginForm = () => {
   };
 
   // 이미지파일 유효성 검사
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
@@ -256,7 +256,7 @@ const FirstLoginForm = () => {
           type="file"
           ref={imgRef}
           accept="image/png, image/jpeg, image/jpg, image/gif"
-          onChange={handleFileChange}
+          onChange={fileChangeHandler}
           className="hidden"
         />
       </div>

@@ -40,6 +40,7 @@ const MyParticipatingParty = () => {
 
   const fetchedUserId = useFetchUserId();
 
+  // 마이페이지인 경우엔 로그인한 유저, 아닌 경우엔 프로필페이지의 유저id
   const userId = pathname === '/my-page' ? userData?.user_id || '' : fetchedUserId || '';
 
   const viewMoreHref =

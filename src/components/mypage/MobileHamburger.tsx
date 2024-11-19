@@ -5,7 +5,8 @@ import browserClient from '@/utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
+import menu from '../../../public/menu.svg';
 
 const MobileHamburger: React.FC = () => {
   const router = useRouter();
@@ -13,11 +14,9 @@ const MobileHamburger: React.FC = () => {
   // 메뉴 상태 관리
   const menuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useDetectClose(menuRef, false);
-  const [selectedLabel, setSelectedLabel] = useState<string>('메뉴 선택');
 
   // 메뉴 옵션 정의
   const editProfileHandler = () => {
-    setSelectedLabel('프로필 수정');
     router.push('/my-page/edit');
   };
 
@@ -30,7 +29,6 @@ const MobileHamburger: React.FC = () => {
   });
 
   const logoutHander = () => {
-    setSelectedLabel('로그아웃');
     logoutBtn();
   };
 
@@ -42,14 +40,17 @@ const MobileHamburger: React.FC = () => {
   return (
     <div ref={menuRef} className="relative z-20">
       {/* 메뉴 버튼 */}
-      <button onClick={() => setMenuOpen(!menuOpen)} className="selectBox flex items-center justify-between w-full">
-        <p>{selectedLabel}</p>
-        <Image src={'/pageArrow/dropdown_arrow.svg'} width={16} height={16} alt="메뉴 열기" />
+      <button onClick={() => setMenuOpen(!menuOpen)}>
+        <Image src={menu} width={24} height={24} alt="menu" />
       </button>
 
       {/* 드롭다운 메뉴 */}
       {menuOpen && (
-        <div className="selectDropBox w-full">
+        <div
+          className={`selectDropBox w-full absolute top-4 transition-all duration-300 ease-in-out transform ${
+            menuOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+          }`}
+        >
           {options.map((option, index) => (
             <button
               key={index}
