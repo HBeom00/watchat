@@ -3,6 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 
 // 식빵온도 가져오기
 export const getWarming = async (userId: string | undefined): Promise<number> => {
+  if (!userId) {
+    console.warn('유효하지 않은 userId:', userId);
+    return 50;
+  }
+
   // warming 테이블에서 해당 user_id와 일치하는 warming_user_id의 temperature 합산
   const { data, error } = await browserClient.from('warming').select('temperature').eq('warming_user_id', userId);
 
@@ -23,6 +28,11 @@ export const getWarming = async (userId: string | undefined): Promise<number> =>
 
 // 코멘트 가져오기
 export const getComments = async (userId: string | undefined) => {
+  if (!userId) {
+    console.warn('유효하지 않은 userId:', userId);
+    return [];
+  }
+
   const { data: commentData, error: commentError } = await browserClient
     .from('warming')
     .select('comment')
