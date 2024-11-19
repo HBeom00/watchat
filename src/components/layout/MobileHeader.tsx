@@ -8,9 +8,13 @@ const MobileHeader = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const hideHeader = !(pathname === '/' || (pathname.startsWith('/search') && pathname !== '/search'));
+  const hideHeader = !(
+    pathname === '/' ||
+    (pathname.startsWith('/search') && pathname !== '/search') ||
+    pathname.startsWith('/chat')
+  );
 
-  const hideBack = pathname === '/recruit/firstPage';
+  const hideBackArr = ['/recruit/firstPage', '/login', '/signup'].some((n) => pathname === n);
   const hideX = ['/search', '/party', '/my-page', '/warming'].some((n) => pathname.startsWith(n));
 
   const pageTitles: Record<string, string> = {
@@ -26,7 +30,7 @@ const MobileHeader = () => {
     ${hideHeader && 'mobile:flex'}`}
     >
       <div onClick={() => router.back()} className="flex w-[48px] h-[48px] p-[12px] justify-center items-center">
-        {hideBack ? <></> : <Image src={'/arrow_back_black.svg'} width={24} height={24} alt="뒤로가기" />}
+        {hideBackArr ? <></> : <Image src={'/arrow_back_black.svg'} width={24} height={24} alt="뒤로가기" />}
       </div>
 
       <h1 className="body-l-bold">{pageTitle}</h1>

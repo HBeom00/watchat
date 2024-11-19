@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
   const options = 'location=no , toolbar=no , menubar =no, status=no';
@@ -17,10 +18,14 @@ const Footer = () => {
   const personalInformation = () => {
     window.open('https://www.notion.so/13094dc6c14c80459599d85be6ac453d', '개인정보처리방침', options);
   };
+
+  const pathname = usePathname();
+  const hideFooter_Mobile = pathname.startsWith('/party');
+
   return (
     <div
       className={` flex justify-between items-start min-h-[20px]  bottom-0  w-full py-12 px-48 bg-Grey-900 p-10 text-white,
-                      mobile:grid  text-white text-[13px] `}
+                      mobile:grid  text-white text-[13px] ${hideFooter_Mobile ? 'mobile:hidden' : 'block'}`}
     >
       <div>
         <Image src="/logo.svg" alt="Slide3" width={142} height={24} />
