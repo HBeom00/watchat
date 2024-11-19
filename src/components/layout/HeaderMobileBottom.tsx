@@ -64,7 +64,7 @@ const HeaderMobileBottom = ({ isUser }: { isUser: boolean }) => {
               mobile:flex`}
               href={'/my-page'}
             >
-              <div className="flex flex-col w-[56px] items-center">
+              <div className="flex flex-col w-[72px] items-center p-[8px]">
                 <div
                   className={`flex flex-col p-[3px] w-[24px] h-[24px] gap-[1px] justify-center items-center flex-shrink-0`}
                 >
@@ -81,7 +81,7 @@ const HeaderMobileBottom = ({ isUser }: { isUser: boolean }) => {
                     alt="마이페이지"
                   />
                 </div>
-                <p className={`body-xs-bold text-Grey-300 text-center ${select('/my-page')}`}>마이페이지</p>
+                <p className={`body-xs-bold text-center ${select('/my-page')}`}>마이페이지</p>
               </div>
             </Link>
           </>

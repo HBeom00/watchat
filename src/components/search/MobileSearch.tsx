@@ -32,7 +32,7 @@ const MobileSearch = () => {
 
   return (
     <div
-      className={`hidden flex-col
+      className={`hidden flex-col w-full gap-[16px]
     mobile:flex`}
     >
       <form
@@ -68,7 +68,7 @@ const MobileSearch = () => {
         )}
       </form>
       {showResults && searchResults?.results?.length ? (
-        <ul className="custom-scrollbar w-full max-h-[190px] overflow-y-auto border border-Grey-300 border-t-0 rounded-b-md bg-white z-10">
+        <ul className="w-full overflow-y-auto bg-static-white z-10">
           {searchResults.results.map((result) => (
             <li
               key={result.id}
@@ -87,7 +87,16 @@ const MobileSearch = () => {
             </li>
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <div className="flex flex-col justify-center items-center gap-2 pt-12 pb-[100px] h-[510px]">
+          <Image src={'/searchCat.svg'} width={116} height={100} alt="검색 결과가 없습니다" />
+          <div className="flex flex-col gap-1 ">
+            <div className="flex flex-row text-center body-l-bold text-Grey-500">
+              <p>검색어를 입력해주세요</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,9 +1,11 @@
 'use client';
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import type { filter, order } from '@/types/filter';
 import DropDownBox from './DropDownBox';
+import { useDetectClose } from '@/utils/hooks/useDetectClose';
+import MobileSelect from './MobileSelect';
 
 type Props = {
   order: order;
@@ -14,6 +16,16 @@ type Props = {
 };
 
 const SelectDropBox = ({ order, setOrder, filter, setFilter, setPageNumber }: Props) => {
+  // 오더 오픈클로즈
+  const orderRef = useRef<HTMLDivElement>(null);
+  const [orderOpen, setOrderOpen] = useDetectClose(orderRef, false);
+
+  // 필터 오픈클로즈
+  const filterRef = useRef<HTMLDivElement>(null);
+  const [filterOpen, setFilterOpen] = useDetectClose(filterRef, false);
+
+  // 모바일
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   // 정렬 순 배열과 한영 변환 함수
   const orderArr: order[] = ['write_time', 'start_date_time', 'popularity'];
   const orderConversion = (order: order) => {
@@ -43,27 +55,54 @@ const SelectDropBox = ({ order, setOrder, filter, setFilter, setPageNumber }: Pr
   };
 
   return (
-    <div className="py-[32px] mobile:py-[16px]">
-      <div className="inline-flex items-center gap-[8px] text-Grey-500 body-s">
-        {/* 정렬 드롭다운 박스 */}
-        <DropDownBox
-          state={order}
-          stateArr={orderArr}
-          display={orderConversion as (n: string) => string}
-          onClick={(n: string) => setOrder(n as order)}
-        />
-        {/* 필터 드롭다운 박스 */}
-        <DropDownBox
-          state={filter}
-          stateArr={filterArr}
-          display={filterConversion as (n: string) => string}
-          onClick={(n: string) => {
-            setFilter(n as filter);
-            setPageNumber(1);
-          }}
-        />
+    <>
+      <div className="py-[32px] mobile:py-[16px]">
+        <div className="inline-flex items-center gap-[8px] text-Grey-500 body-s">
+          {/* 정렬 드롭다운 박스 */}
+          <DropDownBox
+            state={order}
+            stateArr={orderArr}
+            display={orderConversion as (n: string) => string}
+            onClick={(n: string) => setOrder(n as order)}
+            openRef={orderRef}
+            open={orderOpen}
+            setOpen={() => {
+              setOrderOpen(true);
+              setMobileOpen(true);
+            }}
+          />
+          {/* 필터 드롭다운 박스 */}
+          <DropDownBox
+            state={filter}
+            stateArr={filterArr}
+            display={filterConversion as (n: string) => string}
+            onClick={(n: string) => {
+              setFilter(n as filter);
+              setPageNumber(1);
+            }}
+            openRef={filterRef}
+            open={filterOpen}
+            setOpen={() => {
+              setFilterOpen(true);
+              setMobileOpen(true);
+            }}
+          />
+        </div>
       </div>
-    </div>
+      {/* 모바일용 */}
+      <MobileSelect
+        open={mobileOpen}
+        setOpen={setMobileOpen}
+        order={order}
+        filter={filter}
+        setOrder={setOrder}
+        setFilter={setFilter}
+        orderArr={orderArr}
+        filterArr={filterArr}
+        orderConversion={orderConversion as (n: string) => string}
+        filterConversion={filterConversion as (n: string) => string}
+      />
+    </>
   );
 };
 

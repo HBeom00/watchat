@@ -113,10 +113,7 @@ const MemberList = ({
                   <DialogTrigger className="flex justify-end items-center gap-[4px] text-Grey-400 font-bold text-xs">
                     내보내기
                   </DialogTrigger>
-                  <DialogContent
-                    onOpenAutoFocus={(e) => e.preventDefault()}
-                    className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg"
-                  >
+                  <DialogContent className="w-[350px] p-[16px] bg-white rounded-lg shadow-lg">
                     <DialogTitle className="px-[16px] py-[8px]"></DialogTitle>
                     <DialogDescription className="flex justify-center items-end text-lg font-semibold text-Grey-900 mt-[16px] body-m">
                       정말 내보내시겠습니까?

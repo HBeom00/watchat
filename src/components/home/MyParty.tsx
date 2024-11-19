@@ -58,8 +58,8 @@ const MyParty = () => {
           <p className="py-4 text-Grey-900 title-m">MY 파티</p>
           {data && data.length > 0 ? (
             <div
-              className={`grid grid-cols-5 gap-x-5 gap-y-8 text-Grey-900
-            mobile:grid-cols-2`}
+              className={`grid grid-cols-5 gap-x-[20px] gap-y-[32px] text-Grey-900
+            mobile:grid-cols-2 mobile:gap-x-[16px]`}
             >
               {data
                 .filter((n) => n && getViewStatus(n) === '시청중')

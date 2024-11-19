@@ -99,7 +99,6 @@ const ParticipationButton = ({
           <DialogPortal container={containerRef.current}>
             <DialogOverlay className="fixed inset-0 z-50 bg-black/50" />
             <DialogPrimitive.Content
-              onOpenAutoFocus={(e) => e.preventDefault()}
               className={`fixed left-[50%] top-[50%] w-[340px] z-50 rounded-[8px] translate-x-[-50%] translate-y-[-50%] bg-static-white transform
                ${
                  display &&
@@ -152,52 +151,6 @@ const ParticipationButton = ({
               <DialogDescription></DialogDescription>
             </DialogPrimitive.Content>
           </DialogPortal>
-
-          {/* <DialogContent
-            onOpenAutoFocus={(e) => e.preventDefault()}
-            className={`p-0 gap-0 rounded-[8px] w-[340px] bg-static-white
-            ${display ? `mobile:w-full top-[60%]` : 'mobile:w-[335px]'} !important`}
-          >
-            <DialogHeader className="flex w-full py-6">
-              <DialogTitle className={display ? '' : 'hidden'}>파티 프로필</DialogTitle>
-            </DialogHeader>
-            {message === '로그인이 필요한 서비스입니다.' ? (
-              <div className="flex flex-col gap-4 pt-4 justify-center self-stretch items-center body-m text-Grey-900">
-                <p className="self-stretch text-center">{message}</p>
-                <div className="flex items-center self-stretch p-4">
-                  <Link href="/login" className="btn-l w-full text-center">
-                    로그인
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className={!display ? 'flex w-full flex-col' : 'hidden'}>
-                  <div className="flex w-full flex-col pb-[16px] gap-2 justify-center self-stretch items-center body-m text-Grey-900 border-solid border-Grey-200 border-b-[1px]">
-                    {message === '파티에 참가하신 걸 환영합니다!' ? (
-                      <Image src={'/smileCat.svg'} width={73} height={64} alt={message} />
-                    ) : (
-                      <Image src={'/cryingCat.svg'} width={73} height={64} alt={message} />
-                    )}
-                    <p>{message}</p>
-                  </div>
-                  <button
-                    onClick={() => setOpenControl(false)}
-                    className="outline-btn-l flex py-[12px] px-[20px] justify-center items-center gap-[4px] self-stretch rounded-[8px] border-none text-primary-400 body-m-bold"
-                  >
-                    확인
-                  </button>
-                </div>
-                <ParticipationForm
-                  party_id={party_id}
-                  setMessage={setMessage}
-                  invite_id={invite_id}
-                  display={display}
-                />
-              </>
-            )}
-            <DialogDescription></DialogDescription>
-          </DialogContent> */}
         </Dialog>
       </div>
     </>

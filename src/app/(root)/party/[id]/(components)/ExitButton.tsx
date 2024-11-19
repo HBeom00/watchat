@@ -33,10 +33,7 @@ const ExitButton = ({ partyId, userId }: { partyId: string; userId: string }) =>
         <DialogTrigger className="inline-flex py-[8px] items-center text-Grey-400 body-xs-bold">
           참여 취소
         </DialogTrigger>
-        <DialogContent
-          onOpenAutoFocus={(e) => e.preventDefault()}
-          className="w-[340px] p-0 gap-0 rounded-[8px] bg-static-white"
-        >
+        <DialogContent className="w-[340px] p-0 gap-0 rounded-[8px] bg-static-white">
           <DialogHeader className="flex py-6">
             <DialogTitle></DialogTitle>
           </DialogHeader>
