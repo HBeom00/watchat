@@ -30,7 +30,7 @@ const GoRecruitButton = ({ isLogin }: { isLogin: boolean }) => {
           </p>
         </div>
       </DialogTrigger>
-      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px] p-0 gap-0">
+      <DialogContent className="w-[340px] p-0 gap-0">
         <DialogHeader className="flex py-6">
           <DialogTitle></DialogTitle>
         </DialogHeader>

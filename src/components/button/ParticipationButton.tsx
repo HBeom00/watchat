@@ -84,6 +84,7 @@ const ParticipationButton = ({
   }, [message, party_situation, isLogin, path, openControl, ban, invite_id, deleteInvite]);
 
   return (
+
     <Dialog
       open={openControl}
       onOpenChange={() => {
@@ -98,7 +99,7 @@ const ParticipationButton = ({
         <DialogOverlay className="fixed inset-0 z-50 bg-black/50" />
         <DialogPrimitive.Content
           className={`fixed left-[50%] top-[50%] w-[340px] z-50 rounded-[8px] translate-x-[-50%] translate-y-[-50%] bg-static-white transform
-               ${
+   ${
                  display &&
                  'mobile:top-[inherit] mobile:bottom-0 mobile:w-full mobile:rounded-b-none mobile:translate-y-[0%]'
                }`}
@@ -131,6 +132,7 @@ const ParticipationButton = ({
                   )}
                   <p>{message}</p>
                 </div>
+
                 <div
                   onClick={() => setOpenControl(false)}
                   className="outline-btn-l flex py-[12px] px-[20px] justify-center items-center gap-[4px] self-stretch rounded-[8px] border-none text-primary-400 body-m-bold"
@@ -191,6 +193,7 @@ const ParticipationButton = ({
             <DialogDescription></DialogDescription>
           </DialogContent> */}
     </Dialog>
+
   );
 };
 
