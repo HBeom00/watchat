@@ -62,10 +62,7 @@ const MobileSelect = ({
             {/* 검은 배경 */}
             <DialogOverlay className="fixed inset-0 z-50 bg-black/50" />
             {/* 내용 */}
-            <DialogPrimitive.Content
-              onOpenAutoFocus={(e) => e.preventDefault()}
-              className="fixed left-[50%] bottom-0 w-full z-50 rounded-t-[8px] translate-x-[-50%] translate-y-[0%] bg-static-white transform"
-            >
+            <DialogPrimitive.Content className="fixed left-[50%] bottom-0 w-full z-50 rounded-t-[8px] translate-x-[-50%] translate-y-[0%] bg-static-white transform">
               {/* 제목 */}
               <DialogHeader className="hidden">
                 <DialogTitle></DialogTitle>

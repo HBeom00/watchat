@@ -12,6 +12,8 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import photoCameraIcon from '../../../public/photo_camera.svg';
 import { genreArr, platformArr } from '@/constants/prefer';
+import { deleteOldImages } from '@/utils/myPage/deleteOldProfileImg';
+import { MutatedUser } from '@/types/editProfile';
 
 const checkNickname = async (nickname: string, currentUserNickname: string) => {
   // 만약 닉네임이 현재 사용자의 닉네임과 같으면 중복 체크를 하지 않게
@@ -34,7 +36,6 @@ const FirstLoginForm = () => {
   const { imgFile, imgRef, uploadImage } = useImageUpload();
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
-  const [nickname, setNickname] = useState<string>('');
   const route = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -72,10 +73,11 @@ const FirstLoginForm = () => {
     },
     resolver: zodResolver(nicknameSchema)
   });
+
   // 서버에 사용자 정보를 저장하는 mutation 함수
   const mutation = useMutation<void, Error, MutatedUser>({
     mutationFn: async (userData: FieldValues) => {
-      const file = imgRef.current?.files?.[0];
+      const file = imgRef.current?.files?.[0]; // 파일이 존재하는지 확인
       const {
         data: { user }
       } = await browserClient.auth.getUser();
@@ -84,108 +86,69 @@ const FirstLoginForm = () => {
         throw new Error('사용자 ID를 가져오는 데 실패했습니다.');
       }
 
-      const profile_image_name = `${user?.id}/${new Date().getTime()}`;
+      const profile_image_name = `${user.id}/${new Date().getTime()}`;
+
+      // 기본 프로필 이미지 URL
       const defaultProfileImgUrl =
         'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
 
-      // 파일이 있는 경우에만 업로드
+      // 기본값을 기본 이미지로 설정
+      let profileImgUrl = defaultProfileImgUrl;
+
+      // 스토리지에서 해당 프로필 이미지 파일이 존재하는지 확인
+      const { data: fileList, error: fileListError } = await browserClient.storage.from('profile_image').list(user.id);
+
+      // 파일 목록을 제대로 불러왔는지 확인
+      if (!fileListError && fileList && fileList.length > 0) {
+        const existingProfileImage = fileList.find((file) => file.name.includes(user.id));
+
+        if (existingProfileImage) {
+          // 기존 프로필 이미지가 존재하는 경우 해당 URL 사용
+          profileImgUrl = browserClient.storage
+            .from('profile_image')
+            .getPublicUrl(`${user.id}/${existingProfileImage.name}`).data.publicUrl;
+        }
+      }
+
+      // 새로운 이미지가 있다면 업로드
       if (file) {
         await browserClient.storage.from('profile_image').upload(profile_image_name, file, {
           cacheControl: 'no-store',
           upsert: true
         });
-      }
-      const profileImgUrl = file
-        ? browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl
-        : userData?.profile_img || defaultProfileImgUrl;
 
-      // 회원가입 또는 수정 로직
-      if (pathname === '/my-page/edit' && !!user) {
-        await deleteOldImages(user.id, profile_image_name); // 기존 이미지 삭제
+        profileImgUrl = browserClient.storage.from('profile_image').getPublicUrl(profile_image_name).data.publicUrl;
+
+        // 기존 이미지 삭제 (새로운 파일이 업로드 된 경우에만)
+        await deleteOldImages(user.id, profile_image_name);
+
         await browserClient
           .from('user')
           .update({
-            nickname: userData.nickname,
-            profile_img: profileImgUrl,
-            platform: platforms,
-            genre: genres
+            profile_img: profileImgUrl
           })
           .eq('user_id', user.id);
+      }
 
-        route.push('/my-page');
-      } else if (!!user) {
-        await browserClient.from('user').insert({
-          user_id: user.id,
-          user_email: user.email,
-          nickname,
-          profile_img: profileImgUrl,
+      await browserClient
+        .from('user')
+        .update({
+          nickname: userData.nickname,
           platform: platforms,
           genre: genres
-        });
+        })
+        .eq('user_id', user.id);
 
-        route.push('/');
-      }
+      route.push('/my-page');
     },
     onSuccess: () => {
-      alert(pathname === '/my-page/edit' ? '수정이 완료되었습니다.' : '회원가입이 완료되었습니다');
-      route.push(pathname === '/my-page/edit' ? '/my-page' : '/');
+      alert('수정이 완료되었습니다.');
+      route.push('/my-page');
     },
     onError: (error) => {
       console.error('Mutation error:', error);
     }
   });
-
-  type User = {
-    id: string;
-    email?: string;
-  };
-
-  type MutatedUser = {
-    user: User | null;
-    file: File | null;
-    profile_image_name: string;
-    nickname: string;
-    pathname: string;
-    platforms: string[];
-    genres: string[];
-    deleteOldImages: (userId: string, currentImageName: string) => Promise<void>;
-  };
-
-  // 이전 이미지 삭제 로직
-  const deleteOldImages = async (userId: string, currentImageName: string) => {
-    const { data: imgList, error: listError } = await browserClient.storage.from('profile_image').list(userId);
-
-    if (listError) {
-      console.error('이미지 목록 가져오기에 실패했습니다 => ', listError);
-      return;
-    }
-
-    if (imgList && imgList.length > 0) {
-      const deleteImg = imgList
-        .filter((file) => file.name !== currentImageName.split('/').pop()) // 현재 이미지 이름에서 파일 이름만 비교
-        .map((file) => `${userId}/${file.name}`);
-
-      console.log('삭제할 이미지 목록 => ', deleteImg); // 삭제할 이미지 목록들
-
-      if (deleteImg.length > 0) {
-        const { data: deleteData, error: deleteError } = await browserClient.storage
-          .from('profile_image')
-          .remove(deleteImg);
-
-        if (deleteError) {
-          console.error('이미지 삭제 중 오류 발생 => ', deleteError);
-        } else {
-          console.log('정상적으로 삭제되었습니다.', deleteData);
-        }
-      }
-    }
-    console.log('현재 이미지 =>', currentImageName);
-  };
-
-  //const defaultProfileImgUrl ='https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/default_profile.png';
-
-  // 이미지를 변경하지 않고 수정 시 이전 이미지 사용
-  //const profileImageUrl = userData?.profile_img || defaultProfileImgUrl;
 
   // 완료 버튼 클릭 시
   const onSuccessHandler: SubmitHandler<{ nickname: string }> = async ({ nickname }) => {
@@ -227,7 +190,7 @@ const FirstLoginForm = () => {
   };
 
   // 이미지파일 유효성 검사
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
@@ -242,7 +205,7 @@ const FirstLoginForm = () => {
       }
 
       // 파일 타입이 유효한 경우 업로드 처리
-      uploadImage(); // 파일을 전달하지 않고, 내부에서 파일을 처리하도록 변경
+      uploadImage();
     }
   };
 
@@ -258,10 +221,11 @@ const FirstLoginForm = () => {
     onClickGenre({ genre, setGenres });
   };
 
+  console.log('dsafaesasef', userData?.profile_img);
   return (
     <form
       onSubmit={handleSubmit(onSuccessHandler)}
-      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] "
+      className="flex flex-col max-w-[340px] m-auto mt-[100px] mb-[152px] mobile:mx-[20px] mobile:max-w-[355px]"
     >
       <div className="w-[100px] h-[100px] relative m-auto mb-[32px]">
         <Image
@@ -292,7 +256,7 @@ const FirstLoginForm = () => {
           type="file"
           ref={imgRef}
           accept="image/png, image/jpeg, image/jpg, image/gif"
-          onChange={handleFileChange}
+          onChange={fileChangeHandler}
           className="hidden"
         />
       </div>
@@ -305,7 +269,6 @@ const FirstLoginForm = () => {
           type="text"
           {...register('nickname')}
           placeholder="닉네임을 입력하세요"
-          onChange={(e) => setNickname(e.target.value)}
           className="border-[2px] commonEmailInput border-Grey-50"
         />
         {formState.errors.nickname && <span className="text-red-600">{formState.errors.nickname.message}</span>}
@@ -313,6 +276,7 @@ const FirstLoginForm = () => {
 
       <div className="mb-[32px]">
         <h3 className=" body-m-bold mb-[8px]">플랫폼</h3>
+        <h5 className="body-xs  mb-[8px] text-Grey-600">플랫폼과 장르를 선택해주시면 파티를 추천해드려요.</h5>
         <ul className="flex flex-wrap gap-[8px]">
           {platformArr.map((platform, index) => {
             return (
@@ -336,7 +300,8 @@ const FirstLoginForm = () => {
       </div>
 
       <div className="mb-[64px]">
-        <h3 className=" body-m-bold mb-[8px]">장르</h3>
+        <h3 className=" body-m-bold">장르</h3>
+        <h5 className="body-xs  mb-[8px] text-Grey-600">최대 5개까지 선택이 가능합니다.</h5>
         <ul className="flex flex-wrap gap-[8px]">
           {genreArr.map((genre, index) => {
             return (

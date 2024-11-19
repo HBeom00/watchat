@@ -20,7 +20,7 @@ export const MyCarousel: React.FC<MyCarouselProps> = ({
 }) => {
   return (
     <div className="embla_controls">
-      <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} className="absolute top-[50%] -left-10">
+      <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} className="absolute top-[50%] -left-[48px]">
         <div className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300">
           <Image src={arrow_back_ios} width={12} height={20} alt="arrow_back_ios" />
         </div>
@@ -28,7 +28,7 @@ export const MyCarousel: React.FC<MyCarouselProps> = ({
       <NextButton
         onClick={onNextButtonClick}
         disabled={nextBtnDisabled}
-        className="absolute top-[50%] -right-10 rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300"
+        className="absolute top-[50%] -right-[48px] rounded-full hover:bg-Grey-50 cursor-pointer transition duration-300"
       >
         <div className="w-10 h-10 flex items-center justify-center">
           <Image src={arrow_forward_ios} width={12} height={20} alt="arrow_forward_ios" />

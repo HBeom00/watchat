@@ -79,8 +79,11 @@ const MyInvitedParty = () => {
   }
 
   return (
-    <article className="m-auto mb-8 w-[1060px]">
-      <div className="flex justify-between m-auto mb-5">
+    <article
+      className={`m-auto mb-8 w-[1060px]
+      mobile:w-full `}
+    >
+      <div className="flex justify-between m-auto mb-5 mobile:px-[20px]">
         <h3 className="title-m">초대받은 파티</h3>
         {invitedParties && invitedParties.length > 0 ? (
           <div className="flex gap-4 body-xs-bold">
@@ -117,7 +120,7 @@ const MyInvitedParty = () => {
                   거절하기
                 </button>
               </DialogTrigger>
-              <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[340px]">
+              <DialogContent className="w-[340px] rounded-[8px]">
                 <DialogHeader>
                   <DialogTitle>
                     <h2 className="pt-16 pb-4">정말 거절하시겠습니까?</h2>
@@ -154,7 +157,7 @@ const MyInvitedParty = () => {
           />
         )}
         <div ref={emblaRef} className="overflow-hidden w-full max-w-[1060px] embla__viewport">
-          <ul className="carousel-container flex items-center gap-5 max-w-[1060px] embla__container">
+          <ul className="carousel-container flex items-center gap-5 max-w-[1060px] embla__container mobile:ml-[20px]">
             {invitedParties && invitedParties.length > 0 ? (
               invitedParties.map((invite) => {
                 const viewingStatus = getViewStatus(invite.party_info);
@@ -167,7 +170,8 @@ const MyInvitedParty = () => {
                 return (
                   <li
                     key={invite.invite_id}
-                    className="carousel-item min-w-[250px] group embla__slide"
+                    className={`carousel-item min-w-[250px] group embla__slide
+                      mobile:min-w-[245px]`}
                     onClick={() => isSelectionMode && partySelectionHandler(invite.invite_id)}
                   >
                     {isSelectionMode ? (
@@ -424,7 +428,13 @@ const MyInvitedParty = () => {
               })
             ) : (
               <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
-                <Image src={doesntExist} width={73} height={73} alt="초대받은 파티가 없습니다" />
+                <Image
+                  src={doesntExist}
+                  width={73}
+                  height={73}
+                  alt="초대받은 파티가 없습니다"
+                  className="mobile:w-[58px] mobile:h-[51px]"
+                />
                 <p className="body-m text-Grey-600">초대받은 파티가 없습니다.</p>
               </li>
             )}

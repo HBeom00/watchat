@@ -28,11 +28,23 @@ const page = async ({ params }: { params: { id: string } }) => {
     ?.filter((n) => n.user_id === partyData?.owner_id)
     .concat(memberDataArr?.filter((n) => n.user_id !== partyData?.owner_id));
   return (
-    <div className="flex flex-col w-[340px] gap-[16px] mx-auto justify-center items-center mt-[70px] mb-[142px]">
+    <div
+      className={`flex flex-col w-[340px] gap-[16px] mx-auto justify-center items-center mt-[70px] mb-[142px]
+      mobile:w-[375px] mobile:px-[20px] mobile:mt-0
+    `}
+    >
       <div className="flex flex-col items-start gap-[16px] self-stretch">
         <div className="flex flex-col mx-auto gap-[4px] text-center">
-          <p className="text-Grey-900 title-m">후기 작성하기</p>
-          <p className="text-Grey-600 label-l">함께 시청한 멤버의 후기를 남겨보세요.</p>
+          <p className="text-Grey-900 title-m mobile:mt-[8px] mobile:text-[16px] mobile:not-italic mobile:font-[600]">
+            후기 작성하기
+          </p>
+          <p
+            className={`text-Grey-600 label-l
+              mobile:hidden
+            `}
+          >
+            함께 시청한 멤버의 후기를 남겨보세요.
+          </p>
         </div>
         <WarmingPartyInfo partyData={partyData} />
       </div>

@@ -22,7 +22,7 @@ const KakaoButton = () => {
       onClick={signInWithKakao}
       className="flex gap-[8px] w-[340px] px-[24px] py-[16px] justify-center items-center self-stretch rounded-lg bg-[#FAE64C]"
     >
-      <Image src={Kakao_Image} alt="Kakao_Image" width={16} height={16} />
+      <Image src={Kakao_Image} alt="Kakao_Image" width={16} height={16} className="w-[16px] h-[16px]" />
       <p className="body-m-bold">Kakao 로그인</p>
     </button>
   );

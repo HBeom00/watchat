@@ -16,7 +16,10 @@ export const WarmingProgress = () => {
   const userId = pathname === '/my-page' ? userData?.user_id || '' : fetchedUserId || '';
 
   // 온도 가져오기
-  const { data: totalTemperature } = useTotalTemperature(userId);
+  const { data: totalTemperatureData } = useTotalTemperature(userId);
+
+  // 온도를 99로 제한
+  const totalTemperature = Math.min(totalTemperatureData || 0, 99);
 
   const [progress, setProgress] = React.useState(0);
 

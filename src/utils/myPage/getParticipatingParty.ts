@@ -75,5 +75,5 @@ export const getParticipatingParty = async (userId: string): Promise<MyPageParty
     })
   );
 
-  return partyWithDetails;
+  return partyWithDetails.filter((party) => party.owner_id !== userId);
 };

@@ -31,11 +31,9 @@ export const FollowModal: React.FC<FollowerProps> = ({ followerCount, followerDa
   return (
     <Dialog>
       <DialogTrigger>
-        <p className="flex flex-row items-center gap-2 body-xs">
-          팔로잉 <span className="body-xs-bold text-primary-400">{followerCount}</span>
-        </p>
+        <span className="body-xs-bold text-primary-400">{followerCount}</span>
       </DialogTrigger>
-      <DialogContent className="w-[340px] pl-5 pr-2">
+      <DialogContent className="w-[340px] pl-5 pr-2 rounded-[8px]">
         <DialogHeader>
           <DialogTitle>팔로우</DialogTitle>
         </DialogHeader>
