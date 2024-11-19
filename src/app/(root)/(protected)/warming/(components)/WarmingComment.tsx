@@ -20,6 +20,7 @@ const WarmingComment = ({ memberSelect, userId, partyId, memberId, submitArr, se
   useEffect(() => {
     setScore(thisSubmitData.temperature);
     setCommentArr(thisSubmitData.comment);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberSelect]);
 
   const setSubmit = (comment: string) => {
