@@ -1,5 +1,6 @@
 'use client';
 import { partyInfo } from '@/types/partyInfo';
+import { cutPartyName } from '@/utils/cutNameAndPartyName';
 import { useMemberCount } from '@/utils/useMemberCount';
 import { useOwnerInfo } from '@/utils/useOwnerInfo';
 import { getViewStatus } from '@/utils/viewStatus';
@@ -8,14 +9,16 @@ import React from 'react';
 
 const RecruitCardBottom = ({ data }: { data: partyInfo }) => {
   const { data: memberCount, isLoading: isCountLoading } = useMemberCount(data.party_id);
+  const cutPartyNameValue = cutPartyName(data.video_name);
 
   const { data: ownerInfo, isLoading } = useOwnerInfo(data);
   if (isLoading || isCountLoading) <div>Loading...</div>;
   return (
     <div className="flex flex-col items-center gap-1 self-stretch">
       <div className="flex flex-row items-start gap-1 self-stretch">
-        <p className="max-w-[123px] text-Grey-600 label-l text-overflow-hidden">{data.video_name}</p>
+        <p className="max-w-[123px] text-Grey-600 label-l text-overflow-hidden"></p>
         <p className="text-Grey-600 label-l">
+          {cutPartyNameValue}
           {data.season_number ? ' 시즌' + data.season_number : null}
           {data.episode_number ? ' ' + data.episode_number + '화' : null}
         </p>
@@ -47,7 +50,7 @@ const RecruitCardBottom = ({ data }: { data: partyInfo }) => {
         <div className="flex flex-row text-Grey-900 label-m">
           <p className="text-primary-400">{memberCount ? memberCount : 0}</p>
           <p>명 {getViewStatus(data) === '시청중' ? '시청중' : '참여'}</p>
-          <p>{`❨${memberCount ? memberCount : 0}/${data.limited_member})명`}</p>
+          <p className="mobile:hidden">{`❨${memberCount ? memberCount : 0}/${data.limited_member})명`}</p>
         </div>
       </div>
     </div>
