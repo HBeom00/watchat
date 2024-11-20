@@ -9,6 +9,7 @@ import LayoutContent from '@/components/layout/LayoutContent';
 export const metadata: Metadata = {
   title: 'Watchat | 왓챗 ',
   description: '여럿이 보면 더 즐거우니까! 영상메이트가 필요할 땐 watchat',
+  metadataBase: new URL('https://watchat.vercel.app/'),
   icons: {
     icon: '/favicon.svg'
   },
