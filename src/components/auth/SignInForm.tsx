@@ -8,17 +8,19 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/Dialog';
 
 // 유효성 검사
 const signInSchema = z.object({
-  email: z.string().email({ message: '이메일 형식을 확인해주세요' }),
+  email: z.string().email({ message: '이메일 주소에 @를 포함해주세요.' }),
   password: z.string().min(8, { message: '비밀번호를 입력해주세요' })
 });
 
 const SignInForm = () => {
   const route = useRouter();
   const queryClient = useQueryClient();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
   const { register, handleSubmit, formState } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -37,7 +39,7 @@ const SignInForm = () => {
       });
 
       if (error) {
-        alert('아이디와 비밀번호를 다시 입력해주세요.');
+        setShowErrorModal(true);
         return;
       }
 
@@ -50,7 +52,6 @@ const SignInForm = () => {
 
   // 로그인 버튼 클릭
   const onSubmit = async (userInfo: FieldValues) => {
-    console.log(userInfo, 'userInfo');
     loginBtn(userInfo);
   };
 
@@ -104,6 +105,28 @@ const SignInForm = () => {
       >
         로그인
       </button>
+
+      {showErrorModal && (
+        <Dialog open={showErrorModal} onOpenChange={(isOpen) => setShowErrorModal(isOpen)}>
+          <DialogContent className="w-[340px] p-0 gap-0 rounded-[8px] bg-static-white">
+            <DialogHeader className="flex py-6">
+              <DialogTitle></DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col gap-[8px] pb-[16px] w-full justify-center items-center border-solid border-Grey-200 border-b-[1px]">
+              <p className="self-stretch pt-[16px] pb-[20px] text-center body-m text-static-black">
+                아이디와 비밀번호를 확인해주세요.
+              </p>
+            </div>
+            <p
+              onClick={() => setShowErrorModal(false)}
+              className="outline-btn-l flex py-[12px] px-[20px] justify-center items-center gap-[4px] self-stretch rounded-[8px] border-none text-primary-400 body-m-bold"
+            >
+              확인
+            </p>
+            <DialogDescription></DialogDescription>
+          </DialogContent>
+        </Dialog>
+      )}
     </form>
   );
 };
