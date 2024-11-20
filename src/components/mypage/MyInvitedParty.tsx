@@ -65,7 +65,7 @@ const MyInvitedParty = () => {
 
   if (isPending || pendingInvitedParties) {
     return (
-      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[320px] mobile:px-[20px] ">
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[320px] mobile:px-[20px]  mobile:h-[350px] mobile:w-full">
         <div>
           <h3 className="title-m">초대받은 파티</h3>
         </div>

@@ -34,7 +34,7 @@ const MyProfile = () => {
 
   if (pending) {
     return (
-      <div className="bg-[#f5f5f5]  w-full  mx-auto box-border flex flex-col justify-center items-center mobile:overflow-hidden h-[164px]">
+      <div className="bg-[#f5f5f5]  w-full  mx-auto box-border flex flex-col justify-center items-center h-[164px]mobile:overflow-hidden mobile:h-[306px]">
         <li className=" flex flex-col justify-center items-center m-auto gap-2">
           <ComponentLoading />
           <p className="body-m text-Grey-600 ">데이터를 불러오는 중 입니다.</p>

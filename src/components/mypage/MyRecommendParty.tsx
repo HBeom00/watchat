@@ -45,7 +45,7 @@ const MyRecommendParty = () => {
 
   if (isPending || pandingRecommendParty) {
     return (
-      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[400px] mobile:px-[20px] ">
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[400px] mobile:px-[20px]  mobile:h-[350px] mobile:w-full">
         <div>
           <h3 className="title-m">이런 파티는 어떠세요?</h3>
         </div>
@@ -78,7 +78,10 @@ const MyRecommendParty = () => {
           <></>
         )}
       </div>
-      <ul className="flex flex-row gap-5">
+      <ul
+        className={`flex flex-row gap-5
+         mobile:flex-wrap mobile:gap-[10px] mobile:px-[20px]`}
+      >
         {recommendParty && recommendParty.length > 5 ? (
           recommendParty.slice(0, window.innerWidth <= 480 ? 2 : 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
@@ -87,7 +90,12 @@ const MyRecommendParty = () => {
             const viewStatus = getViewStatus;
 
             return (
-              <li key={party.party_id} className=" min-w-[196px] group">
+              <li
+                key={party.party_id}
+                className={`min-w-[196px] group
+                mobile:min-w-0 mobile:w-[calc(50%-5px)] mobile:flex-shrink-0
+                  `}
+              >
                 <MyVerticalCard
                   party={party}
                   userName={party.ownerProfile.nickname}
