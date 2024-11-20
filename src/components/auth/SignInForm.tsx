@@ -8,8 +8,6 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
-import visibility from '../../../public/visibility.svg';
-import visibility_off from '../../../public/visibility_off.svg';
 
 // 유효성 검사
 const signInSchema = z.object({
@@ -52,6 +50,7 @@ const SignInForm = () => {
 
   // 로그인 버튼 클릭
   const onSubmit = async (userInfo: FieldValues) => {
+    console.log(userInfo, 'userInfo');
     loginBtn(userInfo);
   };
 
@@ -87,13 +86,12 @@ const SignInForm = () => {
               className="absolute top-2/4 -translate-y-1/2 right-[5%]"
             >
               {showPassword ? (
-                <Image src={visibility} alt={visibility} width={24} height={24} className="w-6 h-6" />
+                <Image src="/visibility.svg" alt="visibility" width={24} height={24} className="w-6 h-6" />
               ) : (
-                <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-6 h-6" />
+                <Image src="/visibility_off.svg" alt="visibility_off" width={24} height={24} className="w-6 h-6" />
               )}
             </button>
           </div>
-          {formState.errors.password && <p className="commonHelpText">{formState.errors.password.message}</p>}
         </div>
       </div>
       <button

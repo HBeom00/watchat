@@ -24,6 +24,7 @@ const SearchBar = () => {
     if (debounce === '' && pathname.startsWith('/search')) {
       router.push('/search/' + '?' + searchParams.toString());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   return (

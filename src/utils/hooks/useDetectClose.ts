@@ -20,6 +20,7 @@ export const useDetectClose = (elem: RefObject<HTMLDivElement>, initialState: bo
     return () => {
       window.removeEventListener('click', onClick);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, elem]);
   return [isOpen, setIsOpen] as const;
 };

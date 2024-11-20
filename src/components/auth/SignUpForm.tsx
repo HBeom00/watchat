@@ -8,13 +8,11 @@ import { useRouter } from 'next/navigation';
 import { randomNickname } from '@/constants/randomName';
 import browserClient from '@/utils/supabase/client';
 import Image from 'next/image';
-import visibility from '../../../public/visibility.svg';
-import visibility_off from '../../../public/visibility_off.svg';
 
 // 유효성 검사
 const signInSchema = z
   .object({
-    email: z.string().email({ message: '이메일 형식을 확인해주세요.' }),
+    email: z.string().email({ message: '이메일 주소에 @를 포함해주세요.' }),
     password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/, {
       message: '8~16자의 영문, 숫자, 특수문자를 모두 포함하여 입력해주세요.'
     }),
@@ -29,7 +27,7 @@ const SignUpForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState, setError } = useForm({
     mode: 'onChange',
     defaultValues: {
       email: '',
@@ -57,7 +55,8 @@ const SignUpForm = () => {
     });
 
     if (error) {
-      alert('이미 존재하는 아이디입니다.');
+      // 이메일 input 아래에 메시지를 표시하도록 react-hook-form의 setError 사용
+      setError('email', { type: 'server', message: '이미 존재하는 아이디입니다.' });
       return;
     }
 
@@ -79,6 +78,7 @@ const SignUpForm = () => {
           이메일<span className="commonEssential">*</span>
         </label>
         <input type="email" {...register('email')} placeholder="예) example@gmail.com" className="commonEmailInput" />
+        {/* 이메일 필드 아래 유효성 검사 및 서버 에러 메시지 표시 */}
         {formState.errors.email && <p className="commonHelpText">{formState.errors.email.message}</p>}
       </div>
 
@@ -95,9 +95,15 @@ const SignUpForm = () => {
           />
           <button type="button" onClick={onPasswordVisibility} className="absolute top-2/4 -translate-y-1/2 right-[5%]">
             {showPassword ? (
-              <Image src={visibility} alt={visibility} width={24} height={24} className="w-[24px] h-[24px]" />
+              <Image src="/visibility.svg" alt="비밀번호 보이기" width={24} height={24} className="w-[24px] h-[24px]" />
             ) : (
-              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-[24px] h-[24px]" />
+              <Image
+                src="/visibility_off.svg"
+                alt="비밀번호 숨기기"
+                width={24}
+                height={24}
+                className="w-[24px] h-[24px]"
+              />
             )}
           </button>
         </div>
@@ -118,9 +124,15 @@ const SignUpForm = () => {
             className="absolute top-2/4 -translate-y-1/2 right-[5%]"
           >
             {showConfirmPassword ? (
-              <Image src={visibility} alt={visibility} width={24} height={24} className="w-[24px] h-[24px]" />
+              <Image src="/visibility.svg" alt="비밀번호 보이기" width={24} height={24} className="w-[24px] h-[24px]" />
             ) : (
-              <Image src={visibility_off} alt={visibility_off} width={24} height={24} className="w-[24px] h-[24px]" />
+              <Image
+                src="/visibility_off.svg"
+                alt="비밀번호 숨기기"
+                width={24}
+                height={24}
+                className="w-[24px] h-[24px]"
+              />
             )}
           </button>
         </div>
@@ -128,6 +140,7 @@ const SignUpForm = () => {
           <p className="commonHelpText">{formState.errors.confirmPassword.message}</p>
         )}
       </div>
+
       <button className="btn-xl w-[340px] flex justify-center items-center gap-[4px] mt-[50px]">가입하기</button>
     </form>
   );

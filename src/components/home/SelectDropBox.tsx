@@ -6,6 +6,7 @@ import type { filter, order } from '@/types/filter';
 import DropDownBox from './DropDownBox';
 import { useDetectClose } from '@/utils/hooks/useDetectClose';
 import MobileSelect from './MobileSelect';
+import { useMediaQuery } from '@/utils/hooks/useMediaQuery';
 
 type Props = {
   order: order;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const SelectDropBox = ({ order, setOrder, filter, setFilter, setPageNumber }: Props) => {
+  const isMobile = useMediaQuery('(max-width:480px)');
   // 오더 오픈클로즈
   const orderRef = useRef<HTMLDivElement>(null);
   const [orderOpen, setOrderOpen] = useDetectClose(orderRef, false);
@@ -90,18 +92,22 @@ const SelectDropBox = ({ order, setOrder, filter, setFilter, setPageNumber }: Pr
         </div>
       </div>
       {/* 모바일용 */}
-      <MobileSelect
-        open={mobileOpen}
-        setOpen={setMobileOpen}
-        order={order}
-        filter={filter}
-        setOrder={setOrder}
-        setFilter={setFilter}
-        orderArr={orderArr}
-        filterArr={filterArr}
-        orderConversion={orderConversion as (n: string) => string}
-        filterConversion={filterConversion as (n: string) => string}
-      />
+      {isMobile ? (
+        <MobileSelect
+          open={mobileOpen}
+          setOpen={setMobileOpen}
+          order={order}
+          filter={filter}
+          setOrder={setOrder}
+          setFilter={setFilter}
+          orderArr={orderArr}
+          filterArr={filterArr}
+          orderConversion={orderConversion as (n: string) => string}
+          filterConversion={filterConversion as (n: string) => string}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };
