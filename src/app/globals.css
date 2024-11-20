@@ -795,3 +795,15 @@ input[type='radio'] {
 input[type='radio']:checked {
   border: 4px solid #7f4af4;
 }
+
+/* input창에 자동완성으로 텍스트를 삽입하면 input 영역이 파란색으로 바뀌는 현상 제거 */
+input:-webkit-autofill {
+  background-color: white !important; /* 기본 배경색으로 설정 */
+  color: black !important; /* 텍스트 색상 */
+  transition: background-color 5000s ease-in-out 0s; /* 애니메이션 제거 */
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: white !important; /* 포커스 상태에서도 동일하게 처리 */
+}
