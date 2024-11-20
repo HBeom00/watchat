@@ -60,6 +60,7 @@ export const getRecommendParty = async (): Promise<MyPagePartyInfo[]> => {
   const { data: partyData, error: partyDataError } = await browserClient
     .from('party_info')
     .select('*')
+    .eq('privacy_setting', true)
     .order('write_time', { ascending: false }); // 내림차순 정렬;
 
   if (partyData) {
