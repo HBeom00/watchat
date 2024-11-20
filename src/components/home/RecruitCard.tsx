@@ -14,7 +14,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
   return (
     <div
       className={`flex flex-col max-w-[196px] w-full items-start pb-[12px] gap-[8px] flex-shrink-0 group
-   mobile:max-w-[159.5px] mobile:pb-0`}
+    mobile:pb-0`}
     >
       <div
         className={`relative flex w-full h-[280px] py-5 items-start gap-8 self-stretch rounded-[4px] overflow-hidden
