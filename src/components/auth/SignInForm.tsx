@@ -50,7 +50,6 @@ const SignInForm = () => {
 
   // 로그인 버튼 클릭
   const onSubmit = async (userInfo: FieldValues) => {
-    console.log(userInfo, 'userInfo');
     loginBtn(userInfo);
   };
 
