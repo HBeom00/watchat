@@ -49,6 +49,7 @@ const WarmingMemberList = ({
       alert('이미 해당 파티의 후기를 작성하셨습니다.');
       router.replace('/');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
