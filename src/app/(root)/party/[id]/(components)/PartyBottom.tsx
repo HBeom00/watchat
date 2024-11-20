@@ -20,7 +20,7 @@ const PartyBottom = ({ partyData, end, partyOwner }: { partyData: partyInfo; end
 
   return (
     <div
-      className={`flex flex-col w-full items-start mt-[8px] gap-[32px]
+      className={`flex flex-col w-full items-start mt-[8px] gap-[32px] mb-[64px]
      mobile:px-[20px]`}
     >
       <div className="flex flex-row w-full border-solid border-Grey-100 border-b-[1px] text-Grey-400 body-m-bold">
