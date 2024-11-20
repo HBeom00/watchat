@@ -11,7 +11,8 @@ import Image from 'next/image';
 
 // 유효성 검사
 const signInSchema = z.object({
-  email: z.string().email({ message: '이메일 형식을 확인해주세요' })
+  email: z.string().email({ message: '이메일 형식을 확인해주세요' }),
+  password: z.string().min(8, { message: '비밀번호를 입력해주세요' })
 });
 
 const SignInForm = () => {
@@ -49,6 +50,7 @@ const SignInForm = () => {
 
   // 로그인 버튼 클릭
   const onSubmit = async (userInfo: FieldValues) => {
+    console.log(userInfo, 'userInfo');
     loginBtn(userInfo);
   };
 
