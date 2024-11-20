@@ -11,6 +11,7 @@ import { FollowModal } from './FollowModal';
 import WarmingModal from './WarmingModal';
 import { usePathname } from 'next/navigation';
 import { MyTooltip } from './Tooltip';
+import ComponentLoading from './ComponentLoading';
 
 const MyProfile = () => {
   const pathname = usePathname();
@@ -32,7 +33,14 @@ const MyProfile = () => {
   const { followerCount, followerData } = followerDataResult || { followerCount: 0, followerData: [] };
 
   if (pending) {
-    return <div>사용자 정보를 불러오는 중입니다...</div>;
+    return (
+      <div className="bg-[#f5f5f5]  w-full  mx-auto box-border flex flex-col justify-center items-center mobile:overflow-hidden h-[164px]">
+        <li className=" flex flex-col justify-center items-center m-auto gap-2">
+          <ComponentLoading />
+          <p className="body-m text-Grey-600 ">데이터를 불러오는 중 입니다.</p>
+        </li>
+      </div>
+    );
   }
 
   if (error) {

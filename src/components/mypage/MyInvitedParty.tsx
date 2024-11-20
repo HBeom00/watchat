@@ -15,12 +15,12 @@ import checkBox from '../../../public/checkbox.svg';
 import checkBoxDisable from '../../../public/checkboxDisable.svg';
 import ParticipationButton from '../button/ParticipationButton';
 import { MyCarousel } from './MyCarousel';
+import ComponentLoading from './ComponentLoading';
 
 const MyInvitedParty = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedParties, setSelectedParties] = useState<string[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
-  //const visibleSlides = 5; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
   const [open, setOpen] = useState<boolean>(false);
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
@@ -64,19 +64,21 @@ const MyInvitedParty = () => {
   };
 
   if (isPending || pendingInvitedParties) {
-    return <div>사용자 정보를 불러오는 중 입니다...</div>;
+    return (
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[320px] mobile:px-[20px] ">
+        <div>
+          <h3 className="title-m">초대받은 파티</h3>
+        </div>
+        <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+          <ComponentLoading />
+          <p className="body-m text-Grey-600 mt-[20px]">데이터를 불러오는 중 입니다.</p>
+        </li>
+      </div>
+    );
   }
   if (isError || errorInvitedParties) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
-
-  if (isPending || pendingInvitedParties) {
-    return <div>사용자 정보를 불러오는 중 입니다...</div>;
-  }
-  if (isError || errorInvitedParties) {
-    return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
-  }
-
   return (
     <article
       className={`m-auto mb-8 w-[1060px]

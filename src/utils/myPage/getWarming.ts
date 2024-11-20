@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 // 식빵온도 가져오기
 export const getWarming = async (userId: string | undefined): Promise<number> => {
   if (!userId) {
-    console.warn('유효하지 않은 userId:', userId);
     return 50;
   }
 
@@ -29,7 +28,6 @@ export const getWarming = async (userId: string | undefined): Promise<number> =>
 // 코멘트 가져오기
 export const getComments = async (userId: string | undefined) => {
   if (!userId) {
-    console.warn('유효하지 않은 userId:', userId);
     return [];
   }
 
