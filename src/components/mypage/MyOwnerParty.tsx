@@ -50,7 +50,7 @@ const MyOwnerParty = () => {
 
   if (isPending || pandingOwnerParty) {
     return (
-      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[400px] mobile:px-[20px] ">
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[400px] mobile:px-[20px] mobile:h-[350px] mobile:w-full">
         <div>
           <h3 className="title-m">{pathname === '/my-page' ? '주최한 파티' : `${userParam}님이 주최한 파티`}</h3>
         </div>
