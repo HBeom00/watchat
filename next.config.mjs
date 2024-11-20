@@ -32,7 +32,8 @@ const nextConfig = {
         hostname: 'image.tmdb.org',
         pathname: '/t/p/original/**'
       }
-    ]
+    ],
+    formats: ['image/avif', 'image/webp']
   }
 };
 
