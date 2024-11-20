@@ -36,6 +36,7 @@ const RecruitNextPage = () => {
     if (partyNumber !== '') {
       setOpen(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [partyNumber]);
 
   const { mutate: submitRecruit } = useMutation({

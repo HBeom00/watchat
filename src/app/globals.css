@@ -414,11 +414,13 @@ body {
 
 /* 포커스 스타일 추가 */
 .commonEmailInput:focus {
-  outline: 1px solid #7f4af4;
+  outline: none;
+  border: 1px solid #7f4af4;
 }
 
 .commonPasswordInput:focus {
-  outline: 1px solid #7f4af4;
+  outline: none;
+  border: 1px solid #7f4af4;
 }
 
 .commonInput::placeholder {

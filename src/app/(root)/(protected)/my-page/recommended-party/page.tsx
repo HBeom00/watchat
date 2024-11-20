@@ -39,9 +39,15 @@ const RecommendedParty = () => {
   }
 
   return (
-    <section className="max-w-[1060px] m-auto mb-8">
+    <section
+      className={`m-auto mb-8 w-[1060px]
+      mobile:w-full `}
+    >
       <h3 className="title-m mt-8 mb-4">이런 파티는 어떠세요?</h3>
-      <ul className="flex flex-row gap-5 flex-wrap">
+      <ul
+        className={`flex flex-row gap-5 flex-wrap
+         mobile:flex-wrap mobile:gap-x-[10px] mobile:gap-y-[16px] mobile:px-[20px]`}
+      >
         {recommendParty && recommendParty.length > 0 ? (
           recommendParty.slice(start, end).map((party) => {
             // 각 파티의 video_platform을 가져옴
@@ -50,7 +56,12 @@ const RecommendedParty = () => {
             const viewStatus = getViewStatus;
 
             return (
-              <li key={party.party_id} className=" min-w-[196px]  group">
+              <li
+                key={party.party_id}
+                className={`min-w-[196px] group
+                mobile:min-w-0 mobile:w-[calc(50%-5px)] mobile:flex-shrink-0
+                  `}
+              >
                 <MyVerticalCard
                   party={party}
                   userName={party.ownerProfile.nickname}
@@ -64,8 +75,18 @@ const RecommendedParty = () => {
           })
         ) : (
           <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
-            <Image src={doesntExist} width={73} height={73} alt="참여한 파티가 없습니다" />
-            <p className="body-m text-Grey-600">참여한 파티가 없습니다.</p>
+            <Image
+              src={doesntExist}
+              width={73}
+              height={73}
+              alt="프로필에서 구독한 플랫폼과 
+관심 장르를 설정해주세요. "
+            />
+            <p className="body-m text-Grey-600">
+              프로필에서 구독한 플랫폼과
+              <br />
+              관심 장르를 설정해주세요.
+            </p>
           </li>
         )}
       </ul>
