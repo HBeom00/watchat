@@ -16,8 +16,6 @@ const ParticipatingParty = () => {
 
   const userId = pathname === '/my-page' ? userData?.user_id || '' : fetchedUserId || '';
 
-  console.log('아이디', userId);
-
   if (!userId) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }

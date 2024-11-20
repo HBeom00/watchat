@@ -122,6 +122,7 @@ const FirstLoginForm = () => {
         // 기존 이미지 삭제 (새로운 파일이 업로드 된 경우에만)
         await deleteOldImages(user.id, profile_image_name);
 
+        // 프로필 이미지 업데이트 (선택된 파일이 있을 때만 업데이트)
         await browserClient
           .from('user')
           .update({
@@ -130,6 +131,7 @@ const FirstLoginForm = () => {
           .eq('user_id', user.id);
       }
 
+      // 프로필 이미지 제외 나머지 정보 업데이트
       await browserClient
         .from('user')
         .update({
@@ -221,7 +223,6 @@ const FirstLoginForm = () => {
     onClickGenre({ genre, setGenres });
   };
 
-  console.log('dsafaesasef', userData?.profile_img);
   return (
     <form
       onSubmit={handleSubmit(onSuccessHandler)}

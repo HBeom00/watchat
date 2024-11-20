@@ -14,13 +14,13 @@ import Link from 'next/link';
 import { MyCarousel } from './MyCarousel';
 import { RecentParticipantsData } from '@/utils/myPage/getRecommendedUser';
 import { cutVideoName } from '@/utils/cutNameAndPartyName';
+import ComponentLoading from './ComponentLoading';
 
 const MyFollowRecommendation = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true, // 반복하지 않음
-    align: 'start' // 중앙 정렬
+    loop: true,
+    align: 'start'
   });
-  // const visibleSlides = 6; // 버튼 클릭시 움직이게 할 슬라이드 아이템 갯수
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(emblaApi);
 
@@ -91,7 +91,17 @@ const MyFollowRecommendation = () => {
   });
 
   if (isPending || pendingRecommendedUsers) {
-    return <div>사용자 정보를 불러오는 중 입니다...</div>;
+    return (
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[320px] mobile:px-[20px] ">
+        <div>
+          <h3 className="title-m">팔로우 추천</h3>
+        </div>
+        <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+          <ComponentLoading />
+          <p className="body-m text-Grey-600 mt-[20px]">데이터를 불러오는 중 입니다.</p>
+        </li>
+      </div>
+    );
   }
   if (isError || errorRecommenedUsers) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;

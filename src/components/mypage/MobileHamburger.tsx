@@ -16,10 +16,12 @@ const MobileHamburger: React.FC = () => {
   const [menuOpen, setMenuOpen] = useDetectClose(menuRef, false);
 
   // 메뉴 옵션 정의
+  // 프로필 편집페이지로 이동
   const editProfileHandler = () => {
     router.push('/my-page/edit');
   };
 
+  // 로그아웃
   const { mutate: logoutBtn } = useMutation({
     mutationFn: async () => await browserClient.auth.signOut(),
     onSuccess: () => {
@@ -27,7 +29,6 @@ const MobileHamburger: React.FC = () => {
       router.push('/login');
     }
   });
-
   const logoutHander = () => {
     logoutBtn();
   };

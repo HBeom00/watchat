@@ -49,12 +49,11 @@ const MyVerticalCard = ({ party, platform, partyName, videoName, getViewStatus, 
         onClick={() => (party.privacy_setting === false && pathname !== '/my-page' ? setOpen(true) : () => {})}
       >
         <Image
-          src={
-            party?.video_image ||
-            'https://mdwnojdsfkldijvhtppn.supabase.co/storage/v1/object/public/profile_image/assets/avatar.png'
-          }
+          src={party?.video_image}
           alt={`${party?.video_name} 영상 이미지`}
           fill
+          priority
+          sizes="(max-width: 196px)100vw,(max-width:220px)480px"
           style={{ objectFit: 'cover' }}
           className="z-0  group-hover:scale-105 transition duration-300"
         />

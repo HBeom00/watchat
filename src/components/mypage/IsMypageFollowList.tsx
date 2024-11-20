@@ -44,7 +44,7 @@ const IsMypageFollowList: React.FC<IsMypageFollowListProps> = ({ userId, followe
 
       if (error) {
         console.error('ban_recommend 테이블에 추가 실패 =>', error.message);
-        throw new Error('언팔로우 후 차단 추가 실패'); // 에러 발생 시 상위 catch로 전파
+        throw new Error('언팔로우 후 차단 추가 실패');
       }
     },
     onSuccess: () => {
