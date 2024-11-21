@@ -28,6 +28,7 @@ const RecruitFirstPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isReleased, setIsReleased] = useState(true);
 
   const {
     party_name,
@@ -104,7 +105,10 @@ const RecruitFirstPage = () => {
       const today = new Date();
 
       if (releaseDateObject > today) {
+        setIsReleased(false);
         setIsModalOpen(true);
+      } else {
+        setIsReleased(true);
       }
     }
     //플렛폼 정보 불러오기
@@ -188,7 +192,12 @@ const RecruitFirstPage = () => {
   };
 
   const isNextButtonDisabled =
-    !party_name || !video_name || !party_detail || (media_type === 'tv' && !episode_number) || duration_time > 480;
+    !party_name ||
+    !video_name ||
+    !party_detail ||
+    (media_type === 'tv' && !episode_number) ||
+    duration_time > 480 ||
+    !isReleased;
 
   return (
     <div>
@@ -239,7 +248,7 @@ const RecruitFirstPage = () => {
           </div>
         </div>
 
-        {/* 검색 모달 */}
+        {/* 모바일용 검색 모달 */}
         <SearchModal
           isOpen={isSearchModalOpen}
           onClose={() => setIsSearchModalOpen(false)}
@@ -247,6 +256,7 @@ const RecruitFirstPage = () => {
           videoName={video_name}
           setVideoName={(name) => setPartyInfo({ video_name: name })}
         />
+        {/* PC용 검색창 */}
         <div className="block mobile:hidden">
           <SearchComponent
             videoName={video_name}
