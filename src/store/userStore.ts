@@ -41,7 +41,6 @@ export const checkNickname = async (nickname: string) => {
 
 // nickname으로 user_id를 가져오는 함수
 export const fetchUserIdByNickname = async (nickname: string) => {
-  console.log('nickname', nickname);
   const { data, error } = await browserClient.from('user').select('user_id').eq('nickname', nickname).single();
 
   if (error) {
@@ -69,7 +68,7 @@ export const useFetchUserId = () => {
 
 // 페이지별로 정보를 가져오는 방법을 구분
 // 마이페이지 => 패치된 유저 데이터로 가져옴
-// 이외 페이지(프로필펭이지) => 닉네임으로 가져온user_id로 데이터를 가져옴
+// 다른 사용자 프로필페이지 => url의 닉네임으로 가져온user_id로 데이터를 가져옴
 export const useMypageUserData = () => {
   const pathname = usePathname();
   const { data: userData } = useFetchUserData(); // 현재 로그인된 사용자의 데이터
@@ -88,7 +87,6 @@ export const useMypageUserData = () => {
       if (typeof userId === 'string') {
         if (!userData?.user_id) {
           // userId가 닉네임일 경우 user_id를 조회
-          //const fetchedUserId = await fetchUserIdByNickname(userId);
           if (userData) {
             const { data, error } = await browserClient.from('user').select('*').eq('user_id', userId).single();
             if (error) throw new Error(`Failed to fetch user data: ${error.message}`);

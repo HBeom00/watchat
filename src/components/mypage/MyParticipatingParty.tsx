@@ -11,6 +11,7 @@ import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { platform } from '@/types/partyInfo';
+import ComponentLoading from './ComponentLoading';
 
 const MyParticipatingParty = () => {
   const pathname = usePathname();
@@ -54,7 +55,17 @@ const MyParticipatingParty = () => {
   } = useParticipatingParty(userId as string);
 
   if (isPending || pendingEnjoyingParty) {
-    return <div>사용자 정보를 불러오는 중 입니다...</div>;
+    return (
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[400px] mobile:px-[20px] mobile:h-[350px] mobile:w-full">
+        <div>
+          <h3 className="title-m">{pathname === '/my-page' ? '참여한 파티' : `${userParam}님이 참여한 파티`}</h3>
+        </div>
+        <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+          <ComponentLoading />
+          <p className="body-m text-Grey-600 mt-[20px]">데이터를 불러오는 중 입니다.</p>
+        </li>
+      </div>
+    );
   }
   if (isError || errorEnjoyingParty) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;

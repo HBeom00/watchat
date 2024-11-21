@@ -10,6 +10,7 @@ import { getViewStatus } from '@/utils/viewStatus';
 import MyVerticalCard from './MyVerticalCard';
 import { MyPagePartyInfo } from '@/types/myPagePartyInfo';
 import { platform } from '@/types/partyInfo';
+import ComponentLoading from './ComponentLoading';
 
 const MyRecommendParty = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -43,11 +44,20 @@ const MyRecommendParty = () => {
   } = useRecommendParty(userId as string);
 
   if (isPending || pandingRecommendParty) {
-    return <div>사용자 정보를 불러오는 중 입니다...</div>;
+    return (
+      <div className="w-[1060px] mx-auto flex flex-col m-full mb-4 h-[400px] mobile:px-[20px]  mobile:h-[350px] mobile:w-full">
+        <div>
+          <h3 className="title-m">이런 파티는 어떠세요?</h3>
+        </div>
+        <li className="py-20 flex flex-col justify-center items-center m-auto gap-2">
+          <ComponentLoading />
+          <p className="body-m text-Grey-600 mt-[20px]">데이터를 불러오는 중 입니다.</p>
+        </li>
+      </div>
+    );
   }
   if (isError || errorRecommendParty) {
-    console.log('추천 파티', errorRecommendParty);
-    console.log('useRecommendParty에서 받은 데이터:', recommendParty);
+    console.error('추천 파티', errorRecommendParty);
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
 
@@ -68,7 +78,10 @@ const MyRecommendParty = () => {
           <></>
         )}
       </div>
-      <ul className="flex flex-row gap-5">
+      <ul
+        className={`flex flex-row gap-5
+         mobile:flex-wrap mobile:gap-[10px] mobile:px-[20px]`}
+      >
         {recommendParty && recommendParty.length > 5 ? (
           recommendParty.slice(0, window.innerWidth <= 480 ? 2 : 5).map((party: MyPagePartyInfo) => {
             // 각 파티의 video_platform을 가져옴
@@ -77,7 +90,12 @@ const MyRecommendParty = () => {
             const viewStatus = getViewStatus;
 
             return (
-              <li key={party.party_id} className=" min-w-[196px] group">
+              <li
+                key={party.party_id}
+                className={`min-w-[196px] group
+                mobile:min-w-0 mobile:w-[calc(50%-5px)] mobile:flex-shrink-0
+                  `}
+              >
                 <MyVerticalCard
                   party={party}
                   userName={party.ownerProfile.nickname}
