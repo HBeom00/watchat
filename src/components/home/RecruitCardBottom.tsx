@@ -1,8 +1,8 @@
 'use client';
 import { partyInfo } from '@/types/partyInfo';
+import { useMemberCount } from '@/reactQuery/useQuery/home/useMemberCount';
+import { useOwnerInfo } from '@/reactQuery/useQuery/home/useOwnerInfo';
 import { cutPartyName } from '@/utils/cutNameAndPartyName';
-import { useMemberCount } from '@/utils/useMemberCount';
-import { useOwnerInfo } from '@/utils/useOwnerInfo';
 import { getViewStatus } from '@/utils/viewStatus';
 import Image from 'next/image';
 import React from 'react';

@@ -1,7 +1,7 @@
 // 멤버 수 확인하기
 
 import { useQuery } from '@tanstack/react-query';
-import browserClient from './supabase/client';
+import browserClient from '../../../utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { member } from '@/types/partyMember';
 import { partyInfo } from '@/types/partyInfo';

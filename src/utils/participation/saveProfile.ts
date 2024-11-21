@@ -1,5 +1,5 @@
 import browserClient from '../supabase/client';
-import partyProfileImageUploader from '../partyProfileImageUploader';
+import partyProfileImageUploader from './partyProfileImageUploader';
 
 // 참가하기 함수
 const saveProfile = async (

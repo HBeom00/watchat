@@ -1,6 +1,6 @@
 // import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { defaultImage } from '@/constants/image';
-import browserClient from './supabase/client';
+import browserClient from '../supabase/client';
 
 // supabase storage에 이미지 저장
 const partyProfileImageUploader = async (file: File, party_id: string, user_id: string | null) => {

@@ -1,7 +1,7 @@
 // 멤버 수 확인하기
 
 import { useQuery } from '@tanstack/react-query';
-import { partyMemberCounter } from './memberCheck';
+import { partyMemberCounter } from '../../../utils/memberCheck';
 
 export const useMemberCount = (party_id: string) => {
   return useQuery({
