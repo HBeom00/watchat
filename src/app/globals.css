@@ -2,26 +2,808 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'Pretendard';
+  src: url('fonts/PretendardVariable.woff2');
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply mobile:overflow-x-hidden;
+}
+
+* {
+  font-family: 'Pretendard';
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Pretendard', sans-serif;
+  }
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2');
+}
+
+/** HEADING **/
+.heading-l {
+  /* Heading/L */
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 44px; /* 137.5% */
+  letter-spacing: -0.64px;
+}
+.heading-m {
+  /* Heading/M */
+  font-family: Pretendard;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px; /* 135.714% */
+  letter-spacing: -0.56px;
+}
+.heading-s {
+  /* Heading/S */
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 133.333% */
+  letter-spacing: -0.48px;
+}
+
+/** TITLE **/
+.title-l {
+  /* Title/L */
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 136.364% */
+  letter-spacing: -0.44px;
+}
+.title-m {
+  /* Title/M */
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 140% */
+  letter-spacing: -0.4px;
+}
+.title-s {
+  /* Title/S */
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; /* 133.333% */
+  letter-spacing: -0.36px;
+}
+
+/** BODY **/
+.body-l {
+  /* Body/L-400 */
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px; /* 162.5% */
+}
+.body-l-bold {
+  /* Body/L-600 */
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px; /* 162.5% */
+}
+.body-m {
+  /* Body/M-400 */
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 160% */
+}
+.body-m-bold {
+  /* Body/M-600 */
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 160% */
+}
+.body-s {
+  /* Body/S-400 */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 157.143% */
+}
+.body-s-bold {
+  /* Body/S-600 */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px; /* 157.143% */
+}
+.body-xs {
+  /* Body/XS-400 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+}
+.body-xs-bold {
+  /* Body/XS-600 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
+}
+.label-l {
+  /* Label/L-400 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+}
+.label-l-bold {
+  /* Label/L-600 */
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 153.846% */
+}
+.label-m {
+  /* Label/M-400 */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 153.846% */
+}
+.label-m-bold {
+  /* Label/M-600 */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px; /* 150% */
+}
+.caption-l {
+  /* Caption/L */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 150% */
+}
+.caption-m {
+  /* Caption/M */
+  font-family: Pretendard;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 145.455% */
+}
+
+/* custom button ------------------------------------------------------------------------------------ */
+.btn-xl {
+  @apply px-6 py-4 h-14 bg-primary-400 rounded-lg text-white font-semibold text-base transition duration-300;
+}
+.btn-xl:hover {
+  @apply bg-primary-500;
+}
+
+/* Large Button */
+.btn-l {
+  @apply px-5 py-3 h-12 bg-primary-400 rounded-lg text-white font-semibold text-base transition duration-300;
+}
+.btn-l:hover {
+  @apply bg-primary-500;
+}
+
+/* Medium Button */
+.btn-m {
+  @apply px-4 py-2 h-10 bg-primary-400 rounded-lg text-white font-semibold text-sm transition duration-300;
+}
+.btn-m:hover {
+  @apply bg-primary-500;
+}
+
+/* Small Button */
+.btn-s {
+  @apply px-3 py-1.5 h-8 bg-primary-400 rounded-lg transition duration-300;
+}
+.btn-s:hover {
+  @apply bg-primary-500;
+}
+/* --------------------------------------------------------------------------------------------------------- */
+
+/* Extra Large Outline Button */
+.outline-btn-xl {
+  @apply px-6 py-4 h-14 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base transition duration-300;
+}
+.outline-btn-xl:hover {
+  @apply bg-primary-50;
+}
+
+/* Large Outline Button */
+.outline-btn-l {
+  @apply px-5 py-3 h-12 border border-primary-400 rounded-lg text-primary-400 font-semibold text-base transition duration-300;
+}
+.outline-btn-l:hover {
+  @apply bg-primary-50;
+}
+.outline-btn-l:focus {
+  @apply bg-primary-400 text-white;
+}
+
+/* Medium Outline Button */
+.outline-btn-m {
+  @apply px-4 py-2 h-10 border border-primary-400 rounded-lg text-primary-400 font-semibold text-sm transition duration-300;
+}
+.outline-btn-m:hover {
+  @apply bg-primary-50;
+}
+
+/* Small Outline Button */
+.outline-btn-s {
+  @apply px-3 py-1.5 h-8 border border-primary-400 rounded-lg text-primary-400 font-semibold text-xs transition duration-300;
+}
+.outline-btn-s:hover {
+  @apply bg-primary-50;
+}
+
+/* --------------------------------------------------------------------------------------------------------- */
+/* Extra Large Disabled Button */
+.disabled-btn-xl {
+  @apply px-6 py-4 h-14 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-base;
+}
+
+/* Large Disabled Button */
+.disabled-btn-l {
+  @apply px-5 py-3 h-12 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-base;
+}
+
+/* Medium Disabled Button */
+.disabled-btn-m {
+  @apply px-4 py-2 h-10 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-sm;
+}
+
+/* Small Disabled Button */
+.disabled-btn-s {
+  @apply px-3 py-1.5 h-8 bg-Grey-100 rounded-lg text-Grey-400 font-semibold text-xs;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+/* Extra Large Outline Disabled Button */
+.outline-disabled-btn-xl {
+  @apply px-6 py-4 h-14 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-base;
+}
+
+/* Large Outline Disabled Button */
+.outline-disabled-btn-l {
+  @apply px-5 py-3 h-12 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-base;
+}
+
+/* Medium Outline Disabled Button */
+.outline-disabled-btn-m {
+  @apply px-4 py-2 h-10 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-sm;
+}
+
+/* Small Outline Disabled Button */
+.outline-disabled-btn-s {
+  @apply px-3 py-1.5 h-8 border border-Grey-300 rounded-lg text-Grey-400 font-semibold text-xs;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* Input div */
+.inputDiv {
+  @apply flex flex-col justify-center items-start self-stretch gap-2;
+}
+
+/* 라벨 */
+.commonLabel {
+  @apply body-m-bold self-stretch text-Grey-800;
+}
+
+/* 필수사항 기호(*) */
+.commonEssential {
+  @apply body-m-bold text-primary-400;
+}
+
+/* 이메일 Input */
+.commonEmailInput {
+  @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
+}
+
+/* 이메일 Input placeholder */
+.commonEmailInput::placeholder {
+  @apply body-m text-Grey-300 flex-1;
+}
+
+/* 비밀번호 Input placeholder */
+.commonPasswordInput {
+  @apply flex pl-4 pr-11 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white;
+}
+
+/* 비밀번호 Input placeholder */
+.commonPasswordInput::placeholder {
+  @apply body-m text-Grey-300 flex-1;
+}
+
+/* 포커스 스타일 추가 */
+.commonEmailInput:focus {
+  outline: none;
+  border: 1px solid #7f4af4;
+}
+
+.commonPasswordInput:focus {
+  outline: none;
+  border: 1px solid #7f4af4;
+}
+
+.commonInput::placeholder {
+  @apply body-m text-Grey-400 flex-1;
+}
+.commonInput {
+  @apply flex px-4 py-3 justify-between items-center self-stretch rounded-lg border border-solid border-[#C2C2C2] bg-white body-m text-[#A8A8A8];
+}
+
+.commonHelpText {
+  @apply label-l self-stretch text-[#FB6362];
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* 셀렉트 클래스 */
+.selectBox {
+  @apply flex h-8 py-1 pl-3 pr-2 items-center gap-1 text-Grey-600 rounded-2xl border-solid border-Grey-200 border-[1px];
+}
+
+.selectDropBox {
+  @apply absolute bg-static-white flex flex-col z-20 w-[100px] mt-2 justify-center items-center self-stretch rounded-lg border-solid border-Grey-200 border-[1px] text-Grey-500 body-s overflow-hidden;
+}
+
+.selectDropBoxIn {
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch border-solid border-Grey-200 border-b-[1px] transition duration-300 mobile:border-[1px] mobile:rounded-[8px];
+}
+
+.selectDropBoxIn:hover {
+  @apply bg-[#F5F5F5];
+}
+
+.selectDropBoxLast {
+  @apply flex h-8 py-1 px-3 justify-center items-center self-stretch transition duration-300 mobile:border-solid mobile:border-Grey-200 mobile:border-[1px] mobile:rounded-[8px];
+}
+
+.selectDropBoxLast:hover {
+  @apply bg-[#F5F5F5];
+}
+
+.selectingDropBoxIn {
+  @apply selectDropBoxIn text-primary-400 body-s-bold mobile:border-primary-400;
+}
+
+.selectingDropBoxLast {
+  @apply selectDropBoxLast text-primary-400 body-s-bold mobile:border-primary-400;
+}
+
+.selectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center border-solid border-Grey-900 border-b-2 text-Grey-900;
+}
+
+.notSelectPartyInfo {
+  @apply flex py-2 px-4 justify-center items-center;
+}
+
+select {
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cmask id='mask0_796_20608' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_796_20608)'%3E%3Cpath d='M7.77503 10.1846L4.00586 6.41539L4.70836 5.71289L7.77503 8.77956L10.8417 5.71289L11.5442 6.41539L7.77503 10.1846Z' fill='%238F8F8F'/%3E%3C/g%3E%3C/svg%3E")
+    no-repeat 97% 50%/16px auto;
+  padding-right: 16px;
+}
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* 카드 요소 */
+.card-down {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  padding: 4px 12px;
+  gap: 4px;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 4px 4px;
+}
+
+.text-overflow-hidden {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  align-self: stretch;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* ---------------------------------------------------------------------------------------------------- */
+
+.box-shadow {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
+}
+
+/* 커스텀 스크롤바 스타일 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+  height: 64px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c2c2c2; /* 스크롤바 색상 */
+  border-radius: 3px; /* 스크롤바 모서리 둥글게 */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #718096; /* 스크롤바 호버 색상 */
+}
+
+/* 달력 전체 배경 */
+.react-datepicker {
+  background-color: #ffffff !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+
+  width: 520px;
+  height: 348px;
+}
+@media (max-width: 480px) {
+  .react-datepicker {
+    width: 335px;
+    height: 288px;
+  }
+}
+.react-datepicker__header {
+  background-color: #ffffff !important;
+  border-bottom: none !important;
+  color: white !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #7f4af4 !important;
+  border-radius: 50% !important;
+  color: white !important;
+  margin-left: 22px !important;
+  padding-top: 5px !important;
+  text-align: center !important;
+}
+@media (max-width: 480px) {
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    margin-left: 3px !important;
+    padding-top: 3px !important;
+  }
+}
+
+.react-datepicker__day {
+  padding-top: 5px !important;
+  transition: 0.3s;
+}
+@media (max-width: 480px) {
+  .react-datepicker__day {
+    padding-top: 1px !important;
+    transition: 0.3s;
+  }
+}
+
+.react-datepicker__day:hover {
+  background-color: #f5f5f5 !important;
+  border-radius: 50% !important;
+
+  padding-top: 4px !important;
+}
+
+/* 헤더 부분 (월과 연도 표시) */
+.custom-datepicker .react-datepicker__header {
+  font-size: 13px; /* 글꼴 크기 조정 */
+  padding: 10px 0;
+  margin: 22px 0 0;
+  margin-right: 20px;
+}
+
+/* 현재 월/연도 */
+.custom-datepicker .react-datepicker__current-month {
+  font-size: 1.2em; /* 월/연도 크기 */
+  padding-left: 40px;
+}
+
+.custom-datepicker .react-datepicker__month-container {
+  margin-left: 10px;
+}
+
+/* 요일 헤더 (월, 화, 수 등) */
+.custom-datepicker .react-datepicker__day-names {
+  display: flex;
+  justify-content: space-around; /* 날짜 간격 균등 분배 */
+  font-size: 13px;
+  padding-left: 70px;
+}
+@media (max-width: 480px) {
+  .custom-datepicker .react-datepicker__day-names {
+    padding-left: 10px;
+    gap: 7px;
+  }
+}
+
+/* 각 날짜의 스타일 */
+.custom-datepicker .react-datepicker__day {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+  margin-left: 22px;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .custom-datepicker .react-datepicker__day {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    margin-left: 3px;
+    text-align: center;
+  }
+}
+
+/* 이전/다음 월 이동 화살표 */
+.custom-datepicker .react-datepicker__navigation-icon::before {
+  border-color: #c2c2c2;
+  margin: 10px 0;
+  width: 10px;
+  height: 10px;
+}
+
+.react-datepicker__triangle {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------------------------- */
+.react-datepicker-time__header {
+  display: none !important;
+}
+
+.react-datepicker--time-only {
+  width: 520px !important;
+  height: 200px !important;
+}
+@media (max-width: 480px) {
+  .react-datepicker--time-only {
+    width: 335px !important;
+    height: 152px !important;
+  }
+}
+/* 시간 선택 드롭다운 */
+.react-datepicker__time-container {
+  width: 100% !important;
+  /* min-width: 500px !important;
+  max-width: 520px !important; */
+  border-radius: 8px !important;
+}
+.react-datepicker__time-box {
+  width: 100% !important;
+}
+.react-datepicker__time-list {
+  background-color: #ffffff !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+/* 각 시간 선택 항목 */
+.react-datepicker__time-list-item {
+  width: 100% !important;
+  padding: 25px !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  transition: 0.3s;
+}
+
+.react-datepicker__time-list-item:hover {
+  background-color: #f5f5f5 !important;
+  border-radius: 5px !important;
+}
+
+/* 선택된 시간 항목 */
+.react-datepicker__time-list-item--selected {
+  background-color: #f5f5f5 !important;
+  color: black !important;
+  border-radius: 4px !important;
+}
+
+/* 커스텀 스크롤바 스타일 */
+.custom-scrollbar .react-datepicker__time-list::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+  height: 64px;
+}
+
+.custom-scrollbar .react-datepicker__time-list::-webkit-scrollbar-thumb {
+  background-color: #c2c2c2; /* 스크롤바 색상 */
+  border-radius: 3px; /* 스크롤바 모서리 둥글게 */
+  width: 8px; /* 스크롤바 너비 */
+  height: 64px;
+}
+
+.banner {
+  @apply flex flex-none w-full min-w-0 justify-around cursor-pointer;
+}
+/* --------------------------------------------------------------------------------------------- */
+/* 재생바의 기본 색상 */
+
+/* 채팅창 세로 스크롤바 -> 커스텀 */
+.custom-chat-scrollbar {
+  @apply overflow-y-auto; /* Tailwind 유틸리티로 세로 스크롤 활성화 */
+}
+
+.custom-chat-scrollbar::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+}
+
+.custom-chat-scrollbar::-webkit-scrollbar-track {
+  background: #f5f5f5; /* 스크롤바 트랙 색상 */
+}
+
+.custom-chat-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c2c2c2; /* 스크롤바 손잡이 색상 */
+  border-radius: 4px; /* 스크롤바 손잡이 둥근 모서리 */
+  border: 2px solid #f0f0f0; /* 손잡이와 트랙 사이 여백 */
+}
+
+.custom-chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #7f4af4;
+}
+
+/* 슬라이더의 트랙 스타일 */
+input[type='range'] {
+  -webkit-appearance: none; /* 기본 브라우저 스타일 제거 */
+  width: 100%;
+  height: 8px; /* 트랙 높이 조정 */
+  border-radius: 4px; /* 트랙 모서리 둥글게 */
+  outline: none;
+}
+
+/* 재생바의 기본 색상 */
+input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 4px; /* 모서리 둥글게 */
+}
+
+/* 슬라이더 핸들 (썸) 스타일 */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px; /* 핸들 너비 */
+  height: 16px; /* 핸들 높이 */
+  background-color: #7f4af4; /* 핸들 색상 */
+  border-radius: 50%; /* 핸들 모양: 원형 */
+  margin-top: -6px; /* 핸들 위치 조정 (트랙에 맞춰) */
+}
+
+.chatting_height {
+  height: calc(100vh - 278px);
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 6; /* 최대 6줄로 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+input[type='radio'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type='radio']:checked {
+  border: 4px solid #7f4af4;
+}
+
+/* input창에 자동완성으로 텍스트를 삽입하면 input 영역이 파란색으로 바뀌는 현상 제거 */
+input:-webkit-autofill {
+  background-color: white !important; /* 기본 배경색으로 설정 */
+  color: black !important; /* 텍스트 색상 */
+  transition: background-color 5000s ease-in-out 0s; /* 애니메이션 제거 */
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: white !important; /* 포커스 상태에서도 동일하게 처리 */
 }
