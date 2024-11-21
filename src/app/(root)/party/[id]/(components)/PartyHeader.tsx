@@ -1,10 +1,10 @@
 'use client';
 import Image from 'next/image';
 import { partyInfo } from '@/types/partyInfo';
-import { useMemberCount } from '@/utils/useMemberCount';
+import { useMemberCount } from '@/reactQuery/useQuery/home/useMemberCount';
 import { startTimeString } from '@/utils/startTimeString';
-import { useOwnerInfo } from '@/utils/useOwnerInfo';
 import HeaderButtons from './HeaderButtons';
+import { useOwnerInfo } from '@/reactQuery/useQuery/home/useOwnerInfo';
 
 const PartyHeader = ({ partyData, end }: { partyData: partyInfo; end: boolean }) => {
   const { data: memberCount, isLoading: isMemberCounting } = useMemberCount(partyData.party_id);

@@ -1,4 +1,4 @@
-import partyProfileImageUploader from '../partyProfileImageUploader';
+import partyProfileImageUploader from './partyProfileImageUploader';
 import browserClient from '../supabase/client';
 
 const updateProfile = async (

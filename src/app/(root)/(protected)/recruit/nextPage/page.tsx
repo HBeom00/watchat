@@ -2,10 +2,10 @@
 
 import { useRecruitStore } from '../../../../../store/recruitStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 //------컴퍼넌트------------------------------------------------------------------------------
-import ParticipationModal from '@/components/CustomModal/ParticipationModal';
+import ParticipationButton from '@/components/button/ParticipationButton';
 import { defaultImage } from '@/constants/image';
 import { memberFullSwitch } from '@/utils/memberCheck';
 //------수파베이스------------------------------------------------------------------------------
@@ -20,11 +20,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from './../../../../../../node_modules/date-fns/locale/ko';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useDetectClose } from '@/utils/hooks/useDetectClose';
 
 const RecruitNextPage = () => {
-  const openRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useDetectClose(openRef, false);
+  const [open, setOpen] = useState<boolean>(false);
   const [partyNumber, setPartyNumber] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [privacySetting, setPrivacySetting] = useState<boolean>(true);
@@ -345,13 +343,12 @@ const RecruitNextPage = () => {
           모집하기
         </button>
 
-        <ParticipationModal
+        <ParticipationButton
+          openControl={open}
           party_id={partyNumber}
-          party_situation={'모집중'}
-          open={open}
-          setOpen={setOpen}
+          party_situation="모집중"
           isLogin={true}
-          openRef={openRef}
+          setOpenControl={setOpen}
         />
       </div>
     </div>
