@@ -20,7 +20,7 @@ const HeaderMobileBottom = ({ isUser }: { isUser: boolean }) => {
 
   return (
     <div
-      className={`flex justify-end items-center gap-2 bg-static-white 
+      className={`flex justify-end items-center gap-2 mobile:bg-static-white 
   mobile:fixed mobile:z-40 mobile:bottom-0 mobile:px-[20px] mobile:justify-between mobile:shadow-2xl mobile:body-xs-bold mobile:w-full`}
     >
       <Link href={'/'} className={`hidden p-[8px] justify-center items-center mobile:flex`}>

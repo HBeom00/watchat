@@ -6,6 +6,7 @@ import MemberList from './MemberList';
 import { useQuery } from '@tanstack/react-query';
 import { partyInfo } from '@/types/partyInfo';
 import { getLoginUserIdOnClient } from '@/utils/supabase/client';
+import Loading from '@/app/loading';
 
 const PartyBottom = ({ partyData, end, partyOwner }: { partyData: partyInfo; end: boolean; partyOwner: string }) => {
   const [tab, setTab] = useState<string>('파티 정보');
@@ -15,7 +16,7 @@ const PartyBottom = ({ partyData, end, partyOwner }: { partyData: partyInfo; end
   });
 
   if (userLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
