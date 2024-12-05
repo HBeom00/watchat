@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { partyInfo } from '@/types/partyInfo';
 import ExitButton from './ExitButton';
 import InvitedButton from './InvitedButton';
+import Loading from '@/app/loading';
 
 const MemberList = ({
   partyData,
@@ -24,7 +25,7 @@ const MemberList = ({
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   const isMember = data?.some((n) => n.user_id === userId) || false;
 

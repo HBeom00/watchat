@@ -26,7 +26,13 @@ const HeaderButtons = ({ end, partyData }: { end: boolean; partyData: partyInfo 
       return isMember;
     }
   });
-  if (userLoading || isMemberLoading) <div>Loading......</div>;
+  if (userLoading || isMemberLoading) {
+    return (
+      <button className="disabled-btn-m w-full" disabled={true}>
+        채팅 종료
+      </button>
+    );
+  }
   return (
     <div
       className={`flex w-[164px] justify-center items-center text-center
