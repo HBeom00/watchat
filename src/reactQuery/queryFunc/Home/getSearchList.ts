@@ -1,4 +1,4 @@
-import { partyInfo } from '@/types/partyInfo';
+import { partyAndOwner, partyAndProfiles } from '@/types/partyInfo';
 import { endDataNumber, nowTime, platformConversion, startDataNumber } from '@/utils/mainPageData/pageFilter';
 import browserClient from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
@@ -15,11 +15,11 @@ const getSearchList = async (
   order: string,
   filter: string
 ) => {
-  const response: PostgrestSingleResponse<partyInfo[]> =
+  const response = (
     partySituation === 'recruiting'
       ? await browserClient
           .from('party_info')
-          .select('*')
+          .select('*, team_user_profile!inner(*)')
           .range(startDataNumber(pageNumber), endDataNumber(pageNumber))
           .order(order, { ascending: false })
           .gte('start_date_time', nowTime())
@@ -29,7 +29,7 @@ const getSearchList = async (
       : partySituation === 'current'
       ? await browserClient
           .from('party_info')
-          .select('*')
+          .select('*, team_user_profile!inner(*)')
           .range(startDataNumber(pageNumber), endDataNumber(pageNumber))
           .order(order, { ascending: false })
           .lte('start_date_time', nowTime())
@@ -38,17 +38,25 @@ const getSearchList = async (
           .ilike('video_name', wordConversion) // 검색어
       : await browserClient
           .from('party_info')
-          .select('*')
+          .select('*, team_user_profile!inner(*)')
           .range(startDataNumber(pageNumber), endDataNumber(pageNumber))
           .order(order, { ascending: false })
           .textSearch('video_platform', platformConversion(filter))
-          .ilike('video_name', wordConversion); // 검색어
+          .ilike('video_name', wordConversion)
+  ) as PostgrestSingleResponse<partyAndProfiles[]>; // 검색어
 
-  if (response.error) {
-    return [];
+  const result: partyAndOwner[] | undefined = response.data?.map((n) => {
+    const profileFilter = n.team_user_profile.filter((i) => {
+      return i.user_id === n.owner_id;
+    });
+    return { ...n, owner_info: profileFilter[0] };
+  });
+
+  if (result && result.length > 0) {
+    return result;
   }
 
-  return response.data;
+  return [];
 };
 
 export default getSearchList;

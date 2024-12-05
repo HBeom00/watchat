@@ -1,18 +1,17 @@
 'use client';
-import { partyInfo } from '@/types/partyInfo';
+import { partyAndOwner } from '@/types/partyInfo';
 import { useMemberCount } from '@/reactQuery/useQuery/home/useMemberCount';
-import { useOwnerInfo } from '@/reactQuery/useQuery/home/useOwnerInfo';
+// import { useOwnerInfo } from '@/reactQuery/useQuery/home/useOwnerInfo';
 import { cutPartyName } from '@/utils/cutNameAndPartyName';
 import { getViewStatus } from '@/utils/viewStatus';
 import Image from 'next/image';
-import React from 'react';
 
-const RecruitCardBottom = ({ data }: { data: partyInfo }) => {
+const RecruitCardBottom = ({ data }: { data: partyAndOwner }) => {
   const { data: memberCount, isLoading: isCountLoading } = useMemberCount(data.party_id);
   const cutPartyNameValue = cutPartyName(data.video_name);
 
-  const { data: ownerInfo, isLoading } = useOwnerInfo(data);
-  if (isLoading || isCountLoading) <div>Loading...</div>;
+  // const { data: ownerInfo, isLoading } = useOwnerInfo(data);
+  if (isCountLoading) <div>Loading...</div>;
   return (
     <div className="flex flex-col items-center gap-1 self-stretch">
       <div className="flex flex-row items-start gap-1 self-stretch">
@@ -27,25 +26,21 @@ const RecruitCardBottom = ({ data }: { data: partyInfo }) => {
         {data.party_name}
       </p>
       <div className="flex flex-row items-end gap-1 self-stretch">
-        {ownerInfo ? (
-          <div className="flex flex-row max-w-[74px] items-center gap-[6px]">
-            <Image
-              src={ownerInfo.profile_image}
-              width={16}
-              height={16}
-              style={{
-                objectFit: 'cover',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%'
-              }}
-              alt={`${ownerInfo.nickname}의 프로필`}
-            />
-            <p className="text-Grey-900 label-m text-overflow-hidden">{ownerInfo.nickname}</p>
-          </div>
-        ) : (
-          <></>
-        )}
+        <div className="flex flex-row max-w-[74px] items-center gap-[6px]">
+          <Image
+            src={data.owner_info.profile_image}
+            width={16}
+            height={16}
+            style={{
+              objectFit: 'cover',
+              width: '16px',
+              height: '16px',
+              borderRadius: '50%'
+            }}
+            alt={`${data.owner_info.nickname}의 프로필`}
+          />
+          <p className="text-Grey-900 label-m text-overflow-hidden">{data.owner_info.nickname}</p>
+        </div>
         <p className="text-Grey-300 body-xs">|</p>
         <div className="flex flex-row text-Grey-900 label-m">
           <p className="text-primary-400">{memberCount ? memberCount : 0}</p>
