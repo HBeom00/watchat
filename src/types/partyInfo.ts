@@ -1,3 +1,5 @@
+import { member } from './partyMember';
+
 export type partyInfo = {
   party_id: string;
   party_name: string;
@@ -22,6 +24,11 @@ export type partyInfo = {
   date_recruitment: string | null;
   privacy_setting: boolean;
 };
+
 export type platform = { logoUrl: string; name: string };
+
+export type partyAndOwner = partyInfo & { owner_info: member };
+
+export type partyAndProfiles = partyInfo & { team_user_profile: member[] };
 
 // party_id,party_name,party_detail,video_name,video_platform,video_image,limited_member,duration_time,situation,owner_id,video_id,media_type,watch_date,start_time,episode_number,

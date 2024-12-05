@@ -26,7 +26,11 @@ const RecruitFilter = () => {
     mobile:gap-[16px] mobile:body-l-bold`}
     >
       <Link
-        href={pathname + '?' + createQueryString('watch', '')}
+        href={
+          pathname === '/' || pathname === '/search'
+            ? pathname + '?' + createQueryString('watch', '')
+            : '/?' + createQueryString('watch', '')
+        }
         className={
           filter === '' || filter === null ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'
         }
@@ -34,13 +38,21 @@ const RecruitFilter = () => {
         전체
       </Link>
       <Link
-        href={pathname + '?' + createQueryString('watch', 'current')}
+        href={
+          pathname === '/' || pathname === '/search'
+            ? pathname + '?' + createQueryString('watch', 'current')
+            : '/?' + createQueryString('watch', 'current')
+        }
         className={filter === 'current' ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'}
       >
         시청중
       </Link>
       <Link
-        href={pathname + '?' + createQueryString('watch', 'recruiting')}
+        href={
+          pathname === '/' || pathname === '/search'
+            ? pathname + '?' + createQueryString('watch', 'recruiting')
+            : '/?' + createQueryString('watch', 'recruiting')
+        }
         className={filter === 'recruiting' ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'}
       >
         모집중
