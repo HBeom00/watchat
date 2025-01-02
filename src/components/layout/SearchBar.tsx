@@ -5,11 +5,12 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const SearchBar = () => {
-  const [text, setText] = useState<string>('');
-  const debounce = useDebounce(text, 1000);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
+  const [text, setText] = useState<string>(decodeURIComponent(pathname.split('/')[2]) || '');
+  const debounce = useDebounce(text, 1000);
 
   useEffect(() => {
     if (!pathname.startsWith('/search')) {
