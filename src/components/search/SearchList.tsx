@@ -13,6 +13,7 @@ import ListDiv from '../home/ListDiv';
 import PageSelect from '../home/PageSelect';
 
 import type { filter, order } from '@/types/filter';
+import Loading from '@/app/loading';
 
 const SearchList = ({ search }: { search: string }) => {
   const queryClient = useQueryClient();
@@ -63,7 +64,8 @@ const SearchList = ({ search }: { search: string }) => {
     setPageNumber(1);
   }, [searchWord, partySituation, queryClient]);
 
-  if (isLoading || isPageLoading) <div>Loading......</div>;
+  if (isLoading || isPageLoading) <Loading />;
+
   return (
     <div className={`w-full`}>
       {data && data.length > 0 ? (

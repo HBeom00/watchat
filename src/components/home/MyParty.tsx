@@ -5,10 +5,13 @@ import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
 import browserClient, { getLoginUserIdOnClient } from '@/utils/supabase/client';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { partyInfo } from '@/types/partyInfo';
+import { partyAndOwner, partyAndProfiles } from '@/types/partyInfo';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import Loading from '@/app/loading';
+// import { useEffect } from 'react';
+import { nowTime } from '@/utils/mainPageData/pageFilter';
 
 const MyParty = () => {
   const params = useSearchParams();
@@ -20,37 +23,92 @@ const MyParty = () => {
     queryFn: () => getLoginUserIdOnClient()
   });
 
+  // useEffect(() => {
+  //   const getTest = async () => {
+  //     const test = (await browserClient
+  //       .from('team_user_profile')
+  //       .select('party_info!inner(*,team_user_profile!inner(*))')
+  //       .eq('user_id', userId)
+  //       .gte('party_info.end_time', nowTime())) as PostgrestSingleResponse<
+  //       {
+  //         party_info: partyAndProfiles;
+  //       }[]
+  //     >;
+  //     const result: partyAndOwner[] | undefined = test.data?.map((n) => {
+  //       const profileFilter = n.party_info.team_user_profile.filter((i) => {
+  //         return i.user_id === n.party_info.owner_id;
+  //       });
+  //       return { ...n.party_info, owner_info: profileFilter[0] };
+  //     });
+  //     console.log('테스트', result);
+  //   };
+  //   if (userId) {
+  //     getTest();
+  //   }
+  // }, [userId]);
+
   const { data, isLoading } = useQuery({
     queryKey: ['myParty', userId],
     queryFn: async () => {
       if (!userId) {
         return [];
       }
-      const myParty: PostgrestSingleResponse<{ party_id: string }[]> = await browserClient
+      // const myParty: PostgrestSingleResponse<{ party_id: string }[]> = await browserClient
+      //   .from('team_user_profile')
+      //   .select('party_id')
+      //   .eq('user_id', userId);
+      // if (myParty.data && myParty.data.length > 0) {
+      //   const myPartyPromises = myParty.data.map(async (idData) => {
+      //     const partyInfoResponse: PostgrestSingleResponse<partyInfo[]> = await browserClient
+      //       .from('party_info')
+      //       .select('*')
+      //       .eq('party_id', idData.party_id);
+      //     if (partyInfoResponse.data) {
+      //       return partyInfoResponse.data[0];
+      //     }
+      //   });
+      //   const result = await Promise.all(myPartyPromises);
+      //   return result?.filter((n) => {
+      //     if (n) {
+      //       return getViewStatus(n) !== '시청완료';
+      //     }
+      //   });
+      // }
+
+      // const test = (await browserClient
+      //   .from('team_user_profile')
+      //   .select('party_info!inner(*)')
+      //   .eq('user_id', userId)
+      //   .gte('party_info.end_time', nowTime())) as PostgrestSingleResponse<
+      //   {
+      //     party_info: partyInfo;
+      //   }[]
+      // >;
+
+      const response = (await browserClient
         .from('team_user_profile')
-        .select('party_id')
-        .eq('user_id', userId);
-      if (myParty.data && myParty.data.length > 0) {
-        const myPartyPromises = myParty.data.map(async (idData) => {
-          const partyInfoResponse: PostgrestSingleResponse<partyInfo[]> = await browserClient
-            .from('party_info')
-            .select('*')
-            .eq('party_id', idData.party_id);
-          if (partyInfoResponse.data) {
-            return partyInfoResponse.data[0];
-          }
+        .select('party_info!inner(*,team_user_profile!inner(*))')
+        .eq('user_id', userId)
+        .gte('party_info.end_time', nowTime())) as PostgrestSingleResponse<
+        {
+          party_info: partyAndProfiles;
+        }[]
+      >;
+      const result: partyAndOwner[] | undefined = response.data?.map((n) => {
+        const profileFilter = n.party_info.team_user_profile.filter((i) => {
+          return i.user_id === n.party_info.owner_id;
         });
-        const result = await Promise.all(myPartyPromises);
-        return result?.filter((n) => {
-          if (n) {
-            return getViewStatus(n) !== '시청완료';
-          }
-        });
+        return { ...n.party_info, owner_info: profileFilter[0] };
+      });
+
+      if (result && result.length > 0) {
+        return result;
       }
+
       return [];
     }
   });
-  if (isLoading || userLoading) <div>Loading...</div>;
+  if (isLoading || userLoading) <Loading />;
   return (
     <>
       {(filter === '' || filter === null) && (searchText === '' || searchText === null) && userId ? (

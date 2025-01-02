@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/app/loading';
 import PlatformImageDetail from '@/components/styleComponents/PlatformImageDetail';
 import { fetchMoviesDetail, fetchTvDetail } from '@/serverActions/TMDB';
 import { platform } from '@/types/partyInfo';
@@ -19,7 +20,7 @@ const DetailInfo = ({
     queryFn: () => getVideoDetailInfo(videoNumber, videoType)
   });
 
-  if (isLoading) <div>Loading...</div>;
+  if (isLoading) <Loading />;
 
   const platformArr: platform[] = JSON.parse(videoPlatform).filter((n: platform) => !(n.name === '알수없음'));
 

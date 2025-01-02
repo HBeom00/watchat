@@ -51,6 +51,7 @@ const ParticipationButton = ({
   const { data: ban } = useQuery({
     queryKey: ['ban', party_id],
     queryFn: async () => {
+      if (party_id === '') return false;
       const userId = await getLoginUserIdOnClient();
       const response = await getBanUsers(party_id);
 

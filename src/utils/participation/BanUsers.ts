@@ -3,8 +3,8 @@ import browserClient from '../supabase/client';
 
 type banUser = {
   id: string;
+  party_id: string;
   user_id: string;
-  banned_user: string;
 };
 
 const getBanUsers = async (party_id: string) => {
@@ -12,7 +12,7 @@ const getBanUsers = async (party_id: string) => {
     .from('party_ban_user')
     .select('*')
     .eq('party_id', party_id);
-  if (response.error) {
+  if (response.error || response.data.length === 0) {
     return [];
   }
   return response.data;

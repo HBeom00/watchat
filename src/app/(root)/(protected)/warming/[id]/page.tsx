@@ -4,18 +4,18 @@ import WarmingPartyInfo from '../(components)/WarmingPartyInfo';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 import type { member } from '@/types/partyMember';
-import { partyInfo } from '@/types/partyInfo';
+import { partyAndProfiles } from '@/types/partyInfo';
 
 const page = async ({ params }: { params: { id: string } }) => {
   const client = createClient();
 
   const userId = await getLoginUserIdOnServer();
 
-  const partyDataResponse: PostgrestSingleResponse<partyInfo> = await client
+  const partyDataResponse = (await client
     .from('party_info')
-    .select('*')
+    .select('*, team_user_profile!inner(*)')
     .eq('party_id', params.id)
-    .single();
+    .single()) as PostgrestSingleResponse<partyAndProfiles>;
   const partyData = partyDataResponse.data;
 
   const memberDataResponse: PostgrestSingleResponse<member[]> = await client
@@ -46,7 +46,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             함께 시청한 멤버의 후기를 남겨보세요.
           </p>
         </div>
-        <WarmingPartyInfo partyData={partyData} />
+        {partyData ? <WarmingPartyInfo partyData={partyData} /> : <></>}
       </div>
       {memberData && memberData.length > 0 && userId ? (
         <WarmingMemberList

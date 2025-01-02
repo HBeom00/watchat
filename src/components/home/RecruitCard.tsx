@@ -1,4 +1,4 @@
-import { partyInfo, platform } from '@/types/partyInfo';
+import { partyAndOwner, platform } from '@/types/partyInfo';
 import { startTimeString } from '@/utils/startTimeString';
 import { getViewStatus } from '@/utils/viewStatus';
 import Image from 'next/image';
@@ -7,7 +7,7 @@ import PlatformImageCard from '../styleComponents/PlatformImage';
 import WatchingLabel from '../styleComponents/WatchingLabel';
 import RecruitCardBottom from './RecruitCardBottom';
 
-const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
+const RecruitCard = ({ data, end }: { data: partyAndOwner; end: boolean }) => {
   const platformArr: platform[] = JSON.parse(data.video_platform);
   const platform = platformArr.length !== 1 || platformArr[0].logoUrl === '알수없음' ? null : platformArr[0];
 
@@ -35,6 +35,7 @@ const RecruitCard = ({ data, end }: { data: partyInfo; end: boolean }) => {
           }
           src={data.video_image}
           alt={data.video_name}
+          sizes="(max-width: 196px)100vw,(max-width:280px)480px"
           style={{ objectFit: 'cover' }}
           fill
         />

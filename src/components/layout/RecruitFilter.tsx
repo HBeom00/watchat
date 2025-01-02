@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { useCallback } from 'react';
@@ -20,13 +19,15 @@ const RecruitFilter = () => {
 
   const filter = searchParams.get('watch');
 
+  const filtering = pathname === '/' || pathname.startsWith('/search');
+
   return (
     <div
       className={`flex flex-row h-[24px] gap-[24px] items-center title-m
     mobile:gap-[16px] mobile:body-l-bold`}
     >
       <Link
-        href={pathname + '?' + createQueryString('watch', '')}
+        href={filtering ? pathname + '?' + createQueryString('watch', '') : '/?' + createQueryString('watch', '')}
         className={
           filter === '' || filter === null ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'
         }
@@ -34,13 +35,21 @@ const RecruitFilter = () => {
         전체
       </Link>
       <Link
-        href={pathname + '?' + createQueryString('watch', 'current')}
+        href={
+          filtering
+            ? pathname + '?' + createQueryString('watch', 'current')
+            : '/?' + createQueryString('watch', 'current')
+        }
         className={filter === 'current' ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'}
       >
         시청중
       </Link>
       <Link
-        href={pathname + '?' + createQueryString('watch', 'recruiting')}
+        href={
+          filtering
+            ? pathname + '?' + createQueryString('watch', 'recruiting')
+            : '/?' + createQueryString('watch', 'recruiting')
+        }
         className={filter === 'recruiting' ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'}
       >
         모집중

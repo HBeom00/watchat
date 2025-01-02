@@ -1,13 +1,13 @@
 'use client';
 
-import { partyInfo } from '@/types/partyInfo';
+import { partyAndOwner } from '@/types/partyInfo';
 import RecruitCard from './RecruitCard';
 import { getViewStatus } from '@/utils/viewStatus';
 import Link from 'next/link';
 import { useState } from 'react';
 import PrivateModal from './PrivateModal';
 
-const ListDiv = ({ data }: { data: partyInfo[] }) => {
+const ListDiv = ({ data }: { data: partyAndOwner[] }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div

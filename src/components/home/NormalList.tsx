@@ -9,6 +9,7 @@ import getRecruitList from '@/reactQuery/queryFunc/Home/getRecruitList';
 import getRecruitListPage from '@/reactQuery/queryFunc/Home/getRecruitListPage';
 import Image from 'next/image';
 import { filter, order } from '@/types/filter';
+import Loading from '@/app/loading';
 
 const NormalList = ({ partySituation }: { partySituation: string | null }) => {
   const queryClient = useQueryClient();
@@ -47,7 +48,7 @@ const NormalList = ({ partySituation }: { partySituation: string | null }) => {
     setPageNumber(1);
   }, [partySituation, queryClient]);
 
-  if (isLoading || isPageLoading) <div>Loading...</div>;
+  if (isLoading || isPageLoading) <Loading />;
 
   return (
     <div>
