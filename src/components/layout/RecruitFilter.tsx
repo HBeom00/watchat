@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { useCallback } from 'react';
@@ -20,17 +19,15 @@ const RecruitFilter = () => {
 
   const filter = searchParams.get('watch');
 
+  const filtering = pathname === '/' || pathname.startsWith('/search');
+
   return (
     <div
       className={`flex flex-row h-[24px] gap-[24px] items-center title-m
     mobile:gap-[16px] mobile:body-l-bold`}
     >
       <Link
-        href={
-          pathname === '/' || pathname === '/search'
-            ? pathname + '?' + createQueryString('watch', '')
-            : '/?' + createQueryString('watch', '')
-        }
+        href={filtering ? pathname + '?' + createQueryString('watch', '') : '/?' + createQueryString('watch', '')}
         className={
           filter === '' || filter === null ? 'text-Grey-900 mobile:text-[16px]' : 'text-Grey-400 mobile:text-[16px]'
         }
@@ -39,7 +36,7 @@ const RecruitFilter = () => {
       </Link>
       <Link
         href={
-          pathname === '/' || pathname === '/search'
+          filtering
             ? pathname + '?' + createQueryString('watch', 'current')
             : '/?' + createQueryString('watch', 'current')
         }
@@ -49,7 +46,7 @@ const RecruitFilter = () => {
       </Link>
       <Link
         href={
-          pathname === '/' || pathname === '/search'
+          filtering
             ? pathname + '?' + createQueryString('watch', 'recruiting')
             : '/?' + createQueryString('watch', 'recruiting')
         }
